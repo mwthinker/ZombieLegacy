@@ -35,6 +35,7 @@ namespace zombie {
 
 		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r));
 		humanPlayers_.push_back(PairHumanUnit(humanPlayer,UnitPtr()));
+		int a = 500;
 	}
 
     ZombieManager::~ZombieManager() {
