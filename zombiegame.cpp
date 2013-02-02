@@ -135,15 +135,6 @@ namespace zombie {
 		}
 	}
 
-// protected
-	void ZombieManager::updatePlayer(PlayerPtr player, UnitPtr& unit) {
-		if (HumanPlayerPtr humanPlayer = std::dynamic_pointer_cast<HumanPlayer>(humanPlayer)) {
-		} else if (AiPlayerPtr ai = std::dynamic_pointer_cast<AiPlayer>(player)) {
-			std::vector<UnitPtr> unitsInView = calculateUnitsInView(unit);
-			ai->calculateInput(unit,unitsInView,time_);
-		}
-	}
-
 	void ZombieManager::addHuman(UnitPtr unitPtr) {
 		taskManager_->add(new HumanAnimation(unitPtr));
 		physicalEngine_->add(unitPtr);
@@ -433,8 +424,7 @@ namespace zombie {
 		}
 		mapFile.close();
 	}
-
-	// private
+	
 	void ZombieManager::serverInitGame() {
 		// Add human controlled by first input device.
 		UnitPtr human(new Unit(8,10,0.3,Weapon(35,0.5,8,12),false,++unitId_));		
