@@ -56,6 +56,19 @@ private:
 
 };
 
+class BoringZombieBehavior : public AiBehavior {
+public:
+	BoringZombieBehavior();
+
+	Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time);
+
+private: 
+	int timeBeforeInputChange_;
+	Input current_;
+	double time_;
+
+};
+
 class AgressiveZombieBehavior : public AiBehavior {
 public:
 	AgressiveZombieBehavior();

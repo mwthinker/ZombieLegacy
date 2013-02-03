@@ -55,6 +55,7 @@ void RemotePlayer::setInput(Input input) {
 			
 	}
 
+
 	AgressiveZombieBehavior::AgressiveZombieBehavior() {
 	}
 
@@ -135,13 +136,53 @@ void RemotePlayer::setInput(Input input) {
 	}
 
 
+	BoringZombieBehavior::BoringZombieBehavior() {
+		timeBeforeInputChange_ = 5;
+		current_.forward_ = true;
+		time_ = 0;
+	}
+
+	Input BoringZombieBehavior::calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) {
+		Input input;
+		
+		
+		input.forward_ = true;
+		
+		double d = fmod(time,3);
+		if(d<2) {
+			input.forward_ = true;
+			input.turnLeft_ = false;
+			input.turnRight_ = false;
+		} else if (d<2.1) {
+			input.forward_ = false;
+			input.turnLeft_ = true;
+			input.turnRight_ = false;
+		} else if (d<2.4) {
+			input.forward_ = false;
+			input.turnLeft_ = false;
+			input.turnRight_ = false;
+		} else {
+			input.forward_ = true;
+			input.turnLeft_ = false;
+			input.turnRight_ = false;
+		}
+
+
+
+		return input;
+			
+	}
+
+
+
 	AiPlayer::AiPlayer(AiBehaviorPtr behavior) : behavior_(behavior) {	
 		
 	}	
 
 	AiPlayer::AiPlayer() {
 		//behavior_ = AiBehaviorPtr(new SimpleZombieBehavior());
-		behavior_ = AiBehaviorPtr(new AgressiveZombieBehavior());
+		//behavior_ = AiBehaviorPtr(new AgressiveZombieBehavior());
+		behavior_ = AiBehaviorPtr(new BoringZombieBehavior());
 	}	
 
 	Input AiPlayer::currentInput() {
