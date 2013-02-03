@@ -13,8 +13,6 @@
 
 namespace zombie {
 
-double angleDifferance(double angleServer,double angleClient);
-
 class Unit : public PhysicalUnit {
 public:
 	Unit(double x, double y, double angle, Weapon weapon, bool infected ,int id);
@@ -56,8 +54,7 @@ public:
 	bool isPointViewable(double x, double y);
 	
 	// Return the angle for the current 
-	double moveDirection() const;
-	void turn(double angle);
+	double moveDirection() const;	
 
 	double healthPoints() const;
 	void updateHealthPoint(double deltaLife);
@@ -73,9 +70,11 @@ public:
 	Bullet getLastBullet() const {
 		return lastBullet_;
 	};
-protected:
-	double calculateDifferenceBetweenAngles(double firstAngle, double secondAngle);
+
 private:
+	double calculateDifferenceBetweenAngles(double firstAngle, double secondAngle);
+
+	void turn(double angle);
 
 	// Physical States.
 	double angleVelocity_;

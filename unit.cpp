@@ -11,15 +11,6 @@
 
 namespace zombie {
 
-double angleDifferance(double angleServer,double angleClient) {
-	double diff = angleServer-angleClient;
-	if (diff < mw::PI) {
-		return diff;
-	} else {
-		return 2*mw::PI -diff;
-	}
-}
-
 Unit::Unit(double x, double y, double angle, Weapon weapon, bool infected, int id) : PhysicalUnit(id, x,y,0.4, 50.0,0.0,1.0), weapon_(weapon) {		
 	angleVelocity_ = 0.0;
 
