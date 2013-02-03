@@ -125,30 +125,6 @@ namespace zombie {
 
 		// Draw small view sphere
 		drawCircle(p[0],p[1],unit_->smallViewDistance(),20,false);
-	}	
-
-	TaskManager::TaskManager() {
-		time_ = 0.0;
 	}
 
-	void TaskManager::add(Task* task) {
-		tasks_.push_back(task);
-	}
-
-	void TaskManager::update(double deltaTime) {
-		// for each Task, call execute
-		time_ += deltaTime;
-
-		for (Task* task : tasks_) {
-			if (task->isRunning()) {
-				task->excecute(time_);
-				Task* newTask = task->pull();
-				if (task != 0) {
-					// Add task task list.
-				}
-			} else {
-				// remove task.					
-			}
-		}
-	}
-}
+} // Namespace zombie.

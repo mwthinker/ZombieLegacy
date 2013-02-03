@@ -11,6 +11,7 @@
 
 #include "input.h"
 #include "task.h"
+#include "taskmanager.h"
 
 #include <SDL.h>
 #include <memory> //std::shared_ptr

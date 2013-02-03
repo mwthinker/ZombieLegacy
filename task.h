@@ -63,22 +63,7 @@ namespace zombie {
 	};
 
 	class DeathAnimation : Task {	
-	};
-
-	class TaskManager {
-	public:
-		TaskManager();
-
-		void add(Task* task);
-		
-		void update(double deltaTime);
-
-	private:
-		std::vector<Task*> tasks_;
-		double time_;
-	};
+	};	
 }
-
-
 
 #endif // TASK_H

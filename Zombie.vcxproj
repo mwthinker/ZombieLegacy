@@ -91,6 +91,7 @@
     <ClInclude Include="protocol.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="task.h" />
+    <ClInclude Include="taskmanager.h" />
     <ClInclude Include="unit.h" />
     <ClInclude Include="weapon.h" />
     <ClInclude Include="zombiegame.h" />
@@ -103,6 +104,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="protocol.cpp" />
     <ClCompile Include="task.cpp" />
+    <ClCompile Include="taskmanager.cpp" />
     <ClCompile Include="unit.cpp" />
     <ClCompile Include="zombiegame.cpp" />
   </ItemGroup>
