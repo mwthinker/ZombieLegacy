@@ -32,20 +32,10 @@ typedef std::shared_ptr<HumanPlayer> HumanPlayerPtr;
 typedef std::shared_ptr<AiPlayer> AiPlayerPtr;
 typedef std::shared_ptr<RemotePlayer> RemotePlayerPtr;
 
-// Represent a breach of protocol in the network data transmits.
-class ProtocolError {
-};
-
-enum Status {STATUS_LOCAL, STATUS_SERVER, STATUS_CLIENT};
-
-class ZombieManager : public mw::ServerFilter {
+class ZombieManager {
 public:
     ZombieManager();
     ~ZombieManager();
-
-	// Connect by choosing the connection type. Set max number of remote
-	// connection (maxConnections).
-	void connect(unsigned int maxConnections, Status status);
     
 	// Starts the game. The connection need to be active else nothing happens.
 	void startGame();
@@ -59,7 +49,6 @@ public:
 
 	// Makes the game reacting on the evennt (windowEvent).
 	void eventUpdate(const SDL_Event& windowEvent);
-
 protected:
 	// Updates
 	virtual void updateGameLogic(double time, double deltaTime) = 0;
@@ -72,55 +61,9 @@ protected:
 
 	// Add a new ai (unitPtr) to the game.
 	void addNewAi(UnitPtr unitPtr);
-
-	// Add a remote unit (unitPtr).
-	void addNewRemote(UnitPtr unitPtr);
-
-	// Override ServerFilter
-	bool sendThrough(const mw::Packet& packet, int fromId, int toId, mw::ServerFilter::Type type);
-
-	// Receives data (data) received from user with id (id).
-	// First element in (data) must be of a value 
-	// defined in PacketType.
-	void clientReceiveData(mw::Packet& packet, int id);
-
-	void clientReceiveUpdate(mw::Packet& packet);
 	
-	void sendAllClientInput(double time, double deltaTime);
-
-	void serverReceiveClientInput(mw::Packet packet, int fromId);
-	
-	// Shows the protocol for UpdatePacket.
-	// N is the number of cars.
-	// ---------------
-	//   Net net
-	//   int id
-	//   double time
-	// 1 int id
-	// 1 Input input
-	// 1 State state
-	//      ...
-	// N int id
-	// N Input input
-	// N State state
-	// ---------------
-	void serverSendAllClientUpdate();
-
-	void serverSendNewUnit(UnitPtr newUnit);
-
-	void clientReceiveNewUnit(mw::Packet packet);
-
-	void clientReceiveId(mw::Packet& packet);
-
-	void serverSendId(int toId, int unitId);
-
-	void serverSendStart();
-
-	void serverSendInit(int toId);
-	void clientReceiveInit(mw::Packet packet);
 	void loadMap(std::string filename);
-
-	mw::ConnectionManager* manager_;
+		
 	PhysicalEngine* physicalEngine_;
 	
 	std::map<int,UnitPtr> units_; // <object id, Unit> All units.
@@ -131,12 +74,10 @@ protected:
 
 	typedef std::pair<HumanPlayerPtr,UnitPtr> PairHumanUnit;
 	typedef std::pair<AiPlayerPtr,UnitPtr> PairAiUnit;
-	typedef std::pair<RemotePlayerPtr,UnitPtr> PairRemoteUnit;
 
-private:
-	// Should only be called by the server. And must be called directly after the connection
-	// is started (before anything else is done using the TaskManager*.
-	void serverInitGame();
+private:	
+	// Inits the game.
+	void initGame();
 
 	double width_, height_; // The internal map size in the game.
 	
@@ -152,7 +93,6 @@ private:
 	
 	std::vector<PairHumanUnit> humanPlayers_;
 	std::vector<PairAiUnit> aiPlayers_;
-	std::vector<PairRemoteUnit> remotePlayers_;	
 };
 
 class ZombieGame : public ZombieManager {

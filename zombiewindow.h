@@ -22,18 +22,6 @@ public:
 
 	~ZombieWindow() {
 	}
-
-	void startLocal() {
-		zombieGame_.connect(1,STATUS_LOCAL);		
-	}
-
-	void startServer() {
-		zombieGame_.connect(1,STATUS_SERVER);		
-	}
-
-	void startClient() {
-		zombieGame_.connect(1,STATUS_CLIENT);		
-	}
 private:
     // Override mw::GameWindow
     void graphicUpdate(Uint32 msDeltaTime) {

@@ -29,14 +29,6 @@ public:
 	// Overides Object function.
 	mw::Packet generatePacket() const;
 
-	// Rpc excecuted on the client. Syncronize the internal state with
-	// the server.
-	void clientUpdate(double serverTime, Input input, State state);
-	
-	// Rpc excecuted on the server. Receives input (input) 
-	// from the client at the time (time).
-	void receiveInput(double serverTime, double clientTime, Input input);
-
 	// Simulates the physics at time (time) one time step (timeStep) ahead.
 	// Based on the input given.
 	void updatePhysics(double time, double timeStep, Input input);

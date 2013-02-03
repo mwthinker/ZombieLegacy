@@ -74,60 +74,6 @@ mw::Packet Unit::generatePacket() const {
 	return packet;
 }
 
-// Rpc excecuted on the client. Syncronize the internal state with
-// the server.
-void Unit::clientUpdate(double serverTime, Input input, State state) {
-	/*
-	State currentState = getState();
-
-	// Smoth immediate states to server states.
-	mw::MathVector positionDifference = state.position_ - currentState.position_;
-	double distanceApart = positionDifference.magnitude();
-
-	// Distance to large?
-	if (distanceApart > 2.0) {
-		// Snap.
-        currentState.position_ = state.position_;
-	} else if (distanceApart > 0.1) {
-		// Smooth.
-        currentState.position_ += positionDifference * 0.1;
-	}
-
-	// Angle difference to large?
-	double angleDiff = calculateDifferenceBetweenAngles(state.angle_,currentState.angle_);
-	if (std::abs(angleDiff) > mw::PI/8) {
-		// Snap.
-		currentState.angle_ = state.angle_;
-	} else if (std::abs(angleDiff) > mw::PI/128) {
-		// Smoth.
-		currentState.angle_ += angleDiff * 0.1;
-	}
-        
-	// Snap derivitive states to server states.
-	currentState.velocity_ = state.velocity_;
-	currentState.angleVelocity_ = state.angleVelocity_;
-        		
-	// Update input.
-	currentInput_ = input;
-
-	// Update states.
-	setState(state);*/
-}
-
-// Rpc excecuted on the server. Receives input (input) 
-// from the client at the time (time).
-void Unit::receiveInput(double serverTime, double clientTime, Input input) {
-    // Clientime is behind serverTime? 
-	if (clientTime <= serverTime) {
-		// Input to old!
-		return;
-	}	
-
-    const double deltaTime = clientTime - serverTime;
-	
-    updatePhysics(serverTime, deltaTime, input);
-}
-
 void Unit::updatePhysics(double time, double timeStep, Input input) {
 	double angle = moveDirection();	
 		
