@@ -120,6 +120,7 @@ namespace zombie {
 	void ZombieManager::graphicUpdate(Uint32 msDeltaTime) {
 		// Game is started?
 		if (started_) {
+			
 			taskManager_->update(msDeltaTime/1000.0);
 		} else {
 			taskManager_->update(0.0);

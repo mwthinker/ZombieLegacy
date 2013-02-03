@@ -60,6 +60,7 @@ void RemotePlayer::setInput(Input input) {
 
 	Input AgressiveZombieBehavior::calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) {
 		Input input;
+		//input.forward_ = true;
 		// is there a  valid target? OR is there a new target available?
 		if ((targetLocked() && validateTarget()) || setTarget(units)) {
 			// Create input ******************
@@ -86,13 +87,17 @@ void RemotePlayer::setInput(Input input) {
 			}
 
 			// Walk
-			input.forward_ = true;
+			//input.forward_ = true;
 
 			// Attack - implement later
 		} else {
 			// No targets available - do random walk
 			target_ = 0;
-			randomWalk();
+			//input.forward_ = true;
+			if(randomWalk()) {
+				
+			}
+			input.turnRight_ = true;
 		}
 		return input;			
 	}
@@ -121,7 +126,12 @@ void RemotePlayer::setInput(Input input) {
 	}
 
 	bool AgressiveZombieBehavior::randomWalk() {
-		return true;
+		int turn = rand() % 5 + 1;
+		if (turn == 2) {
+			return true;
+		} else {
+			return true;
+		}
 	}
 
 
