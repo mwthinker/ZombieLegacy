@@ -27,8 +27,7 @@ namespace zombie {
 	protected:
 		void push(Task* task);
 
-	private:	
-
+	private:
 		std::queue<Task*> tasks_;
 		int drawOrder_;
 	};
@@ -63,7 +62,19 @@ namespace zombie {
 	};
 
 	class DeathAnimation : Task {	
-	};	
+	};
+
+	class Shot : public Task {
+	public:
+		Shot(double x, double y, double currentTime);
+
+		void excecute(double time);
+		bool isRunning() const;
+	private:
+		double startTime_;
+		double x_, y_;
+		bool running_;
+	};
 }
 
 #endif // TASK_H

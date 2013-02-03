@@ -10,6 +10,7 @@
 #include "physicalunit.h"
 #include "state.h"
 #include "bullet.h"
+#include <queue>
 
 namespace zombie {
 
@@ -30,9 +31,6 @@ public:
 	// Simulates the physics at time (time) one time step (timeStep) ahead.
 	// Based on the input given.
 	void updatePhysics(double time, double timeStep, Input input);
-
-	// Rpc excecuted on the client. Shoot
-	//void clientShoots() {}
 	
 	void setState(State state);
 	State getState() const;
@@ -60,17 +58,18 @@ public:
 	void updateHealthPoint(double deltaLife);
 
 	bool isDead() const;
-	
-	Input getInput() const;
 
 	bool isInfected() const {
 		return isInfected_;
 	}
 
-	Bullet getLastBullet() const {
-		return lastBullet_;
-	};
+	// The bullet is polled and and saved in (bullet) and true is returned.
+	// If no bullet has been shot the function returns false;
+	bool pollShot(Bullet& bullet);
 
+	Weapon getWeapon() const {
+		return weapon_;
+	}
 private:
 	double calculateDifferenceBetweenAngles(double firstAngle, double secondAngle);
 
@@ -93,7 +92,7 @@ private:
 	Weapon weapon_;
 	bool isInfected_;
 
-	Bullet lastBullet_;
+	std::queue<Bullet> bullets_;
 };
 
 typedef std::shared_ptr<Unit> UnitPtr;

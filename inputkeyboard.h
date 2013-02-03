@@ -55,7 +55,7 @@ public:
 		Input input = input_;
 		input_.shoot_  = false;
 		input_.reload_ = false;
-		return input_;
+		return input;
 	}
 private:
 	Input input_;

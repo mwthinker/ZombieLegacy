@@ -23,15 +23,6 @@ public:
 	virtual void eventUpdate(const SDL_Event& windowEvent) = 0;
 };
 
-class RemotePlayer {
-public:
-	void setInput(Input input);
-
-	Input currentInput();
-private:
-	Input input_;
-};
-
 class AiBehavior {
 public:
 	AiBehavior();

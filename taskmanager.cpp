@@ -30,7 +30,7 @@ void TaskManager::update(double deltaTime) {
 				// Add task task list.
 			}
 		} else {
-			// remove task.					
+			// remove task.
 		}
 	}
 }

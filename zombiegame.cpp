@@ -28,9 +28,6 @@ namespace zombie {
 		time_ = 0.0;
 		unitId_ = 0;
 
-		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r));
-		humanPlayers_.push_back(PairHumanUnit(humanPlayer,UnitPtr()));
-
 		initGame();
 	}
 
@@ -45,6 +42,7 @@ namespace zombie {
 	}
 
     void ZombieGame::physicUpdate(Uint32 msDeltaTime) {
+		// Game is started?
 		if (started_) {
 			double deltaTime = msDeltaTime/1000.0;
 			
@@ -56,29 +54,31 @@ namespace zombie {
 				aiPlayer->calculateInput(unit,unitsInView,time_);
 			}
 			
-			updateGameLogic(time_,deltaTime);
+			// Update shooting and reloading.
 
-			for (PairHumanUnit& pair : humanPlayers_) {
+			// Update all units.
+			for (PairPlayerUnit& pair : players_) {
 				UnitPtr& unit = pair.second;
 				unit->updatePhysics(time_, deltaTime,pair.first->currentInput());
-			}
 
-			for (PairAiUnit& pair : aiPlayers_) {
-				UnitPtr& unit = pair.second;
-				unit->updatePhysics(time_, deltaTime,pair.first->currentInput());
-			}
+				Bullet bullet;
+				// Alive? And shooting?
+				if (!unit->isDead() && unit->pollShot(bullet)) {
+					doShotDamage(unit, bullet);
+				}
+			}		
 
-			// Update physics.
+			// Update the objects physics interactions.
 			physicalEngine_->update(deltaTime);
 			
+			// Move the time ahead.
 			time_ += deltaTime;
 		}
 	}
 
 	void ZombieGame::graphicUpdate(Uint32 msDeltaTime) {
 		// Game is started?
-		if (started_) {
-			
+		if (started_) {			
 			taskManager_->update(msDeltaTime/1000.0);
 		} else {
 			taskManager_->update(0.0);
@@ -96,20 +96,19 @@ namespace zombie {
 		}
 	}
 
-	void ZombieGame::addHuman(UnitPtr unitPtr) {
+	void ZombieGame::addHuman(HumanPlayerPtr human, UnitPtr unitPtr) {
 		taskManager_->add(new HumanAnimation(unitPtr));
 		physicalEngine_->add(unitPtr);
-		units_[unitPtr->id()] = unitPtr;
-		humanPlayers_[0].second = unitPtr;
-		localUnitId_ = unitPtr->id();
+		humanPlayers_.push_back(PairHumanUnit(human,unitPtr));
+		players_.push_back(PairPlayerUnit(human,unitPtr));
 	}
 
 	void ZombieGame::addNewAi(UnitPtr unitPtr) {
 		taskManager_->add(new HumanAnimation(unitPtr));
 		physicalEngine_->add(unitPtr);
-		units_[unitPtr->id()] = unitPtr;
 		AiPlayerPtr aiPlayer(new AiPlayer());
 		aiPlayers_.push_back(PairAiUnit(aiPlayer,unitPtr));
+		players_.push_back(PairPlayerUnit(aiPlayer,unitPtr));
 	}	
 
 	void ZombieGame::loadMap(std::string filename) {
@@ -130,11 +129,11 @@ namespace zombie {
 					corners.push_back(p);
 				}
 			}
-			BuildingPtr building(new Building(corners,++unitId_));
-			buildings_.push_back(building);
+			worldBorder_ = BuildingPtr(new Building(corners,++unitId_));
+			buildings_.push_back(worldBorder_);
 
-			taskManager_->add(new DrawBuildning(building));
-			physicalEngine_->add(building);
+			taskManager_->add(new DrawBuildning(worldBorder_));
+			physicalEngine_->add(worldBorder_);
 			//std::cout << "A";
 		}
 		mapFile.close();
@@ -142,8 +141,9 @@ namespace zombie {
 	
 	void ZombieGame::initGame() {
 		// Add human controlled by first input device.
-		UnitPtr human(new Unit(8,10,0.3,Weapon(35,0.5,8,12),false,++unitId_));		
-		addHuman(human);
+		UnitPtr human(new Unit(2,2,0.3,Weapon(35,0.5,8,12),false,++unitId_));
+		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r));
+		addHuman(humanPlayer,human);
 
 		// Add zombie with standard behavior.
 		for (int i = 8; i < 11; i++){
@@ -165,13 +165,10 @@ namespace zombie {
 	double ZombieGame::getHeight() const {
 		return 400.0;
 	}
-
-	void ZombieGame::updateGameLogic(double time, double deltaTime) {
-	}
-
+	
 	std::vector<UnitPtr> ZombieGame::calculateUnitsInView(const UnitPtr& unit) {
 		std::vector<UnitPtr> unitsInView;
-		for (auto& pair: units_) {
+		for (auto& pair: players_) {
 			UnitPtr& distantUnit = pair.second;
 			Position p = distantUnit->getPosition();
 			if (unit->isPointViewable(p.x_,p.y_) && isVisible(distantUnit,unit)) {
@@ -181,48 +178,42 @@ namespace zombie {
 
 		return unitsInView;
 	}
-	
-	void ZombieGame::calculateWeaponShooting() {
-		/*
-		for (auto& pair : units_) {
-			UnitPtr& unit = pair.second;
-			Bullet properties;
-			bool shooting = unit->shooting(properties);
-			if (!unit->isDead() && shooting) {
-				if (properties.speed_ < 0) {
-					// Weapon with infinit velocity
-					// Calculate damage and target, and send hitevent.
-					doShotDamage(unit, properties);
-				} else {
 
-				}
-			}
-		}
-		*/
-	}
-
-	void ZombieGame::doShotDamage(UnitPtr shooter, Bullet properties) {
+	void ZombieGame::doShotDamage(UnitPtr shooter, const Bullet& bullet) {
 		double step = 0.0;
 		double stepLength = 0.05;
-		Position dr = Position(std::cos(properties.direction_),std::sin(properties.direction_));
-		Position p = properties.postion_;
+		Position dr = Position(std::cos(bullet.direction_),std::sin(bullet.direction_));
+		Position p = bullet.postion_;
 		bool hit = false;
-		while (step < properties.range_ && !hit) {
+		while (step < bullet.range_ && !hit) {
 			p += dr*stepLength;
 			step += stepLength;
-			/*
-			for (std::vector<Object*>::iterator it = objects_.begin(); it != objects_.end(); ++it) {
-				Object* ob = *it;
-				if (shooter != ob && !ob->isDead() && ob->isInside(p.x_,p.y_)) {
-					WeaponHit* hitEvent = new WeaponHit(ob->id(),p);
-					ob->updateHealthPoint(-properties.pointDamage_);
-					eventQueue_.add(hitEvent);
+			
+			for (BuildingPtr& building : buildings_) {
+				// Hits a building?
+				if (worldBorder_ != building && building->isInside(p.x_,p.y_)) {
 					hit = true;
 					break;
 				}
-				//std::cout << step <<"\n";
-			}*/
-		}		
+
+				for (PairPlayerUnit& playerUnit : players_) {
+					UnitPtr& unit = playerUnit.second;
+
+					// Not hitting itself? And target not dead? And bullet inside target?
+					if (shooter != unit && !unit->isDead() && unit->isInside(p.x_,p.y_)) {
+						unit->updateHealthPoint(-bullet.damage_);						
+						hit = true;
+						break;
+					}
+				}
+
+				if (hit) {
+					break;
+				}
+			}
+		}
+
+		taskManager_->add(new Shot(p.x_,p.y_,time_));
 	}	
 
 	bool ZombieGame::isVisible(UnitPtr unitToBeSeen, UnitPtr unitThatSees) const {

@@ -7,25 +7,16 @@
 
 namespace zombie {
 
-double calculateDifferenceBetweenAngles(double firstAngle, double secondAngle) {
-	double difference = firstAngle - secondAngle;
-	while (difference < -mw::PI) difference += 2*mw::PI;
-	while (difference > mw::PI) difference -= 2*mw::PI;
-	return difference;
-}
-
-double calculateAnglePointToPoint(double x, double y, double pX, double pY) {
-	return atan2(pY-y,pX-x);
-}
-
-void RemotePlayer::setInput(Input input) {
-	input_ = input;
-}
-
-	Input RemotePlayer::currentInput() {
-		return input_;
+	double calculateDifferenceBetweenAngles(double firstAngle, double secondAngle) {
+		double difference = firstAngle - secondAngle;
+		while (difference < -mw::PI) difference += 2*mw::PI;
+		while (difference > mw::PI) difference -= 2*mw::PI;
+		return difference;
 	}
 
+	double calculateAnglePointToPoint(double x, double y, double pX, double pY) {
+		return atan2(pY-y,pX-x);
+	}
 
 	AiBehavior::AiBehavior() {
 	}
@@ -43,16 +34,16 @@ void RemotePlayer::setInput(Input input) {
 		Input input;
 		int t = static_cast<int>(time);
 		input.forward_ = true;
-		
+
 		if ( fmod(t,timeBeforeInputChange_*2) == 0) {
 			input.forward_ = true;
 		} else if( fmod(t,timeBeforeInputChange_*2) == timeBeforeInputChange_) {
 			input.forward_ = false;
 			input.backward_ = true;
 		}
-		
+
 		return input;
-			
+
 	}
 
 
@@ -72,10 +63,10 @@ void RemotePlayer::setInput(Input input) {
 
 			double angle = calculateAnglePointToPoint(selfP.x_, selfP.y_, targetP.x_, targetP.y_);
 			double direction = unit->moveDirection();
-			
+
 			//std::cout<<"\n " << "Point2PointAngle " << angle;
 			//std::cout<<"direction: " << direction;
-			
+
 			if (angle - direction > 0.3) {              //LEFT
 				input.turnLeft_ = true;
 				input.turnRight_ = false;
@@ -96,7 +87,7 @@ void RemotePlayer::setInput(Input input) {
 			target_ = 0;
 			//input.forward_ = true;
 			if(randomWalk()) {
-				
+
 			}
 			input.turnRight_ = true;
 		}
@@ -104,7 +95,7 @@ void RemotePlayer::setInput(Input input) {
 	}
 
 	bool AgressiveZombieBehavior::setTarget(const std::vector<UnitPtr>& units) {
-		
+
 		double minimumDist = 99999999;
 		for (UnitPtr unit : units) {
 			// if unit is in range
@@ -144,10 +135,10 @@ void RemotePlayer::setInput(Input input) {
 
 	Input BoringZombieBehavior::calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) {
 		Input input;
-		
-		
+
+
 		input.forward_ = true;
-		
+
 		double d = fmod(time,3);
 		if(d<2) {
 			input.forward_ = true;
@@ -167,16 +158,11 @@ void RemotePlayer::setInput(Input input) {
 			input.turnRight_ = false;
 		}
 
-
-
 		return input;
-			
 	}
 
-
-
 	AiPlayer::AiPlayer(AiBehaviorPtr behavior) : behavior_(behavior) {	
-		
+
 	}	
 
 	AiPlayer::AiPlayer() {
@@ -192,4 +178,5 @@ void RemotePlayer::setInput(Input input) {
 	void AiPlayer::calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) {
 		input_ = behavior_->calculateInput(unit, units, time);
 	}
+
 } // namespace zombie.

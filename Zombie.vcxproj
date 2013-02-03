@@ -108,6 +108,9 @@
     <ClCompile Include="unit.cpp" />
     <ClCompile Include="zombiegame.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="buildings.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

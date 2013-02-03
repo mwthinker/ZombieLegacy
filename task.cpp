@@ -127,4 +127,25 @@ namespace zombie {
 		drawCircle(p[0],p[1],unit_->smallViewDistance(),20,false);
 	}
 
+	Shot::Shot(double x, double y, double currentTime) : Task (2) {
+		startTime_ = currentTime;
+		x_ = x;
+		y_ = y;
+		running_ = true;
+	}
+
+	void Shot::excecute(double time) {
+		if (time < startTime_ + 2) {
+			// Draw view sphere
+			glColor3d(1,0,0);
+			drawCircle(x_,y_,0.5,10,true);			
+		} else {
+			running_ = false;
+		}
+	}
+
+	bool Shot::isRunning() const {
+		return running_;
+	}
+
 } // Namespace zombie.

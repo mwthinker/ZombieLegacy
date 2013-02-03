@@ -21,10 +21,9 @@
 
 namespace zombie {
 
-typedef std::shared_ptr<Player> PlayerPtr;
 typedef std::shared_ptr<HumanPlayer> HumanPlayerPtr;
 typedef std::shared_ptr<AiPlayer> AiPlayerPtr;
-typedef std::shared_ptr<RemotePlayer> RemotePlayerPtr;
+typedef std::shared_ptr<Player> PlayerPtr;
 
 class ZombieGame {
 public:
@@ -43,12 +42,10 @@ public:
 
 	// Makes the game reacting on the evennt (windowEvent).
 	void eventUpdate(const SDL_Event& windowEvent);
-protected:
-	// Updates
-	void updateGameLogic(double time, double deltaTime);	
 
+protected:
 	// Add a human player (unitPtr) to the game.
-	void addHuman(UnitPtr unitPtr);
+	void addHuman(HumanPlayerPtr human, UnitPtr unitPtr);
 
 	// Add a new ai (unitPtr) to the game.
 	void addNewAi(UnitPtr unitPtr);
@@ -66,9 +63,8 @@ protected:
 
 	// Returns a vector of all units visible by the unit (unit).
 	std::vector<UnitPtr> calculateUnitsInView(const UnitPtr& unit);	
-	void calculateWeaponShooting();
 
-	void doShotDamage(UnitPtr shooter, Bullet properties);
+	void doShotDamage(UnitPtr shooter, const Bullet& properties);
 	bool isVisible(UnitPtr unitToBeSeen, UnitPtr unitThatSees) const;
 
 	double width_, height_; // The internal map size in the game.
@@ -85,15 +81,15 @@ protected:
 
 	typedef std::pair<HumanPlayerPtr,UnitPtr> PairHumanUnit;
 	typedef std::pair<AiPlayerPtr,UnitPtr> PairAiUnit;
+	typedef std::pair<PlayerPtr,UnitPtr> PairPlayerUnit;
 	
 	std::vector<PairHumanUnit> humanPlayers_;
 	std::vector<PairAiUnit> aiPlayers_;
-	PhysicalEngine* physicalEngine_;
+	std::vector<PairPlayerUnit> players_; // All units.
 	
-	std::map<int,UnitPtr> units_; // <object id, Unit> All units.
-	int localUnitId_; // Local 
-
-	std::vector<BuildingPtr> buildings_; // All buildings_.
+	PhysicalEngine* physicalEngine_;
+	std::vector<BuildingPtr> buildings_; // All buildings.
+	BuildingPtr worldBorder_;
 };
 
 } // namespace zombie
