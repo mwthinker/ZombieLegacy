@@ -35,11 +35,11 @@ namespace zombie {
 
 		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r));
 		humanPlayers_.push_back(PairHumanUnit(humanPlayer,UnitPtr()));
-		int a = 500;
-		int newTest = 2343;
 	}
 
     ZombieManager::~ZombieManager() {
+		delete physicalEngine_;
+		delete manager_;
 		delete manager_;
 	}
 
@@ -89,7 +89,7 @@ namespace zombie {
 			if (started_) {
 				double deltaTime = msDeltaTime/1000.0;
 
-				// Calculate all ai:s input.
+				// Calculate all local ai:s input.
 				for (auto& pair : aiPlayers_) {
 					AiPlayerPtr& aiPlayer = pair.first;					
 					UnitPtr& unit = pair.second;
@@ -118,6 +118,7 @@ namespace zombie {
 	}
 
 	void ZombieManager::graphicUpdate(Uint32 msDeltaTime) {
+		// Game is started?
 		if (started_) {
 			taskManager_->update(msDeltaTime/1000.0);
 		} else {
@@ -126,6 +127,7 @@ namespace zombie {
 	}
 
 	void ZombieManager::eventUpdate(const SDL_Event& windowEvent) {
+		// Game is started?
 		if (started_) {
 			// Update all human input.
 			for (auto& pair : humanPlayers_) {
