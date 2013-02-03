@@ -4,10 +4,6 @@
 #include "inputkeyboard.h"
 //#include "inputjoystick.h"
 
-#include "mw/localmanager.h"
-#include "mw/servermanager.h"
-#include "mw/clientmanager.h"
-
 #include "physicalengine.h"
 #include "unit.h"
 #include "building.h"
@@ -16,14 +12,11 @@
 #include "input.h"
 #include "task.h"
 
-#include "protocol.h"
-
 #include <SDL.h>
 #include <memory> //std::shared_ptr
 #include <vector>
-
 #include <string>
-#include <fstream>
+#include <map>
 
 namespace zombie {
 
@@ -32,10 +25,10 @@ typedef std::shared_ptr<HumanPlayer> HumanPlayerPtr;
 typedef std::shared_ptr<AiPlayer> AiPlayerPtr;
 typedef std::shared_ptr<RemotePlayer> RemotePlayerPtr;
 
-class ZombieManager {
+class ZombieGame {
 public:
-    ZombieManager();
-    ~ZombieManager();
+    ZombieGame();
+    ~ZombieGame();
     
 	// Starts the game. The connection need to be active else nothing happens.
 	void startGame();
@@ -51,10 +44,7 @@ public:
 	void eventUpdate(const SDL_Event& windowEvent);
 protected:
 	// Updates
-	virtual void updateGameLogic(double time, double deltaTime) = 0;
-
-	// Returns a vector of all units visible by the unit (unit).
-	virtual std::vector<UnitPtr> calculateUnitsInView(const UnitPtr& unit) = 0;
+	void updateGameLogic(double time, double deltaTime);	
 
 	// Add a human player (unitPtr) to the game.
 	void addHuman(UnitPtr unitPtr);
@@ -63,21 +53,22 @@ protected:
 	void addNewAi(UnitPtr unitPtr);
 	
 	void loadMap(std::string filename);
-		
-	PhysicalEngine* physicalEngine_;
+
+	// Returns the prefered game width in pixel size.
+	double getWidth() const;
 	
-	std::map<int,UnitPtr> units_; // <object id, Unit> All units.
-	int localUnitId_; // Local 
+	// Returns the prefered game height in pixel size.
+	double getHeight() const;
 
-	std::vector<BuildingPtr> buildings_; // All buildings_.
-
-
-	typedef std::pair<HumanPlayerPtr,UnitPtr> PairHumanUnit;
-	typedef std::pair<AiPlayerPtr,UnitPtr> PairAiUnit;
-
-private:	
 	// Inits the game.
 	void initGame();
+
+	// Returns a vector of all units visible by the unit (unit).
+	std::vector<UnitPtr> calculateUnitsInView(const UnitPtr& unit);	
+	void calculateWeaponShooting();
+
+	void doShotDamage(UnitPtr shooter, Bullet properties);
+	bool isVisible(UnitPtr unitToBeSeen, UnitPtr unitThatSees) const;
 
 	double width_, height_; // The internal map size in the game.
 	
@@ -90,26 +81,18 @@ private:
 	
 	// Last added unit id.
 	int unitId_;
+
+	typedef std::pair<HumanPlayerPtr,UnitPtr> PairHumanUnit;
+	typedef std::pair<AiPlayerPtr,UnitPtr> PairAiUnit;
 	
 	std::vector<PairHumanUnit> humanPlayers_;
 	std::vector<PairAiUnit> aiPlayers_;
-};
-
-class ZombieGame : public ZombieManager {
-public:
-	// Returns the prefered game width in pixel size.
-	double getWidth() const;
+	PhysicalEngine* physicalEngine_;
 	
-	// Returns the prefered game height in pixel size.
-	double getHeight() const;
-private:
-	void updateGameLogic(double time, double deltaTime);
+	std::map<int,UnitPtr> units_; // <object id, Unit> All units.
+	int localUnitId_; // Local 
 
-	std::vector<UnitPtr> calculateUnitsInView(const UnitPtr& unit);	
-	void calculateWeaponShooting();
-
-	void doShotDamage(UnitPtr shooter, Bullet properties);
-	bool isVisible(UnitPtr unitToBeSeen, UnitPtr unitThatSees) const;
+	std::vector<BuildingPtr> buildings_; // All buildings_.
 };
 
 } // namespace zombie

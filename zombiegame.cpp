@@ -1,9 +1,6 @@
-#include "inputkeyboard.h"
 #include "zombiegame.h"
 
-#include "mw/localmanager.h"
-#include "mw/servermanager.h"
-#include "mw/clientmanager.h"
+#include "inputkeyboard.h"
 
 #include "physicalengine.h"
 #include "unit.h"
@@ -12,8 +9,6 @@
 
 #include "input.h"
 #include "task.h"
-
-#include "protocol.h"
 
 #include <SDL.h>
 #include <memory> //std::shared_ptr
@@ -24,7 +19,7 @@
 
 namespace zombie {
 
-    ZombieManager::ZombieManager() {
+    ZombieGame::ZombieGame() {
 		taskManager_ = new TaskManager();
 		physicalEngine_ = new PhysicalEngine();
 		
@@ -38,17 +33,17 @@ namespace zombie {
 		initGame();
 	}
 
-    ZombieManager::~ZombieManager() {
+    ZombieGame::~ZombieGame() {
 		delete physicalEngine_;
 		delete taskManager_;
 	}
     
-	void ZombieManager::startGame() {
+	void ZombieGame::startGame() {
 		// Start game!
 		started_ = true;
 	}
 
-    void ZombieManager::physicUpdate(Uint32 msDeltaTime) {
+    void ZombieGame::physicUpdate(Uint32 msDeltaTime) {
 		if (started_) {
 			double deltaTime = msDeltaTime/1000.0;
 			
@@ -79,7 +74,7 @@ namespace zombie {
 		}
 	}
 
-	void ZombieManager::graphicUpdate(Uint32 msDeltaTime) {
+	void ZombieGame::graphicUpdate(Uint32 msDeltaTime) {
 		// Game is started?
 		if (started_) {
 			
@@ -89,7 +84,7 @@ namespace zombie {
 		}
 	}
 
-	void ZombieManager::eventUpdate(const SDL_Event& windowEvent) {
+	void ZombieGame::eventUpdate(const SDL_Event& windowEvent) {
 		// Game is started?
 		if (started_) {
 			// Update all human input.
@@ -100,7 +95,7 @@ namespace zombie {
 		}
 	}
 
-	void ZombieManager::addHuman(UnitPtr unitPtr) {
+	void ZombieGame::addHuman(UnitPtr unitPtr) {
 		taskManager_->add(new HumanAnimation(unitPtr));
 		physicalEngine_->add(unitPtr);
 		units_[unitPtr->id()] = unitPtr;
@@ -108,7 +103,7 @@ namespace zombie {
 		localUnitId_ = unitPtr->id();
 	}
 
-	void ZombieManager::addNewAi(UnitPtr unitPtr) {
+	void ZombieGame::addNewAi(UnitPtr unitPtr) {
 		taskManager_->add(new HumanAnimation(unitPtr));
 		physicalEngine_->add(unitPtr);
 		units_[unitPtr->id()] = unitPtr;
@@ -116,7 +111,7 @@ namespace zombie {
 		aiPlayers_.push_back(PairAiUnit(aiPlayer,unitPtr));
 	}	
 
-	void ZombieManager::loadMap(std::string filename) {
+	void ZombieGame::loadMap(std::string filename) {
 		std::fstream mapFile(filename.c_str(),std::fstream::in);
 		
 		if (mapFile.good()) {
@@ -144,7 +139,7 @@ namespace zombie {
 		mapFile.close();
 	}
 	
-	void ZombieManager::initGame() {
+	void ZombieGame::initGame() {
 		// Add human controlled by first input device.
 		UnitPtr human(new Unit(8,10,0.3,Weapon(35,0.5,8,12),false,++unitId_));		
 		addHuman(human);
