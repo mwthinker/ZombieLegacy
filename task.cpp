@@ -137,7 +137,7 @@ namespace zombie {
 	void Shot::excecute(double time) {
 		if (time < startTime_ + 2) {
 			// Draw view sphere
-			glColor3d(1,0,0);
+			glColor3d(0,1,0);
 			drawCircle(x_,y_,0.5,10,true);			
 		} else {
 			running_ = false;
@@ -147,5 +147,58 @@ namespace zombie {
 	bool Shot::isRunning() const {
 		return running_;
 	}
+
+	
+	Death::Death(double x, double y, double currentTime) : Task (2) {
+		startTime_ = currentTime;
+		x_ = x;
+		y_ = y;
+		running_ = true;
+	}
+
+	void Death::excecute(double time) {
+		if (time < startTime_ + 0.2) {
+			// Draw view sphere
+			glColor3d(1,0,0);
+			drawCircle(x_,y_,(time-startTime_)*5,10,true);			
+		} else {
+			running_ = false;
+		}
+	}
+
+	bool Death::isRunning() const {
+		return running_;
+	}
+
+	BloodSplash::BloodSplash(double x, double y, double currentTime) : Task (2) {
+		startTime_ = currentTime;
+		x_ = x;
+		y_ = y;
+		running_ = true;
+	}
+
+	void BloodSplash::excecute(double time) {
+		if (time < startTime_ + 0.1) {
+			// Draw view sphere
+			glColor3d(1,0,0);
+			drawCircle(x_,y_,(time-startTime_)*3.5,10,true);			
+		} else {
+			running_ = false;
+		}
+	}
+
+	bool BloodSplash::isRunning() const {
+		return running_;
+	}
+
+
+
+
+
+
+
+
+
+
 
 } // Namespace zombie.

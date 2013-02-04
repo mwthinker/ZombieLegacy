@@ -211,7 +211,12 @@ namespace zombie {
 
 					// Not hitting itself? And target not dead? And bullet inside target?
 					if (shooter != unit && !unit->isDead() && unit->isInside(p.x_,p.y_)) {
-						unit->updateHealthPoint(-bullet.damage_);						
+						unit->updateHealthPoint(-bullet.damage_);
+						if(unit->isDead()){
+							taskManager_->add(new Death(p.x_,p.y_,time_));
+						} else {
+							taskManager_->add(new BloodSplash(p.x_,p.y_,time_));
+						}
 						hit = true;
 						break;
 					}
@@ -223,7 +228,7 @@ namespace zombie {
 			}
 		}
 
-		taskManager_->add(new Shot(p.x_,p.y_,time_));
+		//taskManager_->add(new Shot(p.x_,p.y_,time_));
 	}	
 
 	bool ZombieGame::isVisible(UnitPtr unitToBeSeen, UnitPtr unitThatSees) const {

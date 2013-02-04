@@ -61,8 +61,7 @@ namespace zombie {
 		UnitPtr unit_;
 	};
 
-	class DeathAnimation : Task {	
-	};
+	
 
 	class Shot : public Task {
 	public:
@@ -75,6 +74,31 @@ namespace zombie {
 		double x_, y_;
 		bool running_;
 	};
+
+	class Death : public Task {
+	public:
+		Death(double x, double y, double currentTime);
+
+		void excecute(double time);
+		bool isRunning() const;
+	private:
+		double startTime_;
+		double x_, y_;
+		bool running_;
+	};
+
+	class BloodSplash : public Task {
+	public:
+		BloodSplash(double x, double y, double currentTime);
+
+		void excecute(double time);
+		bool isRunning() const;
+	private:
+		double startTime_;
+		double x_, y_;
+		bool running_;
+	};
+
 }
 
 #endif // TASK_H
