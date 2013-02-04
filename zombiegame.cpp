@@ -129,13 +129,23 @@ namespace zombie {
 					corners.push_back(p);
 				}
 			}
-			worldBorder_ = BuildingPtr(new Building(corners,++unitId_));
-			buildings_.push_back(worldBorder_);
+			BuildingPtr building = BuildingPtr(new Building(corners,++unitId_));
+			buildings_.push_back(building);
 
-			taskManager_->add(new DrawBuildning(worldBorder_));
-			physicalEngine_->add(worldBorder_);
+			taskManager_->add(new DrawBuildning(building));
+			physicalEngine_->add(building);
 			//std::cout << "A";
 		}
+		std::vector<Position> corners;
+		corners.push_back(Position(0,0));
+		corners.push_back(Position(0,width_));
+		corners.push_back(Position(height_,width_));
+		corners.push_back(Position(height_,0));
+		
+		worldBorder_ = BuildingPtr(new Building(corners,++unitId_));
+		taskManager_->add(new DrawBuildning(worldBorder_));
+		physicalEngine_->add(worldBorder_);
+		
 		mapFile.close();
 	}
 	
