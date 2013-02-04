@@ -25,7 +25,12 @@ public:
 private:
     // Override mw::GameWindow
     void graphicUpdate(Uint32 msDeltaTime) {
+		glPushMatrix();
+		//double scaledW = 1 / zombieGame_.getWidth();
+		//glScaled(scaledW * getWidth(), scaledW * getHeight(),1);
+		glScaled(1.5, 1.5, 1);
 		zombieGame_.graphicUpdate(msDeltaTime);
+		glPopMatrix();
     }
 
     // Override mw::GameWindow
