@@ -27,6 +27,9 @@ namespace zombie {
 		started_ = false;
 		time_ = 0.0;
 		unitId_ = 0;
+		timeToUpdateView_ = 0.25; // Seconds in which the view is assumed to be constant in order to 
+		                          // speed up calculations.
+		indexAiPlayer_ = 0;
 
 		initGame();
 	}
@@ -46,12 +49,24 @@ namespace zombie {
 		if (started_) {
 			double deltaTime = msDeltaTime/1000.0;
 			
+			// (deltaTime) must always be larger than (timeToUpdateView_).
+			int stopIndex = aiPlayers_.size() * (deltaTime/timeToUpdateView_);
+			// In case size has changed.
+			indexAiPlayer_ = indexAiPlayer_ % aiPlayers_.size();
+			// Update some of the ai:s view.
+			while (indexAiPlayer_ != stopIndex) {
+				AiPlayerPtr& aiPlayer = aiPlayers_[indexAiPlayer_].first;					
+				UnitPtr& unit = aiPlayers_[indexAiPlayer_].second;
+				std::vector<UnitPtr> unitsInView = calculateUnitsInView(unit);
+				//aiPlayer->updateUnitsInView(unitsInView);
+				indexAiPlayer_ = (indexAiPlayer_ + 1) % aiPlayers_.size();
+			}
+
 			// Calculate all local ai:s input.
 			for (auto& pair : aiPlayers_) {
 				AiPlayerPtr& aiPlayer = pair.first;					
 				UnitPtr& unit = pair.second;
-				std::vector<UnitPtr> unitsInView = calculateUnitsInView(unit);
-				aiPlayer->calculateInput(unit,unitsInView,time_);
+				aiPlayer->calculateInput(unit,time_);
 			}
 			
 			// Update shooting and reloading.
@@ -156,9 +171,9 @@ namespace zombie {
 		addHuman(humanPlayer,human);
 
 		// Add zombie with standard behavior.
-		for (int i = 8; i < 11; i++){
-			for(int j = 8; j < 11; j++) {				
-				UnitPtr zombie(new Unit(8+i,10+j,0.3*i+j,Weapon(35,0.5,8,12),false,++unitId_));				
+		for (int i = 1; i < 10; i++){
+			for(int j = 1; j < 10; j++) {
+				UnitPtr zombie(new Unit(8+i,10+j,0.3*i+j,Weapon(35,0.5,8,12),false,++unitId_));
 				addNewAi(zombie);
 			}
 		}

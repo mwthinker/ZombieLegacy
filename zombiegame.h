@@ -90,6 +90,9 @@ protected:
 	PhysicalEngine* physicalEngine_;
 	std::vector<BuildingPtr> buildings_; // All buildings.
 	BuildingPtr worldBorder_;
+
+	int indexAiPlayer_;
+	double timeToUpdateView_;
 };
 
 } // namespace zombie

@@ -29,7 +29,7 @@ public:
 
 	virtual ~AiBehavior();
 
-	virtual Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) = 0;
+	virtual Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) = 0;	
 private:
 
 };
@@ -38,8 +38,7 @@ class SimpleZombieBehavior : public AiBehavior {
 public:
 	SimpleZombieBehavior();
 
-	Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time);
-
+	Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time);	
 private: 
 	int timeBeforeInputChange_;
 	Input current_;
@@ -52,7 +51,7 @@ public:
 	BoringZombieBehavior();
 
 	Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time);
-
+	
 private: 
 	int timeBeforeInputChange_;
 	Input current_;
@@ -64,7 +63,7 @@ class AgressiveZombieBehavior : public AiBehavior {
 public:
 	AgressiveZombieBehavior();
 
-	Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time);
+	Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time);	
 
 	bool setTarget(const std::vector<UnitPtr>& units);
 
@@ -90,10 +89,12 @@ public:
 
 	Input currentInput();
 
-	void calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time);
+	void calculateInput(const UnitPtr& unit, double time);
+	void updateUnitsInView(const std::vector<UnitPtr>& units);
 
 	Input input_;
 	AiBehaviorPtr behavior_;
+	std::vector<UnitPtr> units_;
 };
 
 } // namespace zombie.

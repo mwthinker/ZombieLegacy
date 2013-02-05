@@ -175,8 +175,12 @@ namespace zombie {
 		return input_;
 	}
 
-	void AiPlayer::calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) {
-		input_ = behavior_->calculateInput(unit, units, time);
+	void AiPlayer::calculateInput(const UnitPtr& unit, double time) {
+		input_ = behavior_->calculateInput(unit, units_, time);
+	}
+
+	void AiPlayer::updateUnitsInView(const std::vector<UnitPtr>& units) {
+		units_ = units;
 	}
 
 } // namespace zombie.
