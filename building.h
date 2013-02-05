@@ -22,9 +22,11 @@ public:
 		corners_.push_back(position + Position(width,0));
 		corners_.push_back(position + Position(width,height));
 		corners_.push_back(position + Position(0,height));
+		init();
 	}
 
 	Building(const std::vector<Position>& corners, int id) : Object(id), corners_(corners) {
+		init();
 	}
 
 	Building(mw::Packet& packet) : Object(packet) {
@@ -37,6 +39,7 @@ public:
 				break;
 			}
 		}
+		init();
 	}
 
 	mw::Packet generatePacket() const {
@@ -66,7 +69,7 @@ public:
 
 	// Override member from class StaticPhysicalUnit
 	bool isInsideApproximate(double x, double y, double radius) const {
-		return true;
+		return (longestSide_ + radius)*(longestSide_ + radius) > (x - massCentre_.x_)*(y - massCentre_.y_);
 	}
 	
 	// Override member from class StaticPhysicalUnit
@@ -108,6 +111,7 @@ public:
 
 		return distance;
 	}
+
 	/*
 	bool popGameEvent(GameEvent*& gameEvent) {
 		return false;
@@ -124,8 +128,32 @@ public:
 	bool isDead() const {
 		return false;
 	}
+
 protected:
+	void init() {
+		massCentre_ = calculateMassCenter();
+
+		double longestDiff = 0;
+		for (Position p : corners_) {			
+			double tmp = (massCentre_ - p).magnitude();
+			if (tmp > longestDiff) {
+				longestDiff = tmp;
+			}
+		}
+		longestSide_ = longestDiff;
+	}
+
+	Position calculateMassCenter() const {
+		Position centre_;
+		for (Position p : corners_) {
+			centre_ += p;
+		}
+		return centre_;
+	}
+
 	std::vector<Position> corners_;	
+	double longestSide_;
+	Position massCentre_;
 
 private:
 	bool isPointInPolygon(double x, double y) const {

@@ -70,8 +70,10 @@ public:
 
 	/* Simulates the physics for all units. The physics is simulated one time step. */
 	void update(double timeStep) {
+		
 		for (PhUnitList::iterator it1 = units_.begin(); it1 != units_.end(); ++it1) {			
-			PhUnit& u1 = *it1;			
+			PhUnit& u1 = *it1;
+			
 			for (PhUnitList::iterator it2 = units_.begin(); it2 != units_.end(); ++it2) {
 				PhUnit& u2 = *it2;
 				if (u1.first != u2.first && inside(u1.first,u2.first)) {
@@ -86,7 +88,8 @@ public:
 					addForceDueToCollision(u1,staticUnit);
 				}
 			}
-		}		
+		}
+		
 		
 		for (PhUnitList::iterator it = units_.begin(); it != units_.end(); ++it) {
 			PhUnit& unit = *it;
