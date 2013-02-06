@@ -50,7 +50,7 @@ namespace zombie {
 			double deltaTime = msDeltaTime/1000.0;
 			
 			// (deltaTime) must always be larger than (timeToUpdateView_).
-			int stopIndex = aiPlayers_.size() * (deltaTime/timeToUpdateView_);
+			int stopIndex = (int) (aiPlayers_.size() * (deltaTime/timeToUpdateView_));
 			// In case size has changed.
 			indexAiPlayer_ = indexAiPlayer_ % aiPlayers_.size();
 			// Update some of the ai:s view.
@@ -171,8 +171,8 @@ namespace zombie {
 		addHuman(humanPlayer,human);
 
 		// Add zombie with standard behavior.
-		for (int i = 1; i < 10; i++){
-			for(int j = 1; j < 10; j++) {
+		for (int i = 5; i < 15; i++){
+			for(int j = 5; j < 10; j++) {
 				UnitPtr zombie(new Unit(8+i,10+j,0.3*i+j,Weapon(35,0.5,8,12),false,++unitId_));
 				addNewAi(zombie);
 			}

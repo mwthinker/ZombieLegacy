@@ -99,8 +99,13 @@ public:
 
 		for (PhUnitList::iterator it = units_.begin(); it != units_.end(); ++it) {
 			PhUnit& unit = *it;
-			updateUnit(unit,timeStep);
+			updateUnit(unit,timeStep);			
 		}
+			
+		// Remove all dead units.
+		units_.remove_if([] (const PhUnit& phUnit) {
+			return phUnit.first->toRemove();
+		});
 	}
 	
 private:	
