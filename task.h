@@ -61,6 +61,19 @@ namespace zombie {
 		UnitPtr unit_;
 	};
 
+	class ZombieAnimation : public Task {
+	public:
+		ZombieAnimation(const UnitPtr& unit);
+
+		void excecute(double time);
+		
+		bool isRunning() const;
+
+	private:
+		void draw(double timestep);
+
+		UnitPtr unit_;
+	};
 	
 
 	class Shot : public Task {

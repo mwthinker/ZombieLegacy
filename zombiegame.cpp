@@ -119,7 +119,7 @@ namespace zombie {
 	}
 
 	void ZombieGame::addNewAi(UnitPtr unitPtr) {
-		taskManager_->add(new HumanAnimation(unitPtr));
+		taskManager_->add(new ZombieAnimation(unitPtr));
 		physicalEngine_->add(unitPtr);
 		AiPlayerPtr aiPlayer(new AiPlayer());
 		aiPlayers_.push_back(PairAiUnit(aiPlayer,unitPtr));
