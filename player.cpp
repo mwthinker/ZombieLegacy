@@ -54,7 +54,9 @@ namespace zombie {
 		Input input;
 		//input.forward_ = true;
 		// is there a  valid target? OR is there a new target available?
+		
 		if ((targetLocked() && validateTarget()) || setTarget(units)) {
+			
 			// Create input ******************
 			// Turn to right angle
 			calculateDifferenceBetweenAngles(10,15);
@@ -83,25 +85,47 @@ namespace zombie {
 
 			// Attack - implement later
 		} else {
-			// No targets available - do random walk
-			target_ = 0;
-			//input.forward_ = true;
-			if(randomWalk()) {
+			//Input input;
+		double r = rand() % 100 / 100.0;
+		//std::cout<<"  "<<r<<"  ";
 
-			}
-			input.turnRight_ = true;
+		input.forward_ = true;
+
+		double d = fmod(time,3);
+		if(d<2) {
+			input.forward_ = true;
+			input.turnLeft_ = false;
+			input.turnRight_ = false;
+		} else if (d<2.1) {
+			input.forward_ = false;
+			input.turnLeft_ = true;
+			input.turnRight_ = false;
+		} else if (d<2.15) {
+			input.forward_ = false;
+			input.turnLeft_ = false;
+			input.turnRight_ = false;
+		} else {
+			input.forward_ = true;
+			input.turnLeft_ = false;
+			input.turnRight_ = false;
+		}
+
+		return input;
 		}
 		return input;			
 	}
 
 	bool AgressiveZombieBehavior::setTarget(const std::vector<UnitPtr>& units) {
-
+		
 		double minimumDist = 99999999;
 		for (UnitPtr unit : units) {
 			// if unit is in range
 			// if unit is infected
+			std::cout<<"UNITS VECTOR APEAR EMPTY!";
 			if(!unit->isInfected()) { 
 				target_ = unit;
+				
+				
 				return true;
 			}
 			return false;
@@ -135,7 +159,8 @@ namespace zombie {
 
 	Input BoringZombieBehavior::calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) {
 		Input input;
-
+		double r = rand() % 100 / 100.0;
+		//std::cout<<"  "<<r<<"  ";
 
 		input.forward_ = true;
 
@@ -148,7 +173,7 @@ namespace zombie {
 			input.forward_ = false;
 			input.turnLeft_ = true;
 			input.turnRight_ = false;
-		} else if (d<2.4) {
+		} else if (d<2.15) {
 			input.forward_ = false;
 			input.turnLeft_ = false;
 			input.turnRight_ = false;
@@ -167,8 +192,8 @@ namespace zombie {
 
 	AiPlayer::AiPlayer() {
 		//behavior_ = AiBehaviorPtr(new SimpleZombieBehavior());
-		//behavior_ = AiBehaviorPtr(new AgressiveZombieBehavior());
-		behavior_ = AiBehaviorPtr(new BoringZombieBehavior());
+		behavior_ = AiBehaviorPtr(new AgressiveZombieBehavior());
+		//behavior_ = AiBehaviorPtr(new BoringZombieBehavior());
 	}	
 
 	Input AiPlayer::currentInput() {
