@@ -44,7 +44,6 @@ namespace zombie {
 		void draw();
 
 		BuildingPtr buildning_;
-
 	};
 
 	class HumanAnimation : public Task {

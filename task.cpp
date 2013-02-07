@@ -35,7 +35,6 @@ namespace zombie {
 		tasks_.push(task);
 	}
 
-
 	void drawCircle(double cx, double cy, double r, int num_segments, bool filled) {
 		double theta = 2 * 3.1415926 / double(num_segments);
 		double c = std::cos(theta);
