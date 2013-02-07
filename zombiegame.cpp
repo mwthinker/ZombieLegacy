@@ -50,16 +50,14 @@ namespace zombie {
 			double deltaTime = msDeltaTime/1000.0;
 			
 			// (deltaTime) must always be larger than (timeToUpdateView_).
-			int stopIndex = (int) (aiPlayers_.size() * (deltaTime/timeToUpdateView_));
-			// In case size has changed.
-			indexAiPlayer_ = indexAiPlayer_ % aiPlayers_.size();
+			int nbrOfUnitsToUpdateViewOn = (int) (aiPlayers_.size() * (deltaTime/timeToUpdateView_));
 			// Update some of the ai:s view.
-			while (indexAiPlayer_ != stopIndex) {
+			for (int i = 0; i < nbrOfUnitsToUpdateViewOn; ++i) {
+				indexAiPlayer_ = (indexAiPlayer_ + 1) % aiPlayers_.size();
 				AiPlayerPtr& aiPlayer = aiPlayers_[indexAiPlayer_].first;					
 				UnitPtr& unit = aiPlayers_[indexAiPlayer_].second;
 				std::vector<UnitPtr> unitsInView = calculateUnitsInView(unit);
-				//aiPlayer->updateUnitsInView(unitsInView);
-				indexAiPlayer_ = (indexAiPlayer_ + 1) % aiPlayers_.size();
+				aiPlayer->updateUnitsInView(unitsInView);				
 			}
 
 			// Calculate all local ai:s input.
