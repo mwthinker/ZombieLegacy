@@ -77,11 +77,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="aiunitmanager.h" />
+    <ClInclude Include="aibehavior.h" />
     <ClInclude Include="building.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="inputkeyboard.h" />
-    <ClInclude Include="localplayer.h" />
+    <ClInclude Include="humanplayer.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="pathfinder.h" />
     <ClInclude Include="physicalengine.h" />
@@ -98,6 +98,7 @@
     <ClInclude Include="zombiewindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="aibehavior.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="physicalunit.cpp" />

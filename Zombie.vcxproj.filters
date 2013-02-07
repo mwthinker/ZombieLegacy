@@ -51,9 +51,6 @@
     <ClInclude Include="physicalunitinterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="aiunitmanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -66,10 +63,13 @@
     <ClInclude Include="bullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="localplayer.h">
+    <ClInclude Include="taskmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="taskmanager.h">
+    <ClInclude Include="humanplayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="aibehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -99,6 +99,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="taskmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="aibehavior.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

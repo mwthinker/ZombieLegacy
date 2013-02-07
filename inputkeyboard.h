@@ -1,7 +1,7 @@
 #ifndef INPUTKEYBOARD_H
 #define INPUTKEYBOARD_H
 
-#include "player.h"
+#include "humanplayer.h"
 
 namespace zombie {
 
