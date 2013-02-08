@@ -1,7 +1,7 @@
 #ifndef TASKMANAGER_H
 #define TASKMANAGER_H
 
-#include <vector>
+#include <list>
 
 namespace zombie {
 
@@ -15,7 +15,7 @@ namespace zombie {
 		void add(Task* task);
 		void update(double deltaTime);
 	private:
-		std::vector<Task*> tasks_;
+		std::list<Task*> tasks_;
 		double time_;
 	};
 

@@ -3,83 +3,19 @@
 
 #include "input.h"
 #include "unit.h"
+#include "aibehavior.h"
 
 #include <cmath>
 #include <SDL.h>
 
 namespace zombie {
 
-double calculateDifferenceBetweenAngles(double firstAngle, double secondAngle);
-
-double calculateAnglePointToPoint(double x, double y, double pX, double pY);
-
 class Player {
 public:
+	virtual ~Player() {
+	}
 	virtual Input currentInput() = 0;
 };
-
-class HumanPlayer : public Player {
-public:
-	virtual void eventUpdate(const SDL_Event& windowEvent) = 0;
-};
-
-class AiBehavior {
-public:
-	AiBehavior();
-
-	virtual ~AiBehavior();
-
-	virtual Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) = 0;	
-private:
-
-};
-
-class SimpleZombieBehavior : public AiBehavior {
-public:
-	SimpleZombieBehavior();
-
-	Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time);	
-private: 
-	int timeBeforeInputChange_;
-	Input current_;
-	double time_;
-
-};
-
-class BoringZombieBehavior : public AiBehavior {
-public:
-	BoringZombieBehavior();
-
-	Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time);
-	
-private: 
-	int timeBeforeInputChange_;
-	Input current_;
-	double time_;
-
-};
-
-class AgressiveZombieBehavior : public AiBehavior {
-public:
-	AgressiveZombieBehavior();
-
-	Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time);	
-
-	bool setTarget(const std::vector<UnitPtr>& units);
-
-	bool validateTarget();
-
-	bool targetLocked();
-
-	bool randomWalk();
-private: 
-	int timeBeforeInputChange_;
-	UnitPtr target_;
-	Input current_;
-	double time_;
-
-};
-typedef std::shared_ptr<AiBehavior> AiBehaviorPtr;
 
 class AiPlayer : public Player {
 public:

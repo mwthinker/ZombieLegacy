@@ -44,7 +44,6 @@ namespace zombie {
 		void draw();
 
 		BuildingPtr buildning_;
-
 	};
 
 	class HumanAnimation : public Task {
@@ -112,6 +111,20 @@ namespace zombie {
 		bool running_;
 	};
 
+	class HumanAnimation3D : public Task {
+	public:
+		HumanAnimation3D(const UnitPtr& unit);
+
+		void excecute(double time);
+		
+		bool isRunning() const;
+
+	private:
+		void draw(double timestep);
+
+		UnitPtr unit_;
+		double lastTime_;
+	};
 }
 
 #endif // TASK_H

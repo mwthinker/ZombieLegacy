@@ -26,11 +26,22 @@ void TaskManager::update(double deltaTime) {
 		if (task->isRunning()) {
 			task->excecute(time_);
 			Task* newTask = task->pull();
-			if (task != 0) {
-				// Add task task list.
+			if (newTask != 0) {
+				// Add task to list.
+				tasks_.push_back(newTask);
 			}
-		} else {
-			// remove task.
 		}
 	}
+
+	// Remove dead tasks.
+	tasks_.remove_if([] (Task* task) {
+		// Is active?
+		if (task->isRunning()) {			
+			return false;
+		}
+
+		// Not active, delete and remove!
+		delete task;
+		return true;
+	});
 }

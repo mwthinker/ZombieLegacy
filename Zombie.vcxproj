@@ -77,11 +77,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="aiunitmanager.h" />
+    <ClInclude Include="aibehavior.h" />
     <ClInclude Include="building.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="inputkeyboard.h" />
-    <ClInclude Include="localplayer.h" />
+    <ClInclude Include="humanplayer.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="pathfinder.h" />
     <ClInclude Include="physicalengine.h" />
@@ -94,10 +94,12 @@
     <ClInclude Include="taskmanager.h" />
     <ClInclude Include="unit.h" />
     <ClInclude Include="weapon.h" />
+    <ClInclude Include="zombiebehavior.h" />
     <ClInclude Include="zombiegame.h" />
     <ClInclude Include="zombiewindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="aibehavior.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="physicalunit.cpp" />
@@ -106,10 +108,12 @@
     <ClCompile Include="task.cpp" />
     <ClCompile Include="taskmanager.cpp" />
     <ClCompile Include="unit.cpp" />
+    <ClCompile Include="zombiebehavior.cpp" />
     <ClCompile Include="zombiegame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="buildings.txt" />
+    <Text Include="todo.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
