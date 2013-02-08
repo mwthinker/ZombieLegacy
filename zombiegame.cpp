@@ -47,6 +47,7 @@ namespace zombie {
     void ZombieGame::physicUpdate(Uint32 msDeltaTime) {
 		// Game is started?
 		if (started_) {
+			
 			double deltaTime = msDeltaTime/1000.0;
 			
 			// (deltaTime) must always be larger than (timeToUpdateView_).
@@ -58,7 +59,8 @@ namespace zombie {
 				AiPlayerPtr& aiPlayer = aiPlayers_[indexAiPlayer_].first;					
 				UnitPtr& unit = aiPlayers_[indexAiPlayer_].second;
 				std::vector<UnitPtr> unitsInView = calculateUnitsInView(unit);
-				//aiPlayer->updateUnitsInView(unitsInView);
+				std::cout << " unitsInview:" << unitsInView.size();
+				aiPlayer->updateUnitsInView(unitsInView);
 				indexAiPlayer_ = (indexAiPlayer_ + 1) % aiPlayers_.size();
 			}
 

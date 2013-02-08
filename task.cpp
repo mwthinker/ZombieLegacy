@@ -124,6 +124,7 @@ namespace zombie {
 		glVertex2d(p[0]+0.1*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]+0.1*std::sin(unit_->moveDirection())*unit_->viewDistance());		
 		
 		glEnd();
+		
 		/*
 		// Draw small view sphere
 		drawCircle(p[0],p[1],unit_->smallViewDistance(),20,false);
