@@ -98,6 +98,8 @@ protected:
 
 	int indexAiPlayer_;
 	double timeToUpdateView_;
+
+	Position viewPosition_;
 };
 
 } // namespace zombie

@@ -92,12 +92,23 @@ namespace zombie {
 	}
 
 	void ZombieGame::graphicUpdate(Uint32 msDeltaTime) {
+		// Draw map centered around first humna player.
+		UnitPtr unit = humanPlayers_[0].second;
+		
+		glPushMatrix();
+		Position p = unit->getPosition();		
+		
+		viewPosition_ += (unit->getPosition() - viewPosition_) * msDeltaTime * 0.0001;
+		
+		glTranslated(-viewPosition_.x_+getWidth()*0.5,-viewPosition_.y_+getHeight()*0.5,0.0);
+
 		// Game is started?
 		if (started_) {			
 			taskManager_->update(msDeltaTime/1000.0);
 		} else {
 			taskManager_->update(0.0);
 		}
+		glPopMatrix();
 	}
 
 	void ZombieGame::eventUpdate(const SDL_Event& windowEvent) {
@@ -257,11 +268,11 @@ namespace zombie {
 	// ZombieGame
 
 	double ZombieGame::getWidth() const {
-		return 400.0;
+		return humanPlayers_[0].second->viewDistance()*3.2;
 	}
 
 	double ZombieGame::getHeight() const {
-		return 400.0;
+		return humanPlayers_[0].second->viewDistance()*3.2;
 	}
 	
 	std::vector<UnitPtr> ZombieGame::calculateUnitsInView(const UnitPtr& unit) {

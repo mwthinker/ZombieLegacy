@@ -26,9 +26,9 @@ private:
     // Override mw::GameWindow
     void graphicUpdate(Uint32 msDeltaTime) {
 		glPushMatrix();
-		//double scaledW = 1 / zombieGame_.getWidth();
-		//glScaled(scaledW * getWidth(), scaledW * getHeight(),1);
-		glScaled(1.5, 1.5, 1);
+		double scaledW = getWidth() / zombieGame_.getWidth();
+		glScaled(scaledW, scaledW,1);
+		//glScaled(1.5, 1.5, 1);
 		zombieGame_.graphicUpdate(msDeltaTime);
 		glPopMatrix();
     }
@@ -86,7 +86,7 @@ private:
         int h = getHeight();
 
         glViewport(0,0,w,h);
-        glOrtho(0,50,0,50,-1,1);
+        glOrtho(0,w,0,h,-1,1);
         std::cout << "\nreshapeWindowsOpenGL" << std::endl;
 
         glMatrixMode(GL_MODELVIEW);
