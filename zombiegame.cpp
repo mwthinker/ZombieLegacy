@@ -170,8 +170,8 @@ namespace zombie {
 		addHuman(humanPlayer,human);
 
 		// Add zombie with standard behavior.
-		for (int i = 5; i < 15; i++){
-			for(int j = 5; j < 10; j++) {
+		for (int i = 8; i < 13; i++){
+			for(int j = 8; j < 13; j++) {
 				UnitPtr zombie(new Unit(8+i,10+j,0.3*i+j,Weapon(35,0.5,8,12),true,++unitId_));
 				addNewAi(zombie);
 			}

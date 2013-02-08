@@ -70,9 +70,9 @@ namespace zombie {
 
 		// Move forward or backwards.
 		if (input.forward_ && !input.backward_) {
-			addForce(Vec3(std::cos(angle),std::sin(angle))*40);
+			addForce(Vec3(std::cos(angle),std::sin(angle))*10);
 		} else if (!input.forward_ && input.backward_) {
-			addForce(-Vec3(std::cos(angle),std::sin(angle))*40);
+			addForce(-Vec3(std::cos(angle),std::sin(angle))*10);
 		} else {
 			// In order to make the unit stop when not moving.
 			addForce(-getVelocity());
