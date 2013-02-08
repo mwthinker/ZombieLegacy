@@ -57,7 +57,7 @@ namespace zombie {
 				AiPlayerPtr& aiPlayer = aiPlayers_[indexAiPlayer_].first;					
 				UnitPtr& unit = aiPlayers_[indexAiPlayer_].second;
 				std::vector<UnitPtr> unitsInView = calculateUnitsInView(unit);
-				aiPlayer->updateUnitsInView(unitsInView);				
+				aiPlayer->updateUnitsInView(unitsInView);
 			}
 
 			// Calculate all local ai:s input.
@@ -171,7 +171,7 @@ namespace zombie {
 		// Add zombie with standard behavior.
 		for (int i = 5; i < 15; i++){
 			for(int j = 5; j < 10; j++) {
-				UnitPtr zombie(new Unit(8+i,10+j,0.3*i+j,Weapon(35,0.5,8,12),false,++unitId_));
+				UnitPtr zombie(new Unit(8+i,10+j,0.3*i+j,Weapon(35,0.5,8,12),true,++unitId_));
 				addNewAi(zombie);
 			}
 		}
@@ -194,7 +194,7 @@ namespace zombie {
 		for (auto& pair: players_) {
 			UnitPtr& distantUnit = pair.second;
 			Position p = distantUnit->getPosition();
-			if (unit->isPointViewable(p.x_,p.y_) && isVisible(distantUnit,unit)) {
+			if (unit != distantUnit && unit->isPointViewable(p.x_,p.y_) && isVisible(distantUnit,unit)) {
 				unitsInView.push_back(distantUnit);
 			}
 		}
@@ -247,7 +247,7 @@ namespace zombie {
 	bool ZombieGame::isVisible(UnitPtr unitToBeSeen, UnitPtr unitThatSees) const {
 		Position dr = unitToBeSeen->getPosition() - unitThatSees->getPosition();
 		double length = dr.magnitude();
-		double stepLength = 0.1;
+		double stepLength = 1;
 		double step = 0.0;
 		dr = dr.normalize();
 		

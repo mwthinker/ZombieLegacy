@@ -1,6 +1,7 @@
 #include "player.h"
 #include "input.h"
 #include "unit.h"
+#include "zombiebehavior.h"
 
 #include <cmath>
 #include <SDL.h>
@@ -12,8 +13,9 @@ namespace zombie {
 
 	AiPlayer::AiPlayer() {
 		//behavior_ = AiBehaviorPtr(new SimpleZombieBehavior());
-		behavior_ = AiBehaviorPtr(new AgressiveZombieBehavior());
+		//behavior_ = AiBehaviorPtr(new AgressiveZombieBehavior());
 		//behavior_ = AiBehaviorPtr(new BoringZombieBehavior());
+		behavior_ = AiBehaviorPtr(new ZombieBehavior());
 	}
 
 	Input AiPlayer::currentInput() {

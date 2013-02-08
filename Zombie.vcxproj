@@ -94,6 +94,7 @@
     <ClInclude Include="taskmanager.h" />
     <ClInclude Include="unit.h" />
     <ClInclude Include="weapon.h" />
+    <ClInclude Include="zombiebehavior.h" />
     <ClInclude Include="zombiegame.h" />
     <ClInclude Include="zombiewindow.h" />
   </ItemGroup>
@@ -107,6 +108,7 @@
     <ClCompile Include="task.cpp" />
     <ClCompile Include="taskmanager.cpp" />
     <ClCompile Include="unit.cpp" />
+    <ClCompile Include="zombiebehavior.cpp" />
     <ClCompile Include="zombiegame.cpp" />
   </ItemGroup>
   <ItemGroup>
