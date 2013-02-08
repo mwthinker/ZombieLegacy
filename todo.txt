@@ -1,1 +1,22 @@
 Things to do!
+
+
+
+
+
+
+Större karta
+Origo är 0.0
+1km->1000,1000
+Lägg in byggnadsborder med hörn 0,0->1000,1000
+
+Hur ska kartan följa spelaren
+
+Spawnings system för zombies
+
+Texter
+
+Units olika egenskaper i fysikmotorn
+
+Ljud(Skjut, Död, Reload)
+

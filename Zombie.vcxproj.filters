@@ -119,4 +119,9 @@
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="byggnader.mif">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

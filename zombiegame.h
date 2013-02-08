@@ -58,6 +58,11 @@ protected:
 	
 	void loadMap(std::string filename);
 
+	void loadMapInfo(std::string filename);
+
+	// sets the most south west building in "origo"
+	void normalizeBuildings();
+	
 	// Inits the game.
 	void initGame();
 

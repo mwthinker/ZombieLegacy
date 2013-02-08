@@ -163,7 +163,79 @@ namespace zombie {
 		
 		mapFile.close();
 	}
+
+	void ZombieGame::loadMapInfo(std::string filename) {
+		std::fstream mapFile(filename.c_str(),std::fstream::in);
+		double minX = 99999999999999;
+		double maxX = -99999999999999;
+		double minY = 99999999999999;
+		double maxY = -99999999999999;
+
+		if (mapFile.good()) {
+			//mapFile >> width_ >> height_;
+		}
+		std::vector< std::vector<Position> > allCorners;
+		while (mapFile.good()) {
+			//while (mapFile.good()) {
+			std::string line;
+			getline (mapFile,line);
+			if(line == "REGION 1") {
+				std::vector<Position> corners;
+				// Extract all points
+				int nbrLines;
+				mapFile >> nbrLines;	
+				//std::cout<<"REGION " << nbrLines;
+				for (int i=1; i <= nbrLines; i++) {
+					Position p;
+					mapFile >> p.x_ >> p.y_;
+					if (p.x_ < minX) {
+						minX = p.x_;
+					}
+					if (p.x_ > maxX) {
+						maxX = p.x_;
+					}
+					if (p.y_ < minY) {
+						minY = p.y_;
+					}
+					if (p.y_ > maxY) {
+						maxY = p.y_;
+					}
+					corners.push_back(p);
+				}
+				allCorners.push_back(corners);					
+			}
+		}
+
+		// GET WORLD SIZE
+			height_ = maxX - minX;
+			width_ = maxY - minY;
+			
+		for (std::vector<Position> corners : allCorners) {			
+			BuildingPtr building = BuildingPtr(new Building(corners,++unitId_));
+			buildings_.push_back(building);
+			taskManager_->add(new DrawBuildning(building));
+			physicalEngine_->add(building);
+		}
+		
+		std::vector<Position> corners;
+		corners.push_back(Position(minX,minY));
+		corners.push_back(Position(maxX,minY));
+		corners.push_back(Position(maxX,maxY));
+		corners.push_back(Position(minX,maxY));
+		
+		worldBorder_ = BuildingPtr(new Building(corners,++unitId_));
+		taskManager_->add(new DrawBuildning(worldBorder_));
+		physicalEngine_->add(worldBorder_);
+		
+		mapFile.close();
+	}
 	
+	void ZombieGame::normalizeBuildings() {
+		for (BuildingPtr building : buildings_) {
+
+		}
+	}
+
 	void ZombieGame::initGame() {
 		// Add human controlled by first input device.
 		UnitPtr human(new Unit(2,2,0.3,Weapon(35,0.5,8,12),false,++unitId_));
@@ -179,6 +251,7 @@ namespace zombie {
 		}
 
 		loadMap("buildings.txt");
+		//loadMapInfo("buildings_subset.mif");
 	}
 
 	// ZombieGame
