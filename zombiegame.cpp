@@ -23,6 +23,7 @@ namespace zombie {
     ZombieGame::ZombieGame() {
 		taskManager_ = new TaskManager();
 		physicalEngine_ = new PhysicalEngine();
+		std::cout << "tjoho!";
 		
 		started_ = false;
 		time_ = 0.0;
