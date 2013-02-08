@@ -123,7 +123,7 @@ namespace zombie {
 		}
 
 		void addFriction(PhUnit& u) {
-			double c = 0.10;
+			double c = 0.1;
 			Vec3 velocity = u.first->getVelocity();
 			if (velocity.magnitude() > 0.0001) {
 				Vec3 force = -c * u.first->mass()*velocity.normalize();

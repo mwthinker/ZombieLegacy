@@ -261,8 +261,8 @@ namespace zombie {
 			}
 		}
 
-		loadMap("buildings.txt");
-		//loadMapInfo("buildings_subset.mif");
+		//loadMap("buildings.txt");
+		loadMapInfo("buildings_subset.mif");
 	}
 
 	// ZombieGame
