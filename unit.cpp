@@ -70,9 +70,9 @@ namespace zombie {
 
 		// Move forward or backwards.
 		if (input.forward_ && !input.backward_) {
-			addForce(Vec3(std::cos(angle),std::sin(angle))*10);
+			addForce(Vec3(std::cos(angle),std::sin(angle))*15);
 		} else if (!input.forward_ && input.backward_) {
-			addForce(-Vec3(std::cos(angle),std::sin(angle))*10);
+			addForce(-Vec3(std::cos(angle),std::sin(angle))*15);
 		} else {
 			// In order to make the unit stop when not moving.
 			addForce(-getVelocity());
@@ -136,12 +136,15 @@ namespace zombie {
 		return (x - p.x_)*(x - p.x_) + (y - p.y_)*(y - p.y_) < radius()*radius();
 	}
 
+	bool Unit::isInsideSmalViewDistance(double x, double y) const {
+		Position p = Position(x,y) - getPosition();
+		return p.magnitudeSquared() < smallViewDistance_*smallViewDistance_;
+	}
+
 	bool Unit::isPointViewable(double x, double y) {
 		Position p = Position(x,y) - getPosition();
 		double angle = std::atan2(p.y_, p.x_);
-
-		return p.magnitudeSquared() < smallViewDistance()*smallViewDistance() ||
-			calculateDifferenceBetweenAngles(angle,angle_ + viewAngle() * 0.5) < 0 
+		return calculateDifferenceBetweenAngles(angle,angle_ + viewAngle() * 0.5) < 0 
 			&& calculateDifferenceBetweenAngles(angle,angle_ - viewAngle() * 0.5) > 0
 			&& p.magnitudeSquared() < viewDistance() * viewDistance();
 	}

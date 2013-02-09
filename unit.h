@@ -45,8 +45,12 @@ public:
 	// Return the current view direction, i.e. the unit's orientation.
 	double viewAngle() const;
 
-	// Return true if the point (x, y) is inside the unit.
+	// Return true if the point (x, y) is inside the unit.	
 	bool isInside(double x, double y) const;
+
+	// Return true if the point (x, y) is inside the units small view distance,
+	// where all things are being visible.
+	bool isInsideSmalViewDistance(double x, double y) const;
 
 	// Return true if the point is viewable by the unit, else fals.
 	bool isPointViewable(double x, double y);

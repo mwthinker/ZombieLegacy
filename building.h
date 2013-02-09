@@ -74,7 +74,7 @@ public:
 	
 	// Override member from class StaticPhysicalUnit
 	double stiffness() const {
-		return 100.0;
+		return 150.0;
 	}
 	
 	// Override member from class StaticPhysicalUnit
@@ -129,6 +129,9 @@ public:
 		return false;
 	}
 
+	Position getMassCentre() const {
+		return massCentre_;
+	}
 protected:
 	void init() {
 		massCentre_ = calculateMassCenter();

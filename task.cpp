@@ -75,19 +75,16 @@ namespace zombie {
 
 	//private
 	void DrawBuildning::draw() {
-		glColor3d(1,1,1);
-		//glPolygonMode(GL_FRONT, GL_FILL);
-		glBegin(GL_LINES);
-
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);		
+		glColor3d(0.1,0.9,0.4);
+		glBegin(GL_LINE_LOOP);
 		const auto& corners = buildning_->getCorners();
-		int size = corners.size();
-		for (int i = 0; i < size + 1; ++i) {
-			Position p1 = corners[i % size];			
-			Position p2 = corners[(i+1) % size];
-			glVertex2d(p1[0],p1[1]);
-			glVertex2d(p2[0],p2[1]);
+		for (const Position& p : corners) {
+			glVertex2d(p.x_,p.y_);
 		}		
 		glEnd();		
+		glDisable(GL_BLEND);
 	}
 
 	HumanAnimation::HumanAnimation(const UnitPtr& unit) : Task (1) {
@@ -105,19 +102,15 @@ namespace zombie {
 	// private
 	void HumanAnimation::draw(double timestep) {
 		Position p = unit_->getPosition();
-		glColor3d(1,1,1);
+		glColor3d(0.7,1,0.7);
 		// Draw body		
-		drawCircle(p[0],p[1],unit_->radius(),20,false);
+		drawCircle(p[0],p[1],unit_->radius(),20,true);
 
 		glColor3d(1,1,1);
 				
 		// Draw view sphere
 		//drawCircle(p[0],p[1],unit_->viewDistance(),20,false);
-		glBegin(GL_LINES);
-		//glVertex2d(p[0],p[1]);
-		//glVertex2d(p[0]+std::cos(unit_->moveDirection() - 0.5*unit_->viewAngle())*unit_->viewDistance(),p[1]+std::sin(unit_->moveDirection() - 0.5*unit_->viewAngle())*unit_->viewDistance());
-		//glVertex2d(p[0],p[1]);
-		//glVertex2d(p[0]+std::cos(unit_->moveDirection() + 0.5*unit_->viewAngle())*unit_->viewDistance(),p[1]+std::sin(unit_->moveDirection() + 0.5*unit_->viewAngle())*unit_->viewDistance());
+		glBegin(GL_LINES);		
 		
 		glVertex2d(p[0],p[1]);
 		glVertex2d(p[0]+0.1*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]+0.1*std::sin(unit_->moveDirection())*unit_->viewDistance());		
@@ -144,9 +137,9 @@ namespace zombie {
 
 	void ZombieAnimation::draw(double timestep) {
 		Position p = unit_->getPosition();
-		glColor3d(1,1,1);
+		glColor3d(0.8,0.4,0.4);
 		// Draw body		
-		drawCircle(p[0],p[1],unit_->radius(),20,false);
+		drawCircle(p[0],p[1],unit_->radius(),20,true);
 		//drawCircle(p[0],p[1],unit_->radius()*0.5,20,false);
 
 		glColor3d(1,1,1);

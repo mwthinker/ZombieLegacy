@@ -249,9 +249,11 @@ namespace zombie {
 
 	void ZombieGame::initGame() {
 		// Add human controlled by first input device.
-		UnitPtr human(new Unit(2,2,0.3,Weapon(35,0.5,8,12),false,++unitId_));
+		UnitPtr human(new Unit(10,5,0.3,Weapon(35,0.5,8,12),false,++unitId_));
+		viewPosition_ = human->getPosition();
+
 		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r));
-		addHuman(humanPlayer,human);
+		addHuman(humanPlayer,human);		
 
 		// Add zombie with standard behavior.
 		for (int i = 8; i < 13; i++){
@@ -261,18 +263,18 @@ namespace zombie {
 			}
 		}
 
-		//loadMap("buildings.txt");
-		loadMapInfo("buildings_subset.mif");
+		loadMap("buildings.txt");
+		//loadMapInfo("buildings_subset.mif");
 	}
 
 	// ZombieGame
 
 	double ZombieGame::getWidth() const {
-		return humanPlayers_[0].second->viewDistance()*3.2;
+		return humanPlayers_[0].second->viewDistance()*2.8;
 	}
 
 	double ZombieGame::getHeight() const {
-		return humanPlayers_[0].second->viewDistance()*3.2;
+		return humanPlayers_[0].second->viewDistance()*2.8;
 	}
 	
 	std::vector<UnitPtr> ZombieGame::calculateUnitsInView(const UnitPtr& unit) {
@@ -280,7 +282,9 @@ namespace zombie {
 		for (auto& pair: players_) {
 			UnitPtr& distantUnit = pair.second;
 			Position p = distantUnit->getPosition();
-			if (unit != distantUnit && unit->isPointViewable(p.x_,p.y_) && isVisible(distantUnit,unit)) {
+			
+			if (unit != distantUnit && 
+				( unit->isInsideSmalViewDistance(p.x_,p.y_)) || (unit->isPointViewable(p.x_,p.y_) && isVisible(distantUnit,unit)) ) {
 				unitsInView.push_back(distantUnit);
 			}
 		}
