@@ -41,7 +41,7 @@ namespace zombie {
 					targetAngle_ = std::atan2(dir.y_,dir.x_);
 					forward_ = true;
 				} else {
-					targetAngle_ += distribution_(generator_) * mw::PI * 2 * 0.1;
+					targetAngle_ += (distribution_(generator_)-0.5)*2 * mw::PI * 2 * 0.1;
 					forward_ = distribution_(generator_) > 0.25;
 				}
 			}			
