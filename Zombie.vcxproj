@@ -90,6 +90,7 @@
     <ClInclude Include="physicalunitinterface.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="protocol.h" />
+    <ClInclude Include="gamesound.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="task.h" />
     <ClInclude Include="taskmanager.h" />
@@ -101,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aibehavior.cpp" />
+    <ClCompile Include="gamesound.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="physicalunit.cpp" />

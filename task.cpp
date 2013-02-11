@@ -6,6 +6,7 @@
 
 #include "unit.h"
 #include "building.h"
+#include "gamesound.h"
 
 #include <memory>
 
@@ -89,6 +90,8 @@ namespace zombie {
 
 	HumanAnimation::HumanAnimation(const UnitPtr& unit) : Task (1) {
 		unit_ = unit;
+		shot_ = shot;
+		reload_ = reload;
 	}
 
 	void HumanAnimation::excecute(double time) {
@@ -110,13 +113,26 @@ namespace zombie {
 				
 		// Draw view sphere
 		//drawCircle(p[0],p[1],unit_->viewDistance(),20,false);
-		glBegin(GL_LINES);		
+		glBegin(GL_LINES);
 		
 		glVertex2d(p[0],p[1]);
 		glVertex2d(p[0]+0.1*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]+0.1*std::sin(unit_->moveDirection())*unit_->viewDistance());		
 		
 		glEnd();
 		
+		Unit::UnitEvent unitEvent_;
+		while (unit_->pollEvent(unitEvent_)) {
+			switch (unitEvent_) {
+			case Unit::UnitEvent::SHOOT:
+				shot.play();
+				break;
+			case Unit::UnitEvent::RELOADING:
+				reload.play();
+				break;
+			case Unit::UnitEvent::DIE:
+				break;
+			}
+		}
 		/*
 		// Draw small view sphere
 		drawCircle(p[0],p[1],unit_->smallViewDistance(),20,false);
@@ -125,6 +141,7 @@ namespace zombie {
 
 	ZombieAnimation::ZombieAnimation(const UnitPtr& unit) : Task (1) {
 		unit_ = unit;
+		attack_ = zombieAttack;
 	}
 
 	void ZombieAnimation::excecute(double time) {
@@ -140,7 +157,7 @@ namespace zombie {
 		glColor3d(0.8,0.4,0.4);
 		// Draw body		
 		drawCircle(p[0],p[1],unit_->radius(),20,true);
-		//drawCircle(p[0],p[1],unit_->radius()*0.5,20,false);
+		//drawCircle(p[0],p[1],unit_->radius()*0.5,20,false);		
 
 		glColor3d(1,1,1);
 				
@@ -163,17 +180,24 @@ namespace zombie {
 		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()+3.14/2)+0.06*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]-unit_->radius()*std::sin(unit_->moveDirection()+3.14/2)+0.06*std::sin(unit_->moveDirection())*unit_->viewDistance());		
 
 		glEnd();
+
+		Unit::UnitEvent unitEvent;
+		while (unit_->pollEvent(unitEvent)) {
+			switch (unitEvent) {
+			case Unit::UnitEvent::SHOOT:
+				//attack_.play();
+				break;
+			case Unit::UnitEvent::RELOADING:
+				break;
+			case Unit::UnitEvent::DIE:
+				break;
+			}
+		}
 		/*
 		// Draw small view sphere
 		drawCircle(p[0],p[1],unit_->smallViewDistance(),20,false);
 		*/
 	}
-
-
-
-
-
-
 
 	SurvivorAnimation::SurvivorAnimation(const UnitPtr& unit) : Task (1) {
 		unit_ = unit;
@@ -241,7 +265,6 @@ namespace zombie {
 	bool Shot::isRunning() const {
 		return running_;
 	}
-
 	
 	Death::Death(double x, double y, double currentTime) : Task (2) {
 		startTime_ = currentTime;

@@ -16,6 +16,8 @@ namespace zombie {
 
 class Unit : public PhysicalUnit {
 public:
+	enum UnitEvent {SHOOT,RELOADING,DIE};
+
 	Unit(double x, double y, double angle, Weapon weapon, bool infected ,int id);
 	virtual ~Unit();
 
@@ -74,7 +76,12 @@ public:
 	Weapon getWeapon() const {
 		return weapon_;
 	}
-private:
+
+	bool pollEvent(UnitEvent& unitEvent);
+private:	
+	//UnitEvent events_
+	std::queue<UnitEvent> unitEvents_;
+
 	double calculateDifferenceBetweenAngles(double firstAngle, double secondAngle);
 
 	void turn(double angle);

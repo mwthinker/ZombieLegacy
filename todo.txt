@@ -1,10 +1,5 @@
 Things to do!
 
-
-
-
-
-
 Större karta
 Origo är 0.0
 1km->1000,1000
@@ -20,6 +15,6 @@ Units olika egenskaper i fysikmotorn
 
 Ljud(Skjut, Död, Reload)
 
+Kartan ska gärna vara en hexagon så att kanterna inte blir lika tvära.
 
-
-OK!
+Om ett vapen avlossnas så ska ljudnivån trigga units i närheten.
