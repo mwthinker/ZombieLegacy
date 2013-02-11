@@ -6,6 +6,7 @@
 #include "unit.h"
 #include "building.h"
 #include "bullet.h"
+#include "map.h"
 
 #include "input.h"
 #include "task.h"

@@ -82,6 +82,7 @@
     <ClInclude Include="bullet.h" />
     <ClInclude Include="inputkeyboard.h" />
     <ClInclude Include="humanplayer.h" />
+    <ClInclude Include="map.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="pathfinder.h" />
     <ClInclude Include="physicalengine.h" />

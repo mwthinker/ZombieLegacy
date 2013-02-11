@@ -1,7 +1,12 @@
 #include "zombiebehavior.h"
+#include "building.h"
 
 #include <vector>
 #include <random>
+
+#include <mw/mathvector.h>
+
+typedef mw::MathVector Position;
 
 namespace zombie {
 
