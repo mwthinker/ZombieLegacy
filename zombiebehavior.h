@@ -27,6 +27,11 @@ namespace zombie {
 		Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) {
 			Input input;
 
+			// Target is valid and dead?
+			if (target_ != nullptr && target_ ->isDead()) {
+				target_ = nullptr;
+			}
+
 			if (time > findNewTargetTime_) {
 				findNewTargetTime_ = distribution_(generator_) * 3 + time;
 				target_ = findUninfectedTarget(unit->getPosition(), units);				
@@ -46,7 +51,7 @@ namespace zombie {
 					if (distSquared < unit->getWeapon().range()*unit->getWeapon().range()) {
 						// Attack!
 						input.shoot_ = true;
-					}					
+					}
 				} else {
 					targetAngle_ += (distribution_(generator_)-0.5)*2 * mw::PI * 2 * 0.1;
 					forward_ = distribution_(generator_) > 0.25;
@@ -69,8 +74,7 @@ namespace zombie {
 			return input;
 		}
 	private:
-		UnitPtr findUninfectedTarget(Position position, const std::vector<UnitPtr>& units) const {
-			
+		UnitPtr findUninfectedTarget(Position position, const std::vector<UnitPtr>& units) const {			
 			UnitPtr target(nullptr);
 			double distant = 100;
 			for (const UnitPtr& unit : units) {
