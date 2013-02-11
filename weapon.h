@@ -15,6 +15,7 @@ public:
 		clipSize_ = clipSize;
 		bulletsInWeapon_ = clipSize;
 		lastShotTime_ = 0.0;
+		shotSound_ = range_;
 	}
 
 	Weapon() {
@@ -24,7 +25,9 @@ public:
 		clipSize_ = 12;
 		bulletsInWeapon_ = 12;
 		lastShotTime_ = 0.0;
+		shotSound_ = range_;
 	}
+
 	friend mw::Packet& operator<<(mw::Packet& packet, const Weapon& weapon);
 	friend mw::Packet& operator>>(mw::Packet& packet, Weapon& weapon);
 
@@ -59,6 +62,10 @@ public:
 	int clipSize() const {
 		return clipSize_;
 	}
+
+	double getShotSound() const {
+		return shotSound_;
+	}
 private:
 	bool reload_;         // Is true when the weapon is reloading.
 	
@@ -68,6 +75,7 @@ private:
 	
 	int clipSize_;        // The number of bullets for a reload.
 	int bulletsInWeapon_; // The current number of bullets in the weapon.
+	double shotSound_;
 	
 	double timeElapsed_;  // Used as keeping track of the time.
 	double lastShotTime_;	
