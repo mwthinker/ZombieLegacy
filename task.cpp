@@ -169,6 +169,58 @@ namespace zombie {
 		*/
 	}
 
+
+
+
+
+
+
+	SurvivorAnimation::SurvivorAnimation(const UnitPtr& unit) : Task (1) {
+		unit_ = unit;
+	}
+
+	void SurvivorAnimation::excecute(double time) {
+		draw(0.0);
+	}
+
+	bool SurvivorAnimation::isRunning() const {
+		return !unit_->isDead();
+	}
+
+	void SurvivorAnimation::draw(double timestep) {
+		Position p = unit_->getPosition();
+		glColor3d(0,1,0);
+		// Draw body		
+		drawCircle(p[0],p[1],unit_->radius(),20,false);
+		//drawCircle(p[0],p[1],unit_->radius()*0.5,20,false);
+
+		glColor3d(1,1,1);
+				
+		// Draw view sphere
+		//drawCircle(p[0],p[1],unit_->viewDistance(),20,false);
+		glBegin(GL_LINES);
+		//glVertex2d(p[0],p[1]);
+		//glVertex2d(p[0]+std::cos(unit_->moveDirection() - 0.5*unit_->viewAngle())*unit_->viewDistance(),p[1]+std::sin(unit_->moveDirection() - 0.5*unit_->viewAngle())*unit_->viewDistance());
+		//glVertex2d(p[0],p[1]);
+		//glVertex2d(p[0]+std::cos(unit_->moveDirection() + 0.5*unit_->viewAngle())*unit_->viewDistance(),p[1]+std::sin(unit_->moveDirection() + 0.5*unit_->viewAngle())*unit_->viewDistance());
+		
+		double gg = unit_->radius();
+		
+		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()-3.14/2),p[1]-unit_->radius()*std::sin(unit_->moveDirection()-3.14/2));
+		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()-3.14/2)+0.06*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]-unit_->radius()*std::sin(unit_->moveDirection()-3.14/2)+0.06*std::sin(unit_->moveDirection())*unit_->viewDistance());		
+		//glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()+3.14/2),p[1]-unit_->radius()*std::sin(unit_->moveDirection()+3.14/2));
+		//glVertex2d(p[0]+0.04*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]+0.04*std::sin(unit_->moveDirection())*unit_->viewDistance());		
+		
+		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()+3.14/2),p[1]-unit_->radius()*std::sin(unit_->moveDirection()+3.14/2));
+		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()+3.14/2)+0.06*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]-unit_->radius()*std::sin(unit_->moveDirection()+3.14/2)+0.06*std::sin(unit_->moveDirection())*unit_->viewDistance());		
+
+		glEnd();
+		/*
+		// Draw small view sphere
+		drawCircle(p[0],p[1],unit_->smallViewDistance(),20,false);
+		*/
+	}
+
 	Shot::Shot(double x, double y, double currentTime) : Task (2) {
 		startTime_ = currentTime;
 		x_ = x;

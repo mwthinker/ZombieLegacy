@@ -63,6 +63,7 @@ namespace zombie {
 		}
 	private:
 		UnitPtr findUninfectedTarget(Position position, const std::vector<UnitPtr>& units) const {
+			
 			UnitPtr target(nullptr);
 			double distant = 100;
 			for (const UnitPtr& unit : units) {
@@ -70,6 +71,7 @@ namespace zombie {
 				if (!unit->isInfected()) {
 					double tmp = (position - unit->getPosition()).magnitudeSquared();					
 					// Closer?
+					std::cout << "Im in!";
 					if (tmp < distant) {
 						target = unit;
 						distant = tmp;

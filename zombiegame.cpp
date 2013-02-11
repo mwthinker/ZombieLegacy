@@ -130,7 +130,11 @@ namespace zombie {
 	}
 
 	void ZombieGame::addNewAi(UnitPtr unitPtr) {
-		taskManager_->add(new ZombieAnimation(unitPtr));
+		if (unitPtr->isInfected()) {
+			taskManager_->add(new ZombieAnimation(unitPtr));
+		} else {
+			taskManager_->add(new SurvivorAnimation(unitPtr));
+		}
 		physicalEngine_->add(unitPtr);
 		AiPlayerPtr aiPlayer(new AiPlayer());
 		aiPlayers_.push_back(PairAiUnit(aiPlayer,unitPtr));
@@ -259,9 +263,12 @@ namespace zombie {
 		for (int i = 8; i < 13; i++){
 			for(int j = 8; j < 13; j++) {
 				UnitPtr zombie(new Unit(8+i,10+j,0.3*i+j,Weapon(35,0.5,8,12),true,++unitId_));
+				
 				addNewAi(zombie);
 			}
 		}
+		UnitPtr survivor(new Unit(15,15,0.3,Weapon(35,0.5,8,12),false,++unitId_));
+		addNewAi(survivor);
 
 		loadMap("buildings.txt");
 		//loadMapInfo("buildings_subset.mif");
