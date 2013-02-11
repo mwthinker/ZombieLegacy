@@ -40,12 +40,13 @@ namespace zombie {
 					mw::MathVector dir = target_->getPosition() - unit->getPosition();
 					targetAngle_ = std::atan2(dir.y_,dir.x_);
 					forward_ = true;
-					//IF target in range
-					double dist = (unit->getPosition() - unit->getPosition()).magnitudeSquared();
-					if (dist < unit->getWeapon().range()) {
+										
+					double distSquared = (unit->getPosition() - unit->getPosition()).magnitudeSquared();
+					// Target is in range?
+					if (distSquared < unit->getWeapon().range()*unit->getWeapon().range()) {
+						// Attack!
 						input.shoot_ = true;
-					}
-					//attack
+					}					
 				} else {
 					targetAngle_ += (distribution_(generator_)-0.5)*2 * mw::PI * 2 * 0.1;
 					forward_ = distribution_(generator_) > 0.25;
