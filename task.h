@@ -7,6 +7,7 @@
 
 #include "unit.h"
 #include "building.h"
+#include "gamesound.h"
 
 #include <memory>
 
@@ -37,9 +38,9 @@ namespace zombie {
 	class DrawBuildning : public Task {
 	public:
 		DrawBuildning(const BuildingPtr& building);
-		void excecute(double time);
-		
+		void excecute(double time);		
 		bool isRunning() const;
+
 	private:
 		void draw();
 
@@ -49,37 +50,33 @@ namespace zombie {
 	class HumanAnimation : public Task {
 	public:
 		HumanAnimation(const UnitPtr& unit);
-
 		void excecute(double time);
-		
 		bool isRunning() const;
 
 	private:
 		void draw(double timestep);
 
 		UnitPtr unit_;
+		mw::Sound shot_, reload_;
 	};
 
 	class ZombieAnimation : public Task {
 	public:
 		ZombieAnimation(const UnitPtr& unit);
-
-		void excecute(double time);
-		
+		void excecute(double time);		
 		bool isRunning() const;
 
 	private:
 		void draw(double timestep);
 
 		UnitPtr unit_;
+		mw::Sound attack_;
 	};
 
 	class SurvivorAnimation : public Task {
 	public:
 		SurvivorAnimation(const UnitPtr& unit);
-
-		void excecute(double time);
-		
+		void excecute(double time);		
 		bool isRunning() const;
 
 	private:
@@ -92,9 +89,9 @@ namespace zombie {
 	class Shot : public Task {
 	public:
 		Shot(double x, double y, double currentTime);
-
 		void excecute(double time);
 		bool isRunning() const;
+
 	private:
 		double startTime_;
 		double x_, y_;
@@ -104,9 +101,9 @@ namespace zombie {
 	class Death : public Task {
 	public:
 		Death(double x, double y, double currentTime);
-
 		void excecute(double time);
 		bool isRunning() const;
+
 	private:
 		double startTime_;
 		double x_, y_;
@@ -116,9 +113,9 @@ namespace zombie {
 	class BloodSplash : public Task {
 	public:
 		BloodSplash(double x, double y, double currentTime);
-
 		void excecute(double time);
 		bool isRunning() const;
+
 	private:
 		double startTime_;
 		double x_, y_;
@@ -128,9 +125,7 @@ namespace zombie {
 	class HumanAnimation3D : public Task {
 	public:
 		HumanAnimation3D(const UnitPtr& unit);
-
 		void excecute(double time);
-		
 		bool isRunning() const;
 
 	private:

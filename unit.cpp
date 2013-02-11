@@ -95,11 +95,13 @@ namespace zombie {
 			bullet.postion_ = getPosition();
 			bullet.damage_ = weapon_.damage();
 			bullets_.push(bullet);
+			unitEvents_.push(UnitEvent::SHOOT);
 		}
 
 		// Want to reload? And weapon is ready?
 		if (input.reload_ && weapon_.reload()) {
 			input.reload_ = true;
+			unitEvents_.push(UnitEvent::RELOADING);
 		}
 	}
 
@@ -160,6 +162,17 @@ namespace zombie {
 
 		bullet = bullets_.front();
 		bullets_.pop();
+
+		return true;
+	}
+
+	bool Unit::pollEvent(UnitEvent& unitEvent) {
+		if (unitEvents_.empty()) {
+			return false;
+		}
+
+		unitEvent = unitEvents_.front();
+		unitEvents_.pop();
 
 		return true;
 	}
