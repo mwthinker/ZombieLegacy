@@ -7,7 +7,6 @@
 
 #include "unit.h"
 #include "building.h"
-#include "gamesound.h"
 
 #include <memory>
 
@@ -57,7 +56,6 @@ namespace zombie {
 		void draw(double timestep);
 
 		UnitPtr unit_;
-		mw::Sound shot_, reload_;
 	};
 
 	class ZombieAnimation : public Task {
@@ -70,7 +68,6 @@ namespace zombie {
 		void draw(double timestep);
 
 		UnitPtr unit_;
-		mw::Sound attack_;
 	};
 
 	class SurvivorAnimation : public Task {

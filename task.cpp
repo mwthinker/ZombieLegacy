@@ -89,10 +89,7 @@ namespace zombie {
 	}
 
 	HumanAnimation::HumanAnimation(const UnitPtr& unit) : Task (1) {
-		unit_ = unit;
-		shot_ = shot;
-		reload_ = reload;
-	}
+		unit_ = unit;	}
 
 	void HumanAnimation::excecute(double time) {
 		draw(0.0);
@@ -124,10 +121,18 @@ namespace zombie {
 		while (unit_->pollEvent(unitEvent_)) {
 			switch (unitEvent_) {
 			case Unit::UnitEvent::SHOOT:
-				shot.play();
+				{
+					// In order to be able to play even if the sound is not finnished!
+					mw::Sound tmp = shot;				
+					tmp.play();
+				}
 				break;
 			case Unit::UnitEvent::RELOADING:
-				reload.play();
+				{
+					// In order to be able to play even if the sound is not finnished!
+					mw::Sound tmp = reload;				
+					tmp.play();
+				}
 				break;
 			case Unit::UnitEvent::DIE:
 				break;
@@ -141,7 +146,6 @@ namespace zombie {
 
 	ZombieAnimation::ZombieAnimation(const UnitPtr& unit) : Task (1) {
 		unit_ = unit;
-		attack_ = zombieAttack;
 	}
 
 	void ZombieAnimation::excecute(double time) {
