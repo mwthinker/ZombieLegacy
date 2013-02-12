@@ -271,18 +271,27 @@ namespace zombie {
 		UnitPtr survivor(new Unit(15,15,0.3,Weapon(35,0.5,8,12),false,++unitId_));
 		addNewAi(survivor);
 
-		loadMap("buildings.txt");
+		//loadMap("buildings.txt");
+		Map map = generateMap(unitId_);
+		buildings_ = map.getBuildings();
+		for (BuildingPtr building : buildings_) {
+			taskManager_->add(new DrawBuildning(building));
+			physicalEngine_->add(building);
+		}
+
 		//loadMapInfo("buildings_subset.mif");
 	}
 
 	// ZombieGame
 
 	double ZombieGame::getWidth() const {
-		return humanPlayers_[0].second->viewDistance()*2.8;
+		return 100;
+		//return humanPlayers_[0].second->viewDistance()*2.8;
 	}
 
 	double ZombieGame::getHeight() const {
-		return humanPlayers_[0].second->viewDistance()*2.8;
+		return 100;
+		//return humanPlayers_[0].second->viewDistance()*2.8;
 	}
 	
 	std::vector<UnitPtr> ZombieGame::calculateUnitsInView(const UnitPtr& unit) {
