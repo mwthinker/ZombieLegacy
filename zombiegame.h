@@ -45,10 +45,10 @@ public:
 	void eventUpdate(const SDL_Event& windowEvent);
 
 	// Returns the prefered game width in pixel size.
-	double getWidth() const;
+	int getWidth() const;
 	
 	// Returns the prefered game height in pixel size.
-	double getHeight() const;
+	int getHeight() const;
 
 protected:
 	// Add a human player (unitPtr) to the game.

@@ -7,12 +7,18 @@
 #include "unit.h"
 #include "building.h"
 #include "gamesound.h"
+#include "gamefont.h"
 
 #include <memory>
+#include <sstream>
+#include <mw/text.h>
 
 namespace zombie {
 
 	typedef std::shared_ptr<Unit> UnitPtr;
+
+	int Task::width = 0;
+	int Task::height = 0;
 
 	Task::Task(int drawOrder) {
 		drawOrder_ = drawOrder;
@@ -352,12 +358,45 @@ namespace zombie {
 		*/
 	}
 
+	HumanStatus::HumanStatus(const UnitPtr& unit) : Task (1) {
+		unit_ = unit;
+		lastTime_ = 0.0;
+		name_ = mw::Text("", font15);
+		ammo_ = mw::Text("", font15);
+	}
 
+	void HumanStatus::excecute(double time) {
+		draw(time-lastTime_);
+	}
 
+	bool HumanStatus::isRunning() const {
+		return !unit_->isDead();
+	}
 
+	// private
+	void HumanStatus::draw(double timestep) {
+		Position p = unit_->getPosition();
+		glColor3d(1,1,1);
 
+		name_.setText("Human");
+		
+		std::stringstream stream;
+		Weapon w = unit_->getWeapon();
+		stream << w.getBulletsInWeapon() << " (" << w.clipSize() << ")";
+		ammo_.setText(stream.str());
+		
+		glPushMatrix();
+		name_.draw();
+		//glTranslated(0,-font15->getCharacterSize()*1.2,0);
+		glTranslated(0,15,0);
 
-
-
+		ammo_.draw();
+		glPopMatrix();
+		
+		/*
+		// Draw small view sphere
+		drawCircle(p[0],p[1],unit_->smallViewDistance(),20,false);
+		*/
+	}
 
 } // Namespace zombie.

@@ -8,6 +8,8 @@
 #include "unit.h"
 #include "building.h"
 
+#include <mw/text.h>
+
 #include <memory>
 
 namespace zombie {
@@ -16,6 +18,8 @@ namespace zombie {
 
 	class Task {
 	public:
+		static int width, height;
+
 		Task(int drawOrder);
 
 		virtual void excecute(double time) = 0;
@@ -130,6 +134,21 @@ namespace zombie {
 
 		UnitPtr unit_;
 		double lastTime_;
+	};
+
+	class HumanStatus : public Task {
+	public:
+		HumanStatus(const UnitPtr& unit);
+		void excecute(double time) override;
+		bool isRunning() const override;
+
+	private:
+		void draw(double timestep);
+
+		UnitPtr unit_;
+		double lastTime_;
+		mw::Text name_;
+		mw::Text ammo_;		
 	};
 }
 

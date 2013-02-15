@@ -25,6 +25,9 @@ namespace zombie {
 		taskManager_ = new TaskManager();
 		physicalEngine_ = new PhysicalEngine();
 		std::cout << "tjoho!";
+
+		Task::width = getWidth();
+		Task::height = getHeight();
 		
 		started_ = false;
 		time_ = 0.0;
@@ -125,6 +128,7 @@ namespace zombie {
 
 	void ZombieGame::addHuman(HumanPlayerPtr human, UnitPtr unitPtr) {
 		taskManager_->add(new HumanAnimation(unitPtr));
+		taskManager_->add(new HumanStatus(unitPtr));
 		physicalEngine_->add(unitPtr);
 		humanPlayers_.push_back(PairHumanUnit(human,unitPtr));
 		players_.push_back(PairPlayerUnit(human,unitPtr));
@@ -284,13 +288,13 @@ namespace zombie {
 
 	// ZombieGame
 
-	double ZombieGame::getWidth() const {
-		return 100;
+	int ZombieGame::getWidth() const {
+		return 500;
 		//return humanPlayers_[0].second->viewDistance()*2.8;
 	}
 
-	double ZombieGame::getHeight() const {
-		return 100;
+	int ZombieGame::getHeight() const {
+		return 500;
 		//return humanPlayers_[0].second->viewDistance()*2.8;
 	}
 	

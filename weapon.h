@@ -63,6 +63,10 @@ public:
 		return clipSize_;
 	}
 
+	int getBulletsInWeapon() const {
+		return bulletsInWeapon_;
+	}
+
 	double getShotSound() const {
 		return shotSound_;
 	}

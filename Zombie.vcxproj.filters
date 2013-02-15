@@ -84,6 +84,9 @@
     <ClInclude Include="aiplayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gamefont.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -123,6 +126,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="aiplayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gamefont.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

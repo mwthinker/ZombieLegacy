@@ -23,24 +23,21 @@ public:
 	~ZombieWindow() {
 	}
 private:
-    // Override mw::GameWindow
     void graphicUpdate(Uint32 msDeltaTime) override {
 		glPushMatrix();
 		double scale = getWidth()*1.0/getHeight();
 		double scaledW = getWidth() / zombieGame_.getWidth();
 		//double scaledH = getHeight() / zombieGame_.getHeight();
-		glScaled(scale * scaledW, scaledW,1);
+		//glScaled(scale * scaledW, scaledW,1);
 		//glScaled(1.5, 1.5, 1);
 		zombieGame_.graphicUpdate(msDeltaTime);
 		glPopMatrix();
     }
 
-    // Override mw::GameWindow
     void physicUpdate(Uint32 msDeltaTime) override {		
 		zombieGame_.physicUpdate(msDeltaTime);
     }
 
-    // Override mw::GameWindow
     void eventUpdate(const SDL_Event& windowEvent) override {
 		zombieGame_.eventUpdate(windowEvent);
 
@@ -76,7 +73,6 @@ private:
 		}
 	}
 	
-    // Override mw::GameWindow
     void resize(int width, int height) override {
         reshapeWindowsOpenGL();
     }
