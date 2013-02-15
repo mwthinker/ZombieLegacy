@@ -34,7 +34,10 @@ namespace zombie {
 		unitId_ = 0;
 		timeToUpdateView_ = 0.25; // Seconds in which the view is assumed to be constant in order to 
 		                          // speed up calculations.
+
+		timeToUpdateSpawn_ = 2.00; // Time between spawns and unit clean ups
 		indexAiPlayer_ = 0;
+		unitLevel_ = 20;
 
 		initGame();
 	}
@@ -55,6 +58,12 @@ namespace zombie {
 			
 			double deltaTime = msDeltaTime/1000.0;
 			
+			// Spawn and clean up units
+			if (fmod(msDeltaTime,timeToUpdateSpawn_) > 1) {
+				spawnAndCleanUpUnits();
+			}
+
+
 			// (deltaTime) must always be larger than (timeToUpdateView_).
 			int nbrOfUnitsToUpdateViewOn = (int) (aiPlayers_.size() * (deltaTime/timeToUpdateView_));
 			// Update some of the ai:s view.
@@ -93,6 +102,35 @@ namespace zombie {
 			// Move the time ahead.
 			time_ += deltaTime;
 		}
+	}
+
+	void ZombieGame::spawnAndCleanUpUnits() {
+		Position center = humanPlayers_[0].second->getPosition();
+		double outerRadius = 15; // <-- FIX TO OUTER RADIUS!
+
+		// delete zombies outside of perimiter ***************
+
+		for (PairPlayerUnit& pair : players_) {
+			Position unitPos = pair.second->getPosition();
+			if(sqrt((unitPos.x_-center.x_) * (unitPos.x_-center.x_) + (unitPos.y_-center.y_) * (unitPos.y_-center.y_)) > outerRadius) {
+				// REMOVE UNIT
+				pair.second->setIsDead();
+			}
+		}
+
+		// spawn new units ************************************
+		int nbrOfZombies = aiPlayers_.size();
+		while (nbrOfZombies < unitLevel_) {
+			// INSERT ZOMBIE
+			Map map;
+			Position p = map.generateSpawnPosition();
+			UnitPtr zombie(new Unit(p.x_,p.y_,0.3,Weapon(35,0.5,1,12),true,++unitId_));
+			addNewAi(zombie);			
+			nbrOfZombies++;
+		}
+
+
+	
 	}
 
 	void ZombieGame::graphicUpdate(Uint32 msDeltaTime) {
@@ -374,5 +412,7 @@ namespace zombie {
 		}
 		return true;
 	}	
+
+	
 
 } // namespace zombie

@@ -65,6 +65,10 @@ public:
 
 	bool isDead() const override;
 
+	void setIsDead() {
+		isDead_ = true;
+	}
+
 	bool isInfected() const {
 		return isInfected_;
 	}

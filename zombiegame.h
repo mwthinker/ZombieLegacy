@@ -78,6 +78,8 @@ protected:
 	TaskManager* taskManager_;
 	unsigned int maxConnections_; // Max number of remove connections allowed.
 
+	void spawnAndCleanUpUnits();	// Spawns new zombies
+
 	bool started_; // The game time is started.
 	
 	double time_; // Local game time.
@@ -99,6 +101,9 @@ protected:
 
 	int indexAiPlayer_;
 	double timeToUpdateView_;
+	double timeToUpdateSpawn_;
+
+	int unitLevel_; // Specifies the wanted number of zombies on the map
 
 	Position viewPosition_;
 };
