@@ -37,8 +37,8 @@ namespace zombie {
 	class DrawBuildning : public Task {
 	public:
 		DrawBuildning(const BuildingPtr& building);
-		void excecute(double time);		
-		bool isRunning() const;
+		void excecute(double time) override;		
+		bool isRunning() const override;
 
 	private:
 		void draw();
@@ -49,8 +49,8 @@ namespace zombie {
 	class HumanAnimation : public Task {
 	public:
 		HumanAnimation(const UnitPtr& unit);
-		void excecute(double time);
-		bool isRunning() const;
+		void excecute(double time) override;
+		bool isRunning() const override;
 
 	private:
 		void draw(double timestep);
@@ -61,8 +61,8 @@ namespace zombie {
 	class ZombieAnimation : public Task {
 	public:
 		ZombieAnimation(const UnitPtr& unit);
-		void excecute(double time);		
-		bool isRunning() const;
+		void excecute(double time) override;		
+		bool isRunning() const override;
 
 	private:
 		void draw(double timestep);
@@ -73,8 +73,8 @@ namespace zombie {
 	class SurvivorAnimation : public Task {
 	public:
 		SurvivorAnimation(const UnitPtr& unit);
-		void excecute(double time);		
-		bool isRunning() const;
+		void excecute(double time) override;		
+		bool isRunning() const override;
 
 	private:
 		void draw(double timestep);
@@ -86,8 +86,8 @@ namespace zombie {
 	class Shot : public Task {
 	public:
 		Shot(double x, double y, double currentTime);
-		void excecute(double time);
-		bool isRunning() const;
+		void excecute(double time) override;
+		bool isRunning() const override;
 
 	private:
 		double startTime_;
@@ -98,8 +98,8 @@ namespace zombie {
 	class Death : public Task {
 	public:
 		Death(double x, double y, double currentTime);
-		void excecute(double time);
-		bool isRunning() const;
+		void excecute(double time) override;
+		bool isRunning() const override;
 
 	private:
 		double startTime_;
@@ -110,8 +110,8 @@ namespace zombie {
 	class BloodSplash : public Task {
 	public:
 		BloodSplash(double x, double y, double currentTime);
-		void excecute(double time);
-		bool isRunning() const;
+		void excecute(double time) override;
+		bool isRunning() const override;
 
 	private:
 		double startTime_;
@@ -122,8 +122,8 @@ namespace zombie {
 	class HumanAnimation3D : public Task {
 	public:
 		HumanAnimation3D(const UnitPtr& unit);
-		void excecute(double time);
-		bool isRunning() const;
+		void excecute(double time) override;
+		bool isRunning() const override;
 
 	private:
 		void draw(double timestep);

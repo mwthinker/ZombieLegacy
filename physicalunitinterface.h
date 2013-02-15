@@ -17,7 +17,7 @@ public:
 	virtual ~PhysicalUnitInterface() {
 	}
 	
-	virtual double stiffness() const = 0;
+	virtual double stiffness() const = 0 ;
 	virtual double damping() const = 0;
 	virtual double mass() const = 0;
 	virtual Force force() const = 0;

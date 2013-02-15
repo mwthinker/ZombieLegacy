@@ -78,6 +78,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="aibehavior.h" />
+    <ClInclude Include="aiplayer.h" />
     <ClInclude Include="building.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="inputkeyboard.h" />
@@ -102,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aibehavior.cpp" />
+    <ClCompile Include="aiplayer.cpp" />
     <ClCompile Include="gamesound.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="object.cpp" />

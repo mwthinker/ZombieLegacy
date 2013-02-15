@@ -23,7 +23,7 @@ public:
 
 	// Overrides from PhysicalUnit.
 	// Returns true if object is to be removed from PhyscalEngine.
-	bool toRemove() const;
+	bool toRemove() const override;
 
 	Unit(mw::Packet& packet);
 
@@ -48,7 +48,7 @@ public:
 	double viewAngle() const;
 
 	// Return true if the point (x, y) is inside the unit.	
-	bool isInside(double x, double y) const;
+	bool isInside(double x, double y) const override;
 
 	// Return true if the point (x, y) is inside the units small view distance,
 	// where all things are being visible.
@@ -60,10 +60,10 @@ public:
 	// Return the angle for the current 
 	double moveDirection() const;	
 
-	double healthPoints() const;
-	void updateHealthPoint(double deltaLife);
+	double healthPoints() const override;
+	void updateHealthPoint(double deltaLife) override;
 
-	bool isDead() const;
+	bool isDead() const override;
 
 	bool isInfected() const {
 		return isInfected_;

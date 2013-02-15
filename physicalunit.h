@@ -16,24 +16,24 @@ public:
 	virtual mw::Packet generatePacket() const;
 
 	// Override member from class PhysicalUnit
-	double stiffness() const;
+	double stiffness() const override;
 
 	// Override member from class PhysicalUnit
-	double damping() const;
+	double damping() const override;
 	
 	// Override member from class PhysicalUnit
-	double mass() const;
+	double mass() const override;
 		
-	Force force() const;	
-	void addForce(Force force);
-	void resetForce();
+	Force force() const override;	
+	void addForce(Force force) override;
+	void resetForce() override;
 
-	void setVelocity(Velocity velocity);
-	Velocity getVelocity() const;		
-	void setPosition(Position position);
-	Position getPosition() const;	
+	void setVelocity(Velocity velocity) override;
+	Velocity getVelocity() const override;		
+	void setPosition(Position position) override;
+	Position getPosition() const override;	
 
-	double radius() const;
+	double radius() const override;
 private:
 	double stiffness_;
 	double damping_;

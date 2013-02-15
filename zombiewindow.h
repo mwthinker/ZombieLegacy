@@ -24,7 +24,7 @@ public:
 	}
 private:
     // Override mw::GameWindow
-    void graphicUpdate(Uint32 msDeltaTime) {
+    void graphicUpdate(Uint32 msDeltaTime) override {
 		glPushMatrix();
 		double scale = getWidth()*1.0/getHeight();
 		double scaledW = getWidth() / zombieGame_.getWidth();
@@ -36,12 +36,12 @@ private:
     }
 
     // Override mw::GameWindow
-    void physicUpdate(Uint32 msDeltaTime) {		
+    void physicUpdate(Uint32 msDeltaTime) override {		
 		zombieGame_.physicUpdate(msDeltaTime);
     }
 
     // Override mw::GameWindow
-    void eventUpdate(const SDL_Event& windowEvent) {
+    void eventUpdate(const SDL_Event& windowEvent) override {
 		zombieGame_.eventUpdate(windowEvent);
 
 		switch (windowEvent.type) {
@@ -77,7 +77,7 @@ private:
 	}
 	
     // Override mw::GameWindow
-    void resize(int width, int height) {
+    void resize(int width, int height) override {
         reshapeWindowsOpenGL();
     }
 

@@ -24,7 +24,7 @@ namespace zombie {
 		~ZombieBehavior() {
 		}
 
-		Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) {
+		Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) override {
 			Input input;
 
 			// Target is valid and dead?

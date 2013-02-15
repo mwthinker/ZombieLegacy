@@ -16,7 +16,7 @@ public:
 		reload_ = reload;
 	}
 
-    void eventUpdate(const SDL_Event& windowEvent) {
+    void eventUpdate(const SDL_Event& windowEvent) override {
 		SDLKey key = windowEvent.key.keysym.sym;
 		
         switch (windowEvent.type) {
@@ -51,7 +51,7 @@ public:
         }
     }
 
-	Input currentInput() {
+	Input currentInput() override {
 		Input input = input_;
 		input_.shoot_  = false;
 		input_.reload_ = false;

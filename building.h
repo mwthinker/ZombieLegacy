@@ -42,6 +42,9 @@ public:
 		init();
 	}
 
+	virtual ~Building() {
+	}
+
 	mw::Packet generatePacket() const {
 		mw::Packet packet;
 		packet << Object::generatePacket();
@@ -52,18 +55,11 @@ public:
 		return packet;
 	}
 
-	void updateStates(double timestep) {
-
-	}
-
 	const std::vector<Position>& getCorners() const {
 		return corners_;
 	}
 
-	virtual ~Building() {
-	}
-
-	bool isInside(double x, double y) const {
+	bool isInside(double x, double y) const override {
 		return isPointInPolygon(x,y);
 	}
 
@@ -118,14 +114,14 @@ public:
 	}
 	*/
 
-	double healthPoints() const {
+	double healthPoints() const override {
 		return 100.0;
 	}
 	
-	void updateHealthPoint(double deltaLife) {
+	void updateHealthPoint(double deltaLife) override {
 	}
 
-	bool isDead() const {
+	bool isDead() const override {
 		return false;
 	}
 
