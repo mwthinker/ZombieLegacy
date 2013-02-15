@@ -13,6 +13,43 @@ namespace zombie {
 
 typedef mw::MathVector Position;
 
+class Border : public StaticPhyscalUnit {
+public:
+	Border(Position centre, double radius) {
+		centre_ = centre;
+		radius_ = radius;
+	}
+
+	Position getCentrePosition() const {
+		return centre_;
+	}
+
+	// Override member from class StaticPhysicalUnit
+	bool isInsideApproximate(double x, double y, double radius) const {
+		Position p = centre_;
+		return (x - p.x_)*(x - p.x_) + (y - p.y_)*(y - p.y_) < (getRadius() - radius)*(getRadius() - radius);
+	}
+	
+	// Override member from class StaticPhysicalUnit
+	double stiffness() const override {
+		return 150.0;
+	}
+	
+	// Override member from class StaticPhysicalUnit
+	Position penetration(double x, double y, double radius) const override {
+		return centre_.normalize()*radius_ - Position(x,y);
+	}
+
+	double getRadius() const {
+		return radius_;
+	}
+private:
+	Position centre_;
+	double radius_;
+};
+
+typedef std::shared_ptr<StaticPhyscalUnit> StaticPhUnitPtr;
+
 class Building : public Object, public StaticPhyscalUnit {
 public:
 	Building(int id, double x, double y, double width, double height) : Object(id) {

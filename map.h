@@ -16,22 +16,29 @@ namespace zombie {
 
 	class Map {
 	public:
-		Map(std::vector<BuildingPtr> buildings, BuildingPtr border,std::vector<Position> spawnSpots) {
-			spawnSpots_ = spawnSpots;
+		Map(Position mapCentre_, double radius, std::vector<BuildingPtr> buildings) {
+			border_ = std::shared_ptr<Border>(new Border(mapCentre_, radius));
 			buildings_ = buildings;
-			border_  = border;
-			area_ = polygonArea(border->getCorners());
+			area_ = radius*radius*mw::PI;
 		}
 
 		Map() {
 			area_ = 0;
 		}
 
-		const std::vector<Position>& getSpawnSpots() const {
-			return spawnSpots_;
+		Position getMapCentre() const {
+			return border_->getCentrePosition();
 		}
 
-		BuildingPtr getBorder() const {
+		Position generateSpawnPosition() const {
+			return Position();
+		}
+
+		Position generateSpawnPosition(Position p, double innerRadie, double outerRadie) const {
+			return Position();
+		}
+
+		std::shared_ptr<Border> getBorder() const {
 			return border_;
 		}
 
@@ -43,6 +50,8 @@ namespace zombie {
 			return area_;
 		}
 	private:
+		std::shared_ptr<Border> border_;
+		/*
 		static double polygonArea(const std::vector<Position>& corners) { 
 			double area = 0;         // Accumulates area in the loop
 			int size = corners.size();
@@ -54,10 +63,9 @@ namespace zombie {
 			}
 			return area/2;
 		}
-
-		std::vector<Position> spawnSpots_;
+		*/
+				
 		std::vector<BuildingPtr> buildings_;
-		BuildingPtr border_;
 		double area_;
 	};
 
@@ -92,14 +100,7 @@ namespace zombie {
 			}
 		}
 
-		std::vector<Position> positions;
-		positions.push_back(Position(0,0));
-		positions.push_back(Position(nbr*side,0));
-		positions.push_back(Position(nbr*side,nbr*side));
-		positions.push_back(Position(0,nbr*side));
-		BuildingPtr border(new Building(positions, ++lastId));
-
-		return Map(buildings,border,std::vector<Position>());
+		return Map(Position(),10,buildings);
 	}
 
 	//std::default_random_engine generator_;

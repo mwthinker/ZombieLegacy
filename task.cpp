@@ -388,7 +388,7 @@ namespace zombie {
 		glPushMatrix();
 		name_.draw();
 		//glTranslated(0,-font15->getCharacterSize()*1.2,0);
-		glTranslated(0,15,0);
+		glTranslated(0,-25,0);
 
 		ammo_.draw();
 		glPopMatrix();
