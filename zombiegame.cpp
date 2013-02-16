@@ -35,7 +35,8 @@ namespace zombie {
 		timeToUpdateView_ = 0.25; // Seconds in which the view is assumed to be constant in order to 
 		                          // speed up calculations.
 
-		timeToUpdateSpawn_ = 2.00; // Time between spawns and unit clean ups
+		timeToUpdateSpawn_ = 3000.0; // Time(ms) between spawns and unit clean ups
+		timeSinceSpawn_ = 0.0;
 		indexAiPlayer_ = 0;
 		unitLevel_ = 20;
 
@@ -59,9 +60,11 @@ namespace zombie {
 			double deltaTime = msDeltaTime/1000.0;
 			
 			// Spawn and clean up units
-			if (fmod(msDeltaTime,timeToUpdateSpawn_) > 1) {
+			if (timeSinceSpawn_ > timeToUpdateSpawn_) {
 				spawnAndCleanUpUnits();
+				timeSinceSpawn_ = 0;				
 			}
+			timeSinceSpawn_ += msDeltaTime;
 
 
 			// (deltaTime) must always be larger than (timeToUpdateView_).
@@ -109,14 +112,29 @@ namespace zombie {
 		double outerRadius = 15; // <-- FIX TO OUTER RADIUS!
 
 		// delete zombies outside of perimiter ***************
-
-		for (PairPlayerUnit& pair : players_) {
-			Position unitPos = pair.second->getPosition();
-			if(sqrt((unitPos.x_-center.x_) * (unitPos.x_-center.x_) + (unitPos.y_-center.y_) * (unitPos.y_-center.y_)) > outerRadius) {
+		UnitPtr temp;
+		for (auto it = players_.begin(); it != players_.end(); it++) {
+			Position unitPos = it->second->getPosition();
+			if((unitPos-center)*(unitPos-center) > outerRadius*outerRadius) {
 				// REMOVE UNIT
-				pair.second->setIsDead();
+				it->second->setIsDead();
+				temp = it->second;
+				
+				players_.erase(it);
+				break;
+				
+				
 			}
 		}
+
+		for (auto it = aiPlayers_.begin(); it != aiPlayers_.end(); it++) {
+			if(it->second == temp) {
+				aiPlayers_.erase(it);
+				break;
+			}
+		}
+
+		
 
 		// spawn new units ************************************
 		int nbrOfZombies = aiPlayers_.size();

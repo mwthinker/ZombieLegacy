@@ -102,6 +102,7 @@ protected:
 	int indexAiPlayer_;
 	double timeToUpdateView_;
 	double timeToUpdateSpawn_;
+	double timeSinceSpawn_;
 
 	int unitLevel_; // Specifies the wanted number of zombies on the map
 

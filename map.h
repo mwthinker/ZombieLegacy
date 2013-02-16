@@ -35,7 +35,28 @@ namespace zombie {
 		}
 
 		Position generateSpawnPosition(Position p, double innerRadie, double outerRadie) const {
-			return Position();
+			std::default_random_engine g;
+			std::uniform_real_distribution<double> distReal(0,1);
+			
+			for(int tries = 0; tries < 100; tries++) {
+				double alfa = distReal(g) * 2 * mw::PI;
+				double dist = distReal(g) * (outerRadie-innerRadie) + innerRadie;
+				double x = p.x_ + std::cos(alfa)*dist;
+				double y = p.y_ + std::sin(alfa)*dist;
+				Position testPos(x,y);
+				for (BuildingPtr building : buildings_) {
+					// if inside one building, break
+					if(building->isInside(testPos.x_,testPos.y_)) {
+						break;
+					// Passed all buildings -> return position!
+					} else if (buildings_.back() == building){ 
+						return testPos;
+					}
+
+				}
+			}
+			// No success - return dummy position!
+			return Position(-99999,-99999,-99999);
 		}
 
 		std::shared_ptr<Border> getBorder() const {
