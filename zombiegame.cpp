@@ -290,6 +290,10 @@ namespace zombie {
 		return 500;
 		//return humanPlayers_[0].second->viewDistance()*2.8;
 	}
+
+	void ZombieGame::zoom(double scale) {
+		scale_ *= scale;
+	}
 	
 	std::vector<UnitPtr> ZombieGame::calculateUnitsInView(const UnitPtr& unit) {
 		std::vector<UnitPtr> unitsInView;

@@ -51,6 +51,8 @@ public:
 	// Returns the prefered game height in pixel size.
 	int getHeight() const;
 
+	void zoom(double scale);
+
 protected:
 	// Add a human player (unitPtr) to the game.
 	void addHuman(HumanPlayerPtr human, UnitPtr unitPtr);
@@ -108,6 +110,7 @@ protected:
 	double timeSinceSpawn_;
 
 	int unitLevel_; // Specifies the wanted number of zombies on the map
+	double scale_;
 
 	Position viewPosition_;
 };
