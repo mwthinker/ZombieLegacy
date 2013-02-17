@@ -138,7 +138,9 @@ namespace zombie {
 
 	class HumanStatus : public Task {
 	public:
-		HumanStatus(const UnitPtr& unit);
+		enum Player {ONE, TWO, THREE, FOUR};
+
+		HumanStatus(const UnitPtr& unit, Player player);
 		void excecute(double time) override;
 		bool isRunning() const override;
 
@@ -148,7 +150,8 @@ namespace zombie {
 		UnitPtr unit_;
 		double lastTime_;
 		mw::Text name_;
-		mw::Text ammo_;		
+		mw::Text ammo_;
+		Player player_;
 	};
 }
 

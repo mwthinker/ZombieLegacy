@@ -161,7 +161,7 @@ namespace zombie {
 		
 		viewPosition_ += (unit->getPosition() - viewPosition_) * msDeltaTime * 0.0001;
 		
-		glTranslated(-viewPosition_.x_+getWidth()*0.5,-viewPosition_.y_+getHeight()*0.5,0.0);
+		//glTranslated(-viewPosition_.x_+getWidth()*0.5,-viewPosition_.y_+getHeight()*0.5,0.0);
 
 		// Game is started?
 		if (started_) {			
@@ -185,7 +185,7 @@ namespace zombie {
 
 	void ZombieGame::addHuman(HumanPlayerPtr human, UnitPtr unitPtr) {
 		taskManager_->add(new HumanAnimation(unitPtr));
-		taskManager_->add(new HumanStatus(unitPtr));
+		taskManager_->add(new HumanStatus(unitPtr,HumanStatus::ONE));
 		physicalEngine_->add(unitPtr);
 		humanPlayers_.push_back(PairHumanUnit(human,unitPtr));
 		players_.push_back(PairPlayerUnit(human,unitPtr));

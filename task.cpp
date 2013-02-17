@@ -338,9 +338,9 @@ namespace zombie {
 		// Draw body		
 		drawCircle(p[0],p[1],unit_->radius(),20,false);
 		// ViewRadius
-		drawCircle(p[0],p[1],300,20.0,false);
+		drawCircle(p[0],p[1],300,20,false);
 		// SpawnRadius
-		drawCircle(p[0],p[1],400,20.0,false);
+		drawCircle(p[0],p[1],400,20,false);
 
 		glColor3d(1,1,1);
 				
@@ -362,11 +362,12 @@ namespace zombie {
 		*/
 	}
 
-	HumanStatus::HumanStatus(const UnitPtr& unit) : Task (1) {
+	HumanStatus::HumanStatus(const UnitPtr& unit, Player player) : Task (1) {
 		unit_ = unit;
 		lastTime_ = 0.0;
 		name_ = mw::Text("", font15);
 		ammo_ = mw::Text("", font15);
+		player_ = player;
 	}
 
 	void HumanStatus::excecute(double time) {
@@ -389,7 +390,15 @@ namespace zombie {
 		stream << w.getBulletsInWeapon() << " (" << w.clipSize() << ")";
 		ammo_.setText(stream.str());
 		
-		glPushMatrix();
+		glPushMatrix();		
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(0,Task::width,0,Task::height,-1,1);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+
+		//glScaled(100,100,1);
+		glTranslated(0,50,0);
 		name_.draw();
 		//glTranslated(0,-font15->getCharacterSize()*1.2,0);
 		glTranslated(0,-25,0);
