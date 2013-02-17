@@ -36,7 +36,8 @@ namespace zombie {
 		}
 
 		Position generateSpawnPosition(Position p, double innerRadie, double outerRadie) const {
-			std::default_random_engine g;
+			std::random_device rd;
+			std::default_random_engine g(rd());
 			std::uniform_real_distribution<double> distReal(0,1);
 			
 			for(int tries = 0; tries < 100; tries++) {
