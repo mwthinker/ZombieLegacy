@@ -29,7 +29,7 @@ typedef std::shared_ptr<Player> PlayerPtr;
 
 class ZombieGame {
 public:
-    ZombieGame();
+    ZombieGame(int width = 500, int height = 500);
     ~ZombieGame();
     
 	// Starts the game. The connection need to be active else nothing happens.
@@ -45,14 +45,9 @@ public:
 	// Makes the game reacting on the evennt (windowEvent).
 	void eventUpdate(const SDL_Event& windowEvent);
 
-	// Returns the prefered game width in pixel size.
-	int getWidth() const;
-	
-	// Returns the prefered game height in pixel size.
-	int getHeight() const;
-
 	void zoom(double scale);
 
+	void updateSize(int width, int height);
 protected:
 	// Add a human player (unitPtr) to the game.
 	void addHuman(HumanPlayerPtr human, UnitPtr unitPtr);

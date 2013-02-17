@@ -12,7 +12,7 @@ namespace zombie {
 
 class ZombieWindow : public mw::GameWindow {
 public:
-    ZombieWindow() : mw::GameWindow(500,500,"Zombie","images/icon.bmp") {
+    ZombieWindow() : mw::GameWindow(500,500,"Zombie","images/icon.bmp"), zombieGame_(500,500) {
         setResizable(false);
         setTimeStep(20);
 
@@ -25,10 +25,21 @@ public:
 private:
     void graphicUpdate(Uint32 msDeltaTime) override {
 		glPushMatrix();
-		//double scaledH = getHeight() / zombieGame_.getHeight();
-		//glScaled(1.0/getWidth(),1.0/getWidth(),1);
-		glScaled(getWidth(),getHeight(),1);
-		//glScaled(1.5, 1.5, 1);
+		
+		if (getWidth() > getHeight()) {
+			double dist = (getWidth() - getHeight()) * 0.5;
+			// Keep the view in centre.
+			glTranslated(dist,0,0);
+			// Scale correctly, keep proportions.
+			glScaled(getHeight(),getHeight(),1);
+		} else {
+			double dist = (getHeight() - getWidth()) * 0.5;
+			// Keep the view in centre.
+			glTranslated(0,dist,0);
+			// Scale correctly, keep proportions.
+			glScaled(getWidth(),getWidth(),1);
+		}
+		
 		zombieGame_.graphicUpdate(msDeltaTime);
 		glPopMatrix();
     }
@@ -78,6 +89,7 @@ private:
 	
     void resize(int width, int height) override {
         reshapeWindowsOpenGL();
+		zombieGame_.updateSize(width,height);
     }
 
     void reshapeWindowsOpenGL() {

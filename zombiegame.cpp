@@ -19,15 +19,13 @@
 #include <string>
 #include <fstream>
 
-
 namespace zombie {
 
-    ZombieGame::ZombieGame() {
+    ZombieGame::ZombieGame(int width, int height) {
 		taskManager_ = new TaskManager();
 		physicalEngine_ = new PhysicalEngine();
 		
-		Task::width = getWidth();
-		Task::height = getHeight();
+		updateSize(width,height);
 		scale_ = 1.0;
 		
 		started_ = false;
@@ -42,7 +40,6 @@ namespace zombie {
 		unitLevel_ = 50;
 		innerSpawnRadius_ = 10;
 		outerSpawnRadius_ = 20;
-
 
 		initGame();
 	}
@@ -265,22 +262,15 @@ namespace zombie {
 		//addNewAi(survivor);		
 	}
 
-	// ZombieGame
-
-	int ZombieGame::getWidth() const {
-		return 500;
-		//return humanPlayers_[0].second->viewDistance()*2.8;
-	}
-
-	int ZombieGame::getHeight() const {
-		return 500;
-		//return humanPlayers_[0].second->viewDistance()*2.8;
-	}
-
 	void ZombieGame::zoom(double scale) {
 		scale_ *= scale;
 	}
 	
+	void ZombieGame::updateSize(int width, int height) {
+		Task::width = width;
+		Task::height = height;
+	}
+
 	std::vector<UnitPtr> ZombieGame::calculateUnitsInView(const UnitPtr& unit) {
 		std::vector<UnitPtr> unitsInView;
 		for (auto& pair: players_) {
