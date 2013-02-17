@@ -25,10 +25,9 @@ public:
 private:
     void graphicUpdate(Uint32 msDeltaTime) override {
 		glPushMatrix();
-		double scale = getWidth()*1.0/getHeight();
-		double scaledW = getWidth() / zombieGame_.getWidth();
 		//double scaledH = getHeight() / zombieGame_.getHeight();
-		//glScaled(scale * scaledW, scaledW,1);
+		//glScaled(1.0/getWidth(),1.0/getWidth(),1);
+		glScaled(getWidth(),getHeight(),1);
 		//glScaled(1.5, 1.5, 1);
 		zombieGame_.graphicUpdate(msDeltaTime);
 		glPopMatrix();
@@ -52,7 +51,11 @@ private:
                 //SDL_SetVideoMode(300,300, 32, SDL_OPENGL);
                 //SDL_WM_ToggleFullScreen();
                 break;
-			case SDLK_F2:
+			case SDLK_PAGEUP:
+				zombieGame_.zoom(1.1);
+				break;
+			case SDLK_PAGEDOWN:
+				zombieGame_.zoom(1/1.1);
 				break;
 			case SDLK_RETURN:
 				zombieGame_.startGame();

@@ -53,7 +53,6 @@ namespace zombie {
 					} else if (buildings_.back() == building){ 
 						return testPos;
 					}
-
 				}
 			}
 			// No success - return dummy position!

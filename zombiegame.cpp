@@ -29,6 +29,7 @@ namespace zombie {
 
 		Task::width = getWidth();
 		Task::height = getHeight();
+		scale_ = 1.0;
 		
 		started_ = false;
 		time_ = 0.0;
@@ -114,17 +115,19 @@ namespace zombie {
 
 		// delete zombies outside of perimiter ***************
 		UnitPtr temp;
+		/*std::remove_if(players_.begin(), players_.end(),[] (const PairPlayerUnit& pair) {
+			Position unitPos = pair.second->getPosition();
+			return pair.second;
+		});*/
+
 		for (auto it = players_.begin(); it != players_.end(); it++) {
 			Position unitPos = it->second->getPosition();
 			if((unitPos-center)*(unitPos-center) > outerRadius*outerRadius) {
 				// REMOVE UNIT
 				it->second->setIsDead();
 				temp = it->second;
-				
 				players_.erase(it);
 				break;
-				
-				
 			}
 		}
 
@@ -134,8 +137,6 @@ namespace zombie {
 				break;
 			}
 		}
-
-		
 
 		// spawn new units ************************************
 		int nbrOfZombies = aiPlayers_.size();
@@ -147,24 +148,25 @@ namespace zombie {
 			addNewAi(zombie);			
 			nbrOfZombies++;
 		}
-
-
-	
 	}
 
 	void ZombieGame::graphicUpdate(Uint32 msDeltaTime) {
 		// Draw map centered around first humna player.
 		UnitPtr unit = humanPlayers_[0].second;
 		
-		glPushMatrix();
-		Position p = unit->getPosition();		
-		
-		viewPosition_ += (unit->getPosition() - viewPosition_) * msDeltaTime * 0.0001;
-		
-		//glTranslated(-viewPosition_.x_+getWidth()*0.5,-viewPosition_.y_+getHeight()*0.5,0.0);
+		glPushMatrix();		
+		glTranslated(0.5, 0.5, 0);
+		drawCircle(0,0,0.5,20,false);
+		glScaled(1.0/50*scale_,1.0/50*scale_,1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
+		drawCircle(0,0,0.5,20,false);
 
+		Position p = unit->getPosition();
+		viewPosition_ += (unit->getPosition() - viewPosition_) * msDeltaTime * 0.0001;
+		glTranslated(-viewPosition_.x_,-viewPosition_.y_,0.0);
+		//glTranslated(-p.x_,-p.y_,0.0);
+		
 		// Game is started?
-		if (started_) {			
+		if (started_) {
 			taskManager_->update(msDeltaTime/1000.0);
 		} else {
 			taskManager_->update(0.0);
@@ -203,7 +205,7 @@ namespace zombie {
 		players_.push_back(PairPlayerUnit(aiPlayer,unitPtr));
 	}	
 
-	void ZombieGame::loadMap(std::string filename) {
+	Map ZombieGame::loadMap(std::string filename, int& unitId_) {
 		std::fstream mapFile(filename.c_str(),std::fstream::in);
 		
 		if (mapFile.good()) {
@@ -221,27 +223,13 @@ namespace zombie {
 					corners.push_back(p);
 				}
 			}
-			BuildingPtr building = BuildingPtr(new Building(corners,++unitId_));
-			buildings_.push_back(building);
-
-			taskManager_->add(new DrawBuildning(building));
-			physicalEngine_->add(building);
-			//std::cout << "A";
-		}
-		std::vector<Position> corners;
-		corners.push_back(Position(0,0));
-		corners.push_back(Position(0,width_));
-		corners.push_back(Position(height_,width_));
-		corners.push_back(Position(height_,0));
-		
-		worldBorder_ = BuildingPtr(new Building(corners,++unitId_));
-		taskManager_->add(new DrawBuildning(worldBorder_));
-		physicalEngine_->add(worldBorder_);
+			buildings_.push_back(BuildingPtr(new Building(corners,++unitId_)));
+		}	
 		
 		mapFile.close();
-	}
 
-	
+		return Map(Position(width_*0.5,height_*0.5),std::min(width_,height_)*0.5,buildings_);
+	}	
 	
 	void ZombieGame::normalizeBuildings() {
 		for (BuildingPtr building : buildings_) {
@@ -251,7 +239,7 @@ namespace zombie {
 
 	void ZombieGame::initGame() {
 		// create map
-		Map map = loadMapInfo("karta.mif",unitId_);
+		Map map = loadMap("buildings.txt",unitId_);//("karta.mif",unitId_);
 		buildings_ = map.getBuildings();
 		for (BuildingPtr building : buildings_) {
 			taskManager_->add(new DrawBuildning(building));
@@ -259,26 +247,22 @@ namespace zombie {
 		}
 
 		// Add human controlled by first input device.
-		Position c = map.getMapCentre();
-		Position s = Position(c.x_-100,c.y_-400);
-		UnitPtr human(new Unit(s.x_,s.y_,0.3,Weapon(35,0.5,8,12),false,++unitId_));
+		Position position = map.generateSpawnPosition();
+		UnitPtr human(new Unit(position.x_,position.y_,0.3,Weapon(35,0.5,8,12),false,++unitId_));
 		viewPosition_ = human->getPosition();
 
 		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r));
 		addHuman(humanPlayer,human);		
 
 		// Add zombie with standard behavior.
-		for (int i = 8; i < 13; i++){
-			for(int j = 8; j < 13; j++) {
-				UnitPtr zombie(new Unit(s.x_+i,s.x_+j,0.3*i+j,Weapon(35,0.5,1,12),true,++unitId_));
-				
-				addNewAi(zombie);
-			}
+		for (int i = 0; i < 20; i++) {
+			Position spawn = map.generateSpawnPosition(human->getPosition(),10,30);
+			UnitPtr zombie(new Unit(spawn.x_,spawn.y_,0.3,Weapon(35,0.5,1,12),true,++unitId_));
+			addNewAi(zombie);
 		}
-		//UnitPtr survivor(new Unit(map.getMapCentre().x_+15-100,map.getMapCentre().x_+15-400,0.3,Weapon(35,0.5,8,12),false,++unitId_));
-		//addNewAi(survivor);
 
-		
+		//UnitPtr survivor(new Unit(map.getMapCentre().x_+15-100,map.getMapCentre().x_+15-400,0.3,Weapon(35,0.5,8,12),false,++unitId_));
+		//addNewAi(survivor);		
 	}
 
 	// ZombieGame

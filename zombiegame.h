@@ -9,11 +9,11 @@
 #include "building.h"
 #include "bullet.h"
 
-
 #include "input.h"
 #include "task.h"
 #include "taskmanager.h"
 #include "aiplayer.h"
+#include "map.h"
 
 #include <SDL.h>
 #include <memory> //std::shared_ptr
@@ -60,11 +60,9 @@ protected:
 	// Add a new ai (unitPtr) to the game.
 	void addNewAi(UnitPtr unitPtr);
 	
-	void loadMap(std::string filename);
+	Map loadMap(std::string filename, int& unitId);
 
-	//void loadMapInfo(std::string filename);
-
-
+	//void updateWindowSize(int width, int height);
 
 	// sets the most south west building in "origo"
 	void normalizeBuildings();
