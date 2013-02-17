@@ -108,6 +108,7 @@
     <ClCompile Include="gamefont.cpp" />
     <ClCompile Include="gamesound.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="physicalunit.cpp" />
     <ClCompile Include="player.cpp" />

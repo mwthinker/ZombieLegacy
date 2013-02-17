@@ -3,6 +3,7 @@
 
 #include "aibehavior.h"
 #include "unit.h"
+#include "building.h"
 
 #include <vector>
 #include <random>
@@ -89,40 +90,9 @@ namespace zombie {
 		std::vector<BuildingPtr> buildings_;
 		double area_;
 	};
+	Map generateMap(int& lastId); 
 
-	Map generateMap(int& lastId) {
-		double side = 15;
-		int nbr = 10;
-
-		std::default_random_engine g;
-		std::uniform_int_distribution<int> distInt(4,7);
-		std::uniform_real_distribution<double> distReal(0,1);
-
-		std::vector<BuildingPtr> buildings;
-		
-		for (int i = 0; i < nbr; ++i) {
-			for (int j = 0; j < nbr; ++j) {
-				
-				double x = i * side;
-				double y = j * side;
-				Position p1(x + distReal(g) * 4, y + distReal(g) * 4, 0);
-				Position p2(x + distReal(g) * 4 + 8, y + distReal(g) * 4, 0);
-				Position p3(x + distReal(g) * 4 + 8, y + distReal(g) * 4 + 8, 0);
-				Position p4(x + distReal(g) * 4 , y + distReal(g) * 4 + 8, 0);
-				
-				std::vector<Position> positions;
-				positions.push_back(p1);
-				positions.push_back(p2);
-				positions.push_back(p3);
-				positions.push_back(p4);
-
-				BuildingPtr building(new Building(positions, ++lastId));
-				buildings.push_back(building);
-			}
-		}
-
-		return Map(Position(),10,buildings);
-	}
+	Map loadMapInfo(std::string filename);
 
 	//std::default_random_engine generator_;
 

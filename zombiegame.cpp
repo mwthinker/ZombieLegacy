@@ -19,6 +19,7 @@
 #include <string>
 #include <fstream>
 
+
 namespace zombie {
 
     ZombieGame::ZombieGame() {
@@ -304,6 +305,8 @@ namespace zombie {
 		physicalEngine_->add(worldBorder_);
 		
 		mapFile.close();
+		std::vector<BuildingPtr> buildings;
+		//return Map(Position(0,0),99,buildings);
 	}
 	
 	void ZombieGame::normalizeBuildings() {

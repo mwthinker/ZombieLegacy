@@ -9,6 +9,7 @@
 #include "building.h"
 #include "bullet.h"
 
+
 #include "input.h"
 #include "task.h"
 #include "taskmanager.h"
@@ -60,6 +61,8 @@ protected:
 	void loadMap(std::string filename);
 
 	void loadMapInfo(std::string filename);
+
+
 
 	// sets the most south west building in "origo"
 	void normalizeBuildings();
