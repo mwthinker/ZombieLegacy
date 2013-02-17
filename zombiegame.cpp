@@ -259,7 +259,9 @@ namespace zombie {
 		}
 
 		// Add human controlled by first input device.
-		UnitPtr human(new Unit(map.getMapCentre().x_-100,map.getMapCentre().y_-400,0.3,Weapon(35,0.5,8,12),false,++unitId_));
+		Position c = map.getMapCentre();
+		Position s = Position(c.x_-100,c.y_-400);
+		UnitPtr human(new Unit(s.x_,s.y_,0.3,Weapon(35,0.5,8,12),false,++unitId_));
 		viewPosition_ = human->getPosition();
 
 		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r));
@@ -268,7 +270,7 @@ namespace zombie {
 		// Add zombie with standard behavior.
 		for (int i = 8; i < 13; i++){
 			for(int j = 8; j < 13; j++) {
-				UnitPtr zombie(new Unit(map.getMapCentre().x_+i-100,map.getMapCentre().x_+j-400,0.3*i+j,Weapon(35,0.5,1,12),true,++unitId_));
+				UnitPtr zombie(new Unit(s.x_+i,s.x_+j,0.3*i+j,Weapon(35,0.5,1,12),true,++unitId_));
 				
 				addNewAi(zombie);
 			}
