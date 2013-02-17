@@ -112,6 +112,12 @@ namespace zombie {
 		// Draw body		
 		drawCircle(p[0],p[1],unit_->radius(),20,true);
 
+		// innerSpawnRadius
+		drawCircle(p[0],p[1],10,20,false);
+		// outerSpawnRadius
+		drawCircle(p[0],p[1],20,20,false);
+
+
 		glColor3d(1,1,1);
 				
 		// Draw view sphere

@@ -25,8 +25,7 @@ namespace zombie {
     ZombieGame::ZombieGame() {
 		taskManager_ = new TaskManager();
 		physicalEngine_ = new PhysicalEngine();
-		std::cout << "tjoho!";
-
+		
 		Task::width = getWidth();
 		Task::height = getHeight();
 		scale_ = 1.0;
@@ -37,10 +36,13 @@ namespace zombie {
 		timeToUpdateView_ = 0.25; // Seconds in which the view is assumed to be constant in order to 
 		                          // speed up calculations.
 
-		timeToUpdateSpawn_ = 3000.0; // Time(ms) between spawns and unit clean ups
+		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups
 		timeSinceSpawn_ = 0.0;
 		indexAiPlayer_ = 0;
-		unitLevel_ = 20;
+		unitLevel_ = 50;
+		innerSpawnRadius_ = 10;
+		outerSpawnRadius_ = 20;
+
 
 		initGame();
 	}
@@ -60,13 +62,12 @@ namespace zombie {
 		if (started_) {
 			
 			double deltaTime = msDeltaTime/1000.0;
-			
 			// Spawn and clean up units
 			if (timeSinceSpawn_ > timeToUpdateSpawn_) {
 				spawnAndCleanUpUnits();
 				timeSinceSpawn_ = 0;				
 			}
-			timeSinceSpawn_ += msDeltaTime;
+			timeSinceSpawn_ += deltaTime;
 
 
 			// (deltaTime) must always be larger than (timeToUpdateView_).
@@ -111,7 +112,7 @@ namespace zombie {
 
 	void ZombieGame::spawnAndCleanUpUnits() {
 		Position center = humanPlayers_[0].second->getPosition();
-		double outerRadius = 15; // <-- FIX TO OUTER RADIUS!
+		
 
 		// delete zombies outside of perimiter ***************
 		UnitPtr temp;
@@ -122,7 +123,7 @@ namespace zombie {
 
 		for (auto it = players_.begin(); it != players_.end(); it++) {
 			Position unitPos = it->second->getPosition();
-			if((unitPos-center)*(unitPos-center) > outerRadius*outerRadius) {
+			if((unitPos-center)*(unitPos-center) > outerSpawnRadius_*outerSpawnRadius_) {
 				// REMOVE UNIT
 				it->second->setIsDead();
 				temp = it->second;
@@ -142,8 +143,7 @@ namespace zombie {
 		int nbrOfZombies = aiPlayers_.size();
 		while (nbrOfZombies < unitLevel_) {
 			// INSERT ZOMBIE
-			Map map;
-			Position p = map.generateSpawnPosition();
+			Position p = map_.generateSpawnPosition(humanPlayers_[0].second->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
 			UnitPtr zombie(new Unit(p.x_,p.y_,0.3,Weapon(35,0.5,1,12),true,++unitId_));
 			addNewAi(zombie);			
 			nbrOfZombies++;
@@ -239,16 +239,16 @@ namespace zombie {
 
 	void ZombieGame::initGame() {
 		// create map
-		Map map = loadMap("buildings.txt",unitId_);//("karta.mif",unitId_);
-		buildings_ = map.getBuildings();
+		map_ = loadMap("buildings.txt",unitId_);//("karta.mif",unitId_);
+		buildings_ = map_.getBuildings();
 		for (BuildingPtr building : buildings_) {
 			taskManager_->add(new DrawBuildning(building));
 			physicalEngine_->add(building);
 		}
 
 		// Add human controlled by first input device.
-		Position position = map.generateSpawnPosition();
-		UnitPtr human(new Unit(position.x_,position.y_,0.3,Weapon(35,0.5,8,12),false,++unitId_));
+		Position position = map_.generateSpawnPosition();
+		UnitPtr human(new Unit(position.x_,position.y_,0.3,Weapon(35,0.2,8,12),false,++unitId_));
 		viewPosition_ = human->getPosition();
 
 		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r));
@@ -256,7 +256,7 @@ namespace zombie {
 
 		// Add zombie with standard behavior.
 		for (int i = 0; i < 20; i++) {
-			Position spawn = map.generateSpawnPosition(human->getPosition(),10,30);
+			Position spawn = map_.generateSpawnPosition(human->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
 			UnitPtr zombie(new Unit(spawn.x_,spawn.y_,0.3,Weapon(35,0.5,1,12),true,++unitId_));
 			addNewAi(zombie);
 		}

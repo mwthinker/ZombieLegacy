@@ -109,6 +109,9 @@ protected:
 
 	int unitLevel_; // Specifies the wanted number of zombies on the map
 	double scale_;
+	double innerSpawnRadius_;
+	double outerSpawnRadius_;
+	Map map_;
 
 	Position viewPosition_;
 };

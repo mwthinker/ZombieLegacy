@@ -39,7 +39,8 @@ namespace zombie {
 			std::random_device rd;
 			std::default_random_engine g(rd());
 			std::uniform_real_distribution<double> distReal(0,1);
-			
+			bool buildingFound = false;
+
 			for(int tries = 0; tries < 100; tries++) {
 				double alfa = distReal(g) * 2 * mw::PI;
 				double dist = distReal(g) * (outerRadie-innerRadie) + innerRadie;
@@ -49,11 +50,12 @@ namespace zombie {
 				for (BuildingPtr building : buildings_) {
 					// if inside one building, break
 					if(building->isInside(testPos.x_,testPos.y_)) {
+						buildingFound = true;
 						break;
-					// Passed all buildings -> return position!
-					} else if (buildings_.back() == building){ 
-						return testPos;
 					}
+				}
+				if(!buildingFound) {
+					return testPos;
 				}
 			}
 			// No success - return dummy position!
