@@ -92,7 +92,7 @@ namespace zombie {
 	};
 	Map generateMap(int& lastId); 
 
-	Map loadMapInfo(std::string filename);
+	Map loadMapInfo(std::string filename, int& unitId);
 
 	//std::default_random_engine generator_;
 

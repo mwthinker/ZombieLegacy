@@ -337,6 +337,10 @@ namespace zombie {
 		glColor3d(1,1,1);
 		// Draw body		
 		drawCircle(p[0],p[1],unit_->radius(),20,false);
+		// ViewRadius
+		drawCircle(p[0],p[1],300,20.0,false);
+		// SpawnRadius
+		drawCircle(p[0],p[1],400,20.0,false);
 
 		glColor3d(1,1,1);
 				

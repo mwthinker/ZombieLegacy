@@ -60,7 +60,7 @@ protected:
 	
 	void loadMap(std::string filename);
 
-	void loadMapInfo(std::string filename);
+	//void loadMapInfo(std::string filename);
 
 
 

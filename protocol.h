@@ -16,7 +16,8 @@ enum Net {NET_ID,
 	NET_SHOOT,
 	NET_RELOAD,
 	NET_NEW_UNIT,
-	NET_INIT
+	NET_
+
 };
 
 mw::Packet& operator<<(mw::Packet& packet, const Weapon& weapon);
