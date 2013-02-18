@@ -31,14 +31,14 @@ namespace zombie {
 		
 		started_ = false;
 		time_ = 0.0;
-		unitId_ = 0;
+		unitId_ = 0; 
 		timeToUpdateView_ = 0.25; // Seconds in which the view is assumed to be constant in order to 
 		                          // speed up calculations.
 
 		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups
 		timeSinceSpawn_ = 0.0;
 		indexAiPlayer_ = 0;
-		unitLevel_ = 5;
+		unitLevel_ = 50;
 		innerSpawnRadius_ = 10;
 		outerSpawnRadius_ = 20;
 
@@ -66,7 +66,6 @@ namespace zombie {
 				timeSinceSpawn_ = 0;				
 			}
 			timeSinceSpawn_ += deltaTime;
-
 
 			// (deltaTime) must always be larger than (timeToUpdateView_).
 			int nbrOfUnitsToUpdateViewOn = (int) (aiPlayers_.size() * (deltaTime/timeToUpdateView_));

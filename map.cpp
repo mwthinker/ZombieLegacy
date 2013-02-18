@@ -84,16 +84,22 @@ namespace zombie {
 			}
 		}
 		// Normalize map
+		
 		for (std::vector<Position>& corners : allCorners) {		
-			for (Position corner : corners) {		
+			for (Position& corner : corners) {		
 				corner.x_ -= maxX; 
 				corner.y_ -= maxY;
 			}
 		}
+		
+		minX = minX-maxX;
+		maxX = 0;		
+		minY = minY-maxY;
+		maxY = 0;
 
 		// GET WORLD SIZE
-		double height = maxX - minX;
-		double width = maxY - minY;
+		double height = maxX + minX;
+		double width = maxY + minY;
 		std::vector<BuildingPtr> buildings;
 		for (std::vector<Position>& corners : allCorners) {			
 			BuildingPtr building = BuildingPtr(new Building(corners,++unitId));
