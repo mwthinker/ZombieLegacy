@@ -37,7 +37,7 @@ namespace zombie {
 		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups
 		timeSinceSpawn_ = 0.0;
 		indexAiPlayer_ = 0;
-		unitLevel_ = 82;
+		unitLevel_ = 5;
 		innerSpawnRadius_ = 10;
 		outerSpawnRadius_ = 20;
 
@@ -236,8 +236,8 @@ namespace zombie {
 
 	void ZombieGame::initGame() {
 		// create map
-		map_ = loadMap("buildings.txt",unitId_);
-		//map_ = loadMapInfo("karta.mif",unitId_);
+		//map_ = loadMap("buildings.txt",unitId_);
+		map_ = loadMapInfo("buildings.mif",unitId_, 20000);
 		buildings_ = map_.getBuildings();
 		for (BuildingPtr building : buildings_) {
 			taskManager_->add(new DrawBuildning(building));

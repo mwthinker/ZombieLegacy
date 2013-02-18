@@ -39,7 +39,7 @@ namespace zombie {
 		return Map(Position(),10,buildings);
 	}
 
-	Map loadMapInfo(std::string filename, int& unitId) {
+	Map loadMapInfo(std::string filename, int& unitId, double scale) {
 		std::fstream mapFile(filename.c_str(),std::fstream::in);
 		double minX = 99999999999999;
 		double maxX = -99999999999999;
@@ -63,6 +63,8 @@ namespace zombie {
 				for (int i=1; i <= nbrLines; i++) {
 					Position p;
 					mapFile >> p.x_ >> p.y_;
+					p.x_ = (p.x_-118) * scale;
+					p.y_ = (p.y_-34) * scale;
 					if (p.x_ < minX) {
 						minX = p.x_;
 					}
