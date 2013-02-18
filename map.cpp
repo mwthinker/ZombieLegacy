@@ -63,8 +63,9 @@ namespace zombie {
 				for (int i=1; i <= nbrLines; i++) {
 					Position p;
 					mapFile >> p.x_ >> p.y_;
-					p.x_ = (p.x_-118) * scale;
-					p.y_ = (p.y_-34) * scale;
+					// Scale map
+					p.x_ = (p.x_) * scale;
+					p.y_ = (p.y_) * scale;
 					if (p.x_ < minX) {
 						minX = p.x_;
 					}
@@ -80,6 +81,13 @@ namespace zombie {
 					corners.push_back(p);
 				}
 				allCorners.push_back(corners);					
+			}
+		}
+		// Normalize map
+		for (std::vector<Position>& corners : allCorners) {		
+			for (Position corner : corners) {		
+				corner.x_ -= maxX; 
+				corner.y_ -= maxY;
 			}
 		}
 
