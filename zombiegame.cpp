@@ -18,6 +18,7 @@
 
 #include <string>
 #include <fstream>
+#include <gl/GLU.h>
 
 namespace zombie {
 
@@ -150,8 +151,15 @@ namespace zombie {
 	void ZombieGame::graphicUpdate(Uint32 msDeltaTime) {
 		// Draw map centered around first humna player.
 		UnitPtr unit = humanPlayers_[0].second;
+
+		glPushMatrix();
+		if (false) {
+			glLoadIdentity();
+			gluLookAt(-5,-5, 5,
+				0,0,0,
+				0,0,1);
+		}
 		
-		glPushMatrix();		
 		glTranslated(0.5, 0.5, 0);
 		drawCircle(0,0,0.5,20,false);
 		glScaled(1.0/50*scale_,1.0/50*scale_,1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
@@ -240,6 +248,7 @@ namespace zombie {
 		map_ = loadMapInfo("buildings.mif",unitId_, 20000);
 		buildings_ = map_.getBuildings();
 		for (BuildingPtr building : buildings_) {
+			//taskManager_->add(new Buildning3DTask(building));
 			taskManager_->add(new DrawBuildning(building));
 			physicalEngine_->add(building);
 		}

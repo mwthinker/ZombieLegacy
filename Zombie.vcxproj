@@ -54,7 +54,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_ttf.lib;enet.lib;ws2_32.lib;winmm.lib;SDL.lib;OpenGl32.lib;MwLibrary.lib;MwNetwork.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_ttf.lib;enet.lib;ws2_32.lib;winmm.lib;SDL.lib;OpenGl32.lib;glu32.lib;MwLibrary.lib;MwNetwork.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMTD;msvcrt.lib</IgnoreSpecificDefaultLibraries>
       <SubSystem>Console</SubSystem>
     </Link>
@@ -71,7 +71,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_ttf.lib;enet.lib;ws2_32.lib;winmm.lib;SDL.lib;OpenGl32.lib;MwLibrary.lib;MwNetwork.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_ttf.lib;enet.lib;ws2_32.lib;winmm.lib;SDL.lib;OpenGl32.lib;glu32.lib;MwLibrary.lib;MwNetwork.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
     </Link>

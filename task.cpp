@@ -432,4 +432,41 @@ namespace zombie {
 		*/
 	}
 
+	Buildning3DTask::Buildning3DTask(const BuildingPtr& building) : Task (1) {
+		buildning_ = building;
+	}
+
+	void Buildning3DTask::excecute(double time) {
+		draw();
+	}
+
+	bool Buildning3DTask::isRunning() const {
+		return !buildning_->isDead();
+	}
+
+	//private
+	void Buildning3DTask::draw() {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);		
+		glColor3d(0.1,0.9,0.4);
+		glBegin(GL_QUAD_STRIP);
+		const auto& corners = buildning_->getCorners();
+		int size = corners.size();
+		for (int i = 0; i < size; ++i) {
+			glVertex3d(corners[i].x_,corners[i].y_,0);
+			glVertex3d(corners[i].x_,corners[i].y_,2);
+		}
+		glEnd();
+
+		glColor3d(0.6,0.2,0.4);
+		Position centre = buildning_->getMassCentre();
+		glBegin(GL_TRIANGLE_FAN);
+		glVertex3d(centre.x_,centre.y_,4);
+		for (int i = 0; i < size; ++i) {
+			glVertex3d(corners[i].x_,corners[i].y_,0);
+		}
+		glEnd();
+		glDisable(GL_BLEND);
+	}
+
 } // Namespace zombie.

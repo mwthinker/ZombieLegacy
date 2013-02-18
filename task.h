@@ -154,6 +154,18 @@ namespace zombie {
 		mw::Text ammo_;
 		Player player_;
 	};
+
+	class Buildning3DTask : public Task {
+	public:
+		Buildning3DTask(const BuildingPtr& building);
+		void excecute(double time) override;		
+		bool isRunning() const override;
+
+	private:
+		void draw();
+
+		BuildingPtr buildning_;
+	};
 }
 
 #endif // TASK_H

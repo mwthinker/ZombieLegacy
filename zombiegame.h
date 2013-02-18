@@ -49,6 +49,9 @@ public:
 
 	void updateSize(int width, int height);
 protected:
+	void reshapeWindowsOpenGL(int width, int height) {		
+	}
+
 	// Add a human player (unitPtr) to the game.
 	void addHuman(HumanPlayerPtr human, UnitPtr unitPtr);
 
