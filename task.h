@@ -150,6 +150,7 @@ namespace zombie {
 		UnitPtr unit_;
 		double lastTime_;
 		mw::Text name_;
+		mw::Text life_;
 		mw::Text ammo_;
 		Player player_;
 	};

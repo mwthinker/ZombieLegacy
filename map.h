@@ -32,7 +32,7 @@ namespace zombie {
 		}
 
 		Position generateSpawnPosition() const {
-			return Position();
+			return generateSpawnPosition(border_->getCentrePosition(),0,border_->getRadius()/2);
 		}
 
 		Position generateSpawnPosition(Position p, double innerRadie, double outerRadie) const {

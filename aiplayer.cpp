@@ -13,6 +13,7 @@ namespace zombie {
 		//behavior_ = AiBehaviorPtr(new AgressiveZombieBehavior());
 		//behavior_ = AiBehaviorPtr(new BoringZombieBehavior());
 		behavior_ = AiBehaviorPtr(new ZombieBehavior());
+		
 	}
 
 	Input AiPlayer::currentInput() {

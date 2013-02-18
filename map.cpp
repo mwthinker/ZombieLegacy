@@ -82,16 +82,13 @@ namespace zombie {
 		}
 
 		// GET WORLD SIZE
-			double height = maxX - minX;
-			double width = maxY - minY;
-			std::vector<BuildingPtr> buildings;
+		double height = maxX - minX;
+		double width = maxY - minY;
+		std::vector<BuildingPtr> buildings;
 		for (std::vector<Position>& corners : allCorners) {			
 			BuildingPtr building = BuildingPtr(new Building(corners,++unitId));
 			buildings.push_back(building);
 		}
-		
-				
-		
 		
 		mapFile.close();
 		return Map(Position((minX+maxX)/2,(minY+maxY)/2),std::min(height,width)/2,buildings);

@@ -373,6 +373,7 @@ namespace zombie {
 		lastTime_ = 0.0;
 		name_ = mw::Text("", font15);
 		ammo_ = mw::Text("", font15);
+		life_ = mw::Text("", font15);
 		player_ = player;
 	}
 
@@ -390,11 +391,15 @@ namespace zombie {
 		glColor3d(1,1,1);
 
 		name_.setText("Human");
-		
+		life_.setText("Life");
+
 		std::stringstream stream;
 		Weapon w = unit_->getWeapon();
 		stream << w.getBulletsInWeapon() << " (" << w.clipSize() << ")";
 		ammo_.setText(stream.str());
+		stream.str("");
+		stream <<  " (" << unit_->healthPoints() << ")";
+		life_.setText(stream.str());
 		
 		glPushMatrix();		
 		glMatrixMode(GL_PROJECTION);
@@ -406,12 +411,19 @@ namespace zombie {
 		glLoadIdentity();
 
 		//glScaled(100,100,1);
-		glTranslated(0,50,0);
+		glTranslated(0,75,0);
 		name_.draw();
+
+
 		//glTranslated(0,-font15->getCharacterSize()*1.2,0);
 		glTranslated(0,-25,0);
 
 		ammo_.draw();
+		
+		glTranslated(0,-25,0);
+
+		life_.draw();
+		
 		glPopMatrix();
 		
 		/*

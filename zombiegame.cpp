@@ -37,7 +37,7 @@ namespace zombie {
 		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups
 		timeSinceSpawn_ = 0.0;
 		indexAiPlayer_ = 0;
-		unitLevel_ = 50;
+		unitLevel_ = 82;
 		innerSpawnRadius_ = 10;
 		outerSpawnRadius_ = 20;
 
@@ -236,7 +236,8 @@ namespace zombie {
 
 	void ZombieGame::initGame() {
 		// create map
-		map_ = loadMap("buildings.txt",unitId_);//("karta.mif",unitId_);
+		map_ = loadMap("buildings.txt",unitId_);
+		//map_ = loadMapInfo("karta.mif",unitId_);
 		buildings_ = map_.getBuildings();
 		for (BuildingPtr building : buildings_) {
 			taskManager_->add(new DrawBuildning(building));
@@ -257,9 +258,12 @@ namespace zombie {
 			UnitPtr zombie(new Unit(spawn.x_,spawn.y_,0.3,Weapon(35,0.5,1,12),true,++unitId_));
 			addNewAi(zombie);
 		}
-
-		//UnitPtr survivor(new Unit(map.getMapCentre().x_+15-100,map.getMapCentre().x_+15-400,0.3,Weapon(35,0.5,8,12),false,++unitId_));
-		//addNewAi(survivor);		
+		
+		for (int i = 0; i < 5; i++) {
+			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,innerSpawnRadius_);
+			UnitPtr survivor(new Unit(spawn.x_,spawn.x_,spawn.x_,Weapon(35,0.5,8,12),false,++unitId_));
+			addNewAi(survivor);
+		}	
 	}
 
 	void ZombieGame::zoom(double scale) {
