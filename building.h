@@ -179,10 +179,14 @@ protected:
 		longestSide_ = longestDiff;
 	}
 
+	// Calculates the mass centre.
+	// However, it's not the mass centre for the building that is calculated 
+	// it's the mass centre for the vertexes. I most cases it should work as 
+	// a good enough  approximation.
 	Position calculateMassCenter() const {
 		Position centre_;
 		for (Position p : corners_) {
-			centre_ += p;
+			centre_ += p / corners_.size();
 		}
 		return centre_;
 	}
