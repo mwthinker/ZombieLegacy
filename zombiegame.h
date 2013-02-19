@@ -112,6 +112,7 @@ protected:
 	Map map_;
 
 	Position viewPosition_;
+	bool graphic3D_;
 };
 
 } // namespace zombie

@@ -94,6 +94,7 @@ private:
 
     void reshapeWindowsOpenGL() {
 		//glEnable(GL_LINE_SMOOTH);
+		glEnable (GL_DEPTH_TEST);
 		glHint(GL_LINE_SMOOTH_HINT,GL_NICEST);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();

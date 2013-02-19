@@ -409,12 +409,11 @@ namespace zombie {
 		stream <<  " (" << unit_->healthPoints() << ")";
 		life_.setText(stream.str());
 		
-		glPushMatrix();		
+		glPushMatrix();
 		glMatrixMode(GL_PROJECTION);
 		glPushMatrix();
 		glLoadIdentity();
-		glOrtho(0,Task::width,0,Task::height,-1,1);
-		glPopMatrix();
+		glOrtho(0,Task::width,0,Task::height,-1,1);		
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
@@ -432,6 +431,9 @@ namespace zombie {
 
 		life_.draw();
 		
+		glMatrixMode(GL_PROJECTION);
+		glPopMatrix();
+		glMatrixMode(GL_MODELVIEW);
 		glPopMatrix();
 		
 		/*
@@ -456,20 +458,23 @@ namespace zombie {
 	void Buildning3DTask::draw() {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);		
+		
+		// Walls.
 		glColor3d(0.1,0.9,0.4);
 		glBegin(GL_QUAD_STRIP);
 		const auto& corners = buildning_->getCorners();
 		int size = corners.size();
 		for (int i = 0; i < size; ++i) {
 			glVertex3d(corners[i].x_,corners[i].y_,0);
-			glVertex3d(corners[i].x_,corners[i].y_,2);
+			glVertex3d(corners[i].x_,corners[i].y_,1);
 		}
 		glEnd();
 
+		// Roof.
 		glColor3d(0.6,0.2,0.4);
 		Position centre = buildning_->getMassCentre();
 		glBegin(GL_TRIANGLE_FAN);
-		glVertex3d(centre.x_,centre.y_,4);
+		glVertex3d(centre.x_,centre.y_,1);
 		for (int i = 0; i < size; ++i) {
 			glVertex3d(corners[i].x_,corners[i].y_,0);
 		}
