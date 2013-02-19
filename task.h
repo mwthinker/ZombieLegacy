@@ -56,6 +56,7 @@ namespace zombie {
 		void excecute(double time) override;
 		bool isRunning() const override;
 
+		void unitEventHandler(Unit::UnitEvent unitEvent);
 	private:
 		void draw(double timestep);
 
@@ -68,6 +69,7 @@ namespace zombie {
 		void excecute(double time) override;		
 		bool isRunning() const override;
 
+		void unitEventHandler(Unit::UnitEvent unitEvent);
 	private:
 		void draw(double timestep);
 
@@ -143,7 +145,6 @@ namespace zombie {
 		HumanStatus(const UnitPtr& unit, Player player);
 		void excecute(double time) override;
 		bool isRunning() const override;
-
 	private:
 		void draw(double timestep);
 

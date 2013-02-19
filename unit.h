@@ -10,6 +10,8 @@
 #include "physicalunit.h"
 #include "state.h"
 #include "bullet.h"
+
+#include <functional>
 #include <queue>
 
 namespace zombie {
@@ -81,10 +83,10 @@ public:
 		return weapon_;
 	}
 
-	bool pollEvent(UnitEvent& unitEvent);
-private:	
-	//UnitEvent events_
-	std::queue<UnitEvent> unitEvents_;
+	void addEventHandler(std::function<void(UnitEvent)> handler);
+
+private:
+	void sendEventToHandlers(UnitEvent unitEvent) const;
 
 	double calculateDifferenceBetweenAngles(double firstAngle, double secondAngle);
 
@@ -108,6 +110,7 @@ private:
 	bool isInfected_;
 
 	std::queue<Bullet> bullets_;
+	std::vector<std::function<void(UnitEvent)>> eventHandlers_;
 };
 
 typedef std::shared_ptr<Unit> UnitPtr;

@@ -95,7 +95,12 @@ namespace zombie {
 	}
 
 	HumanAnimation::HumanAnimation(const UnitPtr& unit) : Task (1) {
-		unit_ = unit;	}
+		unit_ = unit;
+		//unit->addEventHandler(std::bind(&HumanAnimation::unitEventHandler,this));
+		unit->addEventHandler([&](Unit::UnitEvent unitEvent){
+			this->unitEventHandler(unitEvent);
+		});
+	}
 
 	void HumanAnimation::excecute(double time) {
 		draw(0.0);
@@ -128,36 +133,40 @@ namespace zombie {
 		glVertex2d(p[0]+0.1*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]+0.1*std::sin(unit_->moveDirection())*unit_->viewDistance());		
 		
 		glEnd();
-		
-		Unit::UnitEvent unitEvent_;
-		while (unit_->pollEvent(unitEvent_)) {
-			switch (unitEvent_) {
-			case Unit::UnitEvent::SHOOT:
-				{
-					// In order to be able to play even if the sound is not finnished!
-					mw::Sound tmp = shot;				
-					tmp.play();
-				}
-				break;
-			case Unit::UnitEvent::RELOADING:
-				{
-					// In order to be able to play even if the sound is not finnished!
-					mw::Sound tmp = reload;				
-					tmp.play();
-				}
-				break;
-			case Unit::UnitEvent::DIE:
-				break;
-			}
-		}
 		/*
 		// Draw small view sphere
 		drawCircle(p[0],p[1],unit_->smallViewDistance(),20,false);
 		*/
 	}
 
+	void HumanAnimation::unitEventHandler(Unit::UnitEvent unitEvent) {
+		std::cout << unitEvent << "\n";
+		switch (unitEvent) {
+		case Unit::UnitEvent::SHOOT:
+			{
+				// In order to be able to play even if the sound is not finnished!
+				mw::Sound tmp = shot;				
+				tmp.play();
+			}
+			break;
+		case Unit::UnitEvent::RELOADING:
+			{
+				// In order to be able to play even if the sound is not finnished!
+				mw::Sound tmp = reload;				
+				tmp.play();
+			}
+			break;
+		case Unit::UnitEvent::DIE:
+			break;
+		}
+	}
+
 	ZombieAnimation::ZombieAnimation(const UnitPtr& unit) : Task (1) {
 		unit_ = unit;
+		//unit->addEventHandler(std::bind(&ZombieAnimation::unitEventHandler,this,Unit::UnitEvent::DIE));
+		unit->addEventHandler([&](Unit::UnitEvent unitEvent){
+			this->unitEventHandler(unitEvent);
+		});
 	}
 
 	void ZombieAnimation::excecute(double time) {
@@ -196,23 +205,22 @@ namespace zombie {
 		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()+3.14/2)+0.06*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]-unit_->radius()*std::sin(unit_->moveDirection()+3.14/2)+0.06*std::sin(unit_->moveDirection())*unit_->viewDistance());		
 
 		glEnd();
-
-		Unit::UnitEvent unitEvent;
-		while (unit_->pollEvent(unitEvent)) {
-			switch (unitEvent) {
-			case Unit::UnitEvent::SHOOT:
-				//attack_.play();
-				break;
-			case Unit::UnitEvent::RELOADING:
-				break;
-			case Unit::UnitEvent::DIE:
-				break;
-			}
-		}
 		/*
 		// Draw small view sphere
 		drawCircle(p[0],p[1],unit_->smallViewDistance(),20,false);
 		*/
+	}
+
+	void ZombieAnimation::unitEventHandler(Unit::UnitEvent unitEvent) {
+		switch (unitEvent) {
+		case Unit::UnitEvent::SHOOT:
+			//attack_.play();
+			break;
+		case Unit::UnitEvent::RELOADING:
+			break;
+		case Unit::UnitEvent::DIE:
+			break;
+		}
 	}
 
 	SurvivorAnimation::SurvivorAnimation(const UnitPtr& unit) : Task (1) {
