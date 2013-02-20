@@ -38,7 +38,7 @@ namespace zombie {
 		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups
 		timeSinceSpawn_ = 0.0;
 		indexAiPlayer_ = 0;
-		unitLevel_ = 100;
+		unitLevel_ = 200;
 		innerSpawnRadius_ = 10;
 		outerSpawnRadius_ = 20;
 
@@ -251,10 +251,11 @@ namespace zombie {
 
 	void ZombieGame::initGame() {
 		graphic3D_ = false;
+		
 
 		// create map
-		//map_ = loadMap("buildings.txt",unitId_);
-		map_ = loadMapInfo("buildings.mif",unitId_, 20000);
+		map_ = loadMap("buildings.txt",unitId_);
+		//map_ = loadMapInfo("buildings.mif",unitId_, 20000);
 		buildings_ = map_.getBuildings();
 		for (BuildingPtr building : buildings_) {
 			if (graphic3D_) {
@@ -264,7 +265,7 @@ namespace zombie {
 			}			
 			physicalEngine_->add(building);
 		}
-
+		taskManager_->add(new MapDraw(map_));
 		// Add human controlled by first input device.
 		Position position = map_.generateSpawnPosition();
 		UnitPtr human(new Unit(position.x_,position.y_,0.3,Weapon(35,0.2,8,12),false,++unitId_));

@@ -482,4 +482,21 @@ namespace zombie {
 		glDisable(GL_BLEND);
 	}
 
+	MapDraw::MapDraw(const Map& map) : Task(1), map_(map) {
+		grass_ = drawGrass;
+	}
+
+	void MapDraw::draw() {	
+		grass_.draw();
+	}
+
+	void MapDraw::excecute(double time) {
+		draw();
+	}		
+	bool MapDraw::isRunning() const {
+		return true;
+	}
+
+	
+
 } // Namespace zombie.

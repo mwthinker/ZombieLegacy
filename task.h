@@ -4,6 +4,8 @@
 #include <vector>
 #include <queue>
 #include <SDL_opengl.h>
+#include "map.h"
+#include "gamesprite.h"
 
 #include "unit.h"
 #include "building.h"
@@ -167,6 +169,22 @@ namespace zombie {
 
 		BuildingPtr buildning_;
 	};
+
+	class MapDraw : public Task {
+	public:
+		MapDraw(const Map& map);
+		void excecute(double time) override;		
+		bool isRunning() const override;
+
+	private:
+		void draw();
+
+		const Map& map_;
+		mw::Sprite grass_;
+
+
+	};
+
 }
 
 #endif // TASK_H

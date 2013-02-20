@@ -82,6 +82,7 @@
     <ClInclude Include="building.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="gamefont.h" />
+    <ClInclude Include="gamesprite.h" />
     <ClInclude Include="inputkeyboard.h" />
     <ClInclude Include="humanplayer.h" />
     <ClInclude Include="map.h" />
@@ -108,6 +109,7 @@
     <ClCompile Include="aiplayer.cpp" />
     <ClCompile Include="gamefont.cpp" />
     <ClCompile Include="gamesound.cpp" />
+    <ClCompile Include="gamesprite.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="object.cpp" />
