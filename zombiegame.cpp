@@ -15,7 +15,7 @@
 #include <SDL.h>
 #include <memory> //std::shared_ptr
 #include <vector>
-
+ 
 #include <string>
 #include <fstream>
 #include <gl/GLU.h>
