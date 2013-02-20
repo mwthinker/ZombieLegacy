@@ -38,7 +38,7 @@ namespace zombie {
 		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups
 		timeSinceSpawn_ = 0.0;
 		indexAiPlayer_ = 0;
-		unitLevel_ = 15;
+		unitLevel_ = 100;
 		innerSpawnRadius_ = 10;
 		outerSpawnRadius_ = 20;
 
@@ -74,7 +74,7 @@ namespace zombie {
 				indexAiPlayer_ = (indexAiPlayer_ + 1) % aiPlayers_.size();
 				AiPlayerPtr& aiPlayer = aiPlayers_[indexAiPlayer_].first;					
 				UnitPtr& unit = aiPlayers_[indexAiPlayer_].second;
-				std::vector<UnitPtr> unitsInView = calculateUnitsInView(unit);
+				std::vector<UnitPtr> unitsInView;// = calculateUnitsInView(unit);
 				aiPlayer->updateUnitsInView(unitsInView);
 			}
 
@@ -95,7 +95,7 @@ namespace zombie {
 				Bullet bullet;
 				// Alive? And shooting?
 				if (!unit->isDead() && unit->pollShot(bullet)) {
-					doShotDamage(unit, bullet);
+					//doShotDamage(unit, bullet);
 				}
 			}		
 
@@ -274,7 +274,7 @@ namespace zombie {
 		addHuman(humanPlayer,human);		
 
 		// Add zombie with standard behavior.
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 40; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
 			UnitPtr zombie(new Unit(spawn.x_,spawn.y_,0.3,Weapon(35,0.5,1,12),true,++unitId_));
 			addNewAi(zombie);
