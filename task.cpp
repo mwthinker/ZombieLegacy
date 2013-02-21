@@ -68,7 +68,7 @@ namespace zombie {
 	}
 
 
-	DrawBuildning::DrawBuildning(const BuildingPtr& building) : Task (1) {
+	DrawBuildning::DrawBuildning(const BuildingPtr& building) : Task (3) {
 		buildning_ = building;
 	}
 
@@ -94,7 +94,7 @@ namespace zombie {
 		glDisable(GL_BLEND);
 	}
 
-	HumanAnimation::HumanAnimation(const UnitPtr& unit) : Task (1) {
+	HumanAnimation::HumanAnimation(const UnitPtr& unit) : Task (2) {
 		unit_ = unit;
 		//unit->addEventHandler(std::bind(&HumanAnimation::unitEventHandler,this));
 		unit->addEventHandler([&](Unit::UnitEvent unitEvent){
@@ -161,7 +161,7 @@ namespace zombie {
 		}
 	}
 
-	ZombieAnimation::ZombieAnimation(const UnitPtr& unit) : Task (1) {
+	ZombieAnimation::ZombieAnimation(const UnitPtr& unit) : Task (2) {
 		unit_ = unit;
 		//unit->addEventHandler(std::bind(&ZombieAnimation::unitEventHandler,this,Unit::UnitEvent::DIE));
 		unit->addEventHandler([&](Unit::UnitEvent unitEvent){
@@ -223,7 +223,7 @@ namespace zombie {
 		}
 	}
 
-	SurvivorAnimation::SurvivorAnimation(const UnitPtr& unit) : Task (1) {
+	SurvivorAnimation::SurvivorAnimation(const UnitPtr& unit) : Task (2) {
 		unit_ = unit;
 	}
 
@@ -376,7 +376,7 @@ namespace zombie {
 		*/
 	}
 
-	HumanStatus::HumanStatus(const UnitPtr& unit, Player player) : Task (1) {
+	HumanStatus::HumanStatus(const UnitPtr& unit, Player player) : Task (10) {
 		unit_ = unit;
 		lastTime_ = 0.0;
 		name_ = mw::Text("", font15);
@@ -486,8 +486,12 @@ namespace zombie {
 		grass_ = drawGrass;
 	}
 
-	void MapDraw::draw() {	
+	void MapDraw::draw() {
+		glPushMatrix();
+		glTranslated(0.5,0.5,0);
+		glScaled(10,10,1);		
 		grass_.draw();
+		glPopMatrix();
 	}
 
 	void MapDraw::excecute(double time) {

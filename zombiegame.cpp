@@ -254,6 +254,7 @@ namespace zombie {
 
 		// create map
 		map_ = loadMap("buildings.txt",unitId_);
+		taskManager_->add(new MapDraw(map_));
 		//map_ = loadMapInfo("buildings.mif",unitId_, 20000);
 		buildings_ = map_.getBuildings();
 		for (BuildingPtr building : buildings_) {
@@ -264,7 +265,7 @@ namespace zombie {
 			}			
 			physicalEngine_->add(building);
 		}
-		taskManager_->add(new MapDraw(map_));
+		
 		// Add human controlled by first input device.
 		Position position = map_.generateSpawnPosition();
 		UnitPtr human(new Unit(position.x_,position.y_,0.3,Weapon(35,0.2,8,12),false,++unitId_));
