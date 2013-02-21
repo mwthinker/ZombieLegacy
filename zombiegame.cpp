@@ -38,7 +38,7 @@ namespace zombie {
 		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups
 		timeSinceSpawn_ = 0.0;
 		indexAiPlayer_ = 0;
-		unitLevel_ = 200;
+		unitLevel_ = 100;
 		innerSpawnRadius_ = 10;
 		outerSpawnRadius_ = 20;
 
@@ -74,7 +74,7 @@ namespace zombie {
 				indexAiPlayer_ = (indexAiPlayer_ + 1) % aiPlayers_.size();
 				AiPlayerPtr& aiPlayer = aiPlayers_[indexAiPlayer_].first;					
 				UnitPtr& unit = aiPlayers_[indexAiPlayer_].second;
-				std::vector<UnitPtr> unitsInView;// = calculateUnitsInView(unit);
+				std::vector<UnitPtr> unitsInView = calculateUnitsInView(unit);
 				aiPlayer->updateUnitsInView(unitsInView);
 			}
 
@@ -95,7 +95,7 @@ namespace zombie {
 				Bullet bullet;
 				// Alive? And shooting?
 				if (!unit->isDead() && unit->pollShot(bullet)) {
-					//doShotDamage(unit, bullet);
+					doShotDamage(unit, bullet);
 				}
 			}		
 
@@ -251,7 +251,6 @@ namespace zombie {
 
 	void ZombieGame::initGame() {
 		graphic3D_ = false;
-		
 
 		// create map
 		map_ = loadMap("buildings.txt",unitId_);
@@ -324,7 +323,7 @@ namespace zombie {
 			
 			for (BuildingPtr& building : buildings_) {
 				// Hits a building?
-				if (worldBorder_ != building && building->isInside(p.x_,p.y_)) {
+				if (building->isInside(p.x_,p.y_)) {
 					hit = true;
 					break;
 				}

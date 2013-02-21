@@ -12,28 +12,6 @@
 
 namespace zombie {
 
-	class E {
-
-	};
-
-	class Grid {
-	public:
-		Grid(double leftCoord, double rightCoord, double downCoord, double upCoord, double sqaureRes) {
-		}
-
-		void update() {
-
-		}
-
-		void getAllInRange(double x, double y, double range) {
-
-		}
-
-	private:
-		typedef std::vector<E*> Square;
-		typedef std::vector<E*> Square;
-	};
-
 	class StaticPhyscalUnit {
 	public:
 		virtual ~StaticPhyscalUnit() {
@@ -97,7 +75,7 @@ namespace zombie {
 			// Calculates all contact interaction between units and buildings.
 			for (PhUnitList::iterator it1 = units_.begin(); it1 != units_.end(); ++it1) {			
 				PhUnit& u1 = *it1;
-				/*
+				
 				// Interaction with other units.
 				auto it2 = it1; 
 				for (++it2; it2 != units_.end(); ++it2) {
@@ -106,8 +84,7 @@ namespace zombie {
 					if (inside(u1.first,u2.first)) {
 						addForceDueToCollision(u1,u2);
 					}
-				}
-				*/
+				}				
 				
 				// Interaction with static objects.
 				for (StaticPhyscalUnitPtr& staticUnit : staticUnits_) {
@@ -115,7 +92,7 @@ namespace zombie {
 					if (staticUnit->isInsideApproximate(p.x_,p.y_,u1.first->radius())) {
 						addForceDueToCollision(u1,staticUnit);
 					}
-				}				
+				}
 			}
 
 			// Add friction and viscosity to all units.
@@ -134,7 +111,7 @@ namespace zombie {
 	private:	
 		typedef std::list<StaticPhyscalUnitPtr> StaticPhUnitList;
 		typedef std::pair<PhysicalUnitPtr, Vec3> PhUnit;
-		typedef std::list<PhUnit> PhUnitList;
+		typedef std::list<PhUnit> PhUnitList;		
 
 		friend bool operator==(const PhUnit&, const PhUnit&);
 

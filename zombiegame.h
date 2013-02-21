@@ -4,6 +4,7 @@
 #include "inputkeyboard.h"
 //#include "inputjoystick.h"
 
+#include "quadtree.h"
 #include "physicalengine.h"
 #include "unit.h"
 #include "building.h"
@@ -97,8 +98,7 @@ protected:
 	std::vector<PairPlayerUnit> players_; // All units.
 	
 	PhysicalEngine* physicalEngine_;
-	std::vector<BuildingPtr> buildings_; // All buildings.
-	BuildingPtr worldBorder_;
+	std::vector<BuildingPtr> buildings_; // All buildings.	
 
 	int indexAiPlayer_;
 	double timeToUpdateView_;

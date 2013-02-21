@@ -13,7 +13,7 @@ namespace zombie {
 class ZombieWindow : public mw::GameWindow {
 public:
     ZombieWindow() : mw::GameWindow(500,500,"Zombie","images/icon.bmp"), zombieGame_(500,500) {
-        setResizable(false);
+        setResizable(true);
         setTimeStep(20);
 
 		setUnicodeInputEnable(true);
