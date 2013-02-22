@@ -33,6 +33,9 @@ namespace zombie {
 		// vector is directed towards the figure. If no penetration occurs the zero vector 
 		// is returned.
 		virtual Vec3 penetration(double x, double y, double radius) const = 0;
+
+		virtual double getRadius() const = 0;
+		virtual Position getPosition() const = 0;
 	};
 
 	typedef std::shared_ptr<PhysicalUnitInterface> PhysicalUnitPtr;

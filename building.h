@@ -40,8 +40,12 @@ public:
 		return centre_.normalize()*radius_ - Position(x,y);
 	}
 
-	double getRadius() const {
+	double getRadius() const override {
 		return radius_;
+	}
+
+	Position getPosition() const override {
+		return centre_;
 	}
 private:
 	Position centre_;
@@ -165,18 +169,36 @@ public:
 	Position getMassCentre() const {
 		return massCentre_;
 	}
+
+	double getRadius() const override {
+		return radius_;
+	}
+	
+	Position getPosition() const override {
+		return position_;
+	}
 protected:
 	void init() {
 		massCentre_ = calculateMassCenter();
 
 		double longestDiff = 0;
-		for (Position p : corners_) {			
+		for (Position p : corners_) {
 			double tmp = (massCentre_ - p).magnitude();
 			if (tmp > longestDiff) {
 				longestDiff = tmp;
 			}
 		}
 		longestSide_ = longestDiff;
+		
+		double xLeft=9999999, xRight=-9999999, yLeft=9999999, yRight=9999999;
+		for (Position p : corners_) {
+			xRight = std::max(xRight,p.x_);
+			yRight = std::max(yRight,p.y_);
+			xLeft = std::min(xLeft,p.x_);
+			yLeft = std::min(yLeft,p.y_);
+		}
+		position_ = Position((xLeft + xRight)/2,(yLeft + yRight)/2);
+		radius_ = (position_ - Position(xLeft,yLeft)).magnitude();
 	}
 
 	// Calculates the mass centre.
@@ -190,6 +212,9 @@ protected:
 		}
 		return centre_;
 	}
+
+	Position position_;
+	double radius_;
 
 	std::vector<Position> corners_;	
 	double longestSide_;
