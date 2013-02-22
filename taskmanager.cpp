@@ -15,19 +15,14 @@ TaskManager::~TaskManager() {
 }
 
 void TaskManager::add(Task* task) {
-	tasks_.push_back(task);
-
-tasks_.sort([] (Task* task1, Task* task2 ) {
-		// Is active?
-		
-		
-
-
-		if (task1->getDrawOrder() <= task2->getDrawOrder()) {			
-			return false;
+	auto it = tasks_.begin();
+	for (; it != tasks_.end(); ++it) {
+		if (task->getDrawOrder() < (*it)->getDrawOrder()) {
+			break;
 		}
-		return true;
-	});
+	}
+
+	tasks_.insert(it, task);
 }
 
 void TaskManager::update(double deltaTime) {

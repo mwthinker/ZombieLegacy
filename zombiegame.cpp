@@ -157,6 +157,7 @@ namespace zombie {
 
 		// 3D?
 		if (graphic3D_) {
+			glEnable (GL_DEPTH_TEST);
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
 			glOrtho(-10, 10, -10, 10, -10, 100);

@@ -496,11 +496,10 @@ namespace zombie {
 
 	void MapDraw::excecute(double time) {
 		draw();
-	}		
+	}
+
 	bool MapDraw::isRunning() const {
 		return true;
 	}
-
-	
 
 } // Namespace zombie.
