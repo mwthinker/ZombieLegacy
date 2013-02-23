@@ -486,12 +486,21 @@ namespace zombie {
 		grass_ = drawGrass;
 	}
 
-	void MapDraw::draw() {
-		glPushMatrix();
-		glTranslated(0.5,0.5,0);
-		glScaled(10,10,1);		
-		grass_.draw();
-		glPopMatrix();
+	void MapDraw::draw() {		
+		for (int x = static_cast<int>( map_.minX()); x<static_cast<int>( map_.maxX()); x=x+10) {
+			for (int y = static_cast<int>( map_.minY()); y<static_cast<int>( map_.maxY()); y=y+10) {
+				glPushMatrix();
+				glColor3d(0.4,0.4,0.4);
+				glTranslated(0.5,0.5,0);
+				glTranslated(x,y,0);
+				glScaled(10,10,1);	 	
+				grass_.draw();
+				glPopMatrix();
+			}
+		}
+		
+
+
 	}
 
 	void MapDraw::excecute(double time) {
@@ -499,6 +508,46 @@ namespace zombie {
 	}
 
 	bool MapDraw::isRunning() const {
+		return true;
+	}
+
+
+
+
+
+	RoadDraw::RoadDraw(const Map& map) : Task(1), map_(map) {
+		road_ = drawRoad;
+	}
+
+	void RoadDraw::draw() {
+		int xStart =  (map_.getRoads()[0].x_);
+		int yStart =  (map_.getRoads()[0].y_);
+		int xEnd = (map_.getRoads()[1].x_);
+		int yEnd =  (map_.getRoads()[1].y_);
+
+		double x = xStart;
+		double y = yStart;
+
+		for (int i = 1; i < 100; i++) {
+				x = x+i*(xStart-xEnd)/100;
+				y = y+i*(yStart-yEnd)/100;
+				glPushMatrix();
+				glColor3d(0.4,0.4,0.4);
+				glTranslated(0.5,0.5,0);
+				glTranslated(x,y,0);
+				glRotated(atan((yStart-yEnd)/(xStart-xEnd)),x,y,0);
+				glScaled(2,2,1);	 	
+				road_.draw();
+				glPopMatrix();
+			
+		}
+	}
+
+	void RoadDraw::excecute(double time) {
+		draw();
+	}
+
+	bool RoadDraw::isRunning() const {
 		return true;
 	}
 

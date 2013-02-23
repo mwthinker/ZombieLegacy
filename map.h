@@ -21,6 +21,14 @@ namespace zombie {
 			border_ = std::shared_ptr<Border>(new Border(mapCentre_, radius));
 			buildings_ = buildings;
 			area_ = radius*radius*mw::PI;
+			minX_ = mapCentre_.x_ - radius; 
+			minY_ = mapCentre_.y_ - radius;
+			maxX_ = mapCentre_.x_ + radius;
+			maxY_ = mapCentre_.y_ + radius;
+			road_.push_back(Position(10,10));
+			road_.push_back(Position(25,25));
+
+
 		}
 
 		Map() {
@@ -70,8 +78,28 @@ namespace zombie {
 			return buildings_;
 		}
 
+		const std::vector<Position>& getRoads() const {
+			return road_;
+		}
+
 		double getMapArea() const {
 			return area_;
+		}
+
+		double minX() const {
+			return minX_;
+		}
+
+		double minY() const {
+			return minY_;
+		}
+
+		double maxX() const {
+			return maxX_;
+		}
+
+		double maxY() const {
+			return maxY_;
 		}
 	private:
 		std::shared_ptr<Border> border_;
@@ -90,7 +118,12 @@ namespace zombie {
 		*/
 				
 		std::vector<BuildingPtr> buildings_;
+		std::vector<Position> road_;
 		double area_;
+		double minX_;
+		double minY_;
+		double maxX_;
+		double maxY_;
 	};
 	Map generateMap(int& lastId); 
 
