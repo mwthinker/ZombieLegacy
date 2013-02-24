@@ -520,27 +520,34 @@ namespace zombie {
 	}
 
 	void RoadDraw::draw() {
-		int xStart =  (map_.getRoads()[0].x_);
-		int yStart =  (map_.getRoads()[0].y_);
-		int xEnd = (map_.getRoads()[1].x_);
-		int yEnd =  (map_.getRoads()[1].y_);
 
-		double x = xStart;
-		double y = yStart;
+		std::vector<LineFeature> l = map_.getRoads();
+		
+		for (auto it = l.begin(); it != l.end(); it++) {
+			int xStart =  it->getStart().x_;
+			int yStart =  it->getStart().y_;
+			int xEnd = it->getEnd().x_;
+			int yEnd =  it->getEnd().y_;
 
-		for (int i = 1; i < 100; i++) {
-				x = x+i*(xStart-xEnd)/100;
-				y = y+i*(yStart-yEnd)/100;
+			double x = xStart;
+			double y = yStart;
+
+			for (int i = 1; i < 100; i++) {
 				glPushMatrix();
 				glColor3d(0.4,0.4,0.4);
 				glTranslated(0.5,0.5,0);
 				glTranslated(x,y,0);
-				glRotated(atan((yStart-yEnd)/(xStart-xEnd)),x,y,0);
+				//std::cout<<atan((yStart-yEnd)/(xStart-xEnd));
+				glRotated(45,0,0,1);
 				glScaled(2,2,1);	 	
 				road_.draw();
 				glPopMatrix();
-			
-		}
+				x = xStart + i*(xEnd-xStart)/100;
+				y = yStart + i*(yEnd-yStart)/100;
+			}
+		}  
+		
+		
 	}
 
 	void RoadDraw::excecute(double time) {

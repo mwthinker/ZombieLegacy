@@ -4,6 +4,7 @@
 #include "aibehavior.h"
 #include "unit.h"
 #include "building.h"
+#include "linefeature.h"
 
 #include <vector>
 #include <random>
@@ -17,6 +18,23 @@ namespace zombie {
 
 	class Map {
 	public:
+		Map(Position mapCentre_, double radius, std::vector<BuildingPtr> buildings,double normalizeX, double normalizeY) {
+			border_ = std::shared_ptr<Border>(new Border(mapCentre_, radius));
+			buildings_ = buildings;
+			area_ = radius*radius*mw::PI;
+			minX_ = mapCentre_.x_ - radius; 
+			minY_ = mapCentre_.y_ - radius;
+			maxX_ = mapCentre_.x_ + radius;
+			maxY_ = mapCentre_.y_ + radius;
+			road_.push_back(Position(10,10));
+			road_.push_back(Position(25,25));
+			normalizeX_ = normalizeX;
+			normalizeY_ = normalizeY;
+
+
+
+		}
+
 		Map(Position mapCentre_, double radius, std::vector<BuildingPtr> buildings) {
 			border_ = std::shared_ptr<Border>(new Border(mapCentre_, radius));
 			buildings_ = buildings;
@@ -27,6 +45,7 @@ namespace zombie {
 			maxY_ = mapCentre_.y_ + radius;
 			road_.push_back(Position(10,10));
 			road_.push_back(Position(25,25));
+
 
 
 		}
@@ -77,9 +96,15 @@ namespace zombie {
 		const std::vector<BuildingPtr>& getBuildings() const {
 			return buildings_;
 		}
+		
+		void loadRoads(std::string filename, double scale);
 
-		const std::vector<Position>& getRoads() const {
-			return road_;
+		//const std::vector<Position>& getRoads() const {
+		//	return road_;
+		//}
+
+		const std::vector<LineFeature> getRoads() const {
+			return roads_;
 		}
 
 		double getMapArea() const {
@@ -118,12 +143,15 @@ namespace zombie {
 		*/
 				
 		std::vector<BuildingPtr> buildings_;
-		std::vector<Position> road_;
+		std::vector<Position> road_; // DUMMY IMPLEMENTATION REMOVE
 		double area_;
 		double minX_;
 		double minY_;
 		double maxX_;
 		double maxY_;
+		double normalizeX_;
+		double normalizeY_;
+		std::vector<LineFeature> roads_;
 	};
 	Map generateMap(int& lastId); 
 
