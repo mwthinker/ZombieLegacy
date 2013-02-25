@@ -96,7 +96,7 @@ protected:
 	std::vector<PairPlayerUnit> players_; // All units.
 	
 	PhysicalEngine* physicalEngine_;
-	std::vector<BuildingPtr> buildings_; // All buildings.	
+	Quadtree<BuildingPtr> buildings_; // All buildings.
 
 	int indexAiPlayer_;
 	double timeToUpdateView_;

@@ -126,6 +126,14 @@ namespace zombie {
 		double maxY() const {
 			return maxY_;
 		}
+
+		double width() const {
+			return maxX_ - minX_;
+		}
+
+		double height() const {
+			return maxY_ - minY_;
+		}
 	private:
 		std::shared_ptr<Border> border_;
 		/*

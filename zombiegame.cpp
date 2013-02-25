@@ -233,10 +233,15 @@ namespace zombie {
 		//map_ = loadMap("buildings.txt",unitId_);
 		
 		map_ = loadMapInfo("buildings.mif",unitId_, 30000);
-		map_.loadRoads("roads.mif",30000);
-		
+		map_.loadRoads("roads.mif",30000);		
 
-		buildings_ = map_.getBuildings();
+		buildings_ = Quadtree<BuildingPtr>(map_.minX(),map_.minY(),map_.width(),map_.height(),4);
+		//buildings_ = Quadtree<BuildingPtr>(0,0,1,1,4);
+		auto buildings = map_.getBuildings();
+		for (auto building : buildings) {
+			buildings_.add(building,building->getPosition().x_,building->getPosition().y_,building->getRadius());
+		}
+
 		taskManager_->add(new MapDraw(map_));
 		taskManager_->add(new RoadDraw(map_));
 
@@ -301,11 +306,18 @@ namespace zombie {
 		Position dr = Position(std::cos(bullet.direction_),std::sin(bullet.direction_));
 		Position p = bullet.postion_;
 		bool hit = false;
+
+		Position rangeV = dr*bullet.range_;
+		double x = bullet.postion_.x_ - rangeV.x_;
+		double y = bullet.postion_.y_ - rangeV.y_;
+//		auto buildings = buildings_.getObjectsAt(x,y,std::abs(rangeV.x_),std::abs(rangeV.y_));
+		auto buildings = buildings_.getContainer();
+
 		while (step < bullet.range_ && !hit) {
 			p += dr*stepLength;
 			step += stepLength;
 			
-			for (BuildingPtr& building : buildings_) {
+			for (BuildingPtr& building : buildings) {
 				// Hits a building?
 				if (building->isInside(p.x_,p.y_)) {
 					hit = true;
