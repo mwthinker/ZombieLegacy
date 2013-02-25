@@ -23,6 +23,12 @@ public:
 		head_.addObject((x - x_)/width_,(y - y_)/height_,width/width_,height/height_,ob);	
 	}
 
+	// Adds a object with size (radius) in to the specified position (x,y).
+	void add(T ob, double x, double y, double radius) {
+		objects_.push_back(ob);
+		head_.addObject((x - x_- radius)/width_,(y - y_ - radius)/height_,radius/width_,radius/height_,ob);
+	}
+
 	// Adds a object with no size (i.e. a point) in to the specified position (x,y).
 	void add(T ob, double x, double y) {
 		add(ob,x,y,0,0);
@@ -39,13 +45,29 @@ public:
 	}
 
 	// Collects all objects in the quadtree.
-	const Container& getElements() const {
+	const Container& getContainer() const {
 		return objects_;
 	}
 
 	// Returns the depth of the Quadtree.
 	int getMaxLevel() const {
 		return maxLevel_;
+	}	
+	
+	typename Container::iterator begin() {		
+		return objects_.begin();
+	}
+	
+	typename Container::iterator end() {
+		return objects_.end();
+	}
+	
+	typename Container::const_iterator begin() const {		
+		return objects_.begin();
+	}
+	
+	typename Container::const_iterator end() const {
+		return objects_.end();
 	}
 private:
 	class QuadNode {
@@ -69,6 +91,48 @@ private:
 			delete children_[1];
 			delete children_[2];
 			delete children_[3];
+		}
+
+		QuadNode(const QuadNode& node) {
+			level_ = node.level_;
+			maxLevel_ = node.maxLevel_;
+			objects_ = node.objects_;
+
+			if (node.children_[0] == 0) {
+				children_[0] = nullptr;
+				children_[1] = nullptr;
+				children_[2] = nullptr;
+				children_[3] = nullptr;
+			} else {
+				children_[0] = new QuadNode(*node.children_[0]);
+				children_[1] = new QuadNode(*node.children_[1]);
+				children_[2] = new QuadNode(*node.children_[2]);
+				children_[3] = new QuadNode(*node.children_[3]);
+			}
+		}
+
+		QuadNode& operator=(const QuadNode& node) {
+			if (this == &node) {
+				// Exception instead?????
+				return *this;
+			}
+			level_ = node.level_;
+			maxLevel_ = node.maxLevel_;
+			objects_ = node.objects_;
+			
+			if (node.children_[0] == 0) {
+				children_[0] = nullptr;
+				children_[1] = nullptr;
+				children_[2] = nullptr;
+				children_[3] = nullptr;
+			} else {
+				children_[0] = new QuadNode(*node.children_[0]);
+				children_[1] = new QuadNode(*node.children_[1]);
+				children_[2] = new QuadNode(*node.children_[2]);
+				children_[3] = new QuadNode(*node.children_[3]);
+			}
+
+			return *this;
 		}
 
 		void addObject(double x, double y, double width, double height, T object) {
