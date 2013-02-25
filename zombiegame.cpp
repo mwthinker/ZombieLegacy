@@ -10,6 +10,7 @@
 
 #include "input.h"
 #include "task.h"
+#include "quadtree.h"
 #include "taskmanager.h"
 
 #include <SDL.h>
