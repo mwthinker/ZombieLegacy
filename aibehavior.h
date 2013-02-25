@@ -7,10 +7,6 @@
 
 namespace zombie {
 
-	double calculateDifferenceBetweenAngles(double firstAngle, double secondAngle);
-
-	double calculateAnglePointToPoint(double x, double y, double pX, double pY);
-
 	class AiBehavior {
 	public:
 		AiBehavior();

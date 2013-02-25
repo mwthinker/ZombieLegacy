@@ -88,8 +88,6 @@ public:
 private:
 	void sendEventToHandlers(UnitEvent unitEvent) const;
 
-	double calculateDifferenceBetweenAngles(double firstAngle, double secondAngle);
-
 	void turn(double angle);
 
 	// Physical States.

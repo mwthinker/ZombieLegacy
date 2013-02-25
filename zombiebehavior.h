@@ -3,6 +3,7 @@
 
 #include "aibehavior.h"
 #include "unit.h"
+#include "auxiliary.h"
 
 #include <vector>
 #include <random>

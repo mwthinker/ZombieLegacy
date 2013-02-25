@@ -79,6 +79,7 @@
   <ItemGroup>
     <ClInclude Include="aibehavior.h" />
     <ClInclude Include="aiplayer.h" />
+    <ClInclude Include="auxiliary.h" />
     <ClInclude Include="building.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="gamefont.h" />

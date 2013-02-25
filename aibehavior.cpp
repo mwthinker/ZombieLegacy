@@ -1,22 +1,12 @@
 #include "aibehavior.h"
 
+#include "auxiliary.h"
 #include "input.h"
 #include "unit.h"
 
 #include <cmath>
 
-namespace zombie {
-
-	double calculateDifferenceBetweenAngles(double firstAngle, double secondAngle) {
-		double difference = firstAngle - secondAngle;
-		while (difference < -mw::PI) difference += 2*mw::PI;
-		while (difference > mw::PI) difference -= 2*mw::PI;
-		return difference;
-	}
-
-	double calculateAnglePointToPoint(double x, double y, double pX, double pY) {
-		return atan2(pY-y,pX-x);
-	}
+namespace zombie {	
 
 	AiBehavior::AiBehavior() {
 	}

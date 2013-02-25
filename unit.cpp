@@ -8,6 +8,7 @@
 
 #include "unit.h"
 #include "protocol.h"
+#include "auxiliary.h"
 
 namespace zombie {
 
@@ -202,13 +203,6 @@ namespace zombie {
 
 	bool Unit::isDead() const {
 		return isDead_;
-	}
-
-	double Unit::calculateDifferenceBetweenAngles(double firstAngle, double secondAngle) {
-		double difference = firstAngle - secondAngle;
-		while (difference < -mw::PI) difference += 2*mw::PI;
-		while (difference > mw::PI) difference -= 2*mw::PI;
-		return difference;
 	}
 
 } // namespace zombie.
