@@ -85,6 +85,7 @@
     <ClInclude Include="gamesprite.h" />
     <ClInclude Include="inputkeyboard.h" />
     <ClInclude Include="humanplayer.h" />
+    <ClInclude Include="linefeature.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="mapeditorwindow.h" />
     <ClInclude Include="object.h" />
@@ -130,6 +131,7 @@
   <ItemGroup>
     <None Include="buildings.mif" />
     <None Include="byggnader.mif" />
+    <None Include="roads.mif" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -6,6 +6,8 @@
 namespace zombie {
 
 	extern mw::Sprite drawGrass;
+
+	extern mw::Sprite drawRoad;
 	
 
 } // namespace zombie.

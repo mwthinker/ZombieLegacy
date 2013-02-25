@@ -185,6 +185,22 @@ namespace zombie {
 
 	};
 
+
+	class RoadDraw : public Task {
+	public:
+		RoadDraw(const Map& map);
+		void excecute(double time) override;		
+		bool isRunning() const override;
+
+	private:
+		void draw();
+
+		const Map& map_;
+		mw::Sprite road_;
+
+
+	};
+
 }
 
 #endif // TASK_H

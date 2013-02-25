@@ -39,6 +39,60 @@ namespace zombie {
 		return Map(Position(),10,buildings);
 	}
 
+	void Map::loadRoads(std::string filename, double scale) {
+		//läs mapinfo
+		std::fstream mapFile(filename.c_str(),std::fstream::in);
+		while (mapFile.good()) {
+			std::string line;
+			getline (mapFile,line);
+			if(line == "DATA") {
+				while (mapFile.good()) {
+					getline (mapFile,line);
+					std::string objectType;
+					mapFile >> objectType;
+					if(objectType == "PLINE") {
+						int nbrOfLines;
+						mapFile >> nbrOfLines;
+						std::vector<Position> vertexes;
+						for (int i=1; i<=nbrOfLines;i++) {
+							getline (mapFile,line);
+							Position p;
+							mapFile >> p.x_;
+							mapFile >> p.y_;
+							p.x_ = p.x_  * scale - normalizeX_;
+							p.y_ = p.y_  * scale - normalizeY_;
+							vertexes.push_back(p);
+						}
+						for (int i=0; i<vertexes.size()-1; i++) {
+							roads_.push_back(LineFeature(vertexes[i],vertexes[i+1]));	
+						}
+
+
+					}
+					if(objectType == "LINE") {
+						Position p1, p2;
+						mapFile >> p1.x_;
+						mapFile >> p1.y_;
+						mapFile >> p2.x_;
+						mapFile >> p2.y_;
+						p1.x_ = p1.x_ * scale - normalizeX_;
+						p1.y_ = p1.y_ * scale - normalizeY_;
+						p2.x_ = p2.x_ * scale - normalizeX_;
+						p2.y_ = p2.y_ * scale - normalizeY_;
+						roads_.push_back(LineFeature(p1,p2));
+					}
+					else {
+						//std::cout << "no matching feature object type! ";
+					}
+				}
+			}
+		}
+		
+		std::cout << "Size roads_: "<< roads_.size();
+		//ladda in till roads attribut
+
+	}
+
 	Map loadMapInfo(std::string filename, int& unitId, double scale) {
 		std::fstream mapFile(filename.c_str(),std::fstream::in);
 		double minX = 99999999999999;
@@ -46,9 +100,7 @@ namespace zombie {
 		double minY = 99999999999999;
 		double maxY = -99999999999999;
 
-		if (mapFile.good()) {
-			//mapFile >> width_ >> height_;
-		}
+		
 		std::vector< std::vector<Position> > allCorners;
 		while (mapFile.good()) {
 			//while (mapFile.good()) {
@@ -87,15 +139,17 @@ namespace zombie {
 		
 		for (std::vector<Position>& corners : allCorners) {		
 			for (Position& corner : corners) {		
-				corner.x_ -= maxX; 
-				corner.y_ -= maxY;
+				corner.x_ -= minX; 
+				corner.y_ -= minY;
 			}
 		}
+		double normalizeX = minX;
+		double normalizeY = minY;
+		maxX = maxX - minX;
+		minX = 0;
+		maxY = maxY - minY;		
+		minY = 0;
 		
-		minX = minX-maxX;
-		maxX = 0;		
-		minY = minY-maxY;
-		maxY = 0;
 
 		// GET WORLD SIZE
 		double height = maxX + minX;
@@ -107,7 +161,7 @@ namespace zombie {
 		}
 		
 		mapFile.close();
-		return Map(Position((minX+maxX)/2,(minY+maxY)/2),std::min(height,width)/2,buildings);
+		return Map(Position((minX+maxX)/2,(minY+maxY)/2),std::min(height,width)/2,buildings,normalizeX,normalizeY);
 	}
 
 } // namespace zombie.
