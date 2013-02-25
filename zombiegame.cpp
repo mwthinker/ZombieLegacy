@@ -38,7 +38,7 @@ namespace zombie {
 		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups
 		timeSinceSpawn_ = 0.0;
 		indexAiPlayer_ = 0;
-		unitLevel_ = 80;
+		unitLevel_ = 20;
 		innerSpawnRadius_ = 10;
 		outerSpawnRadius_ = 20;
 
@@ -77,7 +77,7 @@ namespace zombie {
 				indexAiPlayer_ = (indexAiPlayer_ + 1) % aiPlayers_.size();
 				AiPlayerPtr& aiPlayer = aiPlayers_[indexAiPlayer_].first;					
 				UnitPtr& unit = aiPlayers_[indexAiPlayer_].second;
-				std::vector<UnitPtr> unitsInView = calculateUnitsInView(unit);
+				std::vector<UnitPtr> unitsInView;// = calculateUnitsInView(unit);
 				aiPlayer->updateUnitsInView(unitsInView);
 			}
 
@@ -219,33 +219,7 @@ namespace zombie {
 		AiPlayerPtr aiPlayer(new AiPlayer());
 		aiPlayers_.push_back(PairAiUnit(aiPlayer,unitPtr));
 		players_.push_back(PairPlayerUnit(aiPlayer,unitPtr));
-	}	
-
-	Map ZombieGame::loadMap(std::string filename, int& unitId_) {
-		std::fstream mapFile(filename.c_str(),std::fstream::in);
-		
-		if (mapFile.good()) {
-			mapFile >> width_ >> height_;
-		}
-		
-		while (mapFile.good()) {
-			std::vector<Position> corners;
-			while (mapFile.good()) {
-				Position p;
-				mapFile >> p.x_ >> p.y_;
-				if (p.x_ < 0 || p.y_ < 0) {
-					break;
-				} else {
-					corners.push_back(p);
-				}
-			}
-			buildings_.push_back(BuildingPtr(new Building(corners,++unitId_)));
-		}	
-		
-		mapFile.close();
-
-		return Map(Position(width_*0.5,height_*0.5),std::min(width_,height_)*0.5,buildings_);
-	}	
+	}
 	
 	void ZombieGame::normalizeBuildings() {
 		for (BuildingPtr building : buildings_) {

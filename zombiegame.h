@@ -58,8 +58,6 @@ protected:
 
 	// Add a new ai (unitPtr) to the game.
 	void addNewAi(UnitPtr unitPtr);
-	
-	Map loadMap(std::string filename, int& unitId);
 
 	//void updateWindowSize(int width, int height);
 

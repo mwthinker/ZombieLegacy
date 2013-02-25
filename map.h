@@ -161,6 +161,34 @@ namespace zombie {
 
 } // namespace zombie.
 
+/*
+Map loadMap(std::string filename, int& unitId_) {
+		std::fstream mapFile(filename.c_str(),std::fstream::in);
+		
+		if (mapFile.good()) {
+			mapFile >> width_ >> height_;
+		}
+		
+		while (mapFile.good()) {
+			std::vector<Position> corners;
+			while (mapFile.good()) {
+				Position p;
+				mapFile >> p.x_ >> p.y_;
+				if (p.x_ < 0 || p.y_ < 0) {
+					break;
+				} else {
+					corners.push_back(p);
+				}
+			}
+			buildings_.push_back(BuildingPtr(new Building(corners,++unitId_)));
+		}	
+		
+		mapFile.close();
+
+		return Map(Position(width_*0.5,height_*0.5),std::min(width_,height_)*0.5,buildings_);
+	}
+*/
+
 #endif // MAP_H
 
 
