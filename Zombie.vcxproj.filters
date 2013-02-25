@@ -168,5 +168,8 @@
     <None Include="roads.mif">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="buildings_subset.mif">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

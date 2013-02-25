@@ -130,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="buildings.mif" />
+    <None Include="buildings_subset.mif" />
     <None Include="byggnader.mif" />
     <None Include="roads.mif" />
   </ItemGroup>

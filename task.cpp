@@ -3,6 +3,7 @@
 #include <vector>
 #include <queue>
 #include <SDL_opengl.h>
+#include <cmath>
 
 #include "unit.h"
 #include "building.h"
@@ -537,8 +538,8 @@ namespace zombie {
 				glColor3d(0.4,0.4,0.4);
 				glTranslated(0.5,0.5,0);
 				glTranslated(x,y,0);
-				//std::cout<<atan((yStart-yEnd)/(xStart-xEnd));
-				glRotated(45,0,0,1);
+				//std::cout<<atan2((yStart-yEnd)/(xStart-xEnd));
+				glRotated(std::atan2((yStart-yEnd),(xStart-xEnd)),0,0,1);
 				glScaled(2,2,1);	 	
 				road_.draw();
 				glPopMatrix();

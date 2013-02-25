@@ -60,8 +60,6 @@ namespace zombie {
 		if (started_) {
 			
 
-			std::cout << "X: " << humanPlayers_[0].second->getPosition().x_ << "Y: " << humanPlayers_[0].second->getPosition().y_ << std::endl;
-
 			double deltaTime = msDeltaTime/1000.0;
 			// Spawn and clean up units
 			if (timeSinceSpawn_ > timeToUpdateSpawn_) {
@@ -235,10 +233,12 @@ namespace zombie {
 		
 		map_ = loadMapInfo("buildings.mif",unitId_, 30000);
 		map_.loadRoads("roads.mif",30000);
+		
 
 		buildings_ = map_.getBuildings();
 		taskManager_->add(new MapDraw(map_));
 		taskManager_->add(new RoadDraw(map_));
+
 		for (BuildingPtr building : buildings_) {
 			if (graphic3D_) {
 			taskManager_->add(new Buildning3DTask(building));
