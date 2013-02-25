@@ -134,15 +134,19 @@ public:
 		head_.addObject((x - x_)/width_,(y - y_)/height_,width/width_,height/height_,ob);
 	}
 
-	Container getObjectsAt(double x, double y, double width, double height) {
+	void add(T ob, double x, double y) {
+		add(ob,x,y,0,0);
+	}
+
+	Container getObjectsAt(double x, double y, double width, double height) const {
 		return head_.getObjectsAt((x - x_)/width_,(y - y_)/height_,width/width_,height/height_);
 	}
 
-	Container getObjectsAt(double x, double y, double radius) {
+	Container getObjectsAt(double x, double y, double radius) const {
 		return head_.getObjectsAt((x - x_)/width_,(y - y_)/height_,radius);
 	}
 
-	const Container& getElements() const {
+	const Container& getContainer() const {
 		return objects_;
 	}
 
