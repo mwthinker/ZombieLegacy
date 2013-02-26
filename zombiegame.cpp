@@ -323,26 +323,30 @@ namespace zombie {
 					hit = true;
 					break;
 				}
+			}
 
-				for (PairPlayerUnit& playerUnit : players_) {
-					UnitPtr& unit = playerUnit.second;
+			if (hit) {
+				break;
+			}
 
-					// Not hitting itself? And target not dead? And bullet inside target?
-					if (shooter != unit && !unit->isDead() && unit->isInside(p.x_,p.y_)) {
-						unit->updateHealthPoint(-bullet.damage_);
-						if(unit->isDead()){
-							taskManager_->add(new Death(p.x_,p.y_,time_));
-						} else {
-							taskManager_->add(new BloodSplash(p.x_,p.y_,time_));
-						}
-						hit = true;
-						break;
+			for (PairPlayerUnit& playerUnit : players_) {
+				UnitPtr& unit = playerUnit.second;
+
+				// Not hitting itself? And target not dead? And bullet inside target?
+				if (shooter != unit && !unit->isDead() && unit->isInside(p.x_,p.y_)) {
+					unit->updateHealthPoint(-bullet.damage_);
+					if(unit->isDead()){
+						taskManager_->add(new Death(p.x_,p.y_,time_));
+					} else {
+						taskManager_->add(new BloodSplash(p.x_,p.y_,time_));
 					}
-				}
-
-				if (hit) {
+					hit = true;
 					break;
 				}
+			}
+
+			if (hit) {
+				break;
 			}
 		}
 
