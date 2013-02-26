@@ -34,6 +34,10 @@ public:
 		add(ob,x,y,0,0);
 	}
 
+	void remove(T ob, double x, double y) {
+		head_.remove(ob,x,y);
+	}
+
 	// Collects all objects that has chance of being in the area specified.
 	Container getObjectsAt(double x, double y, double width, double height) {
 		return head_.getObjectsAt((x - x_)/width_,(y - y_)/height_,width/width_,height/height_);
@@ -49,10 +53,14 @@ public:
 		return objects_;
 	}
 
+	void clear() {
+		head_.clear();
+	}
+
 	// Returns the depth of the Quadtree.
 	int getMaxLevel() const {
 		return maxLevel_;
-	}	
+	}
 	
 	typename Container::iterator begin() {		
 		return objects_.begin();
@@ -197,6 +205,21 @@ private:
 				}
 				
 				return returnObjects;
+			}
+		}
+
+		void remove(T ob, double x, double y) {
+
+		}
+
+		void clear() {
+			objects_.clear();
+
+			if (level_ < maxLevel_) {
+				children_[SW]->clear();
+				children_[SE]->clear();
+				children_[NW]->clear();
+				children_[NE]->clear();
 			}
 		}
 
