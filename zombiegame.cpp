@@ -25,7 +25,6 @@ namespace zombie {
 
     ZombieGame::ZombieGame(int width, int height) {
 		taskManager_ = new TaskManager();
-		physicalEngine_ = new PhysicalEngine();
 		
 		updateSize(width,height);
 		scale_ = 1.0;
@@ -228,30 +227,26 @@ namespace zombie {
 
 	void ZombieGame::initGame() {
 		graphic3D_ = false;
-
-		// create map
-		//map_ = loadMap("buildings.txt",unitId_);
 		
 		map_ = loadMapInfo("buildings.mif",unitId_, 30000);
-		map_.loadRoads("roads.mif",30000);		
+		map_.loadRoads("roads.mif",30000);
 
+		physicalEngine_ = new PhysicalEngine(map_.minX(),map_.minY(),map_.width(),map_.height());
 		buildings_ = Quadtree<BuildingPtr>(map_.minX(),map_.minY(),map_.width(),map_.height(),4);
-		//buildings_ = Quadtree<BuildingPtr>(0,0,1,1,4);
-		auto buildings = map_.getBuildings();
-		for (auto building : buildings) {
-			buildings_.add(building,building->getPosition().x_,building->getPosition().y_,building->getRadius());
-		}
 
 		taskManager_->add(new MapDraw(map_));
 		taskManager_->add(new RoadDraw(map_));
 
-		for (BuildingPtr building : buildings_) {
+		auto buildings = map_.getBuildings();
+
+		for (BuildingPtr building : buildings) {
 			if (graphic3D_) {
 			taskManager_->add(new Buildning3DTask(building));
 			} else {
 				taskManager_->add(new DrawBuildning(building));
 			}			
 			physicalEngine_->add(building);
+			buildings_.add(building,building->getPosition().x_,building->getPosition().y_,building->getRadius());
 		}
 		
 		// Add human controlled by first input device.
