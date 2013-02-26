@@ -190,7 +190,7 @@ protected:
 		}
 		longestSide_ = longestDiff;
 		
-		double xLeft=9999999, xRight=-9999999, yLeft=9999999, yRight=9999999;
+		double xLeft=9999999, xRight=-9999999, yLeft=9999999, yRight=-9999999;
 		for (Position p : corners_) {
 			xRight = std::max(xRight,p.x_);
 			yRight = std::max(yRight,p.y_);
