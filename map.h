@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <random>
+#include <cmath>
 
 namespace zombie {
 
@@ -30,9 +31,6 @@ namespace zombie {
 			road_.push_back(Position(25,25));
 			normalizeX_ = normalizeX;
 			normalizeY_ = normalizeY;
-
-
-
 		}
 
 		Map(Position mapCentre_, double radius, std::vector<BuildingPtr> buildings) {
@@ -45,9 +43,6 @@ namespace zombie {
 			maxY_ = mapCentre_.y_ + radius;
 			road_.push_back(Position(10,10));
 			road_.push_back(Position(25,25));
-
-
-
 		}
 
 		Map() {
@@ -68,21 +63,27 @@ namespace zombie {
 			std::uniform_real_distribution<double> distReal(0,1);
 			bool buildingFound = false;
 
-			for(int tries = 0; tries < 100; tries++) {
-				double alfa = distReal(g) * 2 * mw::PI;
-				double dist = distReal(g) * (outerRadie-innerRadie) + innerRadie;
-				double x = p.x_ + std::cos(alfa)*dist;
-				double y = p.y_ + std::sin(alfa)*dist;
-				Position testPos(x,y);
-				for (BuildingPtr building : buildings_) {
-					// if inside one building, break
-					if(building->isInside(testPos.x_,testPos.y_)) {
-						buildingFound = true;
-						break;
+			double alfa = distReal(g) * 2 * mw::PI;
+			double dist = distReal(g) * (outerRadie-innerRadie);// + innerRadie;			
+
+			for(double dr = 0; dr < outerRadie-innerRadie; dr += 1.0) {
+				for(double angle = 0; angle < 2*mw::PI; angle += 0.2) {
+					dist = fmod(dist+dr,outerRadie-innerRadie);
+					double x = p.x_ + std::cos(alfa+angle)*(dist+innerRadie);
+					double y = p.y_ + std::sin(alfa+angle)*(dist+innerRadie);
+
+					Position testPos(x,y);
+					for (BuildingPtr building : buildings_) {
+						// if inside one building, break
+						if (building->isInside(testPos.x_,testPos.y_)) {
+							buildingFound = true;
+							break;
+						}
 					}
-				}
-				if(!buildingFound) {
-					return testPos;
+
+					if(!buildingFound) {
+						return testPos;
+					}
 				}
 			}
 			// No success - return dummy position!
