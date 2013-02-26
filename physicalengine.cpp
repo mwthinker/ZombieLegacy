@@ -40,6 +40,11 @@ namespace zombie {
 
 	// Simulates the physics for all units. The physics is simulated one time step.
 	void PhysicalEngine::update(double timeStep) {
+		// Remove all dead units.
+		units_.remove_if([] (const PhUnit& phUnit) {
+			return phUnit.first->toRemove();
+		});
+
 		// Calculates all contact interaction between units and buildings.
 		for (auto it1 = units_.begin(); it1 != units_.end(); ++it1) {			
 			PhUnit& u1 = *it1;
@@ -69,18 +74,13 @@ namespace zombie {
 			addViscosity(phUnit);
 			addFriction(phUnit);
 			updateUnit(phUnit,timeStep);
-		}
-
-		// Remove all dead units.
-		units_.remove_if([] (const PhUnit& phUnit) {
-			return phUnit.first->toRemove();
-		});		
+		}		
 	}
 
 	void PhysicalEngine::addViscosity(PhUnit& u) {
 		double speedSquared = u.first->getVelocity()*u.first->getVelocity();
-		if (speedSquared > 0.00001*0.00001) { // In order to avoid dividing with zero when normallizing the velocity vector.			
-			u.second += -10*speedSquared*u.first->getVelocity().normalize();
+		if (speedSquared > 0.001*0.001) { // In order to avoid dividing with zero when normallizing the velocity vector.			
+			u.second += -20*speedSquared*u.first->getVelocity().normalize();
 		}
 	}
 
