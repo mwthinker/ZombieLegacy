@@ -12,7 +12,7 @@
 
 namespace zombie {
 
-	Unit::Unit(double x, double y, double angle, Weapon weapon, bool infected, int id) : PhysicalUnit(id, x,y,0.4, 50.0,0.0,1.0), weapon_(weapon) {		
+	Unit::Unit(double x, double y, double angle, Weapon weapon, bool infected, int id) : PhysicalUnit(id, x,y,0.4, 50.0,0.0,10.0), weapon_(weapon) {		
 		angleVelocity_ = 0.0;
 
 		isInfected_ = infected;
@@ -71,12 +71,12 @@ namespace zombie {
 
 		// Move forward or backwards.
 		if (input.forward_ && !input.backward_) {
-			addForce(Vec3(std::cos(angle),std::sin(angle))*15);
+			addForce(Vec3(std::cos(angle),std::sin(angle))*30);
 		} else if (!input.forward_ && input.backward_) {
-			addForce(-Vec3(std::cos(angle),std::sin(angle))*15);
+			addForce(-Vec3(std::cos(angle),std::sin(angle))*30);
 		} else {
 			// In order to make the unit stop when not moving.
-			addForce(-getVelocity());
+			addForce(-getVelocity()*5);
 		}
 
 		//std::cout << getState().position_ << std::endl;

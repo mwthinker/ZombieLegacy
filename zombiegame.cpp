@@ -75,7 +75,7 @@ namespace zombie {
 				indexAiPlayer_ = (indexAiPlayer_ + 1) % aiPlayers_.size();
 				AiPlayerPtr& aiPlayer = aiPlayers_[indexAiPlayer_].first;					
 				UnitPtr& unit = aiPlayers_[indexAiPlayer_].second;
-				std::vector<UnitPtr> unitsInView;// = calculateUnitsInView(unit);
+				std::vector<UnitPtr> unitsInView = calculateUnitsInView(unit);
 				aiPlayer->updateUnitsInView(unitsInView);
 			}
 
