@@ -14,7 +14,7 @@ class ZombieWindow : public mw::GameWindow {
 public:
     ZombieWindow() : mw::GameWindow(500,500,"Zombie","images/icon.bmp"), zombieGame_(500,500) {
         setResizable(true);
-        setTimeStep(20);
+        setTimeStep(50);
 
 		setUnicodeInputEnable(true);
 		reshapeWindowsOpenGL();
