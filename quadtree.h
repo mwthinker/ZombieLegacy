@@ -120,6 +120,11 @@ private:
 			maxLevel_ = node.maxLevel_;
 			objects_ = node.objects_;
 			
+			delete children_[0];
+			delete children_[1];
+			delete children_[2];
+			delete children_[3];
+
 			if (node.children_[0] == 0) {
 				children_[0] = nullptr;
 				children_[1] = nullptr;
@@ -190,8 +195,7 @@ private:
 					tmp = children_[NE]->getObjectsAt((x-0.5)*2, (y-0.5)*2, width*2, height*2);
 					returnObjects.insert(returnObjects.end(), tmp.begin(), tmp.end());
 				}
-
-				returnObjects.insert(returnObjects.end(), objects_.begin(), objects_.end());
+				
 				return returnObjects;
 			}
 		}
