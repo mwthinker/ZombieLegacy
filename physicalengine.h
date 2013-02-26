@@ -7,6 +7,7 @@
 #include <utility>
 #include <algorithm>
 
+#include "quadtree.h"
 #include "unit.h"
 #include "physicalunit.h"
 
@@ -47,128 +48,44 @@ namespace zombie {
 
 	class PhysicalEngine {
 	public:
-		PhysicalEngine() {
-		}
-
-		~PhysicalEngine() {
-		}
+		PhysicalEngine(double x, double y, double width, double height);
+		~PhysicalEngine();
 
 		// Adds a unit that is effected by the physics.
-		void add(const PhysicalUnitPtr& unit) {
-			units_.push_back(PhUnit(unit,Vec3()));
-		}
+		void add(const PhysicalUnitPtr& unit);
 
 		// Adds a static unit that only effect non static units.
-		void add(StaticPhyscalUnitPtr unit) {
-			staticUnits_.push_back(unit);
-		}
+		void add(const StaticPhyscalUnitPtr& unit);
 
 		// Removes the corresspondig unit.
-		void remove(const PhysicalUnitPtr& unit) {		
-			units_.remove(PhUnit(unit,Vec3()));
-		}
+		void remove(const PhysicalUnitPtr& unit);
 
 		// Removes the corresspondig static unit.
-		void remove(StaticPhyscalUnitPtr unit) {
-			staticUnits_.remove(unit);
-		}
+		void remove(StaticPhyscalUnitPtr unit);
 
 		// Simulates the physics for all units. The physics is simulated one time step.
-		void update(double timeStep) {
-			// Calculates all contact interaction between units and buildings.
-			for (PhUnitList::iterator it1 = units_.begin(); it1 != units_.end(); ++it1) {			
-				PhUnit& u1 = *it1;
-				
-				// Interaction with other units.
-				auto it2 = it1; 
-				for (++it2; it2 != units_.end(); ++it2) {
-					PhUnit& u2 = *it2;
-					// Is unit1 and unit2 inside each other?
-					if (inside(u1.first,u2.first)) {
-						addForceDueToCollision(u1,u2);
-					}
-				}				
-				
-				// Interaction with static objects.
-				for (StaticPhyscalUnitPtr& staticUnit : staticUnits_) {
-					Vec3 p = u1.first->getPosition();
-					if (staticUnit->isInsideApproximate(p.x_,p.y_,u1.first->radius())) {
-						addForceDueToCollision(u1,staticUnit);
-					}
-				}
-			}
-
-			// Add friction and viscosity to all units.
-			for (PhUnit& phUnit : units_) {
-				addViscosity(phUnit);
-				addFriction(phUnit);
-				updateUnit(phUnit,timeStep);
-			}
-
-			// Remove all dead units.
-			units_.remove_if([] (const PhUnit& phUnit) {
-				return phUnit.first->toRemove();
-			});
-		}
-
-	private:	
-		typedef std::list<StaticPhyscalUnitPtr> StaticPhUnitList;
+		void update(double timeStep);
+	
+	private:
 		typedef std::pair<PhysicalUnitPtr, Vec3> PhUnit;
-		typedef std::list<PhUnit> PhUnitList;		
 
 		friend bool operator==(const PhUnit&, const PhUnit&);
 
-		void addViscosity(PhUnit& u) {
-			double speedSquared = u.first->getVelocity()*u.first->getVelocity();
-			if (speedSquared > 0.00001*0.00001) { // In order to avoid dividing with zero when normallizing the velocity vector.			
-				u.second += -10*speedSquared*u.first->getVelocity().normalize();
-			}
-		}
+		void addViscosity(PhUnit& u);
 
-		void addFriction(PhUnit& u) {
-			double c = 0.1;
-			Vec3 velocity = u.first->getVelocity();
-			if (velocity.magnitude() > 0.0001) {
-				Vec3 force = -c * u.first->mass()*velocity.normalize();
-				u.second += force;
-			}
-		}
+		void addFriction(PhUnit& u);
 
-		Vec3 penetration(const PhysicalUnitPtr& u1, const PhysicalUnitPtr& u2) {
-			Vec3 diff = (u2->getPosition() - u1->getPosition());
-			return diff+diff.normalize()*(u2->radius() - u1->radius());
-		}
+		Vec3 penetration(const PhysicalUnitPtr& u1, const PhysicalUnitPtr& u2);
 
 		// Add force due to collision to both units.
-		void addForceDueToCollision(PhUnit& u1, PhUnit& u2) {
-			Vec3 penetrationVector1 = penetration(u1.first,u2.first);
-			Vec3 penetrationVector2 = penetration(u2.first,u1.first);
-			Vec3 forceActingOn1 = -penetrationVector1*u2.first->stiffness();
-			Vec3 forceActingOn2 = -penetrationVector2*u1.first->stiffness();
-			forceActingOn1 -= forceActingOn2;
-			u1.second += forceActingOn1;
-			u2.second -= forceActingOn1;
-		}
+		void addForceDueToCollision(PhUnit& u1, PhUnit& u2);
 
-		void addForceDueToCollision(PhUnit& u1, StaticPhyscalUnitPtr u2) {
-			Vec3 position = u1.first->getPosition();
-			Vec3 penetrationVector = u2->penetration(position.x_,position.y_,u1.first->radius());
-			Vec3 forceActingOn1 = -penetrationVector*u2->stiffness();
-			u1.second += forceActingOn1;
-		}
+		void addForceDueToCollision(PhUnit& u1, StaticPhyscalUnitPtr u2);
 
-		void updateUnit(PhUnit& unit, double timeStep) {			
-			Vec3 force = unit.second + unit.first->force();		
-			unit.first->setVelocity(unit.first->getVelocity() + force / unit.first->mass() *timeStep);
-			unit.first->setPosition(unit.first->getPosition() + unit.first->getVelocity() * timeStep);
+		void updateUnit(PhUnit& unit, double timeStep);
 
-			// Resets the force i.e. the current force is set to zero;
-			unit.first->resetForce();
-			unit.second = Vec3();
-		}
-
-		PhUnitList units_;
-		StaticPhUnitList staticUnits_;
+		std::list<PhUnit> units_;
+		Quadtree<StaticPhyscalUnitPtr> staticUnits_;
 	};
 
 	inline bool operator==(const PhysicalEngine::PhUnit& u1, const PhysicalEngine::PhUnit& u2) {
@@ -178,3 +95,4 @@ namespace zombie {
 }
 
 #endif // PHYSICALENGINE_H
+

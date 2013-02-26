@@ -152,6 +152,9 @@
     <ClCompile Include="gamesprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="physicalengine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="buildings.txt">
