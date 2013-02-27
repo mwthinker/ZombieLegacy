@@ -104,7 +104,7 @@ public:
 
 	// Override member from class StaticPhysicalUnit
 	bool isInsideApproximate(double x, double y, double radius) const override {
-		return (longestSide_ + radius)*(longestSide_ + radius) > (x - massCentre_.x_)*(y - massCentre_.y_);
+		return (radius_ + radius)*(radius_ + radius) > (x - position_.x_)*(y - position_.y_);
 	}
 	
 	// Override member from class StaticPhysicalUnit
@@ -158,10 +158,6 @@ public:
 		return false;
 	}
 
-	Position getMassCentre() const {
-		return massCentre_;
-	}
-
 	double getRadius() const override {
 		return radius_;
 	}
@@ -186,14 +182,7 @@ protected:
 		position_ = Position((xLeft + xRight)/2,(yDown + yUp)/2);
 		radius_ = (position_ - Position(xLeft,yDown)).magnitude();
 	}
-
-	Position position_;
-	double radius_;
-
-	std::vector<Position> corners_;	
-	double longestSide_;
-	Position massCentre_;
-
+	
 private:
 	bool isPointInPolygon(double x, double y) const {
 		int polySides = corners_.size();
@@ -213,6 +202,10 @@ private:
 
 		return oddNodes;
 	}
+
+	Position position_;
+	double radius_;
+	std::vector<Position> corners_;
 };
 
 } // namespace zombie.

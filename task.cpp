@@ -461,7 +461,7 @@ namespace zombie {
 
 		// Roof.
 		glColor3d(0.6,0.2,0.4);
-		Position centre = buildning_->getMassCentre();
+		Position centre = buildning_->getPosition();
 		glBegin(GL_TRIANGLE_FAN);
 		glVertex3d(centre.x_,centre.y_,1);
 		for (int i = 0; i < size; ++i) {
