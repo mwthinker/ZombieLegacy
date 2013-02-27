@@ -7,7 +7,7 @@
 
 namespace zombie {
 
-	Map::Map(Position mapCentre_, double width, double height, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads = std::vector<LineFeature>()) {
+	Map::Map(Position mapCentre_, double width, double height, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads) {
 		buildings_ = buildings;
 		minX_ = mapCentre_.x_ - width * 0.5; 
 		minY_ = mapCentre_.y_ - height * 0.5;
