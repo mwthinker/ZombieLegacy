@@ -354,12 +354,14 @@ namespace zombie {
 		double stepLength = 1;
 		double step = 0.0;
 		dr = dr.normalize();
-		
+				
 		Position p = unitThatSees->getPosition();
+		
+		auto buildings = buildings_.getObjectsAt(p.x_,p.y_,length*2);
 		while (step < length) {
 			p += dr*stepLength;
 			step += stepLength;
-			for (const BuildingPtr& building : buildings_) {
+			for (const BuildingPtr& building : buildings) {
 				if (building->isInside(p.x_,p.y_)) {
 					return false;
 				}
