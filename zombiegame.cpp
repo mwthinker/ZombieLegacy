@@ -62,7 +62,7 @@ namespace zombie {
 			// Spawn and clean up units
 			if (timeSinceSpawn_ > timeToUpdateSpawn_) {
 				spawnAndCleanUpUnits();
-				timeSinceSpawn_ = 0;				
+				timeSinceSpawn_ = 0;
 			}
 			timeSinceSpawn_ += deltaTime;
 
@@ -71,7 +71,7 @@ namespace zombie {
 			// Update some of the ai:s view.
 			for (int i = 0; i < nbrOfUnitsToUpdateViewOn; ++i) {
 				indexAiPlayer_ = (indexAiPlayer_ + 1) % aiPlayers_.size();
-				AiPlayerPtr& aiPlayer = aiPlayers_[indexAiPlayer_].first;					
+				AiPlayerPtr& aiPlayer = aiPlayers_[indexAiPlayer_].first;
 				UnitPtr& unit = aiPlayers_[indexAiPlayer_].second;
 				std::vector<UnitPtr> unitsInView = calculateUnitsInView(unit);
 				aiPlayer->updateUnitsInView(unitsInView);
@@ -79,13 +79,11 @@ namespace zombie {
 
 			// Calculate all local ai:s input.
 			for (auto& pair : aiPlayers_) {
-				AiPlayerPtr& aiPlayer = pair.first;					
+				AiPlayerPtr& aiPlayer = pair.first;
 				UnitPtr& unit = pair.second;
 				aiPlayer->calculateInput(unit,time_);
 			}
 			
-			// Update shooting and reloading.
-
 			// Update all units.
 			for (PairPlayerUnit& pair : players_) {
 				UnitPtr& unit = pair.second;

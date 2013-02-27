@@ -519,8 +519,8 @@ namespace zombie {
 				glTranslated(0.5,0.5,0);
 				glTranslated(x,y,0);
 				//std::cout<<atan2((yStart-yEnd)/(xStart-xEnd));
-				glRotated(std::atan2((yStart-yEnd),(xStart-xEnd)),0,0,1);
-				glScaled(2,2,1);	 	
+				//glRotated(std::atan2((yStart-yEnd),(xStart-xEnd)),0,0,1);
+				glScaled(2,2,1);
 				road_.draw();
 				glPopMatrix();
 				x = xStart + i*(xEnd-xStart)/100;
