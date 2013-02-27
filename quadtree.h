@@ -39,12 +39,12 @@ public:
 	}
 
 	// Collects all objects that has chance of being in the area specified.
-	Container getObjectsAt(double x, double y, double width, double height) {
+	Container getObjectsAt(double x, double y, double width, double height) const {
 		return head_.getObjectsAt((x - x_)/width_,(y - y_)/height_,width/width_,height/height_);
 	}
 
 	// Collects all objects that has chance of being in the area specified.
-	Container getObjectsAt(double x, double y, double radius) {
+	Container getObjectsAt(double x, double y, double radius) const {
 		return head_.getObjectsAt((x - x_)/width_,(y - y_)/height_,radius);
 	}
 
