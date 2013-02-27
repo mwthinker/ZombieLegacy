@@ -301,12 +301,8 @@ namespace zombie {
 		Position dr = Position(std::cos(bullet.direction_),std::sin(bullet.direction_));
 		Position p = bullet.postion_;
 		bool hit = false;
-
-		Position rangeV = dr*bullet.range_;
-		double x = bullet.postion_.x_ - rangeV.x_;
-		double y = bullet.postion_.y_ - rangeV.y_;
-		auto buildings = buildings_.getObjectsAt(x,y,std::abs(rangeV.x_),std::abs(rangeV.y_));
-		//auto buildings = buildings_.getContainer();
+		
+		auto buildings = buildings_.getObjectsAt(bullet.postion_.x_,bullet.postion_.y_,bullet.range_);
 
 		while (step < bullet.range_ && !hit) {
 			p += dr*stepLength;
