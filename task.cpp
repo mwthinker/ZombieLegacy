@@ -21,14 +21,6 @@ namespace zombie {
 	int Task::width = 0;
 	int Task::height = 0;
 
-	Task::Task(int drawOrder) {
-		drawOrder_ = drawOrder;
-	}
-
-	int Task::getDrawOrder() const {
-		return drawOrder_;
-	}
-
 	Task* Task::pull() {
 		if (tasks_.empty()) {
 			return nullptr;
@@ -37,8 +29,8 @@ namespace zombie {
 		Task* task = tasks_.front();
 		tasks_.pop();
 		return task;
-	}
-	// protected
+	}	
+
 	void Task::push(Task* task) {
 		tasks_.push(task);
 	}
@@ -68,8 +60,7 @@ namespace zombie {
 		glEnd();
 	}
 
-
-	DrawBuildning::DrawBuildning(const BuildingPtr& building) : Task (3) {
+	DrawBuildning::DrawBuildning(const BuildingPtr& building) {
 		buildning_ = building;
 	}
 
@@ -95,7 +86,7 @@ namespace zombie {
 		glDisable(GL_BLEND);
 	}
 
-	HumanAnimation::HumanAnimation(const UnitPtr& unit) : Task (2) {
+	HumanAnimation::HumanAnimation(const UnitPtr& unit) {
 		unit_ = unit;
 		//unit->addEventHandler(std::bind(&HumanAnimation::unitEventHandler,this));
 		unit->addEventHandler([&](Unit::UnitEvent unitEvent){
@@ -162,7 +153,7 @@ namespace zombie {
 		}
 	}
 
-	ZombieAnimation::ZombieAnimation(const UnitPtr& unit) : Task (2) {
+	ZombieAnimation::ZombieAnimation(const UnitPtr& unit) {
 		unit_ = unit;
 		//unit->addEventHandler(std::bind(&ZombieAnimation::unitEventHandler,this,Unit::UnitEvent::DIE));
 		unit->addEventHandler([&](Unit::UnitEvent unitEvent){
@@ -224,7 +215,7 @@ namespace zombie {
 		}
 	}
 
-	SurvivorAnimation::SurvivorAnimation(const UnitPtr& unit) : Task (2) {
+	SurvivorAnimation::SurvivorAnimation(const UnitPtr& unit) {
 		unit_ = unit;
 	}
 
@@ -270,7 +261,7 @@ namespace zombie {
 		*/
 	}
 
-	Shot::Shot(double x, double y, double currentTime) : Task (2) {
+	Shot::Shot(double x, double y, double currentTime) {
 		startTime_ = currentTime;
 		x_ = x;
 		y_ = y;
@@ -291,7 +282,7 @@ namespace zombie {
 		return running_;
 	}
 	
-	Death::Death(double x, double y, double currentTime) : Task (2) {
+	Death::Death(double x, double y, double currentTime) {
 		startTime_ = currentTime;
 		x_ = x;
 		y_ = y;
@@ -312,7 +303,7 @@ namespace zombie {
 		return running_;
 	}
 
-	BloodSplash::BloodSplash(double x, double y, double currentTime) : Task (2) {
+	BloodSplash::BloodSplash(double x, double y, double currentTime) {
 		startTime_ = currentTime;
 		x_ = x;
 		y_ = y;
@@ -333,7 +324,7 @@ namespace zombie {
 		return running_;
 	}
 
-	HumanAnimation3D::HumanAnimation3D(const UnitPtr& unit) : Task (1) {
+	HumanAnimation3D::HumanAnimation3D(const UnitPtr& unit) {
 		unit_ = unit;
 		lastTime_ = 0.0;
 	}
@@ -377,7 +368,7 @@ namespace zombie {
 		*/
 	}
 
-	HumanStatus::HumanStatus(const UnitPtr& unit, Player player) : Task (10) {
+	HumanStatus::HumanStatus(const UnitPtr& unit, Player player) {
 		unit_ = unit;
 		lastTime_ = 0.0;
 		name_ = mw::Text("", font15);
@@ -394,7 +385,6 @@ namespace zombie {
 		return !unit_->isDead();
 	}
 
-	// private
 	void HumanStatus::draw(double timestep) {
 		Position p = unit_->getPosition();
 		glColor3d(1,1,1);
@@ -443,7 +433,7 @@ namespace zombie {
 		*/
 	}
 
-	Buildning3DTask::Buildning3DTask(const BuildingPtr& building) : Task (1) {
+	Buildning3DTask::Buildning3DTask(const BuildingPtr& building) {
 		buildning_ = building;
 	}
 
@@ -483,7 +473,7 @@ namespace zombie {
 		glDisable(GL_BLEND);
 	}
 
-	MapDraw::MapDraw(const Map& map) : Task(1), map_(map) {
+	MapDraw::MapDraw(const Map& map) : map_(map) {
 		grass_ = drawGrass;
 	}
 
@@ -499,9 +489,6 @@ namespace zombie {
 				glPopMatrix();
 			}
 		}
-		
-
-
 	}
 
 	void MapDraw::excecute(double time) {
@@ -512,11 +499,7 @@ namespace zombie {
 		return true;
 	}
 
-
-
-
-
-	RoadDraw::RoadDraw(const Map& map) : Task(1), map_(map) {
+	RoadDraw::RoadDraw(const Map& map) : map_(map) {
 		road_ = drawRoad;
 	}
 
@@ -546,9 +529,7 @@ namespace zombie {
 				x = xStart + i*(xEnd-xStart)/100;
 				y = yStart + i*(yEnd-yStart)/100;
 			}
-		}  
-		
-		
+		}
 	}
 
 	void RoadDraw::excecute(double time) {

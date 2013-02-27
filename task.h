@@ -22,20 +22,15 @@ namespace zombie {
 	public:
 		static int width, height;
 
-		Task(int drawOrder);
-
 		virtual void excecute(double time) = 0;
-		virtual bool isRunning() const = 0;		
-		
-		int getDrawOrder() const;
-
+		virtual bool isRunning() const = 0;
 		Task* pull();
+
 	protected:
 		void push(Task* task);
 
 	private:
 		std::queue<Task*> tasks_;
-		int drawOrder_;
 	};
 
 	void drawCircle(double cx, double cy, double r, int num_segments, bool filled);
@@ -57,8 +52,8 @@ namespace zombie {
 		HumanAnimation(const UnitPtr& unit);
 		void excecute(double time) override;
 		bool isRunning() const override;
-
 		void unitEventHandler(Unit::UnitEvent unitEvent);
+
 	private:
 		void draw(double timestep);
 
@@ -70,8 +65,8 @@ namespace zombie {
 		ZombieAnimation(const UnitPtr& unit);
 		void excecute(double time) override;		
 		bool isRunning() const override;
-
 		void unitEventHandler(Unit::UnitEvent unitEvent);
+
 	private:
 		void draw(double timestep);
 
@@ -88,8 +83,7 @@ namespace zombie {
 		void draw(double timestep);
 
 		UnitPtr unit_;
-	};
-	
+	};	
 
 	class Shot : public Task {
 	public:
@@ -147,6 +141,7 @@ namespace zombie {
 		HumanStatus(const UnitPtr& unit, Player player);
 		void excecute(double time) override;
 		bool isRunning() const override;
+
 	private:
 		void draw(double timestep);
 
@@ -181,8 +176,6 @@ namespace zombie {
 
 		const Map& map_;
 		mw::Sprite grass_;
-
-
 	};
 
 
@@ -197,8 +190,6 @@ namespace zombie {
 
 		const Map& map_;
 		mw::Sprite road_;
-
-
 	};
 
 }

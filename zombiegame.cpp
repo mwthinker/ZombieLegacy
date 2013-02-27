@@ -200,8 +200,8 @@ namespace zombie {
 	}
 
 	void ZombieGame::addHuman(HumanPlayerPtr human, UnitPtr unitPtr) {
-		taskManager_->add(new HumanAnimation(unitPtr));
-		taskManager_->add(new HumanStatus(unitPtr,HumanStatus::ONE));
+		taskManager_->add(new HumanAnimation(unitPtr),1);
+		taskManager_->add(new HumanStatus(unitPtr,HumanStatus::ONE),10);
 		physicalEngine_->add(unitPtr);
 		humanPlayers_.push_back(PairHumanUnit(human,unitPtr));
 		players_.push_back(PairPlayerUnit(human,unitPtr));
@@ -209,9 +209,9 @@ namespace zombie {
 
 	void ZombieGame::addNewAi(UnitPtr unitPtr) {
 		if (unitPtr->isInfected()) {
-			taskManager_->add(new ZombieAnimation(unitPtr));
+			taskManager_->add(new ZombieAnimation(unitPtr),1);
 		} else {
-			taskManager_->add(new SurvivorAnimation(unitPtr));
+			taskManager_->add(new SurvivorAnimation(unitPtr),1);
 		}
 		physicalEngine_->add(unitPtr);
 		AiPlayerPtr aiPlayer(new AiPlayer());
@@ -234,16 +234,16 @@ namespace zombie {
 		physicalEngine_ = new PhysicalEngine(map_.minX(),map_.minY(),map_.width(),map_.height());
 		buildings_ = Quadtree<BuildingPtr>(map_.minX(),map_.minY(),map_.width(),map_.height(),4);
 
-		taskManager_->add(new MapDraw(map_));
-		taskManager_->add(new RoadDraw(map_));
+		taskManager_->add(new MapDraw(map_),0);
+		taskManager_->add(new RoadDraw(map_),0);
 
 		auto buildings = map_.getBuildings();
 
 		for (BuildingPtr building : buildings) {
 			if (graphic3D_) {
-			taskManager_->add(new Buildning3DTask(building));
+			taskManager_->add(new Buildning3DTask(building),3);
 			} else {
-				taskManager_->add(new DrawBuildning(building));
+				taskManager_->add(new DrawBuildning(building),3);
 			}			
 			physicalEngine_->add(building);
 			buildings_.add(building,building->getPosition().x_,building->getPosition().y_,building->getRadius());
@@ -327,9 +327,9 @@ namespace zombie {
 				if (shooter != unit && !unit->isDead() && unit->isInside(p.x_,p.y_)) {
 					unit->updateHealthPoint(-bullet.damage_);
 					if(unit->isDead()){
-						taskManager_->add(new Death(p.x_,p.y_,time_));
+						taskManager_->add(new Death(p.x_,p.y_,time_),2);
 					} else {
-						taskManager_->add(new BloodSplash(p.x_,p.y_,time_));
+						taskManager_->add(new BloodSplash(p.x_,p.y_,time_),2);
 					}
 					hit = true;
 					break;

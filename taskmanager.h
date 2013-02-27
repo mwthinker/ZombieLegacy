@@ -2,11 +2,9 @@
 #define TASKMANAGER_H
 
 #include <list>
+#include <utility>
 
 namespace zombie {
-
-
-
 
 	class Task;
 
@@ -15,10 +13,14 @@ namespace zombie {
 		TaskManager();
 		~TaskManager();
 
-		void add(Task* task);
+		// Adds task to be managed in ascending order based on the level.
+		void add(Task* task, int level);
+
+		// Updates each task in ascending order.
 		void update(double deltaTime);
 	private:
-		std::list<Task*> tasks_;
+		typedef std::pair<int,Task*> Pair;
+		std::list<Pair> tasks_;
 		double time_;
 	};
 
