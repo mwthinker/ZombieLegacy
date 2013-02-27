@@ -1,5 +1,6 @@
 #include "map.h"
-#include "input.h"
+
+#include "building.h"
 
 #include <limits>
 #include <string>
@@ -97,22 +98,22 @@ namespace zombie {
 	Map loadMapInfo(std::string filename, std::string fileRoads, int& unitId, double scale) {
 		std::fstream mapFile(filename.c_str(),std::fstream::in);
 		double minX = std::numeric_limits<double>::max();
-		double maxX = std::numeric_limits<double>::min();
-		double minY = std::numeric_limits<double>::max();
-		double maxY = std::numeric_limits<double>::min();
+		double maxX = -minX;
+		double minY = minX;
+		double maxY = -minY;
 
 		std::vector< std::vector<Position> > allCorners;
 		while (mapFile.good()) {
 			//while (mapFile.good()) {
 			std::string line;
 			getline (mapFile,line);
-			if(line == "REGION 1") {
+			if (line == "REGION 1") {
 				std::vector<Position> corners;
 				// Extract all points
 				int nbrLines;
 				mapFile >> nbrLines;	
 				//std::cout<<"REGION " << nbrLines;
-				for (int i=1; i <= nbrLines; i++) {
+				for (int i = 1; i <= nbrLines; i++) {
 					Position p;
 					mapFile >> p.x_ >> p.y_;
 					// Scale map
@@ -145,10 +146,10 @@ namespace zombie {
 		}
 		double normalizeX = minX;
 		double normalizeY = minY;
-		maxX = maxX - minX;
-		minX = 0;
-		maxY = maxY - minY;		
-		minY = 0;		
+		maxX -= normalizeX;
+		minX -= normalizeX;
+		maxY -= normalizeY;		
+		minY -= normalizeY;		
 
 		// Get world size.
 		double height = maxX + minX;
@@ -180,7 +181,7 @@ namespace zombie {
 						int nbrOfLines;
 						mapFile >> nbrOfLines;
 						std::vector<Position> vertexes;
-						for (int i=1; i<=nbrOfLines;i++) {
+						for (int i = 1; i <= nbrOfLines; i++) {
 							getline (mapFile,line);
 							Position p;
 							mapFile >> p.x_;
@@ -190,7 +191,7 @@ namespace zombie {
 							vertexes.push_back(p);
 						}
 
-						for (int i=0; i<vertexes.size()-1; i++) {
+						for (unsigned int i = 0; i < vertexes.size()-1; i++) {
 							roads.push_back(LineFeature(vertexes[i],vertexes[i+1]));	
 						}
 					}

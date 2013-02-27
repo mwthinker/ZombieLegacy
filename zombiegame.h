@@ -5,28 +5,22 @@
 //#include "inputjoystick.h"
 
 #include "quadtree.h"
-#include "physicalengine.h"
-#include "unit.h"
-#include "building.h"
+#include "input.h"
+#include "map.h"
 #include "bullet.h"
 
-#include "input.h"
-#include "task.h"
-#include "taskmanager.h"
-#include "aiplayer.h"
-#include "map.h"
+#include "typedefs.h"
 
 #include <SDL.h>
-#include <memory> //std::shared_ptr
+#include <memory>
 #include <vector>
 #include <string>
-#include <map>
 
 namespace zombie {
 
-typedef std::shared_ptr<HumanPlayer> HumanPlayerPtr;
-typedef std::shared_ptr<AiPlayer> AiPlayerPtr;
-typedef std::shared_ptr<Player> PlayerPtr;
+// Forward declaration.
+class TaskManager;
+class PhysicalEngine;
 
 class ZombieGame {
 public:
@@ -73,15 +67,9 @@ protected:
 	void doShotDamage(UnitPtr shooter, const Bullet& properties);
 	bool isVisible(UnitPtr unitToBeSeen, UnitPtr unitThatSees) const;
 
-	double width_, height_; // The internal map size in the game.
-	
-	TaskManager* taskManager_;
-	unsigned int maxConnections_; // Max number of remove connections allowed.
-
 	void spawnAndCleanUpUnits();	// Spawns new zombies
 
-	bool started_; // The game time is started.
-	
+	bool started_; // The game time is started.	
 	double time_; // Local game time.
 	
 	// Last added unit id.
@@ -97,6 +85,7 @@ protected:
 	
 	PhysicalEngine* physicalEngine_;
 	Quadtree<BuildingPtr> buildings_; // All buildings.
+	TaskManager* taskManager_;
 
 	int indexAiPlayer_;
 	double timeToUpdateView_;

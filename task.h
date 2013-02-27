@@ -12,12 +12,8 @@
 
 #include <mw/text.h>
 
-#include <memory>
-
 namespace zombie {
-
-	typedef std::shared_ptr<Unit> UnitPtr;
-
+	
 	class Task {
 	public:
 		static int width, height;

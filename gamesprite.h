@@ -6,10 +6,8 @@
 namespace zombie {
 
 	extern mw::Sprite drawGrass;
-
 	extern mw::Sprite drawRoad;
-	
 
 } // namespace zombie.
 
-#endif // MAP_H	
+#endif // MAP_H

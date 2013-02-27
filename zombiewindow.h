@@ -1,9 +1,10 @@
 #ifndef ZOMBIEWINDOW_H
 #define ZOMBIEWINDOW_H
 
-#include "mw/gamewindow.h"
-#include "mw/sprite.h"
 #include "zombiegame.h"
+
+#include <mw/gamewindow.h>
+#include <mw/sprite.h>
 
 #include <SDL_opengl.h>
 #include <iostream>

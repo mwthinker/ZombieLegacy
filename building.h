@@ -172,9 +172,9 @@ public:
 protected:
 	void init() {
 		double xLeft = std::numeric_limits<double>::max();
-		double xRight = std::numeric_limits<double>::min();
-		double yUp = std::numeric_limits<double>::min();
-		double yDown = std::numeric_limits<double>::max();
+		double xRight = -xLeft;
+		double yUp = -xLeft;
+		double yDown = xLeft;
 		
 		for (Position p : corners_) {
 			xRight = std::max(xRight,p.x_);
@@ -214,8 +214,6 @@ private:
 		return oddNodes;
 	}
 };
-
-typedef std::shared_ptr<Building> BuildingPtr;
 
 } // namespace zombie.
 

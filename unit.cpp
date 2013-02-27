@@ -1,14 +1,16 @@
+#include "unit.h"
+
 #include "object.h"
 #include "input.h"
 #include "weapon.h"
 #include "physicalunit.h"
-#include <mw/mathvector.h>
-#include <cmath>
-#include <memory>
-
-#include "unit.h"
 #include "protocol.h"
 #include "auxiliary.h"
+
+#include <mw/mathvector.h>
+
+#include <cmath>
+#include <memory>
 
 namespace zombie {
 

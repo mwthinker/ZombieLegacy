@@ -1,8 +1,9 @@
 #ifndef AIBEHAVIOR_H
 #define AIBEHAVIOR_H
 
-#include "unit.h"
+#include "typedefs.h"
 
+#include "input.h"
 #include <vector>
 
 namespace zombie {
@@ -62,8 +63,6 @@ namespace zombie {
 		double time_;
 
 	};
-
-	typedef std::shared_ptr<AiBehavior> AiBehaviorPtr;
 
 } // namespace zombie.
 

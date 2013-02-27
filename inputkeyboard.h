@@ -3,6 +3,8 @@
 
 #include "humanplayer.h"
 
+#include <SDL.h>
+
 namespace zombie {
 
 class InputKeyboard : public HumanPlayer {

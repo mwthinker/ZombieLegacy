@@ -1,10 +1,10 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include "aibehavior.h"
-#include "unit.h"
-#include "building.h"
+#include "typedefs.h"
 #include "linefeature.h"
+
+#include <mw/mathvector.h>
 
 #include <vector>
 #include <random>
@@ -30,7 +30,7 @@ namespace zombie {
 			return buildings_;
 		}
 
-		const std::vector<LineFeature> getRoads() const {
+		const std::vector<LineFeature>& getRoads() const {
 			return roads_;
 		}
 

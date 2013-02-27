@@ -1,11 +1,10 @@
+#include "physicalunit.h"
+
+#include "protocol.h"
+#include "object.h"
+
 #include <mw/mathvector.h>
 #include <mw/packet.h>
-
-#include "physicalunit.h"
-#include "protocol.h"
-
-#include "object.h"
-#include "protocol.h"
 
 namespace zombie {
 
@@ -81,5 +80,4 @@ namespace zombie {
 	double PhysicalUnit::radius() const {
 		return radius_;
 	}
-
 }

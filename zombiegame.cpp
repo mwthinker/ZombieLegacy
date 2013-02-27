@@ -1,20 +1,20 @@
 #include "zombiegame.h"
 
+#include "typedefs.h"
 #include "inputkeyboard.h"
-
 #include "physicalengine.h"
 #include "unit.h"
 #include "building.h"
 #include "bullet.h"
 #include "map.h"
-
 #include "input.h"
 #include "task.h"
 #include "quadtree.h"
 #include "taskmanager.h"
+#include "aiplayer.h"
 
 #include <SDL.h>
-#include <memory> //std::shared_ptr
+#include <memory>
 #include <vector>
  
 #include <string>
@@ -58,8 +58,6 @@ namespace zombie {
     void ZombieGame::physicUpdate(Uint32 msDeltaTime) {
 		// Game is started?
 		if (started_) {
-			
-
 			double deltaTime = msDeltaTime/1000.0;
 			// Spawn and clean up units
 			if (timeSinceSpawn_ > timeToUpdateSpawn_) {

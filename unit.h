@@ -1,10 +1,6 @@
 #ifndef UNIT_H
 #define UNIT_H
 
-#include <memory>
-#include <mw/mathvector.h>
-
-#include "object.h"
 #include "input.h"
 #include "weapon.h"
 #include "physicalunit.h"
@@ -110,8 +106,6 @@ private:
 	std::queue<Bullet> bullets_;
 	std::vector<std::function<void(UnitEvent)>> eventHandlers_;
 };
-
-typedef std::shared_ptr<Unit> UnitPtr;
 
 } // namespace zombie
 

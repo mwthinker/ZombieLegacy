@@ -1,6 +1,7 @@
 #include "aiplayer.h"
+
+#include "typedefs.h"
 #include "input.h"
-#include "unit.h"
 #include "zombiebehavior.h"
 
 namespace zombie {

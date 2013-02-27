@@ -1,22 +1,20 @@
 #include "task.h"
 
-#include <vector>
-#include <queue>
-#include <SDL_opengl.h>
-#include <cmath>
-
 #include "unit.h"
 #include "building.h"
 #include "gamesound.h"
 #include "gamefont.h"
 
+#include <mw/text.h>
+#include <SDL_opengl.h>
+
 #include <memory>
 #include <sstream>
-#include <mw/text.h>
+#include <vector>
+#include <queue>
+#include <cmath>
 
 namespace zombie {
-
-	typedef std::shared_ptr<Unit> UnitPtr;
 
 	int Task::width = 0;
 	int Task::height = 0;
@@ -504,14 +502,13 @@ namespace zombie {
 	}
 
 	void RoadDraw::draw() {
-
-		std::vector<LineFeature> l = map_.getRoads();
+		const std::vector<LineFeature>& l = map_.getRoads();
 		
 		for (auto it = l.begin(); it != l.end(); it++) {
-			int xStart =  it->getStart().x_;
-			int yStart =  it->getStart().y_;
-			int xEnd = it->getEnd().x_;
-			int yEnd =  it->getEnd().y_;
+			double xStart =  it->getStart().x_;
+			double yStart =  it->getStart().y_;
+			double xEnd = it->getEnd().x_;
+			double yEnd =  it->getEnd().y_;
 
 			double x = xStart;
 			double y = yStart;

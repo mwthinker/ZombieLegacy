@@ -1,7 +1,7 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include "physicalunitinterface.h"
+#include "typedefs.h"
 
 namespace zombie {
 

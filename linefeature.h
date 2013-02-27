@@ -1,49 +1,30 @@
 #ifndef LINEFEATURE_H
 #define LINEFEATURE_H
 
-
-#include <memory>
-#include <mw/mathvector.h>
-#include "protocol.h"
-#include <mw/packet.h>
+#include "typedefs.h"
 
 namespace zombie {
 
-typedef mw::MathVector Position;
+	class LineFeature {
+	public:
+		LineFeature() {
+		}
 
-class LineFeature {
-public:
-	LineFeature() {
-		
-	}
-	LineFeature(Position p1, Position p2) {
-		vertexes_.push_back(p1);
-		vertexes_.push_back(p2);
-	}
+		LineFeature(Position p1, Position p2) : p1_(p1), p2_(p2) {
+		}
 
-	LineFeature(std::vector<Position> list) {
-		
-	}
+		Position getStart() const {
+			return p1_;
+		}
 
-	void addVertex(Position p) {
-		vertexes_.push_back(p);	
-	}
+		Position getEnd() const {
+			return p2_;
+		}
 
-	Position getStart() {
-		return vertexes_[0];
-	}
+	private:
+		Position p1_, p2_;	
+	};
 
-	Position getEnd() {
-		return vertexes_[1];
-	}
-
-private:
-	std::vector<Position> vertexes_;
-
-};
-
-
-
-} // namespace zombie.
+} // Namespace zombie.
 
 #endif // LINEFEATURE_H

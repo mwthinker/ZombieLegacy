@@ -1,15 +1,19 @@
 #include "physicalengine.h"
 
+#include "unit.h"
+#include "physicalunit.h"
+
 #include <mw/mathvector.h>
 
 #include <list>
 #include <utility>
 #include <algorithm>
 
-#include "unit.h"
-#include "physicalunit.h"
-
 namespace zombie {
+
+	bool inside(const PhysicalUnitPtr& unit1, const PhysicalUnitPtr& unit2) {
+		return (unit1->getPosition() - unit2->getPosition())*(unit1->getPosition() - unit2->getPosition()) < (unit1->radius() + unit2->radius()) * (unit1->radius() + unit2->radius());	
+	}
 
 	PhysicalEngine::PhysicalEngine(double x, double y, double width, double height) : staticUnits_(x,y,width,height,4) {
 	}

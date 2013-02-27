@@ -1,15 +1,14 @@
 #ifndef PHYSICALENGINE_H
 #define PHYSICALENGINE_H
 
+#include "quadtree.h"
+#include "typedefs.h"
+
 #include <mw/mathvector.h>
 
 #include <list>
 #include <utility>
 #include <algorithm>
-
-#include "quadtree.h"
-#include "unit.h"
-#include "physicalunit.h"
 
 namespace zombie {
 
@@ -37,14 +36,9 @@ namespace zombie {
 
 		virtual double getRadius() const = 0;
 		virtual Position getPosition() const = 0;
-	};
+	};	
 
-	typedef std::shared_ptr<PhysicalUnitInterface> PhysicalUnitPtr;
-	typedef std::shared_ptr<StaticPhyscalUnit> StaticPhyscalUnitPtr;
-
-	bool inline inside(const PhysicalUnitPtr& unit1, const PhysicalUnitPtr& unit2) {
-		return (unit1->getPosition() - unit2->getPosition())*(unit1->getPosition() - unit2->getPosition()) < (unit1->radius() + unit2->radius()) * (unit1->radius() + unit2->radius());	
-	}
+	bool inside(const PhysicalUnitPtr& unit1, const PhysicalUnitPtr& unit2);
 
 	class PhysicalEngine {
 	public:
