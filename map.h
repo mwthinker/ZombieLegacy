@@ -19,58 +19,12 @@ namespace zombie {
 
 	class Map {
 	public:
-		Map(Position mapCentre_, double width, double height, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads = std::vector<LineFeature>()) {
-			buildings_ = buildings;
-			minX_ = mapCentre_.x_ - width * 0.5; 
-			minY_ = mapCentre_.y_ - height * 0.5;
-			maxX_ = mapCentre_.x_ + width * 0.5;
-			maxY_ = mapCentre_.y_ + height * 0.5;
-			roads_ = roads;
-		}
-
-		Map() {
-		}
+		Map(Position mapCentre_, double width, double height, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads = std::vector<LineFeature>());
+		Map();
 				
-		Position getMapCentre() const {
-			return Position((minX_+maxX_)/2,(minY_+maxY_)/2);
-		}		
-
-		Position generateSpawnPosition() const {
-			return generateSpawnPosition(getMapCentre(),0,std::min(maxX_-minX_,maxY_-minY_) * 0.7);
-		}
-
-		Position generateSpawnPosition(Position p, double innerRadie, double outerRadie) const {
-			std::random_device rd;
-			std::default_random_engine g(rd());
-			std::uniform_real_distribution<double> distReal(0,1);
-			bool buildingFound = false;
-
-			double alfa = distReal(g) * 2 * mw::PI;
-			double dist = distReal(g) * (outerRadie-innerRadie);// + innerRadie;			
-
-			for(double dr = 0; dr < outerRadie-innerRadie; dr += 1.0) {
-				for(double angle = 0; angle < 2*mw::PI; angle += 0.2) {
-					dist = fmod(dist+dr,outerRadie-innerRadie);
-					double x = p.x_ + std::cos(alfa+angle)*(dist+innerRadie);
-					double y = p.y_ + std::sin(alfa+angle)*(dist+innerRadie);
-
-					Position testPos(x,y);
-					for (BuildingPtr building : buildings_) {
-						// if inside one building, break
-						if (building->isInside(testPos.x_,testPos.y_)) {
-							buildingFound = true;
-							break;
-						}
-					}
-
-					if(!buildingFound) {
-						return testPos;
-					}
-				}
-			}
-			// No success - return dummy position!
-			return Position(-99999,-99999,-99999);
-		}
+		Position getMapCentre() const;
+		Position generateSpawnPosition() const;
+		Position generateSpawnPosition(Position p, double innerRadie, double outerRadie) const;
 
 		const std::vector<BuildingPtr>& getBuildings() const {
 			return buildings_;

@@ -1,9 +1,64 @@
 #include "map.h"
-#include <string>
-#include <fstream>
 #include "input.h"
 
+#include <limits>
+#include <string>
+#include <fstream>
+
 namespace zombie {
+
+	Map::Map(Position mapCentre_, double width, double height, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads = std::vector<LineFeature>()) {
+		buildings_ = buildings;
+		minX_ = mapCentre_.x_ - width * 0.5; 
+		minY_ = mapCentre_.y_ - height * 0.5;
+		maxX_ = mapCentre_.x_ + width * 0.5;
+		maxY_ = mapCentre_.y_ + height * 0.5;
+		roads_ = roads;
+	}
+
+	Map::Map() {
+	}
+
+	Position Map::getMapCentre() const {
+		return Position((minX_+maxX_)/2,(minY_+maxY_)/2);
+	}		
+
+	Position Map::generateSpawnPosition() const {
+		return generateSpawnPosition(getMapCentre(),0,std::min(maxX_-minX_,maxY_-minY_) * 0.7);
+	}
+
+	Position Map::generateSpawnPosition(Position p, double innerRadie, double outerRadie) const {
+		std::random_device rd;
+		std::default_random_engine g(rd());
+		std::uniform_real_distribution<double> distReal(0,1);
+		bool buildingFound = false;
+
+		double alfa = distReal(g) * 2 * mw::PI;
+		double dist = distReal(g) * (outerRadie-innerRadie);// + innerRadie;			
+
+		for(double dr = 0; dr < outerRadie-innerRadie; dr += 1.0) {
+			for(double angle = 0; angle < 2*mw::PI; angle += 0.2) {
+				dist = fmod(dist+dr,outerRadie-innerRadie);
+				double x = p.x_ + std::cos(alfa+angle)*(dist+innerRadie);
+				double y = p.y_ + std::sin(alfa+angle)*(dist+innerRadie);
+
+				Position testPos(x,y);
+				for (BuildingPtr building : buildings_) {
+					// if inside one building, break
+					if (building->isInside(testPos.x_,testPos.y_)) {
+						buildingFound = true;
+						break;
+					}
+				}
+
+				if(!buildingFound) {
+					return testPos;
+				}
+			}
+		}
+		// No success - return dummy position!
+		return Position(-99999,-99999,-99999);
+	}
 
 	Map generateMap(int& lastId) {
 		double side = 15;
@@ -14,17 +69,17 @@ namespace zombie {
 		std::uniform_real_distribution<double> distReal(0,1);
 
 		std::vector<BuildingPtr> buildings;
-		
+
 		for (int i = 0; i < nbr; ++i) {
 			for (int j = 0; j < nbr; ++j) {
-				
+
 				double x = i * side;
 				double y = j * side;
 				Position p1(x + distReal(g) * 4, y + distReal(g) * 4, 0);
 				Position p2(x + distReal(g) * 4 + 8, y + distReal(g) * 4, 0);
 				Position p3(x + distReal(g) * 4 + 8, y + distReal(g) * 4 + 8, 0);
 				Position p4(x + distReal(g) * 4 , y + distReal(g) * 4 + 8, 0);
-				
+
 				std::vector<Position> positions;
 				positions.push_back(p1);
 				positions.push_back(p2);
@@ -41,12 +96,11 @@ namespace zombie {
 
 	Map loadMapInfo(std::string filename, std::string fileRoads, int& unitId, double scale) {
 		std::fstream mapFile(filename.c_str(),std::fstream::in);
-		double minX = 99999999999999;
-		double maxX = -99999999999999;
-		double minY = 99999999999999;
-		double maxY = -99999999999999;
+		double minX = std::numeric_limits<double>::max();
+		double maxX = std::numeric_limits<double>::min();
+		double minY = std::numeric_limits<double>::max();
+		double maxY = std::numeric_limits<double>::min();
 
-		
 		std::vector< std::vector<Position> > allCorners;
 		while (mapFile.good()) {
 			//while (mapFile.good()) {
@@ -104,7 +158,7 @@ namespace zombie {
 			BuildingPtr building = BuildingPtr(new Building(corners,++unitId));
 			buildings.push_back(building);
 		}
-		
+
 		mapFile.close();
 		return Map(Position((minX+maxX)/2,(minY+maxY)/2),width,height,buildings,loadRoads(fileRoads,scale,normalizeX,normalizeY));
 	}
@@ -115,13 +169,13 @@ namespace zombie {
 		while (mapFile.good()) {
 			std::string line;
 			getline (mapFile,line);
-			
+
 			if (line == "DATA") {
 				while (mapFile.good()) {
 					getline (mapFile,line);
 					std::string objectType;
 					mapFile >> objectType;
-					
+
 					if (objectType == "PLINE") {
 						int nbrOfLines;
 						mapFile >> nbrOfLines;
@@ -158,7 +212,7 @@ namespace zombie {
 				}
 			}
 		}
-		
+
 		std::cout << "Size roads_: "<< roads.size();
 		//ladda in till roads attribut
 

@@ -3,11 +3,13 @@
 
 #include "object.h"
 #include "physicalengine.h"
+#include "protocol.h"
+
+#include <mw/mathvector.h>
+#include <mw/packet.h>
 
 #include <memory>
-#include <mw/mathvector.h>
-#include "protocol.h"
-#include <mw/packet.h>
+#include <limits>
 
 namespace zombie {
 
@@ -68,7 +70,7 @@ public:
 
 	Building(mw::Packet& packet) : Object(packet) {
 		Position position;
-		while (packet.dataLeftToRead() > 0) {			
+		while (packet.dataLeftToRead() > 0) {
 			packet >> position;
 			if (position.x_ > 0.0) {
 				corners_.push_back(position);
