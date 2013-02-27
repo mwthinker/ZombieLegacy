@@ -19,34 +19,16 @@ namespace zombie {
 
 	class Map {
 	public:
-		Map(Position mapCentre_, double width, double height, std::vector<BuildingPtr> buildings,double normalizeX, double normalizeY) {
+		Map(Position mapCentre_, double width, double height, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads = std::vector<LineFeature>()) {
 			buildings_ = buildings;
-			area_ = width * height;
 			minX_ = mapCentre_.x_ - width * 0.5; 
 			minY_ = mapCentre_.y_ - height * 0.5;
 			maxX_ = mapCentre_.x_ + width * 0.5;
 			maxY_ = mapCentre_.y_ + height * 0.5;
-			road_.push_back(Position(10,10));
-			road_.push_back(Position(25,25));
-			normalizeX_ = normalizeX;
-			normalizeY_ = normalizeY;
+			roads_ = roads;
 		}
-
-		/*
-		Map(Position mapCentre_, double radius, std::vector<BuildingPtr> buildings) {
-			buildings_ = buildings;
-			area_ = radius*radius*mw::PI;
-			minX_ = mapCentre_.x_ - radius; 
-			minY_ = mapCentre_.y_ - radius;
-			maxX_ = mapCentre_.x_ + radius;
-			maxY_ = mapCentre_.y_ + radius;
-			road_.push_back(Position(10,10));
-			road_.push_back(Position(25,25));
-		}
-		*/
 
 		Map() {
-			area_ = 0;
 		}
 				
 		Position getMapCentre() const {
@@ -93,19 +75,9 @@ namespace zombie {
 		const std::vector<BuildingPtr>& getBuildings() const {
 			return buildings_;
 		}
-		
-		void loadRoads(std::string filename, double scale);
-
-		//const std::vector<Position>& getRoads() const {
-		//	return road_;
-		//}
 
 		const std::vector<LineFeature> getRoads() const {
 			return roads_;
-		}
-
-		double getMapArea() const {
-			return area_;
 		}
 
 		double minX() const {
@@ -131,37 +103,22 @@ namespace zombie {
 		double height() const {
 			return maxY_ - minY_;
 		}
-	private:
-		/*
-		static double polygonArea(const std::vector<Position>& corners) { 
-			double area = 0;         // Accumulates area in the loop
-			int size = corners.size();
-			int j = size - 1;  // The last vertex is the 'previous' one to the first
 
-			for (int i = 0; i < size; i++) {
-				area = area + (corners[j].x_+corners[i].x_) * (corners[j].y_-corners[i].y_);
-				j = i;  //j is previous vertex to i
-			}
-			return area/2;
-		}
-		*/
-				
-		std::vector<BuildingPtr> buildings_;
-		std::vector<Position> road_; // DUMMY IMPLEMENTATION REMOVE
-		double area_;
+	private:
 		double minX_;
 		double minY_;
 		double maxX_;
 		double maxY_;
-		double normalizeX_;
-		double normalizeY_;
+		
 		std::vector<LineFeature> roads_;
+		std::vector<BuildingPtr> buildings_;
 	};
+
 	Map generateMap(int& lastId); 
 
-	Map loadMapInfo(std::string filename, int& unitId, double scale);
+	Map loadMapInfo(std::string filename, std::string fileRoads, int& unitId, double scale);
 
-	//std::default_random_engine generator_;
+	std::vector<LineFeature> loadRoads(std::string filename, double scale, double normalizeX, double normalizeY);
 
 } // namespace zombie.
 

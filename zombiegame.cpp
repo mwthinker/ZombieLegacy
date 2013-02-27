@@ -228,8 +228,7 @@ namespace zombie {
 	void ZombieGame::initGame() {
 		graphic3D_ = false;
 		
-		map_ = loadMapInfo("buildings.mif",unitId_, 30000);
-		map_.loadRoads("roads.mif",30000);
+		map_ = loadMapInfo("buildings.mif","roads.mif",unitId_, 30000);
 
 		physicalEngine_ = new PhysicalEngine(map_.minX(),map_.minY(),map_.width(),map_.height());
 		buildings_ = Quadtree<BuildingPtr>(map_.minX(),map_.minY(),map_.width(),map_.height(),4);
