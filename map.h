@@ -19,22 +19,21 @@ namespace zombie {
 
 	class Map {
 	public:
-		Map(Position mapCentre_, double radius, std::vector<BuildingPtr> buildings,double normalizeX, double normalizeY) {
-			border_ = std::shared_ptr<Border>(new Border(mapCentre_, radius));
+		Map(Position mapCentre_, double width, double height, std::vector<BuildingPtr> buildings,double normalizeX, double normalizeY) {
 			buildings_ = buildings;
-			area_ = radius*radius*mw::PI;
-			minX_ = mapCentre_.x_ - radius; 
-			minY_ = mapCentre_.y_ - radius;
-			maxX_ = mapCentre_.x_ + radius;
-			maxY_ = mapCentre_.y_ + radius;
+			area_ = width * height;
+			minX_ = mapCentre_.x_ - width * 0.5; 
+			minY_ = mapCentre_.y_ - height * 0.5;
+			maxX_ = mapCentre_.x_ + width * 0.5;
+			maxY_ = mapCentre_.y_ + height * 0.5;
 			road_.push_back(Position(10,10));
 			road_.push_back(Position(25,25));
 			normalizeX_ = normalizeX;
 			normalizeY_ = normalizeY;
 		}
 
+		/*
 		Map(Position mapCentre_, double radius, std::vector<BuildingPtr> buildings) {
-			border_ = std::shared_ptr<Border>(new Border(mapCentre_, radius));
 			buildings_ = buildings;
 			area_ = radius*radius*mw::PI;
 			minX_ = mapCentre_.x_ - radius; 
@@ -44,17 +43,18 @@ namespace zombie {
 			road_.push_back(Position(10,10));
 			road_.push_back(Position(25,25));
 		}
+		*/
 
 		Map() {
 			area_ = 0;
 		}
-
+				
 		Position getMapCentre() const {
-			return border_->getCentrePosition();
-		}
+			return Position((minX_+maxX_)/2,(minY_+maxY_)/2);
+		}		
 
 		Position generateSpawnPosition() const {
-			return generateSpawnPosition(border_->getCentrePosition(),0,border_->getRadius()/2);
+			return generateSpawnPosition(getMapCentre(),0,std::min(maxX_-minX_,maxY_-minY_) * 0.7);
 		}
 
 		Position generateSpawnPosition(Position p, double innerRadie, double outerRadie) const {
@@ -88,10 +88,6 @@ namespace zombie {
 			}
 			// No success - return dummy position!
 			return Position(-99999,-99999,-99999);
-		}
-
-		std::shared_ptr<Border> getBorder() const {
-			return border_;
 		}
 
 		const std::vector<BuildingPtr>& getBuildings() const {
@@ -136,7 +132,6 @@ namespace zombie {
 			return maxY_ - minY_;
 		}
 	private:
-		std::shared_ptr<Border> border_;
 		/*
 		static double polygonArea(const std::vector<Position>& corners) { 
 			double area = 0;         // Accumulates area in the loop

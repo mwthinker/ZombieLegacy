@@ -36,7 +36,7 @@ namespace zombie {
 			}
 		}
 
-		return Map(Position(),10,buildings);
+		return Map(Position(),10,10,buildings,0,0);
 	}
 
 	void Map::loadRoads(std::string filename, double scale) {
@@ -161,7 +161,7 @@ namespace zombie {
 		}
 		
 		mapFile.close();
-		return Map(Position((minX+maxX)/2,(minY+maxY)/2),std::min(height,width)/2,buildings,normalizeX,normalizeY);
+		return Map(Position((minX+maxX)/2,(minY+maxY)/2),width,height,buildings,normalizeX,normalizeY);
 	}
 
 } // namespace zombie.

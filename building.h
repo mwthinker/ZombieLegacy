@@ -20,10 +20,6 @@ public:
 		radius_ = radius;
 	}
 
-	Position getCentrePosition() const {
-		return centre_;
-	}
-
 	// Override member from class StaticPhysicalUnit
 	bool isInsideApproximate(double x, double y, double radius) const {
 		Position p = centre_;
@@ -105,17 +101,17 @@ public:
 	}
 
 	// Override member from class StaticPhysicalUnit
-	bool isInsideApproximate(double x, double y, double radius) const {
+	bool isInsideApproximate(double x, double y, double radius) const override {
 		return (longestSide_ + radius)*(longestSide_ + radius) > (x - massCentre_.x_)*(y - massCentre_.y_);
 	}
 	
 	// Override member from class StaticPhysicalUnit
-	double stiffness() const {
+	double stiffness() const override {
 		return 150.0;
 	}
 	
 	// Override member from class StaticPhysicalUnit
-	Position penetration(double x, double y, double radius) const {
+	Position penetration(double x, double y, double radius) const override {
 		int size = corners_.size();
 		Position distance(1000,1000);
 		for (int i = 0; i < size; ++i) {
@@ -149,12 +145,6 @@ public:
 		return distance;
 	}
 
-	/*
-	bool popGameEvent(GameEvent*& gameEvent) {
-		return false;
-	}
-	*/
-
 	double healthPoints() const override {
 		return 100.0;
 	}
@@ -179,38 +169,20 @@ public:
 	}
 protected:
 	void init() {
-		massCentre_ = calculateMassCenter();
-
-		double longestDiff = 0;
-		for (Position p : corners_) {
-			double tmp = (massCentre_ - p).magnitude();
-			if (tmp > longestDiff) {
-				longestDiff = tmp;
-			}
-		}
-		longestSide_ = longestDiff;
+		double xLeft = std::numeric_limits<double>::max();
+		double xRight = std::numeric_limits<double>::min();
+		double yUp = std::numeric_limits<double>::min();
+		double yDown = std::numeric_limits<double>::max();
 		
-		double xLeft=9999999, xRight=-9999999, yLeft=9999999, yRight=-9999999;
 		for (Position p : corners_) {
 			xRight = std::max(xRight,p.x_);
-			yRight = std::max(yRight,p.y_);
+			yUp = std::max(yUp,p.y_);
 			xLeft = std::min(xLeft,p.x_);
-			yLeft = std::min(yLeft,p.y_);
+			yDown = std::min(yDown,p.y_);
 		}
-		position_ = Position((xLeft + xRight)/2,(yLeft + yRight)/2);
-		radius_ = (position_ - Position(xLeft,yLeft)).magnitude();
-	}
-
-	// Calculates the mass centre.
-	// However, it's not the mass centre for the building that is calculated 
-	// it's the mass centre for the vertexes. I most cases it should work as 
-	// a good enough  approximation.
-	Position calculateMassCenter() const {
-		Position centre_;
-		for (Position p : corners_) {
-			centre_ += p / corners_.size();
-		}
-		return centre_;
+		
+		position_ = Position((xLeft + xRight)/2,(yDown + yUp)/2);
+		radius_ = (position_ - Position(xLeft,yDown)).magnitude();
 	}
 
 	Position position_;
