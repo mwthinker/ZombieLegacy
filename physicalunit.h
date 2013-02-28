@@ -1,8 +1,7 @@
 #ifndef PHYSICALUNIT_H
 #define PHYSICALUNIT_H
 
-#include <mw/mathvector.h>
-#include <mw/packet.h>
+#include "typedefs.h"
 
 #include "physicalunitinterface.h"
 #include "object.h"
@@ -12,8 +11,6 @@ namespace zombie {
 class PhysicalUnit : public Object, public PhysicalUnitInterface {
 public:
 	PhysicalUnit(int id, double x, double y, double radius, double stiffness, double damping, double mass);
-	PhysicalUnit(mw::Packet& packet);
-	virtual mw::Packet generatePacket() const;
 
 	// Override member from class PhysicalUnit
 	double stiffness() const override;

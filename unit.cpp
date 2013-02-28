@@ -4,7 +4,6 @@
 #include "input.h"
 #include "weapon.h"
 #include "physicalunit.h"
-#include "protocol.h"
 #include "auxiliary.h"
 
 #include <mw/mathvector.h>
@@ -39,33 +38,6 @@ namespace zombie {
 
 	bool Unit::toRemove() const {
 		return isDead();
-	}
-
-	Unit::Unit(mw::Packet& packet) : PhysicalUnit(packet) {
-		packet >> angleVelocity_;
-		packet >> angle_;
-		packet >> viewDistance_;
-		packet >> viewAngle_;
-		packet >> smallViewDistance_;
-		packet >> healthPoints_;
-		packet >> isDead_;		
-		packet >> weapon_;
-		packet >> isInfected_;
-	}
-
-	mw::Packet Unit::generatePacket() const {
-		mw::Packet packet;
-		packet << PhysicalUnit::generatePacket();
-		packet << angleVelocity_;
-		packet << angle_;
-		packet << viewDistance_;
-		packet << viewAngle_;
-		packet << smallViewDistance_;
-		packet << healthPoints_;
-		packet << isDead_;
-		packet << weapon_;
-		packet << isInfected_;
-		return packet;
 	}
 
 	void Unit::updatePhysics(double time, double timeStep, Input input) {

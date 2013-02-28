@@ -45,9 +45,6 @@
     <ClInclude Include="physicalunit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="protocol.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="physicalunitinterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -120,9 +117,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="unit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="protocol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="physicalunit.cpp">

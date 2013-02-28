@@ -39,12 +39,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>c:\Programmering\SDK\SDL\SDL all\include;C:\Programmering\SDK\enet\include;C:\Programmering\SDK\mw\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>C:\Programmering\SDK\SDL\SDL all\lib;C:\Programmering\SDK\enet\lib\debug;C:\Programmering\SDK\mw\lib-d;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86)</LibraryPath>
+    <IncludePath>c:\Programmering\SDK\SDL\SDL all\include;C:\Programmering\SDK\mw\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>C:\Programmering\SDK\SDL\SDL all\lib;C:\Programmering\SDK\mw\lib-d;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>c:\Programmering\SDK\SDL\SDL all\include;C:\Programmering\SDK\enet\include;C:\Programmering\SDK\mw\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>C:\Programmering\SDK\SDL\SDL all\lib;C:\Programmering\SDK\enet\lib;C:\Programmering\SDK\mw\lib-r;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86)</LibraryPath>
+    <IncludePath>c:\Programmering\SDK\SDL\SDL all\include;C:\Programmering\SDK\mw\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>C:\Programmering\SDK\SDL\SDL all\lib;C:\Programmering\SDK\mw\lib-r;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -54,8 +54,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_ttf.lib;enet.lib;ws2_32.lib;winmm.lib;SDL.lib;OpenGl32.lib;glu32.lib;MwLibrary.lib;MwNetwork.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>LIBCMTD;msvcrt.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_ttf.lib;SDL.lib;OpenGl32.lib;glu32.lib;MwLibrary.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -71,9 +71,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_ttf.lib;enet.lib;ws2_32.lib;winmm.lib;SDL.lib;OpenGl32.lib;glu32.lib;MwLibrary.lib;MwNetwork.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_ttf.lib;SDL.lib;OpenGl32.lib;glu32.lib;MwLibrary.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
-      <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -96,7 +97,6 @@
     <ClInclude Include="physicalunit.h" />
     <ClInclude Include="physicalunitinterface.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="protocol.h" />
     <ClInclude Include="gamesound.h" />
     <ClInclude Include="quadtree.h" />
     <ClInclude Include="state.h" />
@@ -122,7 +122,6 @@
     <ClCompile Include="physicalengine.cpp" />
     <ClCompile Include="physicalunit.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="protocol.cpp" />
     <ClCompile Include="task.cpp" />
     <ClCompile Include="taskmanager.cpp" />
     <ClCompile Include="unit.cpp" />

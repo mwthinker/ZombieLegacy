@@ -1,8 +1,6 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
-#include <mw/packet.h>
-
 namespace zombie {
 
 // Describes a Weapon and is responsible of shooting.
@@ -27,9 +25,6 @@ public:
 		lastShotTime_ = 0.0;
 		shotSound_ = range_;
 	}
-
-	friend mw::Packet& operator<<(mw::Packet& packet, const Weapon& weapon);
-	friend mw::Packet& operator>>(mw::Packet& packet, Weapon& weapon);
 
 	// Called when user pulls the trigger.
 	bool shoot(double time) {

@@ -3,10 +3,8 @@
 
 #include "object.h"
 #include "physicalengine.h"
-#include "protocol.h"
 
 #include <mw/mathvector.h>
-#include <mw/packet.h>
 
 #include <memory>
 #include <limits>
@@ -66,32 +64,6 @@ public:
 
 	Building(const std::vector<Position>& corners, int id) : Object(id), corners_(corners) {
 		init();
-	}
-
-	Building(mw::Packet& packet) : Object(packet) {
-		Position position;
-		while (packet.dataLeftToRead() > 0) {
-			packet >> position;
-			if (position.x_ > 0.0) {
-				corners_.push_back(position);
-			} else {
-				break;
-			}
-		}
-		init();
-	}
-
-	virtual ~Building() {
-	}
-
-	mw::Packet generatePacket() const {
-		mw::Packet packet;
-		packet << Object::generatePacket();
-		for (const Position& position : corners_) {
-			packet << position;
-		}
-		packet << Position(-1,-1);
-		return packet;
 	}
 
 	const std::vector<Position>& getCorners() const {

@@ -1,10 +1,8 @@
 #include "physicalunit.h"
 
-#include "protocol.h"
 #include "object.h"
 
 #include <mw/mathvector.h>
-#include <mw/packet.h>
 
 namespace zombie {
 
@@ -14,25 +12,6 @@ namespace zombie {
 		stiffness_ = stiffness;
 		damping_ = damping;
 		mass_ = mass;
-	}
-
-	PhysicalUnit::PhysicalUnit(mw::Packet& packet) : Object(packet) {
-		packet >> position_;
-		packet >> radius_;
-		packet >> stiffness_;
-		packet >> damping_;
-		packet >> mass_;
-	}
-
-	mw::Packet PhysicalUnit::generatePacket() const {
-		mw::Packet packet;
-		packet << Object::generatePacket();
-		packet << position_;
-		packet << radius_;
-		packet << stiffness_;
-		packet << damping_;
-		packet << mass_;
-		return packet;
 	}
 
 	double PhysicalUnit::stiffness() const {

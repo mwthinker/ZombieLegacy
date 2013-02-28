@@ -558,11 +558,11 @@ namespace zombie {
 		
 		
 		const auto& corners = buildning_->getCorners();
-		for (int i=0; i<corners.size(); i++) {
+		for (unsigned int i = 0; i < corners.size(); i++) {
 			double d = (std::rand() % 100) / 500.0;
 			
 			glColor3d(0.5+d,0.5+d,0.5+d);
-			if(i==corners.size()-1){
+			if (i == corners.size()-1){
 			
 			} else {
 				//glBegin(GL_LINE_LOOP);

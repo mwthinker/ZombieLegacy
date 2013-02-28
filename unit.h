@@ -23,11 +23,6 @@ public:
 	// Returns true if object is to be removed from PhyscalEngine.
 	bool toRemove() const override;
 
-	Unit(mw::Packet& packet);
-
-	// Overides Object function.
-	mw::Packet generatePacket() const;
-
 	// Simulates the physics at time (time) one time step (timeStep) ahead.
 	// Based on the input given.
 	void updatePhysics(double time, double timeStep, Input input);
