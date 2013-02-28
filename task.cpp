@@ -67,7 +67,7 @@ namespace zombie {
 	}
 
 	bool DrawBuildning::isRunning() const {
-		return !buildning_->isDead();
+		return true;
 	}
 
 	//private
@@ -439,7 +439,7 @@ namespace zombie {
 	}
 
 	bool Buildning3DTask::isRunning() const {
-		return !buildning_->isDead();
+		return true;
 	}
 
 	//private
@@ -546,7 +546,7 @@ namespace zombie {
 	}
 
 	bool DrawFake3DBuildning::isRunning() const {
-		return !buildning_->isDead();
+		return true;
 	}
 
 	//private

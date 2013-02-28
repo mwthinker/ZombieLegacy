@@ -31,7 +31,6 @@ namespace zombie {
 		
 		started_ = false;
 		time_ = 0.0;
-		unitId_ = 0; 
 		timeToUpdateView_ = 0.25; // Seconds in which the view is assumed to be constant in order to 
 		                          // speed up calculations.
 
@@ -138,7 +137,7 @@ namespace zombie {
 		while (nbrOfZombies < unitLevel_) {
 			// INSERT ZOMBIE
 			Position p = map_.generateSpawnPosition(humanPlayers_[0].second->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
-			UnitPtr zombie(new Unit(p.x_,p.y_,0.3,Weapon(35,0.5,1,12),true,++unitId_));
+			UnitPtr zombie(new Unit(p.x_,p.y_,0.3,Weapon(35,0.5,1,12),true));
 			addNewAi(zombie);			
 			nbrOfZombies++;
 		}
@@ -224,7 +223,7 @@ namespace zombie {
 	void ZombieGame::initGame() {
 		graphic3D_ = false;
 		
-		map_ = loadMapInfo("buildings.mif","roads.mif",unitId_, 30000);
+		map_ = loadMapInfo("buildings.mif","roads.mif", 30000);
 
 		physicalEngine_ = new PhysicalEngine(map_.minX(),map_.minY(),map_.width(),map_.height());
 		buildings_ = Quadtree<BuildingPtr>(map_.minX(),map_.minY(),map_.width(),map_.height(),4);
@@ -247,7 +246,7 @@ namespace zombie {
 		
 		// Add human controlled by first input device.
 		Position position = map_.generateSpawnPosition();
-		UnitPtr human(new Unit(position.x_,position.y_,0.3,Weapon(35,0.2,8,12),false,++unitId_));
+		UnitPtr human(new Unit(position.x_,position.y_,0.3,Weapon(35,0.2,8,12),false));
 		viewPosition_ = human->getPosition();
 
 		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r,SDLK_LSHIFT));
@@ -256,13 +255,13 @@ namespace zombie {
 		// Add zombie with standard behavior.
 		for (int i = 0; i < 40; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
-			UnitPtr zombie(new Unit(spawn.x_,spawn.y_,0.3,Weapon(35,0.5,1,12),true,++unitId_));
+			UnitPtr zombie(new Unit(spawn.x_,spawn.y_,0.3,Weapon(35,0.5,1,12),true));
 			addNewAi(zombie);
 		}
 		
 		for (int i = 0; i < 5; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,innerSpawnRadius_);
-			UnitPtr survivor(new Unit(spawn.x_,spawn.x_,spawn.x_,Weapon(35,0.5,8,12),false,++unitId_));
+			UnitPtr survivor(new Unit(spawn.x_,spawn.x_,spawn.x_,Weapon(35,0.5,8,12),false));
 			addNewAi(survivor);
 		}	
 	}

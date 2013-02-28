@@ -62,7 +62,7 @@ namespace zombie {
 		return Position(-99999,-99999,-99999);
 	}
 
-	Map generateMap(int& lastId) {
+	Map generateMap() {
 		double side = 15;
 		int nbr = 10;
 
@@ -88,7 +88,7 @@ namespace zombie {
 				positions.push_back(p3);
 				positions.push_back(p4);
 
-				BuildingPtr building(new Building(positions, ++lastId));
+				BuildingPtr building(new Building(positions));
 				buildings.push_back(building);
 			}
 		}
@@ -96,7 +96,7 @@ namespace zombie {
 		return Map(Position(),10,10,buildings);
 	}	
 
-	Map loadMapInfo(std::string filename, std::string fileRoads, int& unitId, double scale) {
+	Map loadMapInfo(std::string filename, std::string fileRoads, double scale) {
 		std::fstream mapFile(filename.c_str(),std::fstream::in);
 		double minX = std::numeric_limits<double>::max();
 		double maxX = -minX;
@@ -157,7 +157,7 @@ namespace zombie {
 		double width = maxY + minY;
 		std::vector<BuildingPtr> buildings;
 		for (std::vector<Position>& corners : allCorners) {			
-			BuildingPtr building = BuildingPtr(new Building(corners,++unitId));
+			BuildingPtr building = BuildingPtr(new Building(corners));
 			buildings.push_back(building);
 		}
 
@@ -165,7 +165,7 @@ namespace zombie {
 		return Map(Position((minX+maxX)/2,(minY+maxY)/2),width,height,buildings,loadRoads(fileRoads,scale,normalizeX,normalizeY));
 	}
 
-	std::vector<LineFeature> loadRoads(std::string filename, double scale, double normalizeX, double normalizeY) {		
+	std::vector<LineFeature> loadRoads(std::string filename, double scale, double normalizeX, double normalizeY) {
 		std::vector<LineFeature> roads;
 		std::fstream mapFile(filename.c_str(),std::fstream::in);
 		while (mapFile.good()) {
@@ -215,11 +215,7 @@ namespace zombie {
 			}
 		}
 
-		
-		//ladda in till roads attribut
-
 		return roads;
 	}
 
 } // namespace zombie.
-

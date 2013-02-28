@@ -68,9 +68,9 @@ namespace zombie {
 		std::vector<BuildingPtr> buildings_;
 	};
 
-	Map generateMap(int& lastId); 
+	Map generateMap(); 
 
-	Map loadMapInfo(std::string filename, std::string fileRoads, int& unitId, double scale);
+	Map loadMapInfo(std::string filename, std::string fileRoads, double scale);
 
 	std::vector<LineFeature> loadRoads(std::string filename, double scale, double normalizeX, double normalizeY);
 

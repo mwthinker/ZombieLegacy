@@ -13,7 +13,7 @@
 
 namespace zombie {
 
-	Unit::Unit(double x, double y, double angle, Weapon weapon, bool infected, int id) : PhysicalUnit(id, x,y,0.4, 50.0,0.0,10.0), weapon_(weapon) {		
+	Unit::Unit(double x, double y, double angle, Weapon weapon, bool infected) : PhysicalUnit(x,y,0.4, 50.0,0.0,10.0), weapon_(weapon) {		
 		angleVelocity_ = 0.0;
 
 		isInfected_ = infected;

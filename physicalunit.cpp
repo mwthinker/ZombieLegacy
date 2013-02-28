@@ -6,7 +6,7 @@
 
 namespace zombie {
 
-	PhysicalUnit::PhysicalUnit(int id, double x, double y, double radius, double stiffness, double damping, double mass) : Object(id) {
+	PhysicalUnit::PhysicalUnit(double x, double y, double radius, double stiffness, double damping, double mass) {
 		position_ = Position(x,y);
 		radius_ = radius;
 		stiffness_ = stiffness;

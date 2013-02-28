@@ -16,7 +16,7 @@ class Unit : public PhysicalUnit {
 public:
 	enum UnitEvent {SHOOT,RELOADING,DIE};
 
-	Unit(double x, double y, double angle, Weapon weapon, bool infected ,int id);
+	Unit(double x, double y, double angle, Weapon weapon, bool infected);
 	virtual ~Unit();
 
 	// Overrides from PhysicalUnit.
@@ -53,10 +53,10 @@ public:
 	// Return the angle for the current 
 	double moveDirection() const;	
 
-	double healthPoints() const override;
-	void updateHealthPoint(double deltaLife) override;
+	double healthPoints() const;
+	void updateHealthPoint(double deltaLife);
 
-	bool isDead() const override;
+	bool isDead() const;
 
 	void setIsDead() {
 		isDead_ = true;

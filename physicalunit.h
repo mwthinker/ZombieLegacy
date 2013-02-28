@@ -10,7 +10,7 @@ namespace zombie {
 
 class PhysicalUnit : public Object, public PhysicalUnitInterface {
 public:
-	PhysicalUnit(int id, double x, double y, double radius, double stiffness, double damping, double mass);
+	PhysicalUnit(double x, double y, double radius, double stiffness, double damping, double mass);
 
 	// Override member from class PhysicalUnit
 	double stiffness() const override;

@@ -71,9 +71,6 @@ protected:
 
 	bool started_; // The game time is started.	
 	double time_; // Local game time.
-	
-	// Last added unit id.
-	int unitId_;
 
 	typedef std::pair<HumanPlayerPtr,UnitPtr> PairHumanUnit;
 	typedef std::pair<AiPlayerPtr,UnitPtr> PairAiUnit;

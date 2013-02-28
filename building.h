@@ -2,16 +2,12 @@
 #define BUILDING_H
 
 #include "object.h"
+#include "typedefs.h"
 #include "physicalengine.h"
 
-#include <mw/mathvector.h>
-
-#include <memory>
 #include <limits>
 
 namespace zombie {
-
-typedef mw::MathVector Position;
 
 class Border : public StaticPhyscalUnit {
 public:
@@ -52,7 +48,7 @@ typedef std::shared_ptr<StaticPhyscalUnit> StaticPhUnitPtr;
 
 class Building : public Object, public StaticPhyscalUnit {
 public:
-	Building(int id, double x, double y, double width, double height) : Object(id) {
+	Building(double x, double y, double width, double height) {
 		Position position = Position(x,y);
 
 		corners_.push_back(position);
@@ -62,7 +58,7 @@ public:
 		init();
 	}
 
-	Building(const std::vector<Position>& corners, int id) : Object(id), corners_(corners) {
+	Building(const std::vector<Position>& corners) : corners_(corners) {
 		init();
 	}
 
@@ -119,17 +115,6 @@ public:
 		return distance;
 	}
 
-	double healthPoints() const override {
-		return 100.0;
-	}
-	
-	void updateHealthPoint(double deltaLife) override {
-	}
-
-	bool isDead() const override {
-		return false;
-	}
-
 	double getRadius() const override {
 		return radius_;
 	}
@@ -137,6 +122,7 @@ public:
 	Position getPosition() const override {
 		return position_;
 	}
+
 protected:
 	void init() {
 		double xLeft = std::numeric_limits<double>::max();
