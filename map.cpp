@@ -214,7 +214,7 @@ namespace zombie {
 			}
 		}
 
-		std::cout << "Size roads_: "<< roads.size();
+		
 		//ladda in till roads attribut
 
 		return roads;

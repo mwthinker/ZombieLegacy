@@ -81,7 +81,7 @@ namespace zombie {
 			for (auto& pair : aiPlayers_) {
 				AiPlayerPtr& aiPlayer = pair.first;
 				UnitPtr& unit = pair.second;
-				aiPlayer->calculateInput(unit,time_);
+				aiPlayer->calculateInput(unit,time_);				
 			}
 			
 			// Update all units.

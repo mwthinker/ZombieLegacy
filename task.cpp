@@ -130,7 +130,6 @@ namespace zombie {
 	}
 
 	void HumanAnimation::unitEventHandler(Unit::UnitEvent unitEvent) {
-		std::cout << unitEvent << "\n";
 		switch (unitEvent) {
 		case Unit::UnitEvent::SHOOT:
 			{
@@ -552,7 +551,7 @@ namespace zombie {
 
 	//private
 	void DrawFake3DBuildning::draw() {
-		double height = 3;
+		double height = 1.5;
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);		
 		glColor3d(0.5,0.5,0.5);
@@ -561,7 +560,7 @@ namespace zombie {
 		const auto& corners = buildning_->getCorners();
 		for (int i=0; i<corners.size(); i++) {
 			double d = (std::rand() % 100) / 500.0;
-			std::cout<< " " << d << " ";
+			
 			glColor3d(0.5+d,0.5+d,0.5+d);
 			if(i==corners.size()-1){
 			
