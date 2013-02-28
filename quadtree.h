@@ -208,6 +208,10 @@ private:
 			}
 		}
 
+		Container getObjectsAt(double x, double y, double radius) const {
+			return getObjectsAt(x-radius, y-radius, radius, radius);
+		}
+
 		void remove(T ob, double x, double y) {
 
 		}
@@ -221,10 +225,6 @@ private:
 				children_[NW]->clear();
 				children_[NE]->clear();
 			}
-		}
-
-		Container getObjectsAt(double x, double y, double radius) const {
-			return getObjectsAt(x, y, radius, radius);
 		}
 
 	private:
