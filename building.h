@@ -104,7 +104,7 @@ public:
 
 	// Override member from class StaticPhysicalUnit
 	bool isInsideApproximate(double x, double y, double radius) const override {
-		return (radius_ + radius)*(radius_ + radius) > (x - position_.x_)*(y - position_.y_);
+		return (radius_ + radius)*(radius_ + radius) > (Position(x,y) - position_)*(Position(x,y) - position_);
 	}
 	
 	// Override member from class StaticPhysicalUnit
