@@ -537,4 +537,54 @@ namespace zombie {
 		return true;
 	}
 
+	DrawFake3DBuildning::DrawFake3DBuildning(const BuildingPtr& building) {
+		buildning_ = building;
+		road_ = drawRoad;
+	}
+
+	void DrawFake3DBuildning::excecute(double time) {
+		draw();
+	}
+
+	bool DrawFake3DBuildning::isRunning() const {
+		return !buildning_->isDead();
+	}
+
+	//private
+	void DrawFake3DBuildning::draw() {
+		double height = 3;
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);		
+		glColor3d(0.5,0.5,0.5);
+		
+		
+		const auto& corners = buildning_->getCorners();
+		for (int i=0; i<corners.size(); i++) {
+			double d = (std::rand() % 100) / 500.0;
+			std::cout<< " " << d << " ";
+			glColor3d(0.5+d,0.5+d,0.5+d);
+			if(i==corners.size()-1){
+			
+			} else {
+				//glBegin(GL_LINE_LOOP);
+				glBegin(GL_TRIANGLE_FAN);
+				glVertex2d(corners[i].x_,corners[i].y_);
+				glVertex2d(corners[i+1].x_,corners[i+1].y_);
+				glVertex2d(corners[i+1].x_,corners[i+1].y_+height);
+				glVertex2d(corners[i].x_,corners[i].y_+height);
+				glEnd();
+				
+			}
+			
+		}
+
+		glBegin(GL_TRIANGLE_FAN);
+		glColor3d(0.2,0.2,0.2);
+		for (const Position& p : corners) {
+			glVertex2d(p.x_,p.y_+height);
+		}		
+		glEnd();	
+			
+		glDisable(GL_BLEND);
+	}
 } // Namespace zombie.

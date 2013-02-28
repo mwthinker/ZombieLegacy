@@ -188,6 +188,17 @@ namespace zombie {
 		mw::Sprite road_;
 	};
 
+	class DrawFake3DBuildning : public Task {
+	public:
+		DrawFake3DBuildning(const BuildingPtr& building);
+		void excecute(double time) override;		
+		bool isRunning() const override;
+
+	private:
+		void draw();
+		mw::Sprite road_;
+		BuildingPtr buildning_;
+};
 }
 
 #endif // TASK_H
