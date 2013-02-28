@@ -31,29 +31,30 @@ namespace zombie {
 	Position Map::generateSpawnPosition(Position p, double innerRadie, double outerRadie) const {
 		std::random_device rd;
 		std::default_random_engine g(rd());
-		std::uniform_real_distribution<double> distReal(0,1);
-		bool buildingFound = false;
+		std::uniform_real_distribution<double> distReal(0,1);		
 
 		double alfa = distReal(g) * 2 * mw::PI;
 		double dist = distReal(g) * (outerRadie-innerRadie);// + innerRadie;			
 
 		for(double dr = 0; dr < outerRadie-innerRadie; dr += 1.0) {
 			for(double angle = 0; angle < 2*mw::PI; angle += 0.2) {
+				bool buildingFound = false;
+
 				dist = fmod(dist+dr,outerRadie-innerRadie);
 				double x = p.x_ + std::cos(alfa+angle)*(dist+innerRadie);
 				double y = p.y_ + std::sin(alfa+angle)*(dist+innerRadie);
-
-				Position testPos(x,y);
+								
 				for (BuildingPtr building : buildings_) {
 					// if inside one building, break
-					if (building->isInside(testPos.x_,testPos.y_)) {
+					if (building->isInside(x,y)) {
 						buildingFound = true;
 						break;
 					}
 				}
 
-				if(!buildingFound) {
-					return testPos;
+				// Spot free from buildings?
+				if (!buildingFound) {
+					return Position(x,y);
 				}
 			}
 		}
