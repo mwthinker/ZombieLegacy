@@ -98,10 +98,11 @@ private:
 	// Health
 	double healthPoints_;
 	bool isDead_;
-
-	Input currentInput_;
+		
 	Weapon weapon_;
 	bool isInfected_;
+
+	double timeLeftToRun_;
 
 	std::queue<Bullet> bullets_;
 	std::vector<std::function<void(UnitEvent)>> eventHandlers_;

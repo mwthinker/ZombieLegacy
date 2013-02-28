@@ -11,6 +11,7 @@ struct Input {
 		backward_ = false;
 		turnLeft_ = false;
 		turnRight_ = false;
+		run_ = false;
 	}
 
 	bool shoot_;
@@ -19,6 +20,7 @@ struct Input {
 	bool backward_;
 	bool turnLeft_;
 	bool turnRight_;
+	bool run_;
 };
 
 } // namespace zombie

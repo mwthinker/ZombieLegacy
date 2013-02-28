@@ -30,6 +30,8 @@ namespace zombie {
 		// Health
 		healthPoints_ = 100.0;
 		isDead_ = false;
+		
+		timeLeftToRun_ = 5;
 	}
 
 	Unit::~Unit() {
@@ -46,8 +48,7 @@ namespace zombie {
 		packet >> viewAngle_;
 		packet >> smallViewDistance_;
 		packet >> healthPoints_;
-		packet >> isDead_;
-		packet >> currentInput_;
+		packet >> isDead_;		
 		packet >> weapon_;
 		packet >> isInfected_;
 	}
@@ -62,7 +63,6 @@ namespace zombie {
 		packet << smallViewDistance_;
 		packet << healthPoints_;
 		packet << isDead_;
-		packet << currentInput_;
 		packet << weapon_;
 		packet << isInfected_;
 		return packet;
@@ -71,11 +71,25 @@ namespace zombie {
 	void Unit::updatePhysics(double time, double timeStep, Input input) {
 		double angle = moveDirection();	
 
+		Force move = Vec3(std::cos(angle),std::sin(angle))*30;
+
+		// Time left to run?
+		if (timeLeftToRun_ >= 0) {
+			if (input.forward_ && input.run_) {
+				timeLeftToRun_ -= timeStep;
+				move *= 2;
+			} else if (timeLeftToRun_ < 5) {
+				timeLeftToRun_ += timeStep;
+			}
+		} else { // Time is negative!
+			timeLeftToRun_ += timeStep;
+		}
+
 		// Move forward or backwards.
 		if (input.forward_ && !input.backward_) {
-			addForce(Vec3(std::cos(angle),std::sin(angle))*30);
+			addForce(move);
 		} else if (!input.forward_ && input.backward_) {
-			addForce(-Vec3(std::cos(angle),std::sin(angle))*30);
+			addForce(-move);
 		} else {
 			// In order to make the unit stop when not moving.
 			addForce(-getVelocity()*5);

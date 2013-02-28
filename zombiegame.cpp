@@ -250,7 +250,7 @@ namespace zombie {
 		UnitPtr human(new Unit(position.x_,position.y_,0.3,Weapon(35,0.2,8,12),false,++unitId_));
 		viewPosition_ = human->getPosition();
 
-		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r));
+		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r,SDLK_LSHIFT));
 		addHuman(humanPlayer,human);		
 
 		// Add zombie with standard behavior.
