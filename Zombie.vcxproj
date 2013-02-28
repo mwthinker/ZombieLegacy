@@ -101,6 +101,7 @@
     <ClInclude Include="state.h" />
     <ClInclude Include="task.h" />
     <ClInclude Include="taskmanager.h" />
+    <ClInclude Include="tile.h" />
     <ClInclude Include="typedefs.h" />
     <ClInclude Include="unit.h" />
     <ClInclude Include="weapon.h" />
