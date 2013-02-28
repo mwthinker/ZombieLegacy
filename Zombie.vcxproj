@@ -84,6 +84,7 @@
     <ClInclude Include="bullet.h" />
     <ClInclude Include="gamefont.h" />
     <ClInclude Include="gamesprite.h" />
+    <ClInclude Include="input.h" />
     <ClInclude Include="inputkeyboard.h" />
     <ClInclude Include="humanplayer.h" />
     <ClInclude Include="linefeature.h" />
