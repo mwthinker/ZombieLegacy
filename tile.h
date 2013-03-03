@@ -4,6 +4,8 @@
 #include "map.h"
 #include <algorithm> 
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 
 //			   0
 //		______________
@@ -30,11 +32,12 @@ namespace zombie {
 					
 		}
 		
-		Tile(std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads) {
+		Tile(std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads, std::string desc) {
 			buildings_ = buildings;
 			roads_ = roads;
 			tileSide_ = 100;
 			snapDist_ = 1;
+			desc_ = desc;
 		}
 
 
@@ -143,6 +146,7 @@ namespace zombie {
 		}
 
 		private:
+		std::string desc_;
 		double tileSide_;
 		double snapDist_;
 		std::vector<BuildingPtr> buildings_;
@@ -160,10 +164,12 @@ namespace zombie {
 		TileManager(std::vector<Tile> tiles, int nbrOfTiles) {
 			nbrOfTiles_ = nbrOfTiles;
 			unsortedTiles_ = tiles;
+			srand(std::time(NULL));
 		}
 
 		bool sortTiles() {
 			for (unsigned int i = 0; i < nbrOfTiles_*nbrOfTiles_; i++) {
+				
 				std::random_shuffle(unsortedTiles_.begin(),unsortedTiles_.end());
 				for (unsigned int j = 0; j < unsortedTiles_.size(); j++) { 
 					if(testTilePosition(unsortedTiles_[j],i)) {
@@ -221,7 +227,7 @@ namespace zombie {
 		bool testTilePosition(Tile t, int pos) {
 			std::vector<int> indexes =  getRelatedIndexes(pos);
 			for (int i : indexes) {
-				if(sortedTiles_.size() > pos) { // if tile is placed test compability
+				if(sortedTiles_.size() > i) { // if tile is placed test compability
 					if(!sortedTiles_[i].isCompatible(t,pos,i)) {
 						return false;
 					}
@@ -262,6 +268,7 @@ namespace zombie {
 
 	Map createTiledMap() {
 		// Create
+
 		// TILE S ************************************************
 		std::vector<Position> corners;
 		corners.push_back(Position(80,15));
@@ -272,34 +279,35 @@ namespace zombie {
 		std::vector<BuildingPtr> buildings;
 		buildings.push_back(b);
 		std::vector<LineFeature> roads;
-		Tile s = Tile(buildings,roads);
+		Tile s = Tile(buildings,roads,"litetHus");
 		
 
 
 		// TILE T ************************************************
 		corners.clear();
 		
-		corners.push_back(Position(60,15));
-		corners.push_back(Position(65,15));
-		corners.push_back(Position(65,25));
-		corners.push_back(Position(60,20));
+		corners.push_back(Position(10,45));
+		corners.push_back(Position(60,45));
+		corners.push_back(Position(60,10));
+		corners.push_back(Position(10,10));
 		b = BuildingPtr(new Building(corners));
 		buildings.clear();
 		buildings.push_back(b);
 		roads.clear();
-		Tile t = Tile(buildings,roads);
+		Tile t = Tile(buildings,roads,"stortHus");
+		
 		// TILE U ************************************************
 		buildings.clear();;
 		roads.clear();
 		roads.push_back(LineFeature(Position(50,0),Position(50,100)));
 		roads.push_back(LineFeature(Position(0,50),Position(100,50)));
-		Tile u = Tile(buildings,roads);
+		Tile u = Tile(buildings,roads,"Roads");
 		
 		std::vector<Tile> tiles;
 		tiles.push_back(s);
 		tiles.push_back(t);
 		tiles.push_back(u);
-		TileManager tManager(tiles,4);
+		TileManager tManager(tiles,3);
 		tManager.sortTiles();
 		return tManager.stitchTiles();
 	}
