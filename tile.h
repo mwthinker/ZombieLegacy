@@ -24,8 +24,8 @@ namespace zombie {
 	class Tile {
 		public:
 		Tile() {
-			tileSide_ = 100;
-			snapDist_ = 1;
+			tileSide_ = 10.0;
+			snapDist_ = 0.3;
 		}
 
 		Tile(std::string filename) {
@@ -35,8 +35,8 @@ namespace zombie {
 		Tile(std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads, std::string desc) {
 			buildings_ = buildings;
 			roads_ = roads;
-			tileSide_ = 100;
-			snapDist_ = 1;
+			tileSide_ = 10.0;
+			snapDist_ = 0.3;
 			desc_ = desc;
 		}
 
@@ -82,8 +82,12 @@ namespace zombie {
 			std::vector<Position> candidateConnections;
 			std::vector<Position> existingConnections;
 
+
+			//roads.push_back(LineFeature(Position(0,50),Position(50,50)));
+			//roads.push_back(LineFeature(Position(50,50),Position(50,0)));
+
 			// CANDIDATE CONNECTIONS
-			for (LineFeature l : roads_) {
+			for (LineFeature l : t.getRoads()) {
 				if (distPointToLine(section,l.getStart()) < snapDist_ ) {
 					candidateConnections.push_back(l.getStart());
 				}
@@ -93,7 +97,7 @@ namespace zombie {
 			}
 
 			// EXISTING CONNECTIONS - PERFORMING TRANSLATION ON TILE CONNECTION POSITIONS
-			for (LineFeature l : t.getRoads()) {
+			for (LineFeature l : roads_) {
 				Position translatedStart;
 				Position translatedEnd;
 				switch(relation) {
@@ -144,9 +148,9 @@ namespace zombie {
 			// ALL CONNECTIONS IS OK
 			return true;
 		}
-
-		private:
 		std::string desc_;
+		private:
+		
 		double tileSide_;
 		double snapDist_;
 		std::vector<BuildingPtr> buildings_;
@@ -232,7 +236,8 @@ namespace zombie {
 						return false;
 					}
 				}
-			} 
+			}
+			//std::cout << pos << ": " << t.desc_ << std::endl;
 			return true;
 		}
 
@@ -267,29 +272,30 @@ namespace zombie {
 	// END TILE / TILEMANAGER *********************************************************************************
 
 	Map createTiledMap() {
-		// Create
+		// Create variables
+		BuildingPtr b;
+		std::vector<Position> corners;
+		std::vector<BuildingPtr> buildings;
 
 		// TILE S ************************************************
-		std::vector<Position> corners;
-		corners.push_back(Position(80,15));
-		corners.push_back(Position(85,15));
-		corners.push_back(Position(85,25));
-		corners.push_back(Position(80,20));
-		BuildingPtr b = BuildingPtr(new Building(corners));
-		std::vector<BuildingPtr> buildings;
+		
+		corners.push_back(Position(8.0,1.5));
+		corners.push_back(Position(8.5,1.5));
+		corners.push_back(Position(8.5,2.5));
+		corners.push_back(Position(8.0,2.0));
+		b = BuildingPtr(new Building(corners));
+		
 		buildings.push_back(b);
 		std::vector<LineFeature> roads;
 		Tile s = Tile(buildings,roads,"litetHus");
 		
-
-
 		// TILE T ************************************************
 		corners.clear();
 		
-		corners.push_back(Position(10,45));
-		corners.push_back(Position(60,45));
-		corners.push_back(Position(60,10));
-		corners.push_back(Position(10,10));
+		corners.push_back(Position(1.5,4.5));
+		corners.push_back(Position(5.5,4.5));
+		corners.push_back(Position(6.5,1));
+		corners.push_back(Position(3,1));
 		b = BuildingPtr(new Building(corners));
 		buildings.clear();
 		buildings.push_back(b);
@@ -299,15 +305,61 @@ namespace zombie {
 		// TILE U ************************************************
 		buildings.clear();;
 		roads.clear();
-		roads.push_back(LineFeature(Position(50,0),Position(50,100)));
-		roads.push_back(LineFeature(Position(0,50),Position(100,50)));
-		Tile u = Tile(buildings,roads,"Roads");
+		roads.push_back(LineFeature(Position(50,0),Position(5.0,10.0)));
+		roads.push_back(LineFeature(Position(0,50),Position(10.0,5.0)));
+		Tile u = Tile(buildings,roads,"Korsning");
 		
+		// TILE V ************************************************
+		buildings.clear();;
+		roads.clear();
+		roads.push_back(LineFeature(Position(0,5.0),Position(5.0,5.0)));
+		roads.push_back(LineFeature(Position(5.0,5.0),Position(5.0,10.0)));
+		Tile v = Tile(buildings,roads,"UppSveng");
+
+		// TILE W ************************************************
+		buildings.clear();;
+		roads.clear();
+		roads.push_back(LineFeature(Position(0,5.0),Position(5.0,5.0)));
+		roads.push_back(LineFeature(Position(5.0,5.0),Position(5.0,0)));
+		Tile w = Tile(buildings,roads,"NedSveng");
+
+		// TILE AA ************************************************
+		buildings.clear();;
+		roads.clear();
+		roads.push_back(LineFeature(Position(5.0,0),Position(5.0,10.0)));
+		Tile AA = Tile(buildings,roads,"Raktupp");
+
+		// TILE BB ************************************************
+		buildings.clear();;
+		roads.clear();
+		roads.push_back(LineFeature(Position(0,5.0),Position(10.0,5.0)));
+		Tile BB = Tile(buildings,roads,"Rakthorisont");
+
+		// TILE V ************************************************
+		buildings.clear();;
+		roads.clear();
+		roads.push_back(LineFeature(Position(0.5,0),Position(5,5.0)));
+		roads.push_back(LineFeature(Position(5.0,5.0),Position(10,5.0)));
+		Tile CC = Tile(buildings,roads,"LeftUppSveng");
+
+		// TILE W ************************************************
+		buildings.clear();;
+		roads.clear();
+		roads.push_back(LineFeature(Position(10,5),Position(5.0,5)));
+		roads.push_back(LineFeature(Position(5.0,5.0),Position(5.0,10)));
+		Tile DD = Tile(buildings,roads,"LeftNedSveng");
+
 		std::vector<Tile> tiles;
 		tiles.push_back(s);
 		tiles.push_back(t);
 		tiles.push_back(u);
-		TileManager tManager(tiles,3);
+		tiles.push_back(v);
+		tiles.push_back(w);
+		tiles.push_back(AA);
+		tiles.push_back(BB);
+		tiles.push_back(CC);
+		tiles.push_back(DD);
+		TileManager tManager(tiles,30);
 		tManager.sortTiles();
 		return tManager.stitchTiles();
 	}
