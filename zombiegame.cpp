@@ -7,6 +7,7 @@
 #include "building.h"
 #include "bullet.h"
 #include "map.h"
+#include "tile.h"
 #include "input.h"
 #include "task.h"
 #include "quadtree.h"
@@ -223,7 +224,8 @@ namespace zombie {
 	void ZombieGame::initGame() {
 		graphic3D_ = false;
 		
-		map_ = loadMapInfo("buildings.mif","roads.mif", 30000);
+		//map_ = loadMapInfo("buildings.mif","roads.mif", 30000);
+		map_ = createTiledMap();
 
 		physicalEngine_ = new PhysicalEngine(map_.minX(),map_.minY(),map_.width(),map_.height());
 		buildings_ = Quadtree<BuildingPtr>(map_.minX(),map_.minY(),map_.width(),map_.height(),4);
