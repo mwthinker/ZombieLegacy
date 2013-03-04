@@ -30,12 +30,9 @@ public:
 	// Starts the game. The connection need to be active else nothing happens.
 	void startGame();
 
-	// Updates the game time by (msDeltaTime).
-    void physicUpdate(Uint32 msDeltaTime);
-
-	// Draws the graphic and (msDeltaTime) should be the time past 
+	// Draws the graphic and (deltaTime) should be the time past 
 	// from the previous call to this funtion.
-	void graphicUpdate(Uint32 msDeltaTime);
+	void update(double deltaTime);
 
 	// Makes the game reacting on the evennt (windowEvent).
 	void eventUpdate(const SDL_Event& windowEvent);
@@ -44,6 +41,9 @@ public:
 
 	void updateSize(int width, int height);
 protected:
+	// Updates the game time by (msDeltaTime).
+    void updatePhysics(double timeStep);
+
 	void reshapeWindowsOpenGL(int width, int height) {		
 	}
 
@@ -97,6 +97,9 @@ protected:
 
 	Position viewPosition_;
 	bool graphic3D_;
+
+	double timeStep_;
+	double accumulator_;
 };
 
 } // namespace zombie

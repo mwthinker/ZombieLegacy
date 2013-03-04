@@ -42,6 +42,9 @@ namespace zombie {
 		innerSpawnRadius_ = 10;
 		outerSpawnRadius_ = 20;
 
+		timeStep_ = 0.05;  // Fix time step for physics update.
+		accumulator_ = 0.0;      // Time accumulator.
+
 		initGame();
 	}
 
@@ -55,19 +58,18 @@ namespace zombie {
 		started_ = true;
 	}
 
-    void ZombieGame::physicUpdate(Uint32 msDeltaTime) {
+    void ZombieGame::updatePhysics(double timeStep) {
 		// Game is started?
 		if (started_) {
-			double deltaTime = msDeltaTime/1000.0;
 			// Spawn and clean up units
 			if (timeSinceSpawn_ > timeToUpdateSpawn_) {
 				spawnAndCleanUpUnits();
 				timeSinceSpawn_ = 0;
 			}
-			timeSinceSpawn_ += deltaTime;
+			timeSinceSpawn_ += timeStep;
 
 			// (deltaTime) must always be larger than (timeToUpdateView_).
-			int nbrOfUnitsToUpdateViewOn = (int) (aiPlayers_.size() * (deltaTime/timeToUpdateView_));
+			int nbrOfUnitsToUpdateViewOn = (int) (aiPlayers_.size() * (timeStep/timeToUpdateView_));
 			// Update some of the ai:s view.
 			for (int i = 0; i < nbrOfUnitsToUpdateViewOn; ++i) {
 				indexAiPlayer_ = (indexAiPlayer_ + 1) % aiPlayers_.size();
@@ -87,7 +89,7 @@ namespace zombie {
 			// Update all units.
 			for (PairPlayerUnit& pair : players_) {
 				UnitPtr& unit = pair.second;
-				unit->updatePhysics(time_, deltaTime,pair.first->currentInput());
+				unit->updatePhysics(time_, timeStep,pair.first->currentInput());
 
 				Bullet bullet;
 				// Alive? And shooting?
@@ -97,10 +99,10 @@ namespace zombie {
 			}		
 
 			// Update the objects physics interactions.
-			physicalEngine_->update(deltaTime);
+			physicalEngine_->update(timeStep);
 			
 			// Move the time ahead.
-			time_ += deltaTime;
+			time_ += timeStep;
 		}
 	}
 
@@ -144,13 +146,25 @@ namespace zombie {
 		}
 	}
 
-	void ZombieGame::graphicUpdate(Uint32 msDeltaTime) {
+	void ZombieGame::update(double deltaTime) {
+		// DeltaTime to big?
+		if (deltaTime > 0.250) {
+			// To avoid spiral of death.
+			deltaTime = 0.250;
+		}
+
+		accumulator_ += deltaTime;
+		while (accumulator_ >= timeStep_) {
+			accumulator_ -= timeStep_;		
+			updatePhysics(timeStep_);
+		}
+
 		// Draw map centered around first humna player.
 		UnitPtr unit = humanPlayers_[0].second;
 		glPushMatrix();
 		
 		Position p = unit->getPosition();
-		viewPosition_ += (unit->getPosition() - viewPosition_) * msDeltaTime * 0.0001;
+		viewPosition_ += (unit->getPosition() - viewPosition_) * deltaTime;
 
 		// 3D?
 		if (graphic3D_) {
@@ -172,12 +186,12 @@ namespace zombie {
 			drawCircle(0,0,0.5,20,false);
 		}		
 
-		glTranslated(-viewPosition_.x_,-viewPosition_.y_,0.0);		
+		glTranslated(-viewPosition_.x_,-viewPosition_.y_,0.0);
 		//glTranslated(-p.x_,-p.y_,0.0);
 		
 		// Game is started?
 		if (started_) {
-			taskManager_->update(msDeltaTime/1000.0);
+			taskManager_->update(deltaTime);
 		} else {
 			taskManager_->update(0.0);
 		}
