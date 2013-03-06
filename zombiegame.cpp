@@ -239,9 +239,10 @@ namespace zombie {
 		graphic3D_ = false;
 		
 		//map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
-		map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
-		//Map mapTile1 = loadTile("housesFME.mif","roadsFME.mif",100);
-		//map_ = createTiledMap(mapTile1);
+		//map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
+		Map mapTile1 = loadTile("housesFME.mif","roadsFME.mif",100);
+		
+		map_ = createTiledMap(mapTile1);
 
 		physicalEngine_ = new PhysicalEngine(map_.minX(),map_.minY(),map_.width(),map_.height());
 		buildings_ = Quadtree<BuildingPtr>(map_.minX(),map_.minY(),map_.width(),map_.height(),4);

@@ -172,7 +172,7 @@ namespace zombie {
 		TileManager(int nbrOfTiles) {
 			int nbrOfTiles_ = nbrOfTiles;
 		}
-		TileManager(std::vector<Tile> tiles, int nbrOfTiles) {
+		TileManager(const std::vector<Tile>& tiles, int nbrOfTiles) {
 			nbrOfTiles_ = nbrOfTiles;
 			unsortedTiles_ = tiles;
 			srand(std::time(NULL));
@@ -201,10 +201,9 @@ namespace zombie {
 			
 			for (int i = 0; i < nbrOfTiles_*nbrOfTiles_; i++) {
 				std::vector<Position> corners;
-				std::vector<Position> modifiedCorners;
-
 				// Add buildings from tile
 				for (BuildingPtr b : sortedTiles_[i].getBuildings()) {
+					std::vector<Position> modifiedCorners;
 					corners = b->getCorners();
 					for (Position p : corners) {						
 						p.x_ = p.x_ + sortedTiles_[i].getTileSide() * (i % nbrOfTiles_);
@@ -374,7 +373,7 @@ namespace zombie {
 	Map createTiledMap(Map m) {
 		std::vector<Tile> tiles;
 		tiles.push_back(Tile(m));
-		TileManager tManager(tiles,2);
+		TileManager tManager(tiles,1);
 		tManager.sortTiles();
 		return tManager.stitchTiles();
 
