@@ -67,6 +67,10 @@ namespace zombie {
 		void draw(double timestep);
 
 		UnitPtr unit_;
+		double timeNewFrame_;
+		int index_;
+		std::vector<mw::Sprite> sprites_;
+		bool walk_;
 	};
 
 	class SurvivorAnimation : public Task {

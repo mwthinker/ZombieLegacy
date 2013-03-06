@@ -156,10 +156,27 @@ namespace zombie {
 		unit->addEventHandler([&](Unit::UnitEvent unitEvent){
 			this->unitEventHandler(unitEvent);
 		});
+
+		timeNewFrame_ = 0.0;
+		walk_ = true;
+		index_ = 0;
+
+		sprites_.push_back(zombie1);
+		sprites_.push_back(zombie2);
+		sprites_.push_back(zombie3);
+		sprites_.push_back(zombie4);
+		sprites_.push_back(zombie5);
+		sprites_.push_back(zombie6);
 	}
 
 	void ZombieAnimation::excecute(double time) {
 		draw(0.0);
+		//if (walk_) 
+
+		if (time > timeNewFrame_) {
+			index_ = (1 + index_) % sprites_.size();
+			timeNewFrame_ += 0.18;
+		}
 	}
 
 	bool ZombieAnimation::isRunning() const {
@@ -168,35 +185,31 @@ namespace zombie {
 
 	void ZombieAnimation::draw(double timestep) {
 		Position p = unit_->getPosition();
-		glColor3d(0.8,0.4,0.4);
-		// Draw body		
-		drawCircle(p[0],p[1],unit_->radius(),20,true);
-		//drawCircle(p[0],p[1],unit_->radius()*0.5,20,false);		
-
-		glColor3d(1,1,1);
 				
-		// Draw view sphere
-		//drawCircle(p[0],p[1],unit_->viewDistance(),20,false);
-		glBegin(GL_LINES);
-		//glVertex2d(p[0],p[1]);
-		//glVertex2d(p[0]+std::cos(unit_->moveDirection() - 0.5*unit_->viewAngle())*unit_->viewDistance(),p[1]+std::sin(unit_->moveDirection() - 0.5*unit_->viewAngle())*unit_->viewDistance());
-		//glVertex2d(p[0],p[1]);
-		//glVertex2d(p[0]+std::cos(unit_->moveDirection() + 0.5*unit_->viewAngle())*unit_->viewDistance(),p[1]+std::sin(unit_->moveDirection() + 0.5*unit_->viewAngle())*unit_->viewDistance());
-		
+		// Draw body
+		glColor3d(1,1,1);
+		glPushMatrix();
+		glTranslated(unit_->getPosition().x_,unit_->getPosition().y_,0);
+		glScaled(unit_->radius(),unit_->radius(),1);
+		glRotated(unit_->getState().angle_*180/mw::PI,0,0,1);
+		glScaled(1069.0/128.0,1069.0/128.0,1);
+		sprites_[index_].draw();
+		glPopMatrix();
+
+		/*
+		glColor3d(0.8,0.4,0.4);
+		drawCircle(p[0],p[1],unit_->radius(),20,true);
+		glColor3d(1,1,1);
+		glBegin(GL_LINES);		
 		double gg = unit_->radius();
 		
 		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()-3.14/2),p[1]-unit_->radius()*std::sin(unit_->moveDirection()-3.14/2));
-		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()-3.14/2)+0.06*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]-unit_->radius()*std::sin(unit_->moveDirection()-3.14/2)+0.06*std::sin(unit_->moveDirection())*unit_->viewDistance());		
-		//glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()+3.14/2),p[1]-unit_->radius()*std::sin(unit_->moveDirection()+3.14/2));
-		//glVertex2d(p[0]+0.04*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]+0.04*std::sin(unit_->moveDirection())*unit_->viewDistance());		
+		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()-3.14/2)+0.06*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]-unit_->radius()*std::sin(unit_->moveDirection()-3.14/2)+0.06*std::sin(unit_->moveDirection())*unit_->viewDistance());
 		
 		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()+3.14/2),p[1]-unit_->radius()*std::sin(unit_->moveDirection()+3.14/2));
 		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()+3.14/2)+0.06*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]-unit_->radius()*std::sin(unit_->moveDirection()+3.14/2)+0.06*std::sin(unit_->moveDirection())*unit_->viewDistance());		
 
 		glEnd();
-		/*
-		// Draw small view sphere
-		drawCircle(p[0],p[1],unit_->smallViewDistance(),20,false);
 		*/
 	}
 
