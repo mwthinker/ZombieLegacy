@@ -173,6 +173,12 @@ namespace zombie {
 		draw(0.0);
 		//if (walk_) 
 
+		// Time is much larger?
+		if (time > timeNewFrame_ + 1) {
+			// In order for frames to sync to current time.
+			timeNewFrame_ = 0.18 + time;
+		}
+
 		if (time > timeNewFrame_) {
 			index_ = (1 + index_) % sprites_.size();
 			timeNewFrame_ += 0.18;
