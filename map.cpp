@@ -17,6 +17,15 @@ namespace zombie {
 		roads_ = roads;
 	}
 
+	Map::Map(double tileSize, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads) {
+		buildings_ = buildings;
+		minX_ = 0;
+		minY_ = 0;
+		maxX_ = tileSize;
+		maxY_ = tileSize;
+		roads_ = roads;
+	}
+
 	Map::Map() {
 	}
 
@@ -216,6 +225,94 @@ namespace zombie {
 		}
 
 		return roads;
+	}
+
+
+	Map loadTile(std::string filename, std::string fileRoads, double tileSize) {
+		std::fstream mapFile(filename.c_str(),std::fstream::in);
+		
+		std::vector< std::vector<Position> > allCorners;
+		while (mapFile.good()) {
+			//while (mapFile.good()) {
+			std::string line;
+			getline (mapFile,line);
+			if (line == "REGION 1") {
+				std::vector<Position> corners;
+				// Extract all points
+				int nbrLines;
+				mapFile >> nbrLines;	
+				//std::cout<<"REGION " << nbrLines;
+				for (int i = 1; i <= nbrLines; i++) {
+					Position p;
+					mapFile >> p.x_ >> p.y_;
+					// Scale map
+					p.x_ = (p.x_);
+					p.y_ = (p.y_);
+					corners.push_back(p);
+				}
+				allCorners.push_back(corners);					
+			}
+		}
+		std::vector<BuildingPtr> buildings;
+		for (std::vector<Position>& corners : allCorners) {			
+			BuildingPtr building = BuildingPtr(new Building(corners));
+			buildings.push_back(building);
+		}
+
+		mapFile.close();
+
+		//********
+		std::vector<LineFeature> roads;
+		std::fstream mapFile2(fileRoads.c_str(),std::fstream::in);
+		while (mapFile2.good()) {
+			std::string line;
+			getline (mapFile2,line);
+
+			if (line == "DATA") {
+				while (mapFile2.good()) {
+					getline (mapFile2,line);
+					std::string objectType;
+					mapFile2 >> objectType;
+
+					if (objectType == "PLINE") {
+						int nbrOfLines;
+						mapFile2 >> nbrOfLines;
+						std::vector<Position> vertexes;
+						for (int i = 1; i <= nbrOfLines; i++) {
+							getline (mapFile2,line);
+							Position p;
+							mapFile2 >> p.x_;
+							mapFile2 >> p.y_;
+							p.x_ = p.x_;
+							p.y_ = p.y_ ;
+							vertexes.push_back(p);
+						}
+
+						for (unsigned int i = 0; i < vertexes.size()-1; i++) {
+							roads.push_back(LineFeature(vertexes[i],vertexes[i+1]));	
+						}
+					}
+
+					if (objectType == "LINE") {
+						Position p1, p2;
+						mapFile2 >> p1.x_;
+						mapFile2 >> p1.y_;
+						mapFile2 >> p2.x_;
+						mapFile2 >> p2.y_;
+						roads.push_back(LineFeature(p1,p2));
+					} else {
+						//std::cout << "no matching feature object type! ";
+					}
+				}
+			}
+		}
+		//************
+
+		return Map(tileSize, buildings, roads);
+
+	
+	
+	
 	}
 
 } // namespace zombie.

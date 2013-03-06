@@ -35,7 +35,7 @@ namespace zombie {
 		Tile(Map m) {
 			buildings_ = m.getBuildings();
 			roads_ = m.getRoads();
-			tileSide_ = 100;
+			tileSide_ = m.maxX() - m.minX();
 			snapDist_ = 0.5;
 		}
 
@@ -220,14 +220,14 @@ namespace zombie {
 					Position p2 = Position(l.getEnd().x_+ sortedTiles_[i].getTileSide() * (i % nbrOfTiles_),l.getEnd().y_+ sortedTiles_[i].getTileSide() * (i / nbrOfTiles_));
 					allRoads.push_back(LineFeature(p1,p2));
 				}
-				
 			}
 			
-			// Create map
-			Position center = Position(sortedTiles_[0].getTileSide()*nbrOfTiles_ / 2.0,sortedTiles_[0].getTileSide()*nbrOfTiles_ / 2.0);
-			double width = sortedTiles_[0].getTileSide()*nbrOfTiles_;
-			double height = sortedTiles_[0].getTileSide()*nbrOfTiles_;
-			return Map(center,width,height,allBuildings,allRoads);
+			//double t = sortedTiles_[0].getTileSide()*nbrOfTiles_ / 2.0;
+						// Create map
+			//Position center = Position(sortedTiles_[0].getTileSide()*nbrOfTiles_ / 2.0,sortedTiles_[0].getTileSide()*nbrOfTiles_ / 2.0);
+			//double width = sortedTiles_[0].getTileSide()*nbrOfTiles_;
+			//double height = sortedTiles_[0].getTileSide()*nbrOfTiles_;
+			return Map(100*nbrOfTiles_,allBuildings,allRoads);
 		}
 		 
 		Tile getRandomTile() {

@@ -20,6 +20,7 @@ namespace zombie {
 	class Map {
 	public:
 		Map(Position mapCentre_, double width, double height, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads = std::vector<LineFeature>());
+		Map(double tileSize, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads = std::vector<LineFeature>());
 		Map();
 				
 		Position getMapCentre() const;
@@ -71,6 +72,8 @@ namespace zombie {
 	Map generateMap(); 
 
 	Map loadMapInfo(std::string filename, std::string fileRoads, double scale);
+
+	Map loadTile(std::string filename, std::string fileRoads, double tileSize);
 
 	std::vector<LineFeature> loadRoads(std::string filename, double scale, double normalizeX, double normalizeY);
 
