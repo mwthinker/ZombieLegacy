@@ -180,5 +180,8 @@
     <None Include="buildings_subset.mif">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="housesFME.mif">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

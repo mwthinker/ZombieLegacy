@@ -576,7 +576,7 @@ namespace zombie {
 			}
 			
 		}
-
+		
 		glBegin(GL_TRIANGLE_FAN);
 		glColor3d(0.2,0.2,0.2);
 		for (const Position& p : corners) {
@@ -585,5 +585,6 @@ namespace zombie {
 		glEnd();	
 			
 		glDisable(GL_BLEND);
+		
 	}
 } // Namespace zombie.

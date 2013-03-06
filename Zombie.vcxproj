@@ -136,6 +136,7 @@
     <None Include="buildings.mif" />
     <None Include="buildings_subset.mif" />
     <None Include="byggnader.mif" />
+    <None Include="housesFME.mif" />
     <None Include="roads.mif" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

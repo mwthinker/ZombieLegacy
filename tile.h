@@ -32,6 +32,13 @@ namespace zombie {
 					
 		}
 		
+		Tile(Map m) {
+			buildings_ = m.getBuildings();
+			roads_ = m.getRoads();
+			tileSide_ = 100;
+			snapDist_ = 0.5;
+		}
+
 		Tile(std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads, std::string desc) {
 			buildings_ = buildings;
 			roads_ = roads;
@@ -364,6 +371,14 @@ namespace zombie {
 		return tManager.stitchTiles();
 	}
 
+	Map createTiledMap(Map m) {
+		std::vector<Tile> tiles;
+		tiles.push_back(Tile(m));
+		TileManager tManager(tiles,2);
+		tManager.sortTiles();
+		return tManager.stitchTiles();
+
+	}
 
 	double distPointToLine(LineFeature l, Position p) {
 		// dist(line,point) = dist(ax+by+c=0,p) = abs(a*p.x+b*p.y+c)/sqrt(a^2+b^2) where
