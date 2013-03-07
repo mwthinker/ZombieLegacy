@@ -664,7 +664,7 @@ namespace zombie {
 		}
 		
 
-		glLineWidth(0.01);
+		glLineWidth(0.01f);
 		// ROOF
 		
 		glBegin(GL_TRIANGLE_FAN);
@@ -684,7 +684,7 @@ namespace zombie {
 			//int aa = 55;
 		}
 		glEnd();			
-		glLineWidth(0.01);
+		glLineWidth(0.01f);
 
 
 		glDisable(GL_BLEND);

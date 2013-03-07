@@ -175,11 +175,11 @@ namespace zombie {
 		TileManager(const std::vector<Tile>& tiles, int nbrOfTiles) {
 			nbrOfTiles_ = nbrOfTiles;
 			unsortedTiles_ = tiles;
-			srand(std::time(NULL));
+			srand((unsigned int)std::time(NULL));
 		}
 
 		bool sortTiles() {
-			for (unsigned int i = 0; i < nbrOfTiles_*nbrOfTiles_; i++) {
+			for (int i = 0; i < nbrOfTiles_*nbrOfTiles_; i++) {
 				
 				std::random_shuffle(unsortedTiles_.begin(),unsortedTiles_.end());
 				for (unsigned int j = 0; j < unsortedTiles_.size(); j++) { 
@@ -236,7 +236,7 @@ namespace zombie {
 
 		bool testTilePosition(Tile t, int pos) {
 			std::vector<int> indexes =  getRelatedIndexes(pos);
-			for (int i : indexes) {
+			for (unsigned int i : indexes) {
 				if(sortedTiles_.size() > i) { // if tile is placed test compability
 					if(!sortedTiles_[i].isCompatible(t,pos,i)) {
 						return false;
