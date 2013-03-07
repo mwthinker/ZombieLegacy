@@ -590,6 +590,7 @@ namespace zombie {
 	DrawFake3DBuildning::DrawFake3DBuildning(const BuildingPtr& building) {
 		buildning_ = building;
 		road_ = drawRoad;
+		d_ = (std::rand() % 100) / 300.0;
 	}
 
 	void DrawFake3DBuildning::excecute(double time) {
@@ -609,14 +610,16 @@ namespace zombie {
 		
 		
 		const auto& corners = buildning_->getCorners();
+		
 		for (unsigned int i = 0; i < corners.size(); i++) {
-			double d = (std::rand() % 100) / 500.0;
 			
-			glColor3d(0.5+d,0.5+d,0.5+d);
+			//WALLS
+			glColor3d(0.5+d_,0.5+d_,0.5+d_);
 			if (i == corners.size()-1){
 			
 			} else {
 				//glBegin(GL_LINE_LOOP);
+				
 				glBegin(GL_TRIANGLE_FAN);
 				glVertex2d(corners[i].x_,corners[i].y_);
 				glVertex2d(corners[i+1].x_,corners[i+1].y_);
@@ -624,18 +627,60 @@ namespace zombie {
 				glVertex2d(corners[i].x_,corners[i].y_+height);
 				glEnd();
 				
+				
 			}
+
+			
+		}
+
+		// OUTLINE VERTICAL
+		glColor3d(0,0,0);
+		glLineWidth(3);
+		for (unsigned int i = 0; i < corners.size(); i++) {
+			
+			glBegin(GL_LINES);
+			unsigned int s = corners.size();
+			glEnd();
+			glBegin(GL_LINES);
+			glVertex2d(corners[i].x_,corners[i].y_);
+			glVertex2d(corners[i].x_,corners[i].y_+height);
+			glEnd();
 			
 		}
 		
+
+		glLineWidth(0.01);
+		// ROOF
+		
 		glBegin(GL_TRIANGLE_FAN);
-		glColor3d(0.2,0.2,0.2);
+		glColor3d(0.5+d_,0.5+d_,0.5+d_);
 		for (const Position& p : corners) {
 			glVertex2d(p.x_,p.y_+height);
 		}		
-		glEnd();	
-			
+		glEnd();
+		// OUTLINE HORISONTAL
+		glLineWidth(3);
+		glColor3d(0,0,0);
+		glBegin(GL_LINE_STRIP);
+		for (unsigned int i = 0; i < corners.size(); i++) {			
+			unsigned int s = corners.size();			
+			glVertex2d(corners[circularIndex(i,s)].x_,corners[circularIndex(i,s)].y_+height);			
+			//std::cout << "i: "<< i <<"x: "<<corners[circularIndex(i,s)].x_<< " y: "<<corners[circularIndex(i,s)].y_+height << std::endl;
+			//int aa = 55;
+		}
+		glEnd();			
+		glLineWidth(0.01);
+
+
 		glDisable(GL_BLEND);
 		
+	}
+
+	
+	
+
+	unsigned int circularIndex(int i, int s) {
+		unsigned int r = (i + s) % s;
+		return r;
 	}
 } // Namespace zombie.
