@@ -207,7 +207,9 @@ namespace zombie {
 		void draw();
 		mw::Sprite road_;
 		BuildingPtr buildning_;
+		double height_;
 		double d_;
+		double r_,g_,b_;
 };
 
 unsigned int circularIndex(int i, int s);

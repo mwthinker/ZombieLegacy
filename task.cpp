@@ -601,6 +601,7 @@ namespace zombie {
 		buildning_ = building;
 		road_ = drawRoad;
 		d_ = (std::rand() % 100) / 300.0;
+		height_  = 2 + rand() % (3 - 2 + 1);
 	}
 
 	void DrawFake3DBuildning::excecute(double time) {
@@ -616,7 +617,10 @@ namespace zombie {
 		double height = 1.5;
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);		
-		glColor3d(0.5,0.5,0.5);
+		r_ = ((double) rand() / (RAND_MAX));
+		g_ = ((double) rand() / (RAND_MAX)); 
+		b_ = ((double) rand() / (RAND_MAX));
+		
 		
 		
 		const auto& corners = buildning_->getCorners();
@@ -624,7 +628,7 @@ namespace zombie {
 		for (unsigned int i = 0; i < corners.size(); i++) {
 			
 			//WALLS
-			glColor3d(0.5+d_,0.5+d_,0.5+d_);
+			glColor3d(r_,g_,b_);
 			if (i == corners.size()-1){
 			
 			} else {
@@ -633,8 +637,8 @@ namespace zombie {
 				glBegin(GL_TRIANGLE_FAN);
 				glVertex2d(corners[i].x_,corners[i].y_);
 				glVertex2d(corners[i+1].x_,corners[i+1].y_);
-				glVertex2d(corners[i+1].x_,corners[i+1].y_+height);
-				glVertex2d(corners[i].x_,corners[i].y_+height);
+				glVertex2d(corners[i+1].x_,corners[i+1].y_+height_);
+				glVertex2d(corners[i].x_,corners[i].y_+height_);
 				glEnd();
 				
 				
@@ -653,7 +657,7 @@ namespace zombie {
 			glEnd();
 			glBegin(GL_LINES);
 			glVertex2d(corners[i].x_,corners[i].y_);
-			glVertex2d(corners[i].x_,corners[i].y_+height);
+			glVertex2d(corners[i].x_,corners[i].y_+height_);
 			glEnd();
 			
 		}
@@ -663,9 +667,9 @@ namespace zombie {
 		// ROOF
 		
 		glBegin(GL_TRIANGLE_FAN);
-		glColor3d(0.5+d_,0.5+d_,0.5+d_);
+		glColor3d(r_,g_,b_);
 		for (const Position& p : corners) {
-			glVertex2d(p.x_,p.y_+height);
+			glVertex2d(p.x_,p.y_+height_);
 		}		
 		glEnd();
 		// OUTLINE HORISONTAL
@@ -674,7 +678,7 @@ namespace zombie {
 		glBegin(GL_LINE_STRIP);
 		for (unsigned int i = 0; i < corners.size(); i++) {			
 			unsigned int s = corners.size();			
-			glVertex2d(corners[circularIndex(i,s)].x_,corners[circularIndex(i,s)].y_+height);			
+			glVertex2d(corners[circularIndex(i,s)].x_,corners[circularIndex(i,s)].y_+height_);			
 			//std::cout << "i: "<< i <<"x: "<<corners[circularIndex(i,s)].x_<< " y: "<<corners[circularIndex(i,s)].y_+height << std::endl;
 			//int aa = 55;
 		}
