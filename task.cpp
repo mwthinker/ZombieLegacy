@@ -90,10 +90,30 @@ namespace zombie {
 		unit->addEventHandler([&](Unit::UnitEvent unitEvent){
 			this->unitEventHandler(unitEvent);
 		});
+
+		timeNewFrame_ = 0.0;
+		walk_ = true;
+		index_ = 0;
+
+		sprites_.push_back(human1);
+		sprites_.push_back(human2);
+		sprites_.push_back(human1);
+		sprites_.push_back(human3);
 	}
 
 	void HumanAnimation::excecute(double time) {
 		draw(0.0);
+
+		// Time is much larger?
+		if (time > timeNewFrame_ + 1) {
+			// In order for frames to sync to current time.
+			timeNewFrame_ = 0.18 + time;
+		}
+
+		if (time > timeNewFrame_) {
+			index_ = (1 + index_) % sprites_.size();
+			timeNewFrame_ += 0.18;
+		}
 	}
 
 	bool HumanAnimation::isRunning() const {
@@ -102,7 +122,8 @@ namespace zombie {
 
 	// private
 	void HumanAnimation::draw(double timestep) {
-		Position p = unit_->getPosition();
+		Position p = unit_->getPosition();		
+
 		glColor3d(0.7,1,0.7);
 		// Draw body		
 		drawCircle(p[0],p[1],unit_->radius(),20,true);
@@ -127,6 +148,17 @@ namespace zombie {
 		// Draw small view sphere
 		drawCircle(p[0],p[1],unit_->smallViewDistance(),20,false);
 		*/
+
+		// Draw body
+		glColor3d(1,1,1);
+		glPushMatrix();
+		glTranslated(p.x_,p.y_,0);
+		glScaled(unit_->radius(),unit_->radius(),1);
+		glRotated(unit_->getState().angle_*180/mw::PI,0,0,1);
+		mw::TexturePtr texture = sprites_[index_].getTexture();
+		glScaled(texture->getTexWidth()/128.0,texture->getTexHeight()/128.0,1);
+		sprites_[index_].draw();
+		glPopMatrix();
 	}
 
 	void HumanAnimation::unitEventHandler(Unit::UnitEvent unitEvent) {

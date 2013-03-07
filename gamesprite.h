@@ -15,6 +15,10 @@ namespace zombie {
 	extern mw::Sprite zombie5;
 	extern mw::Sprite zombie6;
 
-} // namespace zombie.
+	extern mw::Sprite human1;
+	extern mw::Sprite human2;
+	extern mw::Sprite human3;
+
+} // Namespace zombie.
 
 #endif // MAP_H
