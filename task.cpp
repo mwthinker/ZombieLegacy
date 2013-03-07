@@ -94,6 +94,7 @@ namespace zombie {
 		timeNewFrame_ = 0.0;
 		walk_ = true;
 		index_ = 0;
+		lastTime_ = 0.0;
 
 		sprites_.push_back(human1);
 		sprites_.push_back(human2);
@@ -102,6 +103,7 @@ namespace zombie {
 	}
 
 	void HumanAnimation::excecute(double time) {
+		lastTime_ = time;
 		draw(0.0);
 
 		// Time is much larger?
@@ -178,6 +180,14 @@ namespace zombie {
 			}
 			break;
 		case Unit::UnitEvent::DIE:
+			break;
+		case Unit::UnitEvent::STANDSTILL:
+			index_ = 0;
+			timeNewFrame_ = lastTime_ + 0.18;
+			break;
+		case Unit::UnitEvent::WALK:
+			// Fall through!
+		case Unit::UnitEvent::RUN:
 			break;
 		}
 	}

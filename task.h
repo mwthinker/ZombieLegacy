@@ -58,6 +58,7 @@ namespace zombie {
 		int index_;
 		std::vector<mw::Sprite> sprites_;
 		bool walk_;
+		double lastTime_;
 	};
 
 	class ZombieAnimation : public Task {
