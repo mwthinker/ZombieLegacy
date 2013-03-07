@@ -602,6 +602,9 @@ namespace zombie {
 		road_ = drawRoad;
 		d_ = (std::rand() % 100) / 300.0;
 		height_  = 2 + rand() % (3 - 2 + 1);
+		r_ = ((double) rand() / (RAND_MAX));
+		g_ = ((double) rand() / (RAND_MAX)); 
+		b_ = ((double) rand() / (RAND_MAX));
 	}
 
 	void DrawFake3DBuildning::excecute(double time) {
@@ -617,9 +620,7 @@ namespace zombie {
 		double height = 1.5;
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);		
-		r_ = ((double) rand() / (RAND_MAX));
-		g_ = ((double) rand() / (RAND_MAX)); 
-		b_ = ((double) rand() / (RAND_MAX));
+		
 		
 		
 		
