@@ -41,57 +41,63 @@ namespace zombie {
 	}
 
 	void Unit::updatePhysics(double time, double timeStep, Input input) {
-		double angle = moveDirection();	
+		if (!isDead()) {
+			double angle = moveDirection();	
 
-		Force move = Vec3(std::cos(angle),std::sin(angle))*30;
+			Force move = Vec3(std::cos(angle),std::sin(angle))*30;
 
-		// Time left to run?
-		if (timeLeftToRun_ >= 0) {
-			if (input.forward_ && input.run_) {
-				timeLeftToRun_ -= timeStep;
-				move *= 2;
-			} else if (timeLeftToRun_ < 5) {
+			// Time left to run?
+			if (timeLeftToRun_ >= 0) {
+				if (input.forward_ && input.run_) {
+					timeLeftToRun_ -= timeStep;
+					move *= 2;
+					sendEventToHandlers(UnitEvent::RUN);
+				} else if (timeLeftToRun_ < 5) {
+					timeLeftToRun_ += timeStep;
+				}
+			} else { // Time is negative!
 				timeLeftToRun_ += timeStep;
 			}
-		} else { // Time is negative!
-			timeLeftToRun_ += timeStep;
-		}
 
-		// Move forward or backwards.
-		if (input.forward_ && !input.backward_) {
-			addForce(move);
-		} else if (!input.forward_ && input.backward_) {
-			addForce(-move);
-		} else {
-			// In order to make the unit stop when not moving.
-			addForce(-getVelocity()*5);
-		}
+			// Move forward or backwards.
+			if (input.forward_ && !input.backward_) {
+				addForce(move);
+				sendEventToHandlers(UnitEvent::WALK);
+			} else if (!input.forward_ && input.backward_) {
+				addForce(-move);
+				sendEventToHandlers(UnitEvent::WALK);
+			} else {
+				// In order to make the unit stop when not moving.
+				addForce(-getVelocity()*5);
+				sendEventToHandlers(UnitEvent::STANDSTILL);
+			}
 
-		//std::cout << getState().position_ << std::endl;
+			//std::cout << getState().position_ << std::endl;
 
-		// Turn left or right.
-		if (input.turnLeft_ && !input.turnRight_) {
-			turn(3*timeStep);
-		} else if (!input.turnLeft_ && input.turnRight_) {
-			turn(-3*timeStep);
-		}
+			// Turn left or right.
+			if (input.turnLeft_ && !input.turnRight_) {
+				turn(3*timeStep);
+			} else if (!input.turnLeft_ && input.turnRight_) {
+				turn(-3*timeStep);
+			}
 
-		// Want to shoot? And weapon is ready?
-		if (input.shoot_  && weapon_.shoot(time)) {
-			Bullet bullet;
-			bullet.direction_ = angle;
-			bullet.range_ = weapon_.range();
-			bullet.postion_ = getPosition();
-			bullet.damage_ = weapon_.damage();
-			bullets_.push(bullet);
+			// Want to shoot? And weapon is ready?
+			if (input.shoot_  && weapon_.shoot(time)) {
+				Bullet bullet;
+				bullet.direction_ = angle;
+				bullet.range_ = weapon_.range();
+				bullet.postion_ = getPosition();
+				bullet.damage_ = weapon_.damage();
+				bullets_.push(bullet);
 			
-			sendEventToHandlers(UnitEvent::SHOOT);
-		}
+				sendEventToHandlers(UnitEvent::SHOOT);
+			}
 
-		// Want to reload? And weapon is ready?
-		if (input.reload_ && weapon_.reload()) {
-			input.reload_ = true;
-			sendEventToHandlers(UnitEvent::RELOADING);
+			// Want to reload? And weapon is ready?
+			if (input.reload_ && weapon_.reload()) {
+				input.reload_ = true;
+				sendEventToHandlers(UnitEvent::RELOADING);
+			}
 		}
 	}
 

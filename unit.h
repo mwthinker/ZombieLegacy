@@ -14,7 +14,7 @@ namespace zombie {
 
 class Unit : public PhysicalUnit {
 public:
-	enum UnitEvent {SHOOT,RELOADING,DIE};
+	enum UnitEvent {SHOOT,RELOADING,DIE,WALK,STANDSTILL,RUN};
 
 	Unit(double x, double y, double angle, Weapon weapon, bool infected);
 	virtual ~Unit();
