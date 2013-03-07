@@ -221,7 +221,7 @@ namespace zombie {
 		if (unitPtr->isInfected()) {
 			taskManager_->add(new ZombieAnimation(unitPtr),1);
 		} else {
-			taskManager_->add(new SurvivorAnimation(unitPtr),1);
+			taskManager_->add(new HumanAnimation(unitPtr),1);
 		}
 		physicalEngine_->add(unitPtr);
 		AiPlayerPtr aiPlayer(new AiPlayer());
