@@ -602,9 +602,9 @@ namespace zombie {
 		road_ = drawRoad;
 		d_ = (std::rand() % 100) / 300.0;
 		height_  = 2 + rand() % (3 - 2 + 1);
-		r_ = ((double) rand() / (RAND_MAX));
-		g_ = ((double) rand() / (RAND_MAX)); 
-		b_ = ((double) rand() / (RAND_MAX));
+		r_ = ((double) rand() / (RAND_MAX)) /10;
+		g_ = ((double) rand() / (RAND_MAX)) /10; 
+		b_ = ((double) rand() / (RAND_MAX)) /10;
 	}
 
 	void DrawFake3DBuildning::excecute(double time) {
