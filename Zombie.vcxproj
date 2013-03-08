@@ -100,6 +100,7 @@
     <ClInclude Include="gamesound.h" />
     <ClInclude Include="quadtree.h" />
     <ClInclude Include="state.h" />
+    <ClInclude Include="survivaltimer.h" />
     <ClInclude Include="task.h" />
     <ClInclude Include="taskmanager.h" />
     <ClInclude Include="tile.h" />

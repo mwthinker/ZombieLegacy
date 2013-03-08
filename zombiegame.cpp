@@ -13,6 +13,7 @@
 #include "quadtree.h"
 #include "taskmanager.h"
 #include "aiplayer.h"
+#include "survivaltimer.h"
 
 #include <SDL.h>
 #include <memory>
