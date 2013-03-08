@@ -1,6 +1,7 @@
 #include "taskmanager.h"
 
 #include "task.h"
+#include "maptask.h"
 
 using namespace zombie;
 
