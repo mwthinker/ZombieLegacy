@@ -16,4 +16,6 @@ namespace zombie {
 	mw::Sprite human2("images/human/human2.png");
 	mw::Sprite human3("images/human/human3.png");
 
+	mw::Sprite blood("images/blood.png");
+
 } // Namespace zombie.

@@ -126,6 +126,43 @@ namespace zombie {
 		bool running_;
 	};
 
+	class Blood : public Task {
+	public:
+		Blood(double x, double y, double currentTime);
+		void excecute(double time) override;
+		bool isRunning() const override;
+		double getScaleX(double dT) const;
+		double getScaleY(double dT) const;
+
+	private:
+		double startTime_;
+		double x_, y_;
+		double startScaleX_;
+		double startScaleY_;
+		double endScaleX_;
+		double endScaleY_;
+		double duration_;
+		bool running_;
+		mw::Sprite blood_;
+	};
+
+	class BloodStain : public Task {
+	public:
+		BloodStain(double x, double y, double currentTime);
+		void excecute(double time) override;
+		bool isRunning() const override;
+
+	private:
+		double startTime_;
+		double x_, y_;
+		double scaleX_;
+		double scaleY_;
+		double duration_;
+		double delay_;
+		bool running_;
+		mw::Sprite blood_;
+	};
+
 	class HumanAnimation3D : public Task {
 	public:
 		HumanAnimation3D(const UnitPtr& unit);
