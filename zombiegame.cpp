@@ -257,7 +257,7 @@ namespace zombie {
 			if (graphic3D_) {
 			taskManager_->add(new Buildning3DTask(building),3);
 			} else {
-				taskManager_->add(new DrawBuildning(building),3);
+				//taskManager_->add(new DrawBuildning(building),3);
 				taskManager_->add(new DrawFake3DBuildning(building),3);
 			}			
 			physicalEngine_->add(building);

@@ -128,24 +128,24 @@ namespace zombie {
 
 		glColor3d(0.7,1,0.7);
 		// Draw body		
-		drawCircle(p[0],p[1],unit_->radius(),20,true);
+		//drawCircle(p[0],p[1],unit_->radius(),20,true);
 
 		// innerSpawnRadius
-		drawCircle(p[0],p[1],10,20,false);
+		//drawCircle(p[0],p[1],10,20,false);
 		// outerSpawnRadius
-		drawCircle(p[0],p[1],20,20,false);
+		//drawCircle(p[0],p[1],20,20,false);
 
 
 		glColor3d(1,1,1);
 				
 		// Draw view sphere
 		//drawCircle(p[0],p[1],unit_->viewDistance(),20,false);
-		glBegin(GL_LINES);
+		//glBegin(GL_LINES);
 		
-		glVertex2d(p[0],p[1]);
-		glVertex2d(p[0]+0.1*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]+0.1*std::sin(unit_->moveDirection())*unit_->viewDistance());		
+		//glVertex2d(p[0],p[1]);
+		//glVertex2d(p[0]+0.1*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]+0.1*std::sin(unit_->moveDirection())*unit_->viewDistance());		
 		
-		glEnd();
+		//glEnd();
 		/*
 		// Draw small view sphere
 		drawCircle(p[0],p[1],unit_->smallViewDistance(),20,false);
