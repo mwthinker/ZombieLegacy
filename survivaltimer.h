@@ -8,21 +8,21 @@
 
 namespace zombie {
 
-class SurvivalTimer : public Task {
-public:
-	SurvivalTimer() {
-		dayTime_ = 60.0;
-	}
+	class SurvivalTimer : public Task {
+	public:
+		SurvivalTimer() {
+			dayTime_ = 60.0;
+		}
 
-	void excecute(double time) override {
-	}
+		void excecute(double time) override {
+		}
 
-	bool isRunning() const override {
-		return true;
-	}
-private:
-	double dayTime_;
-};
+		bool isRunning() const override {
+			return true;
+		}
+	private:
+		double dayTime_;
+	};
 
 } // namespace zombie.
 

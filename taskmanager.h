@@ -1,12 +1,15 @@
 #ifndef TASKMANAGER_H
 #define TASKMANAGER_H
 
+#include "quadtree.h"
+
 #include <list>
 #include <utility>
 
 namespace zombie {
 
 	class Task;
+	class GraphicTask;
 
 	class TaskManager {
 	public:
@@ -14,13 +17,20 @@ namespace zombie {
 		~TaskManager();
 
 		// Adds task to be managed in ascending order based on the level.
-		void add(Task* task, int level);
+		void add(Task* task);
+		void add(GraphicTask* task);
+		void add(GraphicTask* task, double x, double y, double width, double height);
+		void add(GraphicTask* task, double x, double y, double radius);
 
 		// Updates each task in ascending order.
 		void update(double deltaTime);
 	private:
-		typedef std::pair<int,Task*> Pair;
-		std::list<Pair> tasks_;
+		void runGraphicTask(GraphicTask* task, int i);
+
+		std::list<Task*> tasks_;
+		Quadtree<GraphicTask*> graphicMaptasks_;
+		std::list<GraphicTask*> graphicTasks_;
+
 		double time_;
 	};
 

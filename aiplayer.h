@@ -9,21 +9,21 @@
 
 namespace zombie {
 
-class AiPlayer : public Player {
-public:
-	AiPlayer(AiBehaviorPtr behavior);
+	class AiPlayer : public Player {
+	public:
+		AiPlayer(AiBehaviorPtr behavior);
 
-	AiPlayer();
+		AiPlayer();
 
-	Input currentInput() override;
+		Input currentInput() override;
 
-	void calculateInput(const UnitPtr& unit, double time);
-	void updateUnitsInView(const std::vector<UnitPtr>& units);
+		void calculateInput(const UnitPtr& unit, double time);
+		void updateUnitsInView(const std::vector<UnitPtr>& units);
 
-	Input input_;
-	AiBehaviorPtr behavior_;
-	std::vector<UnitPtr> units_;
-};
+		Input input_;
+		AiBehaviorPtr behavior_;
+		std::vector<UnitPtr> units_;
+	};
 
 } // namespace zombie.
 

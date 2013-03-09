@@ -14,6 +14,7 @@
 #include "taskmanager.h"
 #include "aiplayer.h"
 #include "survivaltimer.h"
+#include "graphictask.h"
 
 #include <SDL.h>
 #include <memory>
@@ -211,8 +212,8 @@ namespace zombie {
 	}
 
 	void ZombieGame::addHuman(HumanPlayerPtr human, UnitPtr unitPtr) {
-		taskManager_->add(new HumanAnimation(unitPtr),1);
-		taskManager_->add(new HumanStatus(unitPtr,HumanStatus::ONE),10);
+		taskManager_->add(new HumanAnimation(unitPtr));
+		taskManager_->add(new HumanStatus(unitPtr,HumanStatus::ONE));
 		physicalEngine_->add(unitPtr);
 		humanPlayers_.push_back(PairHumanUnit(human,unitPtr));
 		players_.push_back(PairPlayerUnit(human,unitPtr));
@@ -220,9 +221,9 @@ namespace zombie {
 
 	void ZombieGame::addNewAi(UnitPtr unitPtr) {
 		if (unitPtr->isInfected()) {
-			taskManager_->add(new ZombieAnimation(unitPtr),1);
+			taskManager_->add(new ZombieAnimation(unitPtr));
 		} else {
-			taskManager_->add(new HumanAnimation(unitPtr),1);
+			taskManager_->add(new HumanAnimation(unitPtr));
 		}
 		physicalEngine_->add(unitPtr);
 		AiPlayerPtr aiPlayer(new AiPlayer());
@@ -248,17 +249,17 @@ namespace zombie {
 		physicalEngine_ = new PhysicalEngine(map_.minX(),map_.minY(),map_.width(),map_.height());
 		buildings_ = Quadtree<BuildingPtr>(map_.minX(),map_.minY(),map_.width(),map_.height(),4);
 
-		taskManager_->add(new MapDraw(map_),0);
-		taskManager_->add(new RoadDraw(map_),0);
+		taskManager_->add(new MapDraw(map_));
+		taskManager_->add(new RoadDraw(map_));
 
 		auto buildings = map_.getBuildings();
 
 		for (BuildingPtr building : buildings) {
 			if (graphic3D_) {
-			taskManager_->add(new Buildning3DTask(building),3);
+			//taskManager_->add(new Buildning3DTask(building));
 			} else {
 				//taskManager_->add(new DrawBuildning(building),3);
-				taskManager_->add(new DrawFake3DBuildning(building),3);
+				taskManager_->add(new DrawFake3DBuildning(building));
 			}			
 			physicalEngine_->add(building);
 			buildings_.add(building,building->getPosition().x_,building->getPosition().y_,building->getRadius());
@@ -270,7 +271,7 @@ namespace zombie {
 		viewPosition_ = human->getPosition();
 
 		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r,SDLK_LSHIFT));
-		addHuman(humanPlayer,human);		
+		addHuman(humanPlayer,human);
 
 		// Add zombie with standard behavior.
 		for (int i = 0; i < 40; i++) {
@@ -343,11 +344,11 @@ namespace zombie {
 					unit->updateHealthPoint(-bullet.damage_);
 					if(unit->isDead()){
 						//taskManager_->add(new Death(p.x_,p.y_,time_),2);
-						taskManager_->add(new BloodStain(p.x_,p.y_,time_),2);
-						taskManager_->add(new Blood(p.x_,p.y_,time_),2);
+						taskManager_->add(new BloodStain(p.x_,p.y_,time_));
+						taskManager_->add(new Blood(p.x_,p.y_,time_));
 						
 					} else {
-						taskManager_->add(new BloodSplash(p.x_,p.y_,time_),2);
+						taskManager_->add(new BloodSplash(p.x_,p.y_,time_));
 					}
 					hit = true;
 					break;

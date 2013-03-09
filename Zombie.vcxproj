@@ -91,7 +91,7 @@
     <ClInclude Include="linefeature.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="mapeditorwindow.h" />
-    <ClInclude Include="maptask.h" />
+    <ClInclude Include="graphictask.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="pathfinder.h" />
     <ClInclude Include="physicalengine.h" />
@@ -118,6 +118,7 @@
     <ClCompile Include="gamefont.cpp" />
     <ClCompile Include="gamesound.cpp" />
     <ClCompile Include="gamesprite.cpp" />
+    <ClCompile Include="graphictask.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="object.cpp" />

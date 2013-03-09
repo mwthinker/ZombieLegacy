@@ -111,7 +111,7 @@
     <ClInclude Include="survivaltimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="maptask.h">
+    <ClInclude Include="graphictask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -162,6 +162,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="physicalengine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="graphictask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

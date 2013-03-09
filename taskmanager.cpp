@@ -1,7 +1,7 @@
 #include "taskmanager.h"
 
 #include "task.h"
-#include "maptask.h"
+#include "graphictask.h"
 
 using namespace zombie;
 
@@ -10,46 +10,88 @@ TaskManager::TaskManager() {
 }
 
 TaskManager::~TaskManager() {	
-	for (Pair& pair : tasks_) {
-		delete pair.second;
+	for (Task* task : tasks_) {
+		delete task;
+	}
+
+	for (GraphicTask* task : graphicMaptasks_) {
+		delete task;
+	}
+
+	for (GraphicTask* task : graphicTasks_) {
+		delete task;
 	}
 }
 
-void TaskManager::add(Task* task, int level) {
-	auto it = tasks_.begin();
-	for (; it != tasks_.end(); ++it) {
-		if (level < it->first) {
-			break;
-		}
-	}
+void TaskManager::add(Task* task) {
+	tasks_.push_back(task);
+}
 
-	tasks_.insert(it, Pair(level,task));
+void TaskManager::add(GraphicTask* task) {
+	graphicTasks_.push_back(task);
+}
+
+void TaskManager::add(GraphicTask* task, double x, double y, double width, double height) {
+	graphicMaptasks_.add(task,x,y,width,height);
+}
+
+void TaskManager::add(GraphicTask* task, double x, double y, double radius) {
+	graphicMaptasks_.add(task,x,y,radius);
 }
 
 void TaskManager::update(double deltaTime) {
 	// for each Task, call execute
 	time_ += deltaTime;
+	
+	for (int i = 0; i < 3; ++i) {
+		for (GraphicTask* task : graphicMaptasks_) {
+			runGraphicTask(task,i);
+		}
 
-	for (Pair& pair : tasks_) {
-		if (pair.second->isRunning()) {
-			pair.second->excecute(time_);
-			Task* newTask = pair.second->pull();
+		for (GraphicTask* task : graphicTasks_) {
+			runGraphicTask(task,i);
+		}
+	}
+
+	// Update all tasks.
+	for (Task* task : tasks_) {
+		if (task->isRunning()) {
+			task->excecute(time_);
+			Task* newTask = task->pull();
 			if (newTask != 0) {
 				// Add task to list.
-				tasks_.push_back(Pair(pair.first,newTask));
+				tasks_.push_back(newTask);
 			}
 		}
 	}
 
-	// Remove dead tasks.
-	tasks_.remove_if([] (const Pair& pair) {
+	auto removeIfFunction = [] (Task* task) {
 		// Is active?
-		if (pair.second->isRunning()) {			
+		if (task->isRunning()) {			
 			return false;
 		}
 
 		// Not active, delete and remove!
-		delete pair.second;
+		delete task;
 		return true;
-	});
+	};
+
+	// Remove dead tasks.
+	tasks_.remove_if(removeIfFunction);
+}
+
+void TaskManager::runGraphicTask(GraphicTask* task, int i) {
+	if (task->isRunning()) {
+		switch (i) {
+		case 0:
+			task->drawFirst(time_);
+			break;
+		case 1:
+			task->drawSecond(time_);
+			break;
+		case 2:
+			task->drawThird(time_);
+			break;
+		};
+	}
 }
