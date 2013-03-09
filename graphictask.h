@@ -187,6 +187,7 @@ namespace zombie {
 	};
 
 	unsigned int circularIndex(int i, int s);
+	double getLineY(double a,double b,double c,double x) ;
 
 } // Namespace zombie.
 

@@ -507,9 +507,37 @@ namespace zombie {
 			glVertex2d(l.getEnd().x_,l.getEnd().y_+height_);
 			glVertex2d(l.getStart().x_,l.getStart().y_+height_);
 			glVertex2d(l.getStart().x_,l.getStart().y_);
-			glEnd();			
+			glEnd();
+
+			// ADD DOOR
+			// ax + by + c = 0
+			double doorHeight = 1.2;
+			double doorWidth = 0.3;
+			double a = l.getStart().y_ - l.getEnd().y_;
+			double b = l.getEnd().x_ - l.getStart().x_;
+			double c = l.getStart().x_ * l.getEnd().y_ - l.getEnd().x_ * l.getStart().y_;
+			double sX = (l.getStart().x_ + l.getEnd().x_)/2;			
+			double sY = (l.getStart().y_ + l.getEnd().y_)/2;
+
+			glColor3d(1,1,1);
+			glBegin(GL_TRIANGLE_FAN);
+			
+			glVertex2d(sX+doorWidth,getLineY(a,b,c,sX+doorWidth));
+			glVertex2d(sX+doorWidth,getLineY(a,b,c,sX+doorWidth)+doorHeight);
+			glVertex2d(sX-doorWidth,getLineY(a,b,c,sX-doorWidth)+doorHeight);
+			glVertex2d(sX-doorWidth,getLineY(a,b,c,sX-doorWidth));
+
+			glEnd();
+
 		}
-		glDisable(GL_BLEND);	
+		glDisable(GL_BLEND);
+
+		
+
+	}
+
+	double getLineY(double a,double b,double c,double x) {
+		return (0-c-a*x)/b;
 	}
 
 	void DrawFake3DBuildning::drawThird(double time) {
