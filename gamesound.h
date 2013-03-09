@@ -5,11 +5,10 @@
 
 namespace zombie {
 
-	//extern mw::Sound splat;
+	extern mw::Sound splat;
 	extern mw::Sound shot;
 	extern mw::Sound reload;
-	extern mw::Sound zombieAttack;
-	
+	extern mw::Sound zombieAttack;	
 
 } // namespace zombie.
 
