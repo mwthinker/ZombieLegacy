@@ -26,6 +26,9 @@ static bool isPointBetweenParallelLines(mw::MathVector linePosition, double angl
 	return 0 == (intSign((line + dl).cross(linePosition-point).z_) - intSign((line + dl).cross(linePosition-point).z_));
 }
 
+// Returns a random number. The output is uniformly distributed on the interval [a, b).
+double random();
+
 // Remove some objects from a vector which fulfill some type of condition.
 //void removeIf(std::vector s, fucntion)
 

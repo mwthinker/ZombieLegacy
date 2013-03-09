@@ -6,12 +6,8 @@
 #include "auxiliary.h"
 
 #include <vector>
-#include <random>
 
 namespace zombie {
-
-	// Generater used in all random operations.
-	static std::default_random_engine generator_;
 
 	class ZombieBehavior : public AiBehavior {
 	public:
@@ -29,14 +25,9 @@ namespace zombie {
 		double timeToUpdateAngleDirection_;
 		double targetAngle_;
 		bool forward_;
-
-		static std::uniform_real_distribution<double> distribution_;
-		//int index = distribution(generator_);
 	};
 
-} // namespace zombie.
+} // Namespace zombie.
 
 #endif // ZOMBIEBEHAVIOR_H
 
-
-//std::default_random_engine generator_;

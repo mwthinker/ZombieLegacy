@@ -5,14 +5,13 @@
 #include <mw/mathvector.h>
 
 #include <vector>
-#include <random>
 
 namespace zombie {
 
 	ZombieBehavior::ZombieBehavior() {
-		findNewTargetTime_ = distribution_(generator_) * 3;
-		timeToUpdateAngleDirection_ = distribution_(generator_) * 1;
-		targetAngle_ = distribution_(generator_) * mw::PI * 2;
+		findNewTargetTime_ = random() * 3;
+		timeToUpdateAngleDirection_ = random() * 1;
+		targetAngle_ = random() * mw::PI * 2;
 		forward_ = true;
 	}
 
@@ -28,12 +27,12 @@ namespace zombie {
 		}
 
 		if (time > findNewTargetTime_) {
-			findNewTargetTime_ = distribution_(generator_) * 3 + time;
+			findNewTargetTime_ = random() * 3 + time;
 			target_ = findUninfectedTarget(unit->getPosition(), units);				
 		}
 
 		if (time > timeToUpdateAngleDirection_) {
-			timeToUpdateAngleDirection_ = distribution_(generator_) * 1 + time;
+			timeToUpdateAngleDirection_ = random() * 1 + time;
 
 			// Has a target?
 			if (target_ != nullptr) {
@@ -48,8 +47,8 @@ namespace zombie {
 					input.shoot_ = true;
 				}
 			} else {
-				targetAngle_ += (distribution_(generator_)-0.5)*2 * mw::PI * 2 * 0.1;
-				forward_ = distribution_(generator_) > 0.25;
+				targetAngle_ += (random()-0.5)*2 * mw::PI * 2 * 0.1;
+				forward_ = random() > 0.25;
 			}
 		}			
 
@@ -87,8 +86,4 @@ namespace zombie {
 		return target;
 	}
 
-	//std::default_random_engine generator_;
-
-	std::uniform_real_distribution<double> ZombieBehavior::distribution_(0.0,1.0);
-
-} // namespace zombie.
+} // Namespace zombie.

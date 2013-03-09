@@ -115,6 +115,7 @@
   <ItemGroup>
     <ClCompile Include="aibehavior.cpp" />
     <ClCompile Include="aiplayer.cpp" />
+    <ClCompile Include="auxiliary.cpp" />
     <ClCompile Include="gamefont.cpp" />
     <ClCompile Include="gamesound.cpp" />
     <ClCompile Include="gamesprite.cpp" />
