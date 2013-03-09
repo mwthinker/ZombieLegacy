@@ -3,7 +3,7 @@
 namespace zombie {
 
 	mw::Sprite drawGrass("images/grasstile.jpg");
-	mw::Sprite drawRoad("images/roadtile.jpg");
+	mw::Sprite drawRoad("images/roadtile2.jpg");
 	
 	mw::Sprite zombie1("images/zombie/zombie1.png");
 	mw::Sprite zombie2("images/zombie/zombie2.png");

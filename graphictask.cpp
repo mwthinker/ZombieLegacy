@@ -404,7 +404,7 @@ namespace zombie {
 				glTranslated(0.5,0.5,0);
 				glTranslated(x,y,0);
 				//std::cout<<atan2((yStart-yEnd)/(xStart-xEnd));
-				//glRotated(std::atan2((yStart-yEnd),(xStart-xEnd)),0,0,1);
+				glRotated(std::atan2((yStart-yEnd),(xStart-xEnd)),0,0,1);
 				glScaled(2,2,1);
 				road_.draw();
 				glPopMatrix();
@@ -427,9 +427,9 @@ namespace zombie {
 		road_ = drawRoad;
 		d_ = (std::rand() % 100) / 300.0;
 		height_  = 2 + rand() % (3 - 2 + 1);
-		r_ = ((double) rand() / (RAND_MAX)) /10;
-		g_ = ((double) rand() / (RAND_MAX)) /10; 
-		b_ = ((double) rand() / (RAND_MAX)) /10;
+		r_ = ((double) rand() / (RAND_MAX)) /5;
+		g_ = ((double) rand() / (RAND_MAX)) /5; 
+		b_ = ((double) rand() / (RAND_MAX)) /5;
 
 		// Separate front from back *********************************************
 		std::vector<Position> corners = building->getCorners();
@@ -489,7 +489,7 @@ namespace zombie {
 
 		
 		for(LineFeature l : front_) {
-			glColor3d(0.5,0.5,0.5);
+			glColor3d(r_,g_,b_);
 			glBegin(GL_TRIANGLE_FAN);
 			glVertex2d(l.getStart().x_,l.getStart().y_);
 			glVertex2d(l.getEnd().x_,l.getEnd().y_);
@@ -514,7 +514,7 @@ namespace zombie {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);		
 		for(LineFeature l : back_) {
-			glColor3d(0.5,0.5,0.5);
+			glColor3d(r_,g_,b_);
 			glBegin(GL_TRIANGLE_FAN);
 			glVertex2d(l.getStart().x_,l.getStart().y_);
 			glVertex2d(l.getEnd().x_,l.getEnd().y_);
@@ -525,24 +525,18 @@ namespace zombie {
 
 		// ROOF
 		glBegin(GL_TRIANGLE_FAN);
-		glColor3d(0.5,0.5,0.5);
+		glColor3d(r_,g_,b_);
 		const auto& corners = buildning_->getCorners();
 		for (const Position& p : corners) {
 			glVertex2d(p.x_,p.y_+height_);
 		}		
 		glEnd();
 
-		// ROOF OUTLINE
-		glBegin(GL_LINE_STRIP);
-		glColor3d(1,1,1);
-		for (const Position& p : corners) {
-			glVertex2d(p.x_,p.y_+height_);
-		}		
-		glEnd();
+		
 
 		// HELP AREAS
 		for(LineFeature l : rightCorner_) {
-			glColor3d(0.5,0.5,0.5);
+			glColor3d(r_,g_,b_);
 			glBegin(GL_TRIANGLE_FAN);
 			glVertex2d(l.getStart().x_,l.getStart().y_);
 			glVertex2d(l.getEnd().x_,l.getEnd().y_);
@@ -551,7 +545,13 @@ namespace zombie {
 			glEnd();			
 		}
 
-		
+		// ROOF OUTLINE
+		glBegin(GL_LINE_STRIP);
+		glColor3d(1,1,1);
+		for (const Position& p : corners) {
+			glVertex2d(p.x_,p.y_+height_);
+		}		
+		glEnd();
 		glDisable(GL_BLEND);
 	}
 
