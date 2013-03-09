@@ -110,7 +110,6 @@ namespace zombie {
 
 	void ZombieGame::spawnAndCleanUpUnits() {
 		Position center = humanPlayers_[0].second->getPosition();
-		
 
 		// delete zombies outside of perimiter ***************
 		UnitPtr temp;
@@ -167,29 +166,15 @@ namespace zombie {
 		
 		Position p = unit->getPosition();
 		viewPosition_ += (unit->getPosition() - viewPosition_) * deltaTime;
-
-		// 3D?
-		if (graphic3D_) {
-			glEnable (GL_DEPTH_TEST);
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			glOrtho(-10, 10, -10, 10, -10, 100);
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			gluLookAt(0,-2, 1,
-				0,0,0,
-				0,1,0);
-		} else { // 2D!
-			glTranslated(0.5, 0.5, 0);
-			glScaled(1.0/50,1.0/50,1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
-			
-			drawCircle(0,0,0.5,20,false);
-			glScaled(scale_,scale_,1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
-			drawCircle(0,0,0.5,20,false);
-		}		
+				
+		glTranslated(0.5, 0.5, 0);
+		glScaled(1.0/50,1.0/50,1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
+		
+		drawCircle(0,0,0.5,20,false);
+		glScaled(scale_,scale_,1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
+		drawCircle(0,0,0.5,20,false);				
 
 		glTranslated(-viewPosition_.x_,-viewPosition_.y_,0.0);
-		//glTranslated(-p.x_,-p.y_,0.0);
 		
 		// Game is started?
 		if (started_) {
@@ -238,7 +223,6 @@ namespace zombie {
 	}
 
 	void ZombieGame::initGame() {
-		graphic3D_ = false;
 		taskManager_->add(new SurvivalTimer());
 		
 		//map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
@@ -256,12 +240,7 @@ namespace zombie {
 		auto buildings = map_.getBuildings();
 
 		for (BuildingPtr building : buildings) {
-			if (graphic3D_) {
-			//taskManager_->add(new Buildning3DTask(building));
-			} else {
-				//taskManager_->add(new DrawBuildning(building),3);
-				taskManager_->add(new DrawFake3DBuildning(building));
-			}			
+			taskManager_->add(new DrawFake3DBuildning(building));
 			physicalEngine_->add(building);
 			buildings_.add(building,building->getPosition().x_,building->getPosition().y_,building->getRadius());
 		}

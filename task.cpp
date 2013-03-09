@@ -56,75 +56,7 @@ namespace zombie {
 			y = s * t + c * y;
 		}
 		glEnd();
-	}
-
-	/*
-	DrawBuildning::DrawBuildning(const BuildingPtr& building) {
-		buildning_ = building;
-	}
-
-	void DrawBuildning::excecute(double time) {
-		draw();
-	}
-
-	bool DrawBuildning::isRunning() const {
-		return true;
-	}
-
-	//private
-	void DrawBuildning::draw() {
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);		
-		glColor3d(0.1,0.9,0.4);
-		glBegin(GL_LINE_LOOP);
-		const auto& corners = buildning_->getCorners();
-		for (const Position& p : corners) {
-			glVertex2d(p.x_,p.y_);
-		}		
-		glEnd();		
-		glDisable(GL_BLEND);
 	}	
-
-	Buildning3DTask::Buildning3DTask(const BuildingPtr& building) {
-		buildning_ = building;
-	}
-
-	void Buildning3DTask::excecute(double time) {
-		draw();
-	}
-
-	bool Buildning3DTask::isRunning() const {
-		return true;
-	}
-
-	//private
-	void Buildning3DTask::draw() {
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);		
-		
-		// Walls.
-		glColor3d(0.1,0.9,0.4);
-		glBegin(GL_QUAD_STRIP);
-		const auto& corners = buildning_->getCorners();
-		int size = corners.size();
-		for (int i = 0; i < size; ++i) {
-			glVertex3d(corners[i].x_,corners[i].y_,0);
-			glVertex3d(corners[i].x_,corners[i].y_,1);
-		}
-		glEnd();
-
-		// Roof.
-		glColor3d(0.6,0.2,0.4);
-		Position centre = buildning_->getPosition();
-		glBegin(GL_TRIANGLE_FAN);
-		glVertex3d(centre.x_,centre.y_,1);
-		for (int i = 0; i < size; ++i) {
-			glVertex3d(corners[i].x_,corners[i].y_,0);
-		}
-		glEnd();
-		glDisable(GL_BLEND);
-	}
-	*/
 
 	HumanStatus::HumanStatus(const UnitPtr& unit, Player player) {
 		unit_ = unit;
@@ -170,7 +102,6 @@ namespace zombie {
 		glTranslated(0,75,0);
 		name_.draw();
 
-
 		//glTranslated(0,-font15->getCharacterSize()*1.2,0);
 		glTranslated(0,-25,0);
 
@@ -183,51 +114,7 @@ namespace zombie {
 		glMatrixMode(GL_PROJECTION);
 		glPopMatrix();
 		glMatrixMode(GL_MODELVIEW);
-		glPopMatrix();		
-		
-		// Draw small view sphere
-		//drawCircle(p[0],p[1],unit_->smallViewDistance(),20,false);
+		glPopMatrix();
 	}
-
-	/*
-	Buildning3DTask::Buildning3DTask(const BuildingPtr& building) {
-		buildning_ = building;
-	}
-
-	void Buildning3DTask::drawFirst(double time) {
-		draw();
-	}
-
-	bool Buildning3DTask::isRunning() const {
-		return true;
-	}
-
-	//private
-	void Buildning3DTask::draw() {
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);		
-		
-		// Walls.
-		glColor3d(0.1,0.9,0.4);
-		glBegin(GL_QUAD_STRIP);
-		const auto& corners = buildning_->getCorners();
-		int size = corners.size();
-		for (int i = 0; i < size; ++i) {
-			glVertex3d(corners[i].x_,corners[i].y_,0);
-			glVertex3d(corners[i].x_,corners[i].y_,1);
-		}
-		glEnd();
-
-		// Roof.
-		glColor3d(0.6,0.2,0.4);
-		Position centre = buildning_->getPosition();
-		glBegin(GL_TRIANGLE_FAN);
-		glVertex3d(centre.x_,centre.y_,1);
-		for (int i = 0; i < size; ++i) {
-			glVertex3d(corners[i].x_,corners[i].y_,0);
-		}
-		glEnd();
-		glDisable(GL_BLEND);
-	}
-	*/
+	
 } // Namespace zombie.
