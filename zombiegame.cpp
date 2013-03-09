@@ -40,7 +40,7 @@ namespace zombie {
 		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups
 		timeSinceSpawn_ = 0.0;
 		indexAiPlayer_ = 0;
-		unitLevel_ = 10;
+		unitLevel_ = 100;
 		innerSpawnRadius_ = 10;
 		outerSpawnRadius_ = 20;
 
@@ -346,6 +346,7 @@ namespace zombie {
 						//taskManager_->add(new Death(p.x_,p.y_,time_),2);
 						taskManager_->add(new BloodStain(p.x_,p.y_,time_));
 						taskManager_->add(new Blood(p.x_,p.y_,time_));
+					
 						
 					} else {
 						taskManager_->add(new BloodSplash(p.x_,p.y_,time_));
