@@ -83,6 +83,7 @@
     <ClInclude Include="auxiliary.h" />
     <ClInclude Include="building.h" />
     <ClInclude Include="bullet.h" />
+    <ClInclude Include="color.h" />
     <ClInclude Include="gamefont.h" />
     <ClInclude Include="gamesprite.h" />
     <ClInclude Include="input.h" />
