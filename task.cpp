@@ -94,7 +94,8 @@ namespace zombie {
 		glMatrixMode(GL_PROJECTION);
 		glPushMatrix();
 		glLoadIdentity();
-		glOrtho(0,Task::width,0,Task::height,-1,1);		
+		double proportion = Task::width * 1.0 / Task::height;
+		glOrtho(0,proportion*500,0,500,-1,1);
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
