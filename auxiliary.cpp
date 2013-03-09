@@ -11,5 +11,5 @@ namespace {
 }
 
 double random() {
-	return 1.0;//distribution(generator);
+	return distribution(generator);
 }

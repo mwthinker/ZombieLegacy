@@ -20,6 +20,7 @@ static int intSign(double a) {
 	return a < 0 ? -1 : 1;
 }
 
+// May not working?
 static bool isPointBetweenParallelLines(mw::MathVector linePosition, double angleDir, double lineWidth, mw::MathVector point) {
 	mw::MathVector line = mw::MathVector(std::cos(angleDir),std::sin(angleDir));
 	mw::MathVector dl = mw::MathVector(std::cos(mw::PI*0.5+angleDir),std::sin(mw::PI*0.5+angleDir))*lineWidth*0.5; // Turn 90 deg counter clockwise.
