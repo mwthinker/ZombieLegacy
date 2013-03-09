@@ -499,7 +499,7 @@ namespace zombie {
 			glVertex2d(l.getStart().x_,l.getStart().y_+height_);
 			glEnd();			
 		}
-		glColor3d(1,1,1);
+		glColor3d(0,0,0);
 		for(LineFeature l : front_) {
 			glBegin(GL_LINE_STRIP);			
 			glVertex2d(l.getStart().x_,l.getStart().y_);
@@ -519,7 +519,7 @@ namespace zombie {
 			double sX = (l.getStart().x_ + l.getEnd().x_)/2;			
 			double sY = (l.getStart().y_ + l.getEnd().y_)/2;
 
-			glColor3d(1,1,1);
+			glColor3d(0,0,0);
 			glBegin(GL_TRIANGLE_FAN);
 			
 			glVertex2d(sX+doorWidth,getLineY(a,b,c,sX+doorWidth));
@@ -577,7 +577,7 @@ namespace zombie {
 
 		// ROOF OUTLINE
 		glBegin(GL_LINE_STRIP);
-		glColor3d(1,1,1);
+		glColor3d(0,0,0);
 		for (const Position& p : corners) {
 			glVertex2d(p.x_,p.y_+height_);
 		}		
