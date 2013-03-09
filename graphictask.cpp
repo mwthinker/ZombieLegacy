@@ -322,18 +322,39 @@ namespace zombie {
 		grass_ = drawGrass;
 	}
 
-	void MapDraw::draw() {		
-		for (int x = static_cast<int>( map_.minX()); x<static_cast<int>( map_.maxX()); x=x+10) {
-			for (int y = static_cast<int>( map_.minY()); y<static_cast<int>( map_.maxY()); y=y+10) {
-				glPushMatrix();
-				glColor3d(0.4,0.4,0.4);
-				glTranslated(0.5,0.5,0);
-				glTranslated(x,y,0);
-				glScaled(10,10,1);	 	
-				grass_.draw();
-				glPopMatrix();
+	void MapDraw::draw() {
+		glColor3d(0.6,0.6,0.6);
+		grassTexture->bind();	
+
+        glEnable(GL_BLEND);
+        glEnable(GL_TEXTURE_2D);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		double maxX = map_.maxX();
+		double maxY = map_.maxY();
+		double tH = grassTexture->getTexHeight()*1.0 / grassTexture->getPixHeight();
+		double tW = grassTexture->getTexWidth()*1.0 / grassTexture->getPixWidth();
+
+		glBegin(GL_QUADS);
+		for (double x = map_.minX(); x < maxX; x += 10.0) {
+			for (double y = map_.minY(); y < map_.maxY(); y += 10.0) {				
+				glTexCoord2d(0, 0);
+				glVertex2d(x, y);
+				glTexCoord2d(tW, 0);
+				glVertex2d(x+10, y);
+				glTexCoord2d(tW, tH);
+				glVertex2d(x+10, y+10);
+				glTexCoord2d(0, tH);
+				glVertex2d(x, y+10);				
 			}
 		}
+		glEnd();
+
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_BLEND);
 	}
 
 	void MapDraw::drawFirst(double time) {

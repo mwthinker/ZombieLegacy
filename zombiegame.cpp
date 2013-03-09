@@ -141,8 +141,8 @@ namespace zombie {
 		while (nbrOfZombies < unitLevel_) {
 			// INSERT ZOMBIE
 			Position p = map_.generateSpawnPosition(humanPlayers_[0].second->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
-			UnitPtr zombie(new Unit(p.x_,p.y_,0.3,Weapon(35,0.5,1,12),true));
-			addNewAi(zombie);			
+			UnitPtr zombie(new Unit(p.x_,p.y_,0.3,Weapon(25,0.5,1,12),true));
+			addNewAi(zombie);
 			nbrOfZombies++;
 		}
 	}
@@ -247,7 +247,7 @@ namespace zombie {
 		
 		// Add human controlled by first input device.
 		Position position = map_.generateSpawnPosition();
-		UnitPtr human(new Unit(position.x_,position.y_,0.3,Weapon(35,0.2,8,12),false));
+		UnitPtr human(new Unit(position.x_,position.y_,0.3,Weapon(55,0.2,8,12),false));
 		viewPosition_ = human->getPosition();
 
 		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r,SDLK_LSHIFT));
