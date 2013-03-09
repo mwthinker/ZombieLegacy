@@ -455,6 +455,7 @@ namespace zombie {
 		bool previous = front;
 
 		// Push back linefeatures to draw!
+		
 		for(unsigned int i = 0; i < corners.size(); i++) {
 			unsigned index = circularIndex(startPos + i,corners.size());
 						
@@ -463,11 +464,13 @@ namespace zombie {
 					front_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
 				} else {
 					back_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
+					rightCorner_.push_back((LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())])));
 					front = false;
 				}				
 			} else {
 				if(corners[circularIndex(index,corners.size())].x_ < corners[circularIndex(index+1,corners.size())].x_) {
 					front_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
+					leftCorner_.push_back((LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())])));
 					front = true;
 					
 				} else {
@@ -537,8 +540,18 @@ namespace zombie {
 		}		
 		glEnd();
 
-		
+		// HELP AREAS
+		for(LineFeature l : rightCorner_) {
+			glColor3d(0.5,0.5,0.5);
+			glBegin(GL_TRIANGLE_FAN);
+			glVertex2d(l.getStart().x_,l.getStart().y_);
+			glVertex2d(l.getEnd().x_,l.getEnd().y_);
+			glVertex2d(l.getEnd().x_,l.getStart().y_);
+			glVertex2d(l.getStart().x_,l.getStart().y_);
+			glEnd();			
+		}
 
+		
 		glDisable(GL_BLEND);
 	}
 

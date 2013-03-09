@@ -179,6 +179,8 @@ namespace zombie {
 		BuildingPtr buildning_;
 		std::vector<LineFeature> front_;
 		std::vector<LineFeature> back_;
+		std::vector<LineFeature> rightCorner_;
+		std::vector<LineFeature> leftCorner_;
 		double height_;
 		double d_;
 		double r_,g_,b_;
