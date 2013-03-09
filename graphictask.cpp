@@ -334,6 +334,8 @@ namespace zombie {
 		scaleY_ = 3;
 		delay_ = 0.15;	// (Stain appears after splash is finished)
 		duration_ = 60;
+		mw::Sound tmp = splat;
+		tmp.play();
 	}
 
 	void BloodStain::drawFirst(double time) {
