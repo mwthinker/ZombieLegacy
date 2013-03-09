@@ -239,6 +239,7 @@ namespace zombie {
 
 	void ZombieGame::initGame() {
 		graphic3D_ = false;
+		taskManager_->add(new SurvivalTimer());
 		
 		//map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
 		map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
