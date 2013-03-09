@@ -6,6 +6,7 @@
 #include "building.h"
 #include "gamesound.h"
 #include "gamefont.h"
+#include "auxiliary.h"
 
 #include <mw/text.h>
 #include <SDL_opengl.h>
@@ -37,9 +38,9 @@ namespace zombie {
 		});
 
 		timeNewFrame_ = 0.0;
-		walk_ = true;
 		index_ = 0;
 		lastTime_ = 0.0;
+		color_ = Color(random(),random(),random());
 
 		sprites_.push_back(human1);
 		sprites_.push_back(human2);
@@ -69,35 +70,10 @@ namespace zombie {
 
 	// private
 	void HumanAnimation::draw(double timestep) {
-		Position p = unit_->getPosition();		
-
-		glColor3d(0.7,1,0.7);
-		// Draw body		
-		//drawCircle(p[0],p[1],unit_->radius(),20,true);
-
-		// innerSpawnRadius
-		//drawCircle(p[0],p[1],10,20,false);
-		// outerSpawnRadius
-		//drawCircle(p[0],p[1],20,20,false);
-
-
-		glColor3d(1,1,1);
-				
-		// Draw view sphere
-		//drawCircle(p[0],p[1],unit_->viewDistance(),20,false);
-		//glBegin(GL_LINES);
-		
-		//glVertex2d(p[0],p[1]);
-		//glVertex2d(p[0]+0.1*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]+0.1*std::sin(unit_->moveDirection())*unit_->viewDistance());		
-		
-		//glEnd();
-		/*
-		// Draw small view sphere
-		drawCircle(p[0],p[1],unit_->smallViewDistance(),20,false);
-		*/
+		Position p = unit_->getPosition();
 
 		// Draw body
-		glColor3d(1,1,1);
+		color_.glColor3d();
 		glPushMatrix();
 		glTranslated(p.x_,p.y_,0);
 		glScaled(unit_->radius(),unit_->radius(),1);
@@ -145,8 +121,7 @@ namespace zombie {
 		});
 
 		timeNewFrame_ = 0.0;
-		walk_ = true;
-		index_ = 0;
+		color_ = Color(random(),random(),random());
 
 		sprites_.push_back(zombie1);
 		sprites_.push_back(zombie2);
@@ -154,6 +129,7 @@ namespace zombie {
 		sprites_.push_back(zombie4);
 		sprites_.push_back(zombie5);
 		sprites_.push_back(zombie6);
+		index_ = (int) (random() * sprites_.size());
 	}
 
 	void ZombieAnimation::drawSecond(double time) {
@@ -178,9 +154,9 @@ namespace zombie {
 
 	void ZombieAnimation::draw(double timestep) {
 		Position p = unit_->getPosition();
-				
+
 		// Draw body
-		glColor3d(1,1,1);
+		color_.glColor3d();
 		glPushMatrix();
 		glTranslated(unit_->getPosition().x_,unit_->getPosition().y_,0);
 		glScaled(unit_->radius(),unit_->radius(),1);
@@ -188,22 +164,6 @@ namespace zombie {
 		glScaled(1069.0/128.0,1069.0/128.0,1);
 		sprites_[index_].draw();
 		glPopMatrix();
-
-		/*
-		glColor3d(0.8,0.4,0.4);
-		drawCircle(p[0],p[1],unit_->radius(),20,true);
-		glColor3d(1,1,1);
-		glBegin(GL_LINES);		
-		double gg = unit_->radius();
-		
-		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()-3.14/2),p[1]-unit_->radius()*std::sin(unit_->moveDirection()-3.14/2));
-		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()-3.14/2)+0.06*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]-unit_->radius()*std::sin(unit_->moveDirection()-3.14/2)+0.06*std::sin(unit_->moveDirection())*unit_->viewDistance());
-		
-		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()+3.14/2),p[1]-unit_->radius()*std::sin(unit_->moveDirection()+3.14/2));
-		glVertex2d(p[0]-unit_->radius()*std::cos(unit_->moveDirection()+3.14/2)+0.06*std::cos(unit_->moveDirection())*unit_->viewDistance(),p[1]-unit_->radius()*std::sin(unit_->moveDirection()+3.14/2)+0.06*std::sin(unit_->moveDirection())*unit_->viewDistance());		
-
-		glEnd();
-		*/
 	}
 
 	void ZombieAnimation::unitEventHandler(Unit::UnitEvent unitEvent) {

@@ -10,6 +10,7 @@
 #include "unit.h"
 #include "building.h"
 #include "graphictask.h"
+#include "color.h"
 
 #include <mw/text.h>
 
@@ -40,8 +41,8 @@ namespace zombie {
 		double timeNewFrame_;
 		int index_;
 		std::vector<mw::Sprite> sprites_;
-		bool walk_;
 		double lastTime_;
+		Color color_;
 	};
 
 	class ZombieAnimation : public GraphicTask {
@@ -59,7 +60,7 @@ namespace zombie {
 		double timeNewFrame_;
 		int index_;
 		std::vector<mw::Sprite> sprites_;
-		bool walk_;
+		Color color_;
 	};
 
 	class Shot : public GraphicTask {
