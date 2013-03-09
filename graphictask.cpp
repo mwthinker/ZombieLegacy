@@ -47,7 +47,7 @@ namespace zombie {
 		sprites_.push_back(human3);
 	}
 
-	void HumanAnimation::drawFirst(double time) {
+	void HumanAnimation::drawSecond(double time) {
 		lastTime_ = time;
 		draw(0.0);
 
@@ -156,7 +156,7 @@ namespace zombie {
 		sprites_.push_back(zombie6);
 	}
 
-	void ZombieAnimation::drawFirst(double time) {
+	void ZombieAnimation::drawSecond(double time) {
 		draw(0.0);
 		//if (walk_) 
 
@@ -430,10 +430,116 @@ namespace zombie {
 		r_ = ((double) rand() / (RAND_MAX)) /10;
 		g_ = ((double) rand() / (RAND_MAX)) /10; 
 		b_ = ((double) rand() / (RAND_MAX)) /10;
+
+		// Separate front from back *********************************************
+		std::vector<Position> corners = building->getCorners();
+		corners.pop_back();
+		// Find mostleft corner as starting point
+		double minX = 9999999;
+		unsigned int startPos;
+		for(unsigned int i = 0; i < corners.size(); i++) {
+			if(corners[i].x_ < minX){
+				startPos = i;
+				minX = corners[i].x_;
+			}
+		}
+		// define first segment as front/back
+		bool front;
+		 
+		if(corners[circularIndex(startPos+1, corners.size())].y_ < corners[circularIndex(-1,corners.size())].y_) {
+			front = true;
+		} else {
+			front = false;
+		}
+
+		bool previous = front;
+
+		// Push back linefeatures to draw!
+		for(unsigned int i = 0; i < corners.size(); i++) {
+			unsigned index = circularIndex(startPos + i,corners.size());
+						
+			if(front) {
+				if(corners[index].x_ < corners[circularIndex(index+1,corners.size())].x_) {
+					front_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
+				} else {
+					back_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
+					front = false;
+				}				
+			} else {
+				if(corners[circularIndex(index,corners.size())].x_ < corners[circularIndex(index+1,corners.size())].x_) {
+					front_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
+					front = true;
+					
+				} else {
+					back_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
+				}				
+			}
+
+		}
+		
+		// put in lineFeature vectors!
 	}
 
-	void DrawFake3DBuildning::drawFirst(double time) {
-		draw();
+	void DrawFake3DBuildning::drawSecond(double time) {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		
+		for(LineFeature l : front_) {
+			glColor3d(0.5,0.5,0.5);
+			glBegin(GL_TRIANGLE_FAN);
+			glVertex2d(l.getStart().x_,l.getStart().y_);
+			glVertex2d(l.getEnd().x_,l.getEnd().y_);
+			glVertex2d(l.getEnd().x_,l.getEnd().y_+height_);
+			glVertex2d(l.getStart().x_,l.getStart().y_+height_);
+			glEnd();			
+		}
+		glColor3d(1,1,1);
+		for(LineFeature l : front_) {
+			glBegin(GL_LINE_STRIP);			
+			glVertex2d(l.getStart().x_,l.getStart().y_);
+			glVertex2d(l.getEnd().x_,l.getEnd().y_);
+			glVertex2d(l.getEnd().x_,l.getEnd().y_+height_);
+			glVertex2d(l.getStart().x_,l.getStart().y_+height_);
+			glVertex2d(l.getStart().x_,l.getStart().y_);
+			glEnd();			
+		}
+		glDisable(GL_BLEND);	
+	}
+
+	void DrawFake3DBuildning::drawThird(double time) {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);		
+		for(LineFeature l : back_) {
+			glColor3d(0.5,0.5,0.5);
+			glBegin(GL_TRIANGLE_FAN);
+			glVertex2d(l.getStart().x_,l.getStart().y_);
+			glVertex2d(l.getEnd().x_,l.getEnd().y_);
+			glVertex2d(l.getEnd().x_,l.getEnd().y_+height_);
+			glVertex2d(l.getStart().x_,l.getStart().y_+height_);
+			glEnd();			
+		}
+
+		// ROOF
+		glBegin(GL_TRIANGLE_FAN);
+		glColor3d(0.5,0.5,0.5);
+		const auto& corners = buildning_->getCorners();
+		for (const Position& p : corners) {
+			glVertex2d(p.x_,p.y_+height_);
+		}		
+		glEnd();
+
+		// ROOF OUTLINE
+		glBegin(GL_LINE_STRIP);
+		glColor3d(1,1,1);
+		for (const Position& p : corners) {
+			glVertex2d(p.x_,p.y_+height_);
+		}		
+		glEnd();
+
+		
+
+		glDisable(GL_BLEND);
 	}
 
 	bool DrawFake3DBuildning::isRunning() const {
@@ -495,9 +601,7 @@ namespace zombie {
 		glBegin(GL_LINE_STRIP);
 		for (unsigned int i = 0; i < corners.size(); i++) {			
 			unsigned int s = corners.size();			
-			//glVertex2d(corners[circularIndex(i,s)].x_,corners[circularIndex(i,s)].y_+height_);
-			//std::cout << "i: "<< i <<"x: "<<corners[circularIndex(i,s)].x_<< " y: "<<corners[circularIndex(i,s)].y_+height << std::endl;
-			//int aa = 55;
+			glVertex2d(corners[circularIndex(i,s)].x_,corners[circularIndex(i,s)].y_+height_);			
 		}
 		glEnd();			
 		glLineWidth(0.01f);
@@ -508,4 +612,6 @@ namespace zombie {
 		unsigned int r = (i + s) % s;
 		return r;
 	}
+
+	
 } // Namespace zombie.

@@ -28,7 +28,7 @@ namespace zombie {
 	class HumanAnimation : public GraphicTask {
 	public:
 		HumanAnimation(const UnitPtr& unit);
-		void drawFirst(double time) override;		
+		void drawSecond(double time) override;		
 
 		bool isRunning() const override;
 		void unitEventHandler(Unit::UnitEvent unitEvent);
@@ -47,7 +47,7 @@ namespace zombie {
 	class ZombieAnimation : public GraphicTask {
 	public:
 		ZombieAnimation(const UnitPtr& unit);
-		void drawFirst(double time) override;		
+		void drawSecond(double time) override;		
 
 		bool isRunning() const override;
 		void unitEventHandler(Unit::UnitEvent unitEvent);
@@ -168,7 +168,8 @@ namespace zombie {
 	class DrawFake3DBuildning : public GraphicTask {
 	public:
 		DrawFake3DBuildning(const BuildingPtr& building);
-		void drawFirst(double time) override;		
+		void drawSecond(double time) override;
+		void drawThird(double time) override;
 
 		bool isRunning() const override;
 
@@ -176,10 +177,14 @@ namespace zombie {
 		void draw();
 		mw::Sprite road_;
 		BuildingPtr buildning_;
+		std::vector<LineFeature> front_;
+		std::vector<LineFeature> back_;
 		double height_;
 		double d_;
 		double r_,g_,b_;
 	};
+
+	unsigned int circularIndex(int i, int s);
 
 } // Namespace zombie.
 
