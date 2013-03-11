@@ -3,17 +3,34 @@
 #include "object.h"
 #include "input.h"
 #include "weapon.h"
-#include "physicalunit.h"
 #include "auxiliary.h"
 
 #include <mw/mathvector.h>
+#include <Box2D/Box2D.h>
 
 #include <cmath>
 #include <memory>
 
 namespace zombie {
 
-	Unit::Unit(double x, double y, double angle, Weapon weapon, bool infected) : PhysicalUnit(x,y,0.4, 50.0,0.0,10.0), weapon_(weapon) {		
+	Unit::Unit(b2World* world, double x, double y, double angle, Weapon weapon, bool infected) : weapon_(weapon) {		
+		//PhysicalUnit(x,y,0.4, 50.0,0.0,10.0)
+		b2BodyDef bodyDef;
+		bodyDef.type = b2_dynamicBody;
+		bodyDef.position.Set(x, y);
+		bodyDef.angle = angle;
+		body_ = world->CreateBody(&bodyDef);
+
+		b2CircleShape circle;
+		circle.m_p.Set(x, y);
+
+		b2FixtureDef fixtureDef;
+		fixtureDef.shape = &circle;
+		fixtureDef.density = 1.0f;
+		fixtureDef.friction = 0.3f;
+		b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
+		fixture->SetUserData(this);
+		
 		angleVelocity_ = 0.0;
 
 		isInfected_ = infected;
@@ -36,15 +53,11 @@ namespace zombie {
 	Unit::~Unit() {
 	}
 
-	bool Unit::toRemove() const {
-		return isDead();
-	}
-
 	void Unit::updatePhysics(double time, double timeStep, Input input) {
 		if (!isDead()) {
 			double angle = moveDirection();	
 
-			Force move = Vec3(std::cos(angle),std::sin(angle))*30;
+			Force move = Vec3(std::cos(angle),std::sin(angle));
 
 			// Time left to run?
 			if (timeLeftToRun_ >= 0) {
@@ -61,14 +74,17 @@ namespace zombie {
 
 			// Move forward or backwards.
 			if (input.forward_ && !input.backward_) {
-				addForce(move);
+				body_->ApplyForceToCenter(b2Vec2(move.x_,move.y_));
+				//addForce(move);
 				sendEventToHandlers(UnitEvent::WALK);
 			} else if (!input.forward_ && input.backward_) {
-				addForce(-move);
+				body_->ApplyForceToCenter(-b2Vec2(move.x_,move.y_));
+				//addForce(-move);
 				sendEventToHandlers(UnitEvent::WALK);
 			} else {
 				// In order to make the unit stop when not moving.
-				addForce(-getVelocity()*5);
+				body_->ApplyForceToCenter(-body_->GetLinearVelocity());
+				//addForce(-getVelocity()*5);
 				sendEventToHandlers(UnitEvent::STANDSTILL);
 			}
 
@@ -109,16 +125,16 @@ namespace zombie {
 
 	void Unit::setState(State state) {
 		angle_ = state.angle_;
-		setPosition(state.position_);
-		setVelocity(state.velocity_);
+		//setPosition(state.position_);
+		//setVelocity(state.velocity_);
 		angleVelocity_ = state.angleVelocity_;
 	}
 
 	State Unit::getState() const {
 		State state;
 		state.angle_ = angle_;
-		state.position_ = getPosition();
-		state.velocity_ = getVelocity();
+		state.position_ = Position(body_->GetPosition().x,body_->GetPosition().y);
+		state.velocity_ = Position(body_->GetLinearVelocity().x,body_->GetLinearVelocity().y);
 		state.angleVelocity_ = angleVelocity_;
 		return state;
 	}

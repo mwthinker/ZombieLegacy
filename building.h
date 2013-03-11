@@ -3,50 +3,13 @@
 
 #include "object.h"
 #include "typedefs.h"
-#include "physicalengine.h"
 
+#include <Box2D/Box2D.h>
 #include <limits>
 
 namespace zombie {
 
-class Border : public StaticPhyscalUnit {
-public:
-	Border(Position centre, double radius) {
-		centre_ = centre;
-		radius_ = radius;
-	}
-
-	// Override member from class StaticPhysicalUnit
-	bool isInsideApproximate(double x, double y, double radius) const {
-		Position p = centre_;
-		return (x - p.x_)*(x - p.x_) + (y - p.y_)*(y - p.y_) < (getRadius() - radius)*(getRadius() - radius);
-	}
-	
-	// Override member from class StaticPhysicalUnit
-	double stiffness() const override {
-		return 150.0;
-	}
-	
-	// Override member from class StaticPhysicalUnit
-	Position penetration(double x, double y, double radius) const override {
-		return centre_.normalize()*radius_ - Position(x,y);
-	}
-
-	double getRadius() const override {
-		return radius_;
-	}
-
-	Position getPosition() const override {
-		return centre_;
-	}
-private:
-	Position centre_;
-	double radius_;
-};
-
-typedef std::shared_ptr<StaticPhyscalUnit> StaticPhUnitPtr;
-
-class Building : public Object, public StaticPhyscalUnit {
+class Building : public Object {
 public:
 	Building(double x, double y, double width, double height) {
 		Position position = Position(x,y);
@@ -58,6 +21,24 @@ public:
 		init();
 	}
 
+	Building(b2World* world, const std::vector<Position>& corners) : corners_(corners) {
+		int count = 0;
+		b2Vec2 vertices[b2_maxPolygonVertices];
+		for (; count < corners.size() && count < b2_maxPolygonVertices; ++count) {
+			vertices[count] = b2Vec2(corners[count].x_,corners[count].y_);
+		}
+		b2PolygonShape polygon;
+		polygon.Set(vertices, count);
+
+		b2BodyDef bodyDef;
+		bodyDef.userData = this;
+
+		//b2Body* groundBody = world->CreateBody(&bodyDef);
+		//groundBody->CreateFixture(&polygon,0.f);
+		
+		init();
+	}
+
 	Building(const std::vector<Position>& corners) : corners_(corners) {
 		init();
 	}
@@ -66,60 +47,15 @@ public:
 		return corners_;
 	}
 
-	bool isInside(double x, double y) const override {
+	bool isInside(double x, double y) const {
 		return isPointInPolygon(x,y);
 	}
 
-	// Override member from class StaticPhysicalUnit
-	bool isInsideApproximate(double x, double y, double radius) const override {
-		return (radius_ + radius)*(radius_ + radius) > (Position(x,y) - position_)*(Position(x,y) - position_);
-	}
-	
-	// Override member from class StaticPhysicalUnit
-	double stiffness() const override {
-		return 150.0;
-	}
-	
-	// Override member from class StaticPhysicalUnit
-	Position penetration(double x, double y, double radius) const override {
-		int size = corners_.size();
-		Position distance(1000,1000);
-		for (int i = 0; i < size; ++i) {
-			// Relative the corner in index i
-			Position line = corners_[(i+1) % size] - corners_[i];
-			Position point = Position(x,y) - corners_[i];
-
-			double length = point * line.normalize(); // Costly operation
-			Position proj = length * line.normalize(); // Costly operation
-			Position tmp;
-			if (length < 0.0) {
-				tmp = point;
-			} else if (length*length > line.magnitudeSquared()) {
-				tmp = point - line;
-			} else {
-				tmp = point - proj;
-			}
-			if (tmp.magnitudeSquared() < distance.magnitudeSquared()) {
-				distance = tmp;
-			}
-		}
-		
-		// Calculates the penetration depth.
-		// If penetration
-		if (distance.magnitudeSquared() < radius*radius) {
-			distance = distance - distance.normalize() * radius;
-		} else {
-			distance = Position(0,0);
-		}		
-
-		return distance;
-	}
-
-	double getRadius() const override {
+	double getRadius() const {
 		return radius_;
 	}
 	
-	Position getPosition() const override {
+	Position getPosition() const {
 		return position_;
 	}
 
@@ -164,6 +100,8 @@ private:
 	Position position_;
 	double radius_;
 	std::vector<Position> corners_;
+	
+	b2Body* body_;
 };
 
 } // namespace zombie.

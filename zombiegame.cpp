@@ -2,7 +2,6 @@
 
 #include "typedefs.h"
 #include "inputkeyboard.h"
-#include "physicalengine.h"
 #include "unit.h"
 #include "building.h"
 #include "bullet.h"
@@ -16,6 +15,7 @@
 #include "survivaltimer.h"
 #include "graphictask.h"
 
+#include <Box2D/Box2D.h>
 #include <SDL.h>
 #include <memory>
 #include <vector>
@@ -27,6 +27,7 @@
 namespace zombie {
 
     ZombieGame::ZombieGame(int width, int height) {
+		world_ = new b2World(b2Vec2(0,0));
 		taskManager_ = new TaskManager();
 		
 		updateSize(width,height);
@@ -77,7 +78,7 @@ namespace zombie {
 				indexAiPlayer_ = (indexAiPlayer_ + 1) % aiPlayers_.size();
 				AiPlayerPtr& aiPlayer = aiPlayers_[indexAiPlayer_].first;
 				UnitPtr& unit = aiPlayers_[indexAiPlayer_].second;
-				std::vector<UnitPtr> unitsInView = calculateUnitsInView(unit);
+				std::vector<UnitPtr> unitsInView;// calculateUnitsInView(unit);
 				aiPlayer->updateUnitsInView(unitsInView);
 			}
 
@@ -101,7 +102,7 @@ namespace zombie {
 			}		
 
 			// Update the objects physics interactions.
-			physicalEngine_->update(timeStep);
+			world_->Step(timeStep,6,2);
 			
 			// Move the time ahead.
 			time_ += timeStep;
@@ -141,7 +142,7 @@ namespace zombie {
 		while (nbrOfZombies < unitLevel_) {
 			// INSERT ZOMBIE
 			Position p = map_.generateSpawnPosition(humanPlayers_[0].second->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
-			UnitPtr zombie(new Unit(p.x_,p.y_,0.3,Weapon(25,0.5,1,12),true));
+			UnitPtr zombie(new Unit(world_,p.x_,p.y_,0.3,Weapon(25,0.5,1,12),true));
 			addNewAi(zombie);
 			nbrOfZombies++;
 		}
@@ -199,7 +200,6 @@ namespace zombie {
 	void ZombieGame::addHuman(HumanPlayerPtr human, UnitPtr unitPtr) {
 		taskManager_->add(new HumanAnimation(unitPtr));
 		taskManager_->add(new HumanStatus(unitPtr,HumanStatus::ONE));
-		physicalEngine_->add(unitPtr);
 		humanPlayers_.push_back(PairHumanUnit(human,unitPtr));
 		players_.push_back(PairPlayerUnit(human,unitPtr));
 	}
@@ -210,7 +210,6 @@ namespace zombie {
 		} else {
 			taskManager_->add(new HumanAnimation(unitPtr));
 		}
-		physicalEngine_->add(unitPtr);
 		AiPlayerPtr aiPlayer(new AiPlayer());
 		aiPlayers_.push_back(PairAiUnit(aiPlayer,unitPtr));
 		players_.push_back(PairPlayerUnit(aiPlayer,unitPtr));
@@ -223,7 +222,7 @@ namespace zombie {
 	}
 
 	void ZombieGame::initGame() {
-		taskManager_->add(new SurvivalTimer());
+		taskManager_->add(new SurvivalTimer());		
 		
 		//map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
 		map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
@@ -231,7 +230,6 @@ namespace zombie {
 		
 		//map_ = createTiledMap(mapTile1);
 
-		physicalEngine_ = new PhysicalEngine(map_.minX(),map_.minY(),map_.width(),map_.height());
 		buildings_ = Quadtree<BuildingPtr>(map_.minX(),map_.minY(),map_.width(),map_.height(),4);
 
 		taskManager_->add(new MapDraw(map_));
@@ -240,14 +238,14 @@ namespace zombie {
 		auto buildings = map_.getBuildings();
 
 		for (BuildingPtr building : buildings) {
-			taskManager_->add(new DrawFake3DBuildning(building));
-			physicalEngine_->add(building);
-			buildings_.add(building,building->getPosition().x_,building->getPosition().y_,building->getRadius());
+			BuildingPtr tmp(new Building(world_,building->getCorners()));
+			taskManager_->add(new DrawFake3DBuildning(tmp));
+			buildings_.add(tmp,tmp->getPosition().x_,tmp->getPosition().y_,tmp->getRadius());
 		}
 		
 		// Add human controlled by first input device.
 		Position position = map_.generateSpawnPosition();
-		UnitPtr human(new Unit(position.x_,position.y_,0.3,Weapon(55,0.2,8,12),false));
+		UnitPtr human(new Unit(world_,position.x_,position.y_,0.3,Weapon(55,0.2,8,12),false));
 		viewPosition_ = human->getPosition();
 
 		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r,SDLK_LSHIFT));
@@ -256,15 +254,15 @@ namespace zombie {
 		// Add zombie with standard behavior.
 		for (int i = 0; i < 40; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
-			UnitPtr zombie(new Unit(spawn.x_,spawn.y_,0.3,Weapon(35,0.5,1,12),true));
+			UnitPtr zombie(new Unit(world_,spawn.x_,spawn.y_,0.3,Weapon(35,0.5,1,12),true));
 			addNewAi(zombie);
 		}
 		
 		for (int i = 0; i < 5; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,innerSpawnRadius_);
-			UnitPtr survivor(new Unit(spawn.x_,spawn.x_,spawn.x_,Weapon(35,0.5,8,12),false));
+			UnitPtr survivor(new Unit(world_,spawn.x_,spawn.x_,spawn.x_,Weapon(35,0.5,8,12),false));
 			addNewAi(survivor);
-		}	
+		}
 	}
 
 	void ZombieGame::zoom(double scale) {

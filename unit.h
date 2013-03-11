@@ -1,27 +1,25 @@
 #ifndef UNIT_H
 #define UNIT_H
 
+#include "object.h"
 #include "input.h"
 #include "weapon.h"
-#include "physicalunit.h"
 #include "state.h"
 #include "bullet.h"
+
+#include <Box2D/Box2D.h>
 
 #include <functional>
 #include <queue>
 
 namespace zombie {
 
-class Unit : public PhysicalUnit {
+class Unit : public Object {
 public:
 	enum UnitEvent {SHOOT,RELOADING,DIE,WALK,STANDSTILL,RUN};
 
-	Unit(double x, double y, double angle, Weapon weapon, bool infected);
+	Unit(b2World* world, double x, double y, double angle, Weapon weapon, bool infected);
 	virtual ~Unit();
-
-	// Overrides from PhysicalUnit.
-	// Returns true if object is to be removed from PhyscalEngine.
-	bool toRemove() const override;
 
 	// Simulates the physics at time (time) one time step (timeStep) ahead.
 	// Based on the input given.
@@ -41,7 +39,7 @@ public:
 	double viewAngle() const;
 
 	// Return true if the point (x, y) is inside the unit.	
-	bool isInside(double x, double y) const override;
+	bool isInside(double x, double y) const;
 
 	// Return true if the point (x, y) is inside the units small view distance,
 	// where all things are being visible.
@@ -74,6 +72,14 @@ public:
 		return weapon_;
 	}
 
+	Position getPosition() const {
+		return Position(body_->GetPosition().x,body_->GetPosition().y);
+	}
+
+	double radius() const {
+		return 0.4f;
+	}
+
 	void addEventHandler(std::function<void(UnitEvent)> handler);
 
 private:
@@ -101,6 +107,8 @@ private:
 
 	std::queue<Bullet> bullets_;
 	std::vector<std::function<void(UnitEvent)>> eventHandlers_;
+
+	b2Body* body_;
 };
 
 } // namespace zombie

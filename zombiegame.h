@@ -11,7 +11,9 @@
 
 #include "typedefs.h"
 
+#include <Box2D/Box2D.h>
 #include <SDL.h>
+
 #include <memory>
 #include <vector>
 #include <string>
@@ -99,6 +101,8 @@ protected:
 
 	double timeStep_;
 	double accumulator_;
+
+	b2World* world_;
 };
 
 } // namespace zombie
