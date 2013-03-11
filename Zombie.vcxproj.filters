@@ -33,19 +33,10 @@
     <ClInclude Include="unit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="physicalengine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="task.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="weapon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="physicalunit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="physicalunitinterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
@@ -128,9 +119,6 @@
     <ClCompile Include="unit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="physicalunit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="zombiegame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -162,9 +150,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gamesprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="physicalengine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="graphictask.cpp">
