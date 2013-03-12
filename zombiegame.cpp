@@ -87,9 +87,9 @@ namespace zombie {
 		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups
 		timeSinceSpawn_ = 0.0;
 		indexAiPlayer_ = 0;
-		unitLevel_ = 300;
+		unitLevel_ = 1000;
 		innerSpawnRadius_ = 10;
-		outerSpawnRadius_ = 20;
+		outerSpawnRadius_ = 40;
 
 		timeStep_ = 0.017f;  // Fix time step for physics update.
 		accumulator_ = 0.0;      // Time accumulator.
