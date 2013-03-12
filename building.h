@@ -22,24 +22,33 @@ public:
 	}
 
 	Building(b2World* world, const std::vector<Position>& corners) : corners_(corners) {
-		unsigned int count = 0;
-		b2Vec2 vertices[b2_maxPolygonVertices];
-		for (; count < corners.size() && count < b2_maxPolygonVertices; ++count) {
-			vertices[count] = corners[count];
-		}
-		//b2PolygonShape polygon;
-		//polygon.Set(vertices, count);
-				
 		init();
 
 		b2BodyDef bodyDef;
 		bodyDef.fixedRotation = true;
 		bodyDef.position.Set(position_.x,position_.y);
-
-		b2CircleShape circle;		
-		circle.m_radius = getRadius();
+		
 		b2Body* groundBody = world->CreateBody(&bodyDef);
-		b2Fixture* fixture = groundBody->CreateFixture(&circle,0.f);
+		
+		unsigned int size = corners.size();
+		// Is last and first point the same point?
+		if (size > 0 && (corners[size-1]-corners[0]).LengthSquared() > 0.00001f) {
+			// Ignore last point.
+			--size;
+		}
+		
+		// Create polygon.
+		b2Vec2 vertices[b2_maxPolygonVertices];		
+		unsigned int count = 0;
+		// Save global vertex points to local shape coordinates.
+		for (; count < size && count < b2_maxPolygonVertices; ++count) {
+			vertices[count] = groundBody->GetLocalPoint(corners[count]);
+		}
+		
+		b2PolygonShape shape;
+		shape.Set(vertices, count);
+
+		b2Fixture* fixture = groundBody->CreateFixture(&shape,0.f);
 		fixture->SetUserData(this);
 	}
 
