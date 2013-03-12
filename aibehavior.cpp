@@ -51,7 +51,7 @@ namespace zombie {
 			Position selfP = unit->getPosition();
 			Position targetP = target_->getPosition();
 
-			double angle = calculateAnglePointToPoint(selfP.x_, selfP.y_, targetP.x_, targetP.y_);
+			double angle = calculateAnglePointToPoint(selfP.x, selfP.y, targetP.x, targetP.y);
 			double direction = unit->moveDirection();
 
 			//std::cout<<"\n " << "Point2PointAngle " << angle;

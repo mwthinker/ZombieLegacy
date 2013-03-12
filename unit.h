@@ -82,6 +82,9 @@ public:
 
 	void addEventHandler(std::function<void(UnitEvent)> handler);
 
+	b2Body* getBody() const {
+		return body_;
+	}
 private:
 	void sendEventToHandlers(UnitEvent unitEvent) const;
 

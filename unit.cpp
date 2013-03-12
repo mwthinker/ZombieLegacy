@@ -19,10 +19,12 @@ namespace zombie {
 		bodyDef.type = b2_dynamicBody;
 		bodyDef.position.Set(x, y);
 		bodyDef.angle = angle;
+		bodyDef.fixedRotation = true;
 		body_ = world->CreateBody(&bodyDef);
 
 		b2CircleShape circle;
-		circle.m_p.Set(x, y);
+		circle.m_p.Set(0, 0);
+		circle.m_radius = 0.4f;
 
 		b2FixtureDef fixtureDef;
 		fixtureDef.shape = &circle;
@@ -30,6 +32,7 @@ namespace zombie {
 		fixtureDef.friction = 0.3f;
 		b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
 		fixture->SetUserData(this);
+		//fixture->SetUserData(this);
 		
 		angleVelocity_ = 0.0;
 
@@ -74,16 +77,16 @@ namespace zombie {
 
 			// Move forward or backwards.
 			if (input.forward_ && !input.backward_) {
-				body_->ApplyForceToCenter(b2Vec2(move.x_,move.y_));
+				body_->ApplyForceToCenter(b2Vec2(move.x,move.y));
 				//addForce(move);
 				sendEventToHandlers(UnitEvent::WALK);
 			} else if (!input.forward_ && input.backward_) {
-				body_->ApplyForceToCenter(-b2Vec2(move.x_,move.y_));
+				body_->ApplyForceToCenter(-b2Vec2(move.x,move.y));
 				//addForce(-move);
 				sendEventToHandlers(UnitEvent::WALK);
 			} else {
 				// In order to make the unit stop when not moving.
-				body_->ApplyForceToCenter(-body_->GetLinearVelocity());
+				//body_->ApplyForceToCenter(-body_->GetLinearVelocity());
 				//addForce(-getVelocity()*5);
 				sendEventToHandlers(UnitEvent::STANDSTILL);
 			}
@@ -153,20 +156,20 @@ namespace zombie {
 
 	bool Unit::isInside(double x, double y) const {
 		Position p = getPosition();
-		return (x - p.x_)*(x - p.x_) + (y - p.y_)*(y - p.y_) < radius()*radius();
+		return (x - p.x)*(x - p.x) + (y - p.y)*(y - p.y) < radius()*radius();
 	}
 
 	bool Unit::isInsideSmalViewDistance(double x, double y) const {
 		Position p = Position(x,y) - getPosition();
-		return p.magnitudeSquared() < smallViewDistance_*smallViewDistance_;
+		return p.LengthSquared() < smallViewDistance_*smallViewDistance_;
 	}
 
 	bool Unit::isPointViewable(double x, double y) {
 		Position p = Position(x,y) - getPosition();
-		double angle = std::atan2(p.y_, p.x_);
+		double angle = std::atan2(p.y, p.x);
 		return calculateDifferenceBetweenAngles(angle,angle_ + viewAngle() * 0.5) < 0 
 			&& calculateDifferenceBetweenAngles(angle,angle_ - viewAngle() * 0.5) > 0
-			&& p.magnitudeSquared() < viewDistance() * viewDistance();
+			&& p.LengthSquared() < viewDistance() * viewDistance();
 	}
 
 	double Unit::moveDirection() const {

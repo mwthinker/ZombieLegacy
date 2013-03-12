@@ -19,24 +19,34 @@
 #include <SDL.h>
 #include <memory>
 #include <vector>
- 
+
 #include <string>
 #include <fstream>
 #include <gl/GLU.h>
 
 namespace zombie {
 
-    ZombieGame::ZombieGame(int width, int height) {
+	class InViewQueryCallback : public b2QueryCallback {
+	public:
+		std::vector<b2Body*> foundBodies;
+
+		bool ReportFixture(b2Fixture* fixture) {
+			foundBodies.push_back(fixture->GetBody());
+			return false;//keep going to find all fixtures in the query area
+		}
+	};
+
+	ZombieGame::ZombieGame(int width, int height) {
 		world_ = new b2World(b2Vec2(0,0));
 		taskManager_ = new TaskManager();
-		
+
 		updateSize(width,height);
 		scale_ = 1.0;
-		
+
 		started_ = false;
 		time_ = 0.0;
 		timeToUpdateView_ = 0.25; // Seconds in which the view is assumed to be constant in order to 
-		                          // speed up calculations.
+		// speed up calculations.
 
 		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups
 		timeSinceSpawn_ = 0.0;
@@ -45,23 +55,22 @@ namespace zombie {
 		innerSpawnRadius_ = 10;
 		outerSpawnRadius_ = 20;
 
-		timeStep_ = 0.05;  // Fix time step for physics update.
+		timeStep_ = 0.017;  // Fix time step for physics update.
 		accumulator_ = 0.0;      // Time accumulator.
 
 		initGame();
 	}
 
-    ZombieGame::~ZombieGame() {
-		delete physicalEngine_;
+	ZombieGame::~ZombieGame() {
 		delete taskManager_;
 	}
-    
+
 	void ZombieGame::startGame() {
 		// Start game!
 		started_ = true;
 	}
 
-    void ZombieGame::updatePhysics(double timeStep) {
+	void ZombieGame::updatePhysics(double timeStep) {
 		// Game is started?
 		if (started_) {
 			// Spawn and clean up units
@@ -78,7 +87,7 @@ namespace zombie {
 				indexAiPlayer_ = (indexAiPlayer_ + 1) % aiPlayers_.size();
 				AiPlayerPtr& aiPlayer = aiPlayers_[indexAiPlayer_].first;
 				UnitPtr& unit = aiPlayers_[indexAiPlayer_].second;
-				std::vector<UnitPtr> unitsInView;// calculateUnitsInView(unit);
+				std::vector<UnitPtr> unitsInView = calculateUnitsInView(unit);
 				aiPlayer->updateUnitsInView(unitsInView);
 			}
 
@@ -88,11 +97,13 @@ namespace zombie {
 				UnitPtr& unit = pair.second;
 				aiPlayer->calculateInput(unit,time_);				
 			}
-			
+
 			// Update all units.
 			for (PairPlayerUnit& pair : players_) {
 				UnitPtr& unit = pair.second;
 				unit->updatePhysics(time_, timeStep,pair.first->currentInput());
+				b2Body* body = unit->getBody();
+				body->ApplyForceToCenter(-body->GetLinearVelocity());
 
 				Bullet bullet;
 				// Alive? And shooting?
@@ -102,8 +113,8 @@ namespace zombie {
 			}		
 
 			// Update the objects physics interactions.
-			world_->Step(timeStep,6,2);
-			
+			world_->Step((float)timeStep,6,2);
+
 			// Move the time ahead.
 			time_ += timeStep;
 		}
@@ -115,13 +126,13 @@ namespace zombie {
 		// delete zombies outside of perimiter ***************
 		UnitPtr temp;
 		/*std::remove_if(players_.begin(), players_.end(),[] (const PairPlayerUnit& pair) {
-			Position unitPos = pair.second->getPosition();
-			return pair.second;
+		Position unitPos = pair.second->getPosition();
+		return pair.second;
 		});*/
 
 		for (auto it = players_.begin(); it != players_.end(); it++) {
 			Position unitPos = it->second->getPosition();
-			if((unitPos-center)*(unitPos-center) > outerSpawnRadius_*outerSpawnRadius_) {
+			if((unitPos-center).LengthSquared() > outerSpawnRadius_*outerSpawnRadius_) {
 				// REMOVE UNIT
 				it->second->setIsDead();
 				temp = it->second;
@@ -142,7 +153,7 @@ namespace zombie {
 		while (nbrOfZombies < unitLevel_) {
 			// INSERT ZOMBIE
 			Position p = map_.generateSpawnPosition(humanPlayers_[0].second->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
-			UnitPtr zombie(new Unit(world_,p.x_,p.y_,0.3,Weapon(25,0.5,1,12),true));
+			UnitPtr zombie(new Unit(world_,p.x,p.y,0.3,Weapon(25,0.5,1,12),true));
 			addNewAi(zombie);
 			nbrOfZombies++;
 		}
@@ -164,19 +175,19 @@ namespace zombie {
 		// Draw map centered around first humna player.
 		UnitPtr unit = humanPlayers_[0].second;
 		glPushMatrix();
-		
+
 		Position p = unit->getPosition();
-		viewPosition_ += (unit->getPosition() - viewPosition_) * deltaTime;
-				
+		viewPosition_ += deltaTime * (unit->getPosition() - viewPosition_);
+
 		glTranslated(0.5, 0.5, 0);
 		glScaled(1.0/50,1.0/50,1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
-		
+
 		drawCircle(0,0,0.5,20,false);
 		glScaled(scale_,scale_,1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
 		drawCircle(0,0,0.5,20,false);				
 
-		glTranslated(-viewPosition_.x_,-viewPosition_.y_,0.0);
-		
+		glTranslated(-viewPosition_.x,-viewPosition_.y,0.0);
+
 		// Game is started?
 		if (started_) {
 			taskManager_->update(deltaTime);
@@ -214,7 +225,7 @@ namespace zombie {
 		aiPlayers_.push_back(PairAiUnit(aiPlayer,unitPtr));
 		players_.push_back(PairPlayerUnit(aiPlayer,unitPtr));
 	}
-	
+
 	void ZombieGame::normalizeBuildings() {
 		for (BuildingPtr building : buildings_) {
 
@@ -223,12 +234,19 @@ namespace zombie {
 
 	void ZombieGame::initGame() {
 		taskManager_->add(new SurvivalTimer());		
-		
+
 		//map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
 		map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
 		//Map mapTile1 = loadTile("housesFME.mif","roadsFME.mif",100);
-		
+
 		//map_ = createTiledMap(mapTile1);
+
+		/*b2BodyDef groundBodyDef;
+		groundBodyDef.position.Set((map_.minX()+map_.maxX())*0.5, (map_.minY()+map_.maxY())*0.5);
+		b2Body* groundBody = world_->CreateBody(&groundBodyDef);		
+		b2PolygonShape groundBox;
+		groundBox.SetAsBox(map_.width(), map_.height());
+		groundBody->CreateFixture(&groundBox, 0.0f);*/
 
 		buildings_ = Quadtree<BuildingPtr>(map_.minX(),map_.minY(),map_.width(),map_.height(),4);
 
@@ -240,27 +258,29 @@ namespace zombie {
 		for (BuildingPtr building : buildings) {
 			BuildingPtr tmp(new Building(world_,building->getCorners()));
 			taskManager_->add(new DrawFake3DBuildning(tmp));
-			buildings_.add(tmp,tmp->getPosition().x_,tmp->getPosition().y_,tmp->getRadius());
+			//buildings_.add(tmp,tmp->getPosition().x_,tmp->getPosition().y_,tmp->getRadius());
 		}
-		
+
 		// Add human controlled by first input device.
 		Position position = map_.generateSpawnPosition();
-		UnitPtr human(new Unit(world_,position.x_,position.y_,0.3,Weapon(55,0.2,8,12),false));
+		UnitPtr human(new Unit(world_,position.x,position.y,0.3,Weapon(55,0.2,8,12),false));
 		viewPosition_ = human->getPosition();
 
 		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r,SDLK_LSHIFT));
 		addHuman(humanPlayer,human);
+		//humanPlayer = HumanPlayerPtr(new InputKeyboard(SDLK_w,SDLK_s,SDLK_a,SDLK_d,SDLK_f,SDLK_g,SDLK_h));
+		//addHuman(humanPlayer,human);
 
 		// Add zombie with standard behavior.
-		for (int i = 0; i < 40; i++) {
+		for (int i = 30; i < 40; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
-			UnitPtr zombie(new Unit(world_,spawn.x_,spawn.y_,0.3,Weapon(35,0.5,1,12),true));
+			UnitPtr zombie(new Unit(world_,spawn.x,spawn.y,0.3,Weapon(35,0.5,1,12),true));
 			addNewAi(zombie);
 		}
-		
-		for (int i = 0; i < 5; i++) {
+
+		for (int i = 5; i < 5; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,innerSpawnRadius_);
-			UnitPtr survivor(new Unit(world_,spawn.x_,spawn.x_,spawn.x_,Weapon(35,0.5,8,12),false));
+			UnitPtr survivor(new Unit(world_,spawn.x,spawn.x,0.f,Weapon(35,0.5,8,12),false));
 			addNewAi(survivor);
 		}
 	}
@@ -268,21 +288,32 @@ namespace zombie {
 	void ZombieGame::zoom(double scale) {
 		scale_ *= scale;
 	}
-	
+
 	void ZombieGame::updateSize(int width, int height) {
 		Task::width = width;
 		Task::height = height;
 	}
 
 	std::vector<UnitPtr> ZombieGame::calculateUnitsInView(const UnitPtr& unit) {
+		b2AABB area;
+		b2Vec2 dist(unit->viewDistance(),unit->viewDistance());
+		area.upperBound = dist;
+		area.lowerBound = -dist;
+
+		InViewQueryCallback queryCallback;
+
+		world_->QueryAABB(&queryCallback,area);
+
 		std::vector<UnitPtr> unitsInView;
-		for (auto& pair: players_) {
-			UnitPtr& distantUnit = pair.second;
-			Position p = distantUnit->getPosition();
-			
-			if (unit != distantUnit && 
-				( unit->isInsideSmalViewDistance(p.x_,p.y_)) || (unit->isPointViewable(p.x_,p.y_) && isVisible(distantUnit,unit)) ) {
-				unitsInView.push_back(distantUnit);
+		for (int i = 0; i < queryCallback.foundBodies.size(); i++) {
+			Object* ob = static_cast<Object*>(queryCallback.foundBodies[0]->GetUserData());
+
+			if (Unit* unitInArea = dynamic_cast<Unit*>(ob)) {
+				Position p = unitInArea->getPosition();
+				if (unitInArea != unit.get() && 
+					(unit->isInsideSmalViewDistance(p.x,p.y)) || (unit->isPointViewable(p.x,p.y)) ) {
+						//unitsInView.push_back(unit);
+				}
 			}
 		}
 
@@ -290,73 +321,49 @@ namespace zombie {
 	}
 
 	void ZombieGame::doShotDamage(UnitPtr shooter, const Bullet& bullet) {
-		double step = 0.0;
-		double stepLength = 0.05;
-		Position dr = Position(std::cos(bullet.direction_),std::sin(bullet.direction_));
-		Position p = bullet.postion_;
-		bool hit = false;
-		
-		auto buildings = buildings_.getObjectsAt(bullet.postion_.x_,bullet.postion_.y_,bullet.range_);
+		b2Vec2 dir(std::cos(bullet.direction_),std::sin(bullet.direction_));
+		b2Vec2 endP = b2Vec2(shooter->getPosition().x,shooter->getPosition().y) + bullet.range_ * dir;
+		lastBullet_ = bullet;
+		world_->RayCast(this,b2Vec2(shooter->getPosition().x,shooter->getPosition().y),endP);
+	}
 
-		while (step < bullet.range_ && !hit) {
-			p += dr*stepLength;
-			step += stepLength;
-			
-			for (BuildingPtr& building : buildings) {
-				// Hits a building?
-				if (building->isInside(p.x_,p.y_)) {
-					hit = true;
-					break;
+	float32 ZombieGame::ReportFixture(b2Fixture* fixture, const b2Vec2 &point, const b2Vec2 &normal, float32 fraction) {			
+		std::cout << "Hit! "<< " \n";
+		Object* ob = static_cast<Object*>(fixture->GetUserData());
+
+		if (Unit* unit = dynamic_cast<Unit*>(ob)) {
+			// Target alive?
+			if (!unit->isDead()) {
+				unit->updateHealthPoint(-lastBullet_.damage_);
+				Position p = unit->getPosition();
+				// Target killed?
+				if(unit->isDead()){					
+					//taskManager_->add(new Death(p.x_,p.y_,time_),2);
+					taskManager_->add(new BloodStain(p.x,p.y,time_));
+					taskManager_->add(new Blood(p.x,p.y,time_));
+				} else {
+					taskManager_->add(new BloodSplash(p.x,p.y,time_));
 				}
-			}
-
-			if (hit) {
-				break;
-			}
-
-			for (PairPlayerUnit& playerUnit : players_) {
-				UnitPtr& unit = playerUnit.second;
-
-				// Not hitting itself? And target not dead? And bullet inside target?
-				if (shooter != unit && !unit->isDead() && unit->isInside(p.x_,p.y_)) {
-					unit->updateHealthPoint(-bullet.damage_);
-					if(unit->isDead()){
-						//taskManager_->add(new Death(p.x_,p.y_,time_),2);
-						taskManager_->add(new BloodStain(p.x_,p.y_,time_));
-						taskManager_->add(new Blood(p.x_,p.y_,time_));
-					
-						
-					} else {
-						taskManager_->add(new BloodSplash(p.x_,p.y_,time_));
-					}
-					hit = true;
-					break;
-				}
-			}
-
-			if (hit) {
-				break;
 			}
 		}
-
-		//taskManager_->add(new Shot(p.x_,p.y_,time_));
-	}	
+		return fraction;
+	}
 
 	bool ZombieGame::isVisible(UnitPtr unitToBeSeen, UnitPtr unitThatSees) const {
 		Position dr = unitToBeSeen->getPosition() - unitThatSees->getPosition();
-		double length = dr.magnitude();
+		double length = dr.Length();
 		double stepLength = 1;
 		double step = 0.0;
-		dr = dr.normalize();
-				
+		dr.Normalize();
+
 		Position p = unitThatSees->getPosition();
-		
-		auto buildings = buildings_.getObjectsAt(p.x_,p.y_,length*2);
+
+		auto buildings = buildings_.getObjectsAt(p.x,p.y,length*2);
 		while (step < length) {
-			p += dr*stepLength;
+			p += stepLength*dr;
 			step += stepLength;
 			for (const BuildingPtr& building : buildings) {
-				if (building->isInside(p.x_,p.y_)) {
+				if (building->isInside(p.x,p.y)) {
 					return false;
 				}
 			}

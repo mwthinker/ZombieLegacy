@@ -22,9 +22,8 @@ namespace zombie {
 
 // Forward declaration.
 class TaskManager;
-class PhysicalEngine;
 
-class ZombieGame {
+class ZombieGame : public b2RayCastCallback {
 public:
     ZombieGame(int width = 500, int height = 500);
     ~ZombieGame();
@@ -43,6 +42,9 @@ public:
 
 	void updateSize(int width, int height);
 protected:
+	// Ray-cast callback.
+	float32 ReportFixture(b2Fixture* fixture, const b2Vec2 &point, const b2Vec2 &normal, float32 fraction) override;
+
 	// Updates the game time by (msDeltaTime).
     void updatePhysics(double timeStep);
 
@@ -82,7 +84,6 @@ protected:
 	std::vector<PairAiUnit> aiPlayers_;
 	std::vector<PairPlayerUnit> players_; // All units.
 	
-	PhysicalEngine* physicalEngine_;
 	Quadtree<BuildingPtr> buildings_; // All buildings.
 	TaskManager* taskManager_;
 
@@ -103,6 +104,7 @@ protected:
 	double accumulator_;
 
 	b2World* world_;
+	Bullet lastBullet_;
 };
 
 } // namespace zombie

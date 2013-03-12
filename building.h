@@ -11,7 +11,7 @@ namespace zombie {
 
 class Building : public Object {
 public:
-	Building(double x, double y, double width, double height) {
+	Building(float x, float y, float width, float height) {
 		Position position = Position(x,y);
 
 		corners_.push_back(position);
@@ -22,21 +22,25 @@ public:
 	}
 
 	Building(b2World* world, const std::vector<Position>& corners) : corners_(corners) {
-		int count = 0;
+		unsigned int count = 0;
 		b2Vec2 vertices[b2_maxPolygonVertices];
 		for (; count < corners.size() && count < b2_maxPolygonVertices; ++count) {
-			vertices[count] = b2Vec2(corners[count].x_,corners[count].y_);
+			vertices[count] = corners[count];
 		}
-		b2PolygonShape polygon;
-		polygon.Set(vertices, count);
+		//b2PolygonShape polygon;
+		//polygon.Set(vertices, count);
+				
+		init();
 
 		b2BodyDef bodyDef;
-		bodyDef.userData = this;
+		bodyDef.fixedRotation = true;
+		bodyDef.position.Set(position_.x,position_.y);
 
-		//b2Body* groundBody = world->CreateBody(&bodyDef);
-		//groundBody->CreateFixture(&polygon,0.f);
-		
-		init();
+		b2CircleShape circle;		
+		circle.m_radius = getRadius();
+		b2Body* groundBody = world->CreateBody(&bodyDef);
+		b2Fixture* fixture = groundBody->CreateFixture(&circle,0.f);
+		fixture->SetUserData(this);
 	}
 
 	Building(const std::vector<Position>& corners) : corners_(corners) {
@@ -51,7 +55,7 @@ public:
 		return isPointInPolygon(x,y);
 	}
 
-	double getRadius() const {
+	float getRadius() const {
 		return radius_;
 	}
 	
@@ -61,20 +65,20 @@ public:
 
 protected:
 	void init() {
-		double xLeft = std::numeric_limits<double>::max();
-		double xRight = -xLeft;
-		double yUp = -xLeft;
-		double yDown = xLeft;
+		float xLeft = std::numeric_limits<float>::max();
+		float xRight = -xLeft;
+		float yUp = -xLeft;
+		float yDown = xLeft;
 		
 		for (Position p : corners_) {
-			xRight = std::max(xRight,p.x_);
-			yUp = std::max(yUp,p.y_);
-			xLeft = std::min(xLeft,p.x_);
-			yDown = std::min(yDown,p.y_);
+			xRight = std::max(xRight,p.x);
+			yUp = std::max(yUp,p.y);
+			xLeft = std::min(xLeft,p.x);
+			yDown = std::min(yDown,p.y);
 		}
 		
 		position_ = Position((xLeft + xRight)/2,(yDown + yUp)/2);
-		radius_ = (position_ - Position(xLeft,yDown)).magnitude();
+		radius_ = (position_ - Position(xLeft,yDown)).Length();
 	}
 	
 private:
@@ -86,8 +90,8 @@ private:
 		for (int i = 0; i < polySides; i++) {
 			Position pi = corners_[i];
 			Position pj = corners_[j];
-			if ( (pi.y_< y && pj.y_ >= y || pj.y_ < y && pi.y_ >= y) &&  (pi.x_ <= x || pj.x_ <= x) ) {
-				if (pi.x_+(y - pi.y_)/(pj.y_ - pi.y_)*(pj.x_ - pi.x_) < x) {
+			if ( (pi.y < y && pj.y >= y || pj.y < y && pi.y >= y) &&  (pi.x <= x || pj.x <= x) ) {
+				if (pi.x +(y - pi.y)/(pj.y - pi.y)*(pj.x - pi.x) < x) {
 					oddNodes =! oddNodes;
 				}
 			}
@@ -98,7 +102,7 @@ private:
 	}
 
 	Position position_;
-	double radius_;
+	float radius_;
 	std::vector<Position> corners_;
 	
 	b2Body* body_;

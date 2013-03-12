@@ -1,5 +1,6 @@
 #include <memory>
 
+#include <Box2D\Box2D.h>
 #include <mw/mathvector.h>
 
 #ifndef TYPEDEFS_H
@@ -8,10 +9,10 @@
 namespace zombie {
 
 	// MathVector.
-	typedef mw::MathVector Velocity;
-	typedef Velocity Position;
-	typedef Velocity Force;
-	typedef Velocity Vec3;
+	typedef b2Vec2 Velocity;
+	typedef b2Vec2 Position;
+	typedef b2Vec2 Force;
+	typedef b2Vec2 Vec3;
 
 	// Smart pointers.
 	class AiBehavior;
@@ -30,13 +31,7 @@ namespace zombie {
 	typedef std::shared_ptr<AiPlayer> AiPlayerPtr;
 
 	class Player;
-	typedef std::shared_ptr<Player> PlayerPtr;
-
-	class PhysicalUnitInterface;
-	typedef std::shared_ptr<PhysicalUnitInterface> PhysicalUnitPtr;
-	
-	class StaticPhyscalUnit;
-	typedef std::shared_ptr<StaticPhyscalUnit> StaticPhyscalUnitPtr;
+	typedef std::shared_ptr<Player> PlayerPtr;	
 
 } // Namespace zombie.
 

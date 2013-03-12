@@ -1,14 +1,18 @@
 #ifndef BULLET_H
 #define BULLET_H
 
-#include <mw/mathvector.h>
+#include "typedefs.h"
 
-struct Bullet {
-public:
-	mw::MathVector postion_;
-	double damage_;
-	double direction_;
-	double range_;	
-};
+namespace zombie {
+
+	struct Bullet {
+	public:
+		Position postion_;
+		float damage_;
+		float direction_;
+		float range_;	
+	};
+
+} // Namespace zombie.
 
 #endif // BULLET_H

@@ -15,17 +15,17 @@ namespace zombie {
 	// Generater used in all random operations.
 	static std::default_random_engine generator_;
 
-	static std::uniform_real_distribution<double> distribution_;
+	static std::uniform_real_distribution<float> distribution_;
 
 	class Map {
 	public:
-		Map(Position mapCentre_, double width, double height, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads = std::vector<LineFeature>());
-		Map(double tileSize, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads = std::vector<LineFeature>());
+		Map(Position mapCentre_, float width, float height, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads = std::vector<LineFeature>());
+		Map(float tileSize, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads = std::vector<LineFeature>());
 		Map();
 				
 		Position getMapCentre() const;
 		Position generateSpawnPosition() const;
-		Position generateSpawnPosition(Position p, double innerRadie, double outerRadie) const;
+		Position generateSpawnPosition(Position p, float innerRadie, float outerRadie) const;
 
 		const std::vector<BuildingPtr>& getBuildings() const {
 			return buildings_;
@@ -35,35 +35,35 @@ namespace zombie {
 			return roads_;
 		}
 
-		double minX() const {
+		float minX() const {
 			return minX_;
 		}
 
-		double minY() const {
+		float minY() const {
 			return minY_;
 		}
 
-		double maxX() const {
+		float maxX() const {
 			return maxX_;
 		}
 
-		double maxY() const {
+		float maxY() const {
 			return maxY_;
 		}
 
-		double width() const {
+		float width() const {
 			return maxX_ - minX_;
 		}
 
-		double height() const {
+		float height() const {
 			return maxY_ - minY_;
 		}
 
 	private:
-		double minX_;
-		double minY_;
-		double maxX_;
-		double maxY_;
+		float minX_;
+		float minY_;
+		float maxX_;
+		float maxY_;
 		
 		std::vector<LineFeature> roads_;
 		std::vector<BuildingPtr> buildings_;
@@ -71,11 +71,11 @@ namespace zombie {
 
 	Map generateMap(); 
 
-	Map loadMapInfo(std::string filename, std::string fileRoads, double scale);
+	Map loadMapInfo(std::string filename, std::string fileRoads, float scale);
 
-	Map loadTile(std::string filename, std::string fileRoads, double tileSize);
+	Map loadTile(std::string filename, std::string fileRoads, float tileSize);
 
-	std::vector<LineFeature> loadRoads(std::string filename, double scale, double normalizeX, double normalizeY);
+	std::vector<LineFeature> loadRoads(std::string filename, float scale, float normalizeX, float normalizeY);
 
 } // namespace zombie.
 
