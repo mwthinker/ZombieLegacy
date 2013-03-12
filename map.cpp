@@ -8,16 +8,16 @@
 
 namespace zombie {
 
-	Map::Map(Position mapCentre_, double width, double height, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads) {
+	Map::Map(Position mapCentre_, float width, float height, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads) {
 		buildings_ = buildings;
-		minX_ = mapCentre_.x_ - width * 0.5; 
-		minY_ = mapCentre_.y_ - height * 0.5;
-		maxX_ = mapCentre_.x_ + width * 0.5;
-		maxY_ = mapCentre_.y_ + height * 0.5;
+		minX_ = mapCentre_.x - width * 0.5f; 
+		minY_ = mapCentre_.y - height * 0.5f;
+		maxX_ = mapCentre_.x + width * 0.5f;
+		maxY_ = mapCentre_.y + height * 0.5f;
 		roads_ = roads;
 	}
 
-	Map::Map(double tileSize, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads) {
+	Map::Map(float tileSize, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads) {
 		buildings_ = buildings;
 		minX_ = 0;
 		minY_ = 0;
@@ -34,24 +34,24 @@ namespace zombie {
 	}		
 
 	Position Map::generateSpawnPosition() const {
-		return generateSpawnPosition(getMapCentre(),0,std::min(maxX_-minX_,maxY_-minY_) * 0.7);
+		return generateSpawnPosition(getMapCentre(),0,std::min(maxX_-minX_,maxY_-minY_) * 0.7f);
 	}
 
-	Position Map::generateSpawnPosition(Position p, double innerRadie, double outerRadie) const {
+	Position Map::generateSpawnPosition(Position p, float innerRadie, float outerRadie) const {
 		std::random_device rd;
 		std::default_random_engine g(rd());
-		std::uniform_real_distribution<double> distReal(0,1);		
+		std::uniform_real_distribution<float> distReal(0,1);		
 
-		double alfa = distReal(g) * 2 * mw::PI;
-		double dist = distReal(g) * (outerRadie-innerRadie);// + innerRadie;			
+		float alfa = distReal(g) * 2 * (float) mw::PI;
+		float dist = distReal(g) * (outerRadie-innerRadie);// + innerRadie;			
 
-		for(double dr = 0; dr < outerRadie-innerRadie; dr += 1.0) {
-			for(double angle = 0; angle < 2*mw::PI; angle += 0.2) {
+		for(float dr = 0; dr < outerRadie-innerRadie; dr += 1.0) {
+			for(float angle = 0; angle <  (float) 2 * mw::PI; angle += 0.2f) {
 				bool buildingFound = false;
 
 				dist = fmod(dist+dr,outerRadie-innerRadie);
-				double x = p.x_ + std::cos(alfa+angle)*(dist+innerRadie);
-				double y = p.y_ + std::sin(alfa+angle)*(dist+innerRadie);
+				float x = p.x + std::cos(alfa+angle)*(dist+innerRadie);
+				float y = p.y + std::sin(alfa+angle)*(dist+innerRadie);
 								
 				for (BuildingPtr building : buildings_) {
 					// if inside one building, break
@@ -68,28 +68,28 @@ namespace zombie {
 			}
 		}
 		// No success - return dummy position!
-		return Position(-99999,-99999,-99999);
+		return Position(-99999,-99999);
 	}
 
 	Map generateMap() {
-		double side = 15;
+		float side = 15;
 		int nbr = 10;
 
 		std::default_random_engine g;
 		std::uniform_int_distribution<int> distInt(4,7);
-		std::uniform_real_distribution<double> distReal(0,1);
+		std::uniform_real_distribution<float> distReal(0,1);
 
 		std::vector<BuildingPtr> buildings;
 
 		for (int i = 0; i < nbr; ++i) {
 			for (int j = 0; j < nbr; ++j) {
 
-				double x = i * side;
-				double y = j * side;
-				Position p1(x + distReal(g) * 4, y + distReal(g) * 4, 0);
-				Position p2(x + distReal(g) * 4 + 8, y + distReal(g) * 4, 0);
-				Position p3(x + distReal(g) * 4 + 8, y + distReal(g) * 4 + 8, 0);
-				Position p4(x + distReal(g) * 4 , y + distReal(g) * 4 + 8, 0);
+				float x = i * side;
+				float y = j * side;
+				Position p1(x + distReal(g) * 4, y + distReal(g) * 4);
+				Position p2(x + distReal(g) * 4 + 8, y + distReal(g) * 4);
+				Position p3(x + distReal(g) * 4 + 8, y + distReal(g) * 4 + 8);
+				Position p4(x + distReal(g) * 4 , y + distReal(g) * 4 + 8);
 
 				std::vector<Position> positions;
 				positions.push_back(p1);
@@ -105,12 +105,12 @@ namespace zombie {
 		return Map(Position(),10,10,buildings);
 	}	
 
-	Map loadMapInfo(std::string filename, std::string fileRoads, double scale) {
+	Map loadMapInfo(std::string filename, std::string fileRoads, float scale) {
 		std::fstream mapFile(filename.c_str(),std::fstream::in);
-		double minX = std::numeric_limits<double>::max();
-		double maxX = -minX;
-		double minY = minX;
-		double maxY = -minY;
+		float minX = std::numeric_limits<float>::max();
+		float maxX = -minX;
+		float minY = minX;
+		float maxY = -minY;
 
 		std::vector< std::vector<Position> > allCorners;
 		while (mapFile.good()) {
@@ -125,21 +125,21 @@ namespace zombie {
 				//std::cout<<"REGION " << nbrLines;
 				for (int i = 1; i <= nbrLines; i++) {
 					Position p;
-					mapFile >> p.x_ >> p.y_;
+					mapFile >> p.x >> p.y;
 					// Scale map
-					p.x_ = (p.x_) * scale;
-					p.y_ = (p.y_) * scale;
-					if (p.x_ < minX) {
-						minX = p.x_;
+					p.x = (p.x) * scale;
+					p.y = (p.y) * scale;
+					if (p.x < minX) {
+						minX = p.x;
 					}
-					if (p.x_ > maxX) {
-						maxX = p.x_;
+					if (p.x > maxX) {
+						maxX = p.x;
 					}
-					if (p.y_ < minY) {
-						minY = p.y_;
+					if (p.y < minY) {
+						minY = p.y;
 					}
-					if (p.y_ > maxY) {
-						maxY = p.y_;
+					if (p.y > maxY) {
+						maxY = p.y;
 					}
 					corners.push_back(p);
 				}
@@ -150,20 +150,20 @@ namespace zombie {
 		// Normalize map		
 		for (std::vector<Position>& corners : allCorners) {		
 			for (Position& corner : corners) {		
-				corner.x_ -= minX; 
-				corner.y_ -= minY;
+				corner.x -= minX; 
+				corner.y -= minY;
 			}
 		}
-		double normalizeX = minX;
-		double normalizeY = minY;
+		float normalizeX = minX;
+		float normalizeY = minY;
 		maxX -= normalizeX;
 		minX -= normalizeX;
 		maxY -= normalizeY;		
 		minY -= normalizeY;		
 
 		// Get world size.
-		double height = maxX + minX;
-		double width = maxY + minY;
+		float height = maxX + minX;
+		float width = maxY + minY;
 		std::vector<BuildingPtr> buildings;
 		for (std::vector<Position>& corners : allCorners) {			
 			BuildingPtr building = BuildingPtr(new Building(corners));
@@ -174,7 +174,7 @@ namespace zombie {
 		return Map(Position((minX+maxX)/2,(minY+maxY)/2),width,height,buildings,loadRoads(fileRoads,scale,normalizeX,normalizeY));
 	}
 
-	std::vector<LineFeature> loadRoads(std::string filename, double scale, double normalizeX, double normalizeY) {
+	std::vector<LineFeature> loadRoads(std::string filename, float scale, float normalizeX, float normalizeY) {
 		std::vector<LineFeature> roads;
 		std::fstream mapFile(filename.c_str(),std::fstream::in);
 		while (mapFile.good()) {
@@ -194,10 +194,10 @@ namespace zombie {
 						for (int i = 1; i <= nbrOfLines; i++) {
 							getline (mapFile,line);
 							Position p;
-							mapFile >> p.x_;
-							mapFile >> p.y_;
-							p.x_ = p.x_  * scale - normalizeX;
-							p.y_ = p.y_  * scale - normalizeY;
+							mapFile >> p.x;
+							mapFile >> p.y;
+							p.x = p.x  * scale - normalizeX;
+							p.y = p.y  * scale - normalizeY;
 							vertexes.push_back(p);
 						}
 
@@ -208,14 +208,14 @@ namespace zombie {
 
 					if (objectType == "LINE") {
 						Position p1, p2;
-						mapFile >> p1.x_;
-						mapFile >> p1.y_;
-						mapFile >> p2.x_;
-						mapFile >> p2.y_;
-						p1.x_ = p1.x_ * scale - normalizeX;
-						p1.y_ = p1.y_ * scale - normalizeY;
-						p2.x_ = p2.x_ * scale - normalizeX;
-						p2.y_ = p2.y_ * scale - normalizeY;
+						mapFile >> p1.x;
+						mapFile >> p1.y;
+						mapFile >> p2.x;
+						mapFile >> p2.y;
+						p1.x = p1.x * scale - normalizeX;
+						p1.y = p1.y * scale - normalizeY;
+						p2.x = p2.x * scale - normalizeX;
+						p2.y = p2.y * scale - normalizeY;
 						roads.push_back(LineFeature(p1,p2));
 					} else {
 						//std::cout << "no matching feature object type! ";
@@ -228,7 +228,7 @@ namespace zombie {
 	}
 
 
-	Map loadTile(std::string filename, std::string fileRoads, double tileSize) {
+	Map loadTile(std::string filename, std::string fileRoads, float tileSize) {
 		std::fstream mapFile(filename.c_str(),std::fstream::in);
 		
 		std::vector< std::vector<Position> > allCorners;
@@ -244,10 +244,10 @@ namespace zombie {
 				//std::cout<<"REGION " << nbrLines;
 				for (int i = 1; i <= nbrLines; i++) {
 					Position p;
-					mapFile >> p.x_ >> p.y_;
+					mapFile >> p.x >> p.y;
 					// Scale map
-					p.x_ = (p.x_);
-					p.y_ = (p.y_);
+					p.x = (p.x);
+					p.y = (p.y);
 					corners.push_back(p);
 				}
 				allCorners.push_back(corners);					
@@ -281,10 +281,10 @@ namespace zombie {
 						for (int i = 1; i <= nbrOfLines; i++) {
 							getline (mapFile2,line);
 							Position p;
-							mapFile2 >> p.x_;
-							mapFile2 >> p.y_;
-							p.x_ = p.x_;
-							p.y_ = p.y_ ;
+							mapFile2 >> p.x;
+							mapFile2 >> p.y;
+							p.x = p.x;
+							p.y = p.y;
 							vertexes.push_back(p);
 						}
 
@@ -295,10 +295,10 @@ namespace zombie {
 
 					if (objectType == "LINE") {
 						Position p1, p2;
-						mapFile2 >> p1.x_;
-						mapFile2 >> p1.y_;
-						mapFile2 >> p2.x_;
-						mapFile2 >> p2.y_;
+						mapFile2 >> p1.x;
+						mapFile2 >> p1.y;
+						mapFile2 >> p2.x;
+						mapFile2 >> p2.y;
 						roads.push_back(LineFeature(p1,p2));
 					} else {
 						//std::cout << "no matching feature object type! ";
@@ -309,10 +309,6 @@ namespace zombie {
 		//************
 
 		return Map(tileSize, buildings, roads);
-
-	
-	
-	
 	}
 
 } // namespace zombie.

@@ -9,8 +9,8 @@ class State {
 public:	
 	Position position_;
 	Velocity velocity_;
-	double angle_;
-	double angleVelocity_;
+	float angle_;
+	float angleVelocity_;
 };
 
 } // namespace zombie.

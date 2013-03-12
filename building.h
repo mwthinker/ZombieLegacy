@@ -3,52 +3,15 @@
 
 #include "object.h"
 #include "typedefs.h"
-#include "physicalengine.h"
 
+#include <Box2D/Box2D.h>
 #include <limits>
 
 namespace zombie {
 
-class Border : public StaticPhyscalUnit {
+class Building : public Object {
 public:
-	Border(Position centre, double radius) {
-		centre_ = centre;
-		radius_ = radius;
-	}
-
-	// Override member from class StaticPhysicalUnit
-	bool isInsideApproximate(double x, double y, double radius) const {
-		Position p = centre_;
-		return (x - p.x_)*(x - p.x_) + (y - p.y_)*(y - p.y_) < (getRadius() - radius)*(getRadius() - radius);
-	}
-	
-	// Override member from class StaticPhysicalUnit
-	double stiffness() const override {
-		return 150.0;
-	}
-	
-	// Override member from class StaticPhysicalUnit
-	Position penetration(double x, double y, double radius) const override {
-		return centre_.normalize()*radius_ - Position(x,y);
-	}
-
-	double getRadius() const override {
-		return radius_;
-	}
-
-	Position getPosition() const override {
-		return centre_;
-	}
-private:
-	Position centre_;
-	double radius_;
-};
-
-typedef std::shared_ptr<StaticPhyscalUnit> StaticPhUnitPtr;
-
-class Building : public Object, public StaticPhyscalUnit {
-public:
-	Building(double x, double y, double width, double height) {
+	Building(float x, float y, float width, float height) {
 		Position position = Position(x,y);
 
 		corners_.push_back(position);
@@ -56,6 +19,28 @@ public:
 		corners_.push_back(position + Position(width,height));
 		corners_.push_back(position + Position(0,height));
 		init();
+	}
+
+	Building(b2World* world, const std::vector<Position>& corners) : corners_(corners) {
+		unsigned int count = 0;
+		b2Vec2 vertices[b2_maxPolygonVertices];
+		for (; count < corners.size() && count < b2_maxPolygonVertices; ++count) {
+			vertices[count] = corners[count];
+		}
+		//b2PolygonShape polygon;
+		//polygon.Set(vertices, count);
+				
+		init();
+
+		b2BodyDef bodyDef;
+		bodyDef.fixedRotation = true;
+		bodyDef.position.Set(position_.x,position_.y);
+
+		b2CircleShape circle;		
+		circle.m_radius = getRadius();
+		b2Body* groundBody = world->CreateBody(&bodyDef);
+		b2Fixture* fixture = groundBody->CreateFixture(&circle,0.f);
+		fixture->SetUserData(this);
 	}
 
 	Building(const std::vector<Position>& corners) : corners_(corners) {
@@ -66,83 +51,38 @@ public:
 		return corners_;
 	}
 
-	bool isInside(double x, double y) const override {
+	bool isInside(float x, float y) const {
 		return isPointInPolygon(x,y);
 	}
 
-	// Override member from class StaticPhysicalUnit
-	bool isInsideApproximate(double x, double y, double radius) const override {
-		return (radius_ + radius)*(radius_ + radius) > (Position(x,y) - position_)*(Position(x,y) - position_);
-	}
-	
-	// Override member from class StaticPhysicalUnit
-	double stiffness() const override {
-		return 150.0;
-	}
-	
-	// Override member from class StaticPhysicalUnit
-	Position penetration(double x, double y, double radius) const override {
-		int size = corners_.size();
-		Position distance(1000,1000);
-		for (int i = 0; i < size; ++i) {
-			// Relative the corner in index i
-			Position line = corners_[(i+1) % size] - corners_[i];
-			Position point = Position(x,y) - corners_[i];
-
-			double length = point * line.normalize(); // Costly operation
-			Position proj = length * line.normalize(); // Costly operation
-			Position tmp;
-			if (length < 0.0) {
-				tmp = point;
-			} else if (length*length > line.magnitudeSquared()) {
-				tmp = point - line;
-			} else {
-				tmp = point - proj;
-			}
-			if (tmp.magnitudeSquared() < distance.magnitudeSquared()) {
-				distance = tmp;
-			}
-		}
-		
-		// Calculates the penetration depth.
-		// If penetration
-		if (distance.magnitudeSquared() < radius*radius) {
-			distance = distance - distance.normalize() * radius;
-		} else {
-			distance = Position(0,0);
-		}		
-
-		return distance;
-	}
-
-	double getRadius() const override {
+	float getRadius() const {
 		return radius_;
 	}
 	
-	Position getPosition() const override {
+	Position getPosition() const {
 		return position_;
 	}
 
 protected:
 	void init() {
-		double xLeft = std::numeric_limits<double>::max();
-		double xRight = -xLeft;
-		double yUp = -xLeft;
-		double yDown = xLeft;
+		float xLeft = std::numeric_limits<float>::max();
+		float xRight = -xLeft;
+		float yUp = -xLeft;
+		float yDown = xLeft;
 		
 		for (Position p : corners_) {
-			xRight = std::max(xRight,p.x_);
-			yUp = std::max(yUp,p.y_);
-			xLeft = std::min(xLeft,p.x_);
-			yDown = std::min(yDown,p.y_);
+			xRight = std::max(xRight,p.x);
+			yUp = std::max(yUp,p.y);
+			xLeft = std::min(xLeft,p.x);
+			yDown = std::min(yDown,p.y);
 		}
 		
 		position_ = Position((xLeft + xRight)/2,(yDown + yUp)/2);
-		radius_ = (position_ - Position(xLeft,yDown)).magnitude();
+		radius_ = (position_ - Position(xLeft,yDown)).Length();
 	}
 	
 private:
-	bool isPointInPolygon(double x, double y) const {
+	bool isPointInPolygon(float x, float y) const {
 		int polySides = corners_.size();
 		int j = polySides-1;
 		bool oddNodes = false;
@@ -150,8 +90,8 @@ private:
 		for (int i = 0; i < polySides; i++) {
 			Position pi = corners_[i];
 			Position pj = corners_[j];
-			if ( (pi.y_< y && pj.y_ >= y || pj.y_ < y && pi.y_ >= y) &&  (pi.x_ <= x || pj.x_ <= x) ) {
-				if (pi.x_+(y - pi.y_)/(pj.y_ - pi.y_)*(pj.x_ - pi.x_) < x) {
+			if ( (pi.y < y && pj.y >= y || pj.y < y && pi.y >= y) &&  (pi.x <= x || pj.x <= x) ) {
+				if (pi.x +(y - pi.y)/(pj.y - pi.y)*(pj.x - pi.x) < x) {
 					oddNodes =! oddNodes;
 				}
 			}
@@ -162,8 +102,10 @@ private:
 	}
 
 	Position position_;
-	double radius_;
+	float radius_;
 	std::vector<Position> corners_;
+	
+	b2Body* body_;
 };
 
 } // namespace zombie.

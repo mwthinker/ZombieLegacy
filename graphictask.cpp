@@ -75,7 +75,7 @@ namespace zombie {
 		// Draw body
 		color_.glColor3d();
 		glPushMatrix();
-		glTranslated(p.x_,p.y_,0);
+		glTranslated(p.x,p.y,0);
 		glScaled(unit_->radius(),unit_->radius(),1);
 		glRotated(unit_->getState().angle_*180/mw::PI,0,0,1);
 		mw::TexturePtr texture = sprites_[index_].getTexture();
@@ -158,7 +158,7 @@ namespace zombie {
 		// Draw body
 		color_.glColor3d();
 		glPushMatrix();
-		glTranslated(unit_->getPosition().x_,unit_->getPosition().y_,0);
+		glTranslated(unit_->getPosition().x,unit_->getPosition().y,0);
 		glScaled(unit_->radius(),unit_->radius(),1);
 		glRotated(unit_->getState().angle_*180/mw::PI,0,0,1);
 		glScaled(1069.0/128.0,1069.0/128.0,1);
@@ -178,18 +178,21 @@ namespace zombie {
 		}
 	}
 
-	Shot::Shot(double x, double y, double currentTime) {
+	Shot::Shot(Position start, Position end, float currentTime) {
 		startTime_ = currentTime;
-		x_ = x;
-		y_ = y;
+		start_ = start;
+		end_ = end;
 		running_ = true;
 	}
 
-	void Shot::drawFirst(double time) {
+	void Shot::drawSecond(double time) {
 		if (time < startTime_ + 2) {
 			// Draw view sphere
-			glColor3d(0,1,0);
-			drawCircle(x_,y_,0.5,10,true);
+			glColor3d(1,1,1);
+			glBegin(GL_LINES);
+			glVertex2d(start_.x,start_.y);
+			glVertex2d(end_.x,end_.y);
+			glEnd();
 		} else {
 			running_ = false;
 		}
@@ -373,10 +376,10 @@ namespace zombie {
 		const std::vector<LineFeature>& l = map_.getRoads();
 		
 		for (auto it = l.begin(); it != l.end(); it++) {
-			double xStart =  it->getStart().x_;
-			double yStart =  it->getStart().y_;
-			double xEnd = it->getEnd().x_;
-			double yEnd =  it->getEnd().y_;
+			double xStart =  it->getStart().x;
+			double yStart =  it->getStart().y;
+			double xEnd = it->getEnd().x;
+			double yEnd =  it->getEnd().y;
 
 			double x = xStart;
 			double y = yStart;
@@ -410,26 +413,26 @@ namespace zombie {
 		road_ = drawRoad;
 		d_ = (std::rand() % 100) / 300.0;
 		height_  = 2 + rand() % (3 - 2 + 1);
-		r_ = ((double) rand() / (RAND_MAX)) /5;
-		g_ = ((double) rand() / (RAND_MAX)) /5; 
-		b_ = ((double) rand() / (RAND_MAX)) /5;
+		r_ = ((float) rand() / (RAND_MAX)) /5;
+		g_ = ((float) rand() / (RAND_MAX)) /5; 
+		b_ = ((float) rand() / (RAND_MAX)) /5;
 
 		// Separate front from back *********************************************
 		std::vector<Position> corners = building->getCorners();
 		corners.pop_back();
 		// Find mostleft corner as starting point
-		double minX = 9999999;
+		float minX = 9999999;
 		unsigned int startPos;
-		for(unsigned int i = 0; i < corners.size(); i++) {
-			if(corners[i].x_ < minX){
+		for (unsigned int i = 0; i < corners.size(); i++) {
+			if(corners[i].x < minX){
 				startPos = i;
-				minX = corners[i].x_;
+				minX = corners[i].x;
 			}
 		}
 		// define first segment as front/back
 		bool front;
 		 
-		if(corners[circularIndex(startPos+1, corners.size())].y_ < corners[circularIndex(-1,corners.size())].y_) {
+		if (corners[circularIndex(startPos+1, corners.size())].y < corners[circularIndex(-1,corners.size())].y) {
 			front = true;
 		} else {
 			front = false;
@@ -443,7 +446,7 @@ namespace zombie {
 			unsigned index = circularIndex(startPos + i,corners.size());
 						
 			if(front) {
-				if(corners[index].x_ < corners[circularIndex(index+1,corners.size())].x_) {
+				if(corners[index].x < corners[circularIndex(index+1,corners.size())].x) {
 					front_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
 				} else {
 					back_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
@@ -451,7 +454,7 @@ namespace zombie {
 					front = false;
 				}				
 			} else {
-				if(corners[circularIndex(index,corners.size())].x_ < corners[circularIndex(index+1,corners.size())].x_) {
+				if(corners[circularIndex(index,corners.size())].x < corners[circularIndex(index+1,corners.size())].x) {
 					front_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
 					leftCorner_.push_back((LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())])));
 					front = true;
@@ -474,31 +477,31 @@ namespace zombie {
 		for(LineFeature l : front_) {
 			glColor3d(r_,g_,b_);
 			glBegin(GL_TRIANGLE_FAN);
-			glVertex2d(l.getStart().x_,l.getStart().y_);
-			glVertex2d(l.getEnd().x_,l.getEnd().y_);
-			glVertex2d(l.getEnd().x_,l.getEnd().y_+height_);
-			glVertex2d(l.getStart().x_,l.getStart().y_+height_);
+			glVertex2d(l.getStart().x,l.getStart().y);
+			glVertex2d(l.getEnd().x,l.getEnd().y);
+			glVertex2d(l.getEnd().x,l.getEnd().y+height_);
+			glVertex2d(l.getStart().x,l.getStart().y+height_);
 			glEnd();			
 		}
 		glColor3d(0,0,0);
 		for(LineFeature l : front_) {
 			glBegin(GL_LINE_STRIP);			
-			glVertex2d(l.getStart().x_,l.getStart().y_);
-			glVertex2d(l.getEnd().x_,l.getEnd().y_);
-			glVertex2d(l.getEnd().x_,l.getEnd().y_+height_);
-			glVertex2d(l.getStart().x_,l.getStart().y_+height_);
-			glVertex2d(l.getStart().x_,l.getStart().y_);
+			glVertex2d(l.getStart().x,l.getStart().y);
+			glVertex2d(l.getEnd().x,l.getEnd().y);
+			glVertex2d(l.getEnd().x,l.getEnd().y+height_);
+			glVertex2d(l.getStart().x,l.getStart().y+height_);
+			glVertex2d(l.getStart().x,l.getStart().y);
 			glEnd();
 
 			// ADD DOOR
 			// ax + by + c = 0
 			double doorHeight = 1.2;
 			double doorWidth = 0.3;
-			double a = l.getStart().y_ - l.getEnd().y_;
-			double b = l.getEnd().x_ - l.getStart().x_;
-			double c = l.getStart().x_ * l.getEnd().y_ - l.getEnd().x_ * l.getStart().y_;
-			double sX = (l.getStart().x_ + l.getEnd().x_)/2;			
-			double sY = (l.getStart().y_ + l.getEnd().y_)/2;
+			double a = l.getStart().y - l.getEnd().y;
+			double b = l.getEnd().x - l.getStart().x;
+			double c = l.getStart().x * l.getEnd().y - l.getEnd().x * l.getStart().y;
+			double sX = (l.getStart().x + l.getEnd().x)/2;			
+			double sY = (l.getStart().y + l.getEnd().y)/2;
 
 			glColor3d(0,0,0);
 			glBegin(GL_TRIANGLE_FAN);
@@ -527,10 +530,10 @@ namespace zombie {
 		for(LineFeature l : back_) {
 			glColor3d(r_,g_,b_);
 			glBegin(GL_TRIANGLE_FAN);
-			glVertex2d(l.getStart().x_,l.getStart().y_);
-			glVertex2d(l.getEnd().x_,l.getEnd().y_);
-			glVertex2d(l.getEnd().x_,l.getEnd().y_+height_);
-			glVertex2d(l.getStart().x_,l.getStart().y_+height_);
+			glVertex2d(l.getStart().x,l.getStart().y);
+			glVertex2d(l.getEnd().x,l.getEnd().y);
+			glVertex2d(l.getEnd().x,l.getEnd().y+height_);
+			glVertex2d(l.getStart().x,l.getStart().y+height_);
 			glEnd();			
 		}
 
@@ -539,7 +542,7 @@ namespace zombie {
 		glColor3d(r_,g_,b_);
 		const auto& corners = buildning_->getCorners();
 		for (const Position& p : corners) {
-			glVertex2d(p.x_,p.y_+height_);
+			glVertex2d(p.x,p.y+height_);
 		}		
 		glEnd();
 
@@ -549,10 +552,10 @@ namespace zombie {
 		for(LineFeature l : rightCorner_) {
 			glColor3d(r_,g_,b_);
 			glBegin(GL_TRIANGLE_FAN);
-			glVertex2d(l.getStart().x_,l.getStart().y_);
-			glVertex2d(l.getEnd().x_,l.getEnd().y_);
-			glVertex2d(l.getEnd().x_,l.getStart().y_);
-			glVertex2d(l.getStart().x_,l.getStart().y_);
+			glVertex2d(l.getStart().x,l.getStart().y);
+			glVertex2d(l.getEnd().x,l.getEnd().y);
+			glVertex2d(l.getEnd().x,l.getStart().y);
+			glVertex2d(l.getStart().x,l.getStart().y);
 			glEnd();			
 		}
 
@@ -560,7 +563,7 @@ namespace zombie {
 		glBegin(GL_LINE_STRIP);
 		glColor3d(0,0,0);
 		for (const Position& p : corners) {
-			glVertex2d(p.x_,p.y_+height_);
+			glVertex2d(p.x,p.y+height_);
 		}		
 		glEnd();
 		glDisable(GL_BLEND);
@@ -588,10 +591,10 @@ namespace zombie {
 				//glBegin(GL_LINE_LOOP);
 				
 				glBegin(GL_TRIANGLE_FAN);
-				glVertex2d(corners[i].x_,corners[i].y_);
-				glVertex2d(corners[i+1].x_,corners[i+1].y_);
-				glVertex2d(corners[i+1].x_,corners[i+1].y_+height_);
-				glVertex2d(corners[i].x_,corners[i].y_+height_);
+				glVertex2d(corners[i].x,corners[i].y);
+				glVertex2d(corners[i+1].x,corners[i+1].y);
+				glVertex2d(corners[i+1].x,corners[i+1].y+height_);
+				glVertex2d(corners[i].x,corners[i].y+height_);
 				glEnd();
 			}
 		}
@@ -605,8 +608,8 @@ namespace zombie {
 			unsigned int s = corners.size();
 			glEnd();
 			glBegin(GL_LINES);
-			glVertex2d(corners[i].x_,corners[i].y_);
-			glVertex2d(corners[i].x_,corners[i].y_+height_);
+			glVertex2d(corners[i].x,corners[i].y);
+			glVertex2d(corners[i].x,corners[i].y+height_);
 			glEnd();			
 		}		
 
@@ -616,7 +619,7 @@ namespace zombie {
 		glBegin(GL_TRIANGLE_FAN);
 		glColor3d(r_,g_,b_);
 		for (const Position& p : corners) {
-			glVertex2d(p.x_,p.y_+height_);
+			glVertex2d(p.x,p.y+height_);
 		}		
 		glEnd();
 		// OUTLINE HORISONTAL
@@ -625,7 +628,7 @@ namespace zombie {
 		glBegin(GL_LINE_STRIP);
 		for (unsigned int i = 0; i < corners.size(); i++) {			
 			unsigned int s = corners.size();			
-			glVertex2d(corners[circularIndex(i,s)].x_,corners[circularIndex(i,s)].y_+height_);			
+			glVertex2d(corners[circularIndex(i,s)].x,corners[circularIndex(i,s)].y+height_);			
 		}
 		glEnd();			
 		glLineWidth(0.01f);

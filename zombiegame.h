@@ -11,7 +11,9 @@
 
 #include "typedefs.h"
 
+#include <Box2D/Box2D.h>
 #include <SDL.h>
+
 #include <memory>
 #include <vector>
 #include <string>
@@ -20,7 +22,6 @@ namespace zombie {
 
 // Forward declaration.
 class TaskManager;
-class PhysicalEngine;
 
 class ZombieGame {
 public:
@@ -32,7 +33,7 @@ public:
 
 	// Draws the graphic and (deltaTime) should be the time past 
 	// from the previous call to this funtion.
-	void update(double deltaTime);
+	void update(float deltaTime);
 
 	// Makes the game reacting on the evennt (windowEvent).
 	void eventUpdate(const SDL_Event& windowEvent);
@@ -40,9 +41,10 @@ public:
 	void zoom(double scale);
 
 	void updateSize(int width, int height);
+
 protected:
 	// Updates the game time by (msDeltaTime).
-    void updatePhysics(double timeStep);
+    void updatePhysics(float timeStep);
 
 	void reshapeWindowsOpenGL(int width, int height) {		
 	}
@@ -70,7 +72,7 @@ protected:
 	void spawnAndCleanUpUnits();	// Spawns new zombies
 
 	bool started_; // The game time is started.	
-	double time_; // Local game time.
+	float time_; // Local game time.
 
 	typedef std::pair<HumanPlayerPtr,UnitPtr> PairHumanUnit;
 	typedef std::pair<AiPlayerPtr,UnitPtr> PairAiUnit;
@@ -80,7 +82,6 @@ protected:
 	std::vector<PairAiUnit> aiPlayers_;
 	std::vector<PairPlayerUnit> players_; // All units.
 	
-	PhysicalEngine* physicalEngine_;
 	Quadtree<BuildingPtr> buildings_; // All buildings.
 	TaskManager* taskManager_;
 
@@ -91,14 +92,17 @@ protected:
 
 	int unitLevel_; // Specifies the wanted number of zombies on the map
 	double scale_;
-	double innerSpawnRadius_;
-	double outerSpawnRadius_;
+	float innerSpawnRadius_;
+	float outerSpawnRadius_;
 	Map map_;
 
 	Position viewPosition_;
 
-	double timeStep_;
-	double accumulator_;
+	float timeStep_;
+	float accumulator_;
+
+	b2World* world_;
+	Bullet lastBullet_;
 };
 
 } // namespace zombie

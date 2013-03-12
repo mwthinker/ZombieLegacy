@@ -1,60 +1,58 @@
 #ifndef UNIT_H
 #define UNIT_H
 
+#include "object.h"
 #include "input.h"
 #include "weapon.h"
-#include "physicalunit.h"
 #include "state.h"
 #include "bullet.h"
+
+#include <Box2D/Box2D.h>
 
 #include <functional>
 #include <queue>
 
 namespace zombie {
 
-class Unit : public PhysicalUnit {
+class Unit : public Object {
 public:
 	enum UnitEvent {SHOOT,RELOADING,DIE,WALK,STANDSTILL,RUN};
 
-	Unit(double x, double y, double angle, Weapon weapon, bool infected);
+	Unit(float x, float y, float angle, Weapon weapon, bool infected);
 	virtual ~Unit();
-
-	// Overrides from PhysicalUnit.
-	// Returns true if object is to be removed from PhyscalEngine.
-	bool toRemove() const override;
 
 	// Simulates the physics at time (time) one time step (timeStep) ahead.
 	// Based on the input given.
-	void updatePhysics(double time, double timeStep, Input input);
+	void updatePhysics(float time, float timeStep, Input input);
 	
 	void setState(State state);
 	State getState() const;
 
 	// Return the view distance.
-	double viewDistance();
+	float viewDistance();
 
 	// Return the distance of where all things are being visible, 
 	// no matter of orientation.
-	double smallViewDistance();
+	float smallViewDistance();
 
 	// Return the current view direction, i.e. the unit's orientation.
-	double viewAngle() const;
+	float viewAngle() const;
 
 	// Return true if the point (x, y) is inside the unit.	
-	bool isInside(double x, double y) const override;
+	bool isInside(float x, float y) const;
 
 	// Return true if the point (x, y) is inside the units small view distance,
 	// where all things are being visible.
-	bool isInsideSmalViewDistance(double x, double y) const;
+	bool isInsideSmalViewDistance(float x, float y) const;
 
 	// Return true if the point is viewable by the unit, else fals.
-	bool isPointViewable(double x, double y);
+	bool isPointViewable(float x, float y);
 	
 	// Return the angle for the current 
-	double moveDirection() const;	
+	float moveDirection() const;	
 
-	double healthPoints() const;
-	void updateHealthPoint(double deltaLife);
+	float healthPoints() const;
+	void updateHealthPoint(float deltaLife);
 
 	bool isDead() const;
 
@@ -74,33 +72,46 @@ public:
 		return weapon_;
 	}
 
+	Position getPosition() const {
+		return Position(body_->GetPosition().x,body_->GetPosition().y);
+	}
+
+	float radius() const {
+		return 0.4f;
+	}
+
 	void addEventHandler(std::function<void(UnitEvent)> handler);
 
+	b2Body* getBody() const {
+		return body_;
+	}
 private:
 	void sendEventToHandlers(UnitEvent unitEvent) const;
 
-	void turn(double angle);
+	void turn(float angle);
 
 	// Physical States.
-	double angleVelocity_;
-	double angle_;
+	float angleVelocity_;
+	float angle_;
 
 	// Properties
-	double viewDistance_;
-	double viewAngle_;
-	double smallViewDistance_;
+	float viewDistance_;
+	float viewAngle_;
+	float smallViewDistance_;
 
 	// Health
-	double healthPoints_;
+	float healthPoints_;
 	bool isDead_;
 		
 	Weapon weapon_;
 	bool isInfected_;
 
-	double timeLeftToRun_;
+	float timeLeftToRun_;
 
 	std::queue<Bullet> bullets_;
 	std::vector<std::function<void(UnitEvent)>> eventHandlers_;
+
+	b2Body* body_;
 };
 
 } // namespace zombie

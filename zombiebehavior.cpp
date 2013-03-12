@@ -36,11 +36,11 @@ namespace zombie {
 
 			// Has a target?
 			if (target_ != nullptr) {
-				mw::MathVector dir = target_->getPosition() - unit->getPosition();
-				targetAngle_ = std::atan2(dir.y_,dir.x_);
+				Position dir = target_->getPosition() - unit->getPosition();
+				targetAngle_ = std::atan2(dir.y,dir.x);
 				forward_ = true;
 
-				double distSquared = (unit->getPosition() - unit->getPosition()).magnitudeSquared();
+				double distSquared = (unit->getPosition() - unit->getPosition()).LengthSquared();
 				// Target is in range?
 				if (distSquared < unit->getWeapon().range()*unit->getWeapon().range()) {
 					// Attack!
@@ -74,7 +74,7 @@ namespace zombie {
 		for (const UnitPtr& unit : units) {
 			// Not infected?
 			if (!unit->isInfected()) {
-				double tmp = (position - unit->getPosition()).magnitudeSquared();					
+				double tmp = (position - unit->getPosition()).LengthSquared();					
 				// Closer?
 				if (tmp < distant) {
 					target = unit;
