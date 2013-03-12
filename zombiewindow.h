@@ -38,7 +38,7 @@ private:
 			// Scale correctly, keep proportions.
 			glScaled(getWidth(),getWidth(),1);
 		}
-		zombieGame_.update(msDeltaTime/1000.0);
+		zombieGame_.update(msDeltaTime/1000.f);
 
 		glPopMatrix();
     }

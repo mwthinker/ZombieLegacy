@@ -13,7 +13,7 @@ namespace zombie {
 	typedef b2Vec2 Position;
 	typedef b2Vec2 Force;
 	typedef b2Vec2 Vec3;
-
+	
 	// Smart pointers.
 	class AiBehavior;
 	typedef std::shared_ptr<AiBehavior> AiBehaviorPtr;

@@ -2,4 +2,6 @@
 
 namespace zombie {
 
-} // namespace zombie
+	b2World* Object::world_ = nullptr;
+
+} // Namespace zombie

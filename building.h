@@ -51,7 +51,7 @@ public:
 		return corners_;
 	}
 
-	bool isInside(double x, double y) const {
+	bool isInside(float x, float y) const {
 		return isPointInPolygon(x,y);
 	}
 
@@ -82,7 +82,7 @@ protected:
 	}
 	
 private:
-	bool isPointInPolygon(double x, double y) const {
+	bool isPointInPolygon(float x, float y) const {
 		int polySides = corners_.size();
 		int j = polySides-1;
 		bool oddNodes = false;

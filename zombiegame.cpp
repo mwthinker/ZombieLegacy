@@ -36,8 +36,36 @@ namespace zombie {
 		}
 	};
 
+	class ClosestRayCastCallback : public b2RayCastCallback {
+	public:
+		ClosestRayCastCallback() {
+			closestFraction_ = 100.f;
+			closest_ = nullptr;
+		}
+
+		b2Fixture* getClosest() const {
+			return closest_;
+		}
+
+		// Ray-cast callback.
+		float32 ReportFixture(b2Fixture* fixture, const b2Vec2 &point, const b2Vec2 &normal, float32 fraction) override {
+			closest_ = fixture;
+			return fraction;//keep going to find all fixtures in the query area
+		}
+
+		void reset() {
+			closestFraction_ = 100.f;
+			closest_ = nullptr;
+		}
+	private:
+		b2Fixture* closest_;
+		float closestFraction_;
+	};
+
 	ZombieGame::ZombieGame(int width, int height) {
 		world_ = new b2World(b2Vec2(0,0));
+		Object::setWorld(world_);
+
 		taskManager_ = new TaskManager();
 
 		updateSize(width,height);
@@ -55,7 +83,7 @@ namespace zombie {
 		innerSpawnRadius_ = 10;
 		outerSpawnRadius_ = 20;
 
-		timeStep_ = 0.017;  // Fix time step for physics update.
+		timeStep_ = 0.017f;  // Fix time step for physics update.
 		accumulator_ = 0.0;      // Time accumulator.
 
 		initGame();
@@ -70,7 +98,7 @@ namespace zombie {
 		started_ = true;
 	}
 
-	void ZombieGame::updatePhysics(double timeStep) {
+	void ZombieGame::updatePhysics(float timeStep) {
 		// Game is started?
 		if (started_) {
 			// Spawn and clean up units
@@ -110,7 +138,7 @@ namespace zombie {
 				if (!unit->isDead() && unit->pollShot(bullet)) {
 					doShotDamage(unit, bullet);
 				}
-			}		
+			}
 
 			// Update the objects physics interactions.
 			world_->Step((float)timeStep,6,2);
@@ -153,13 +181,13 @@ namespace zombie {
 		while (nbrOfZombies < unitLevel_) {
 			// INSERT ZOMBIE
 			Position p = map_.generateSpawnPosition(humanPlayers_[0].second->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
-			UnitPtr zombie(new Unit(world_,p.x,p.y,0.3,Weapon(25,0.5,1,12),true));
+			UnitPtr zombie(new Unit(p.x,p.y,0.3f,Weapon(25,0.5f,1,12),true));
 			addNewAi(zombie);
 			nbrOfZombies++;
 		}
 	}
 
-	void ZombieGame::update(double deltaTime) {
+	void ZombieGame::update(float deltaTime) {
 		// DeltaTime to big?
 		if (deltaTime > 0.250) {
 			// To avoid spiral of death.
@@ -263,7 +291,7 @@ namespace zombie {
 
 		// Add human controlled by first input device.
 		Position position = map_.generateSpawnPosition();
-		UnitPtr human(new Unit(world_,position.x,position.y,0.3,Weapon(55,0.2,8,12),false));
+		UnitPtr human(new Unit(position.x,position.y,0.3f,Weapon(55,0.2f,8,12),false));
 		viewPosition_ = human->getPosition();
 
 		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r,SDLK_LSHIFT));
@@ -274,13 +302,13 @@ namespace zombie {
 		// Add zombie with standard behavior.
 		for (int i = 30; i < 40; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
-			UnitPtr zombie(new Unit(world_,spawn.x,spawn.y,0.3,Weapon(35,0.5,1,12),true));
+			UnitPtr zombie(new Unit(spawn.x,spawn.y,0.3f,Weapon(35,0.5f,1,12),true));
 			addNewAi(zombie);
 		}
 
 		for (int i = 5; i < 5; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,innerSpawnRadius_);
-			UnitPtr survivor(new Unit(world_,spawn.x,spawn.x,0.f,Weapon(35,0.5,8,12),false));
+			UnitPtr survivor(new Unit(spawn.x,spawn.x,0.f,Weapon(35,0.5,8,12),false));
 			addNewAi(survivor);
 		}
 	}
@@ -305,7 +333,7 @@ namespace zombie {
 		world_->QueryAABB(&queryCallback,area);
 
 		std::vector<UnitPtr> unitsInView;
-		for (int i = 0; i < queryCallback.foundBodies.size(); i++) {
+		for (unsigned int i = 0; i < queryCallback.foundBodies.size(); i++) {
 			Object* ob = static_cast<Object*>(queryCallback.foundBodies[0]->GetUserData());
 
 			if (Unit* unitInArea = dynamic_cast<Unit*>(ob)) {
@@ -322,38 +350,47 @@ namespace zombie {
 
 	void ZombieGame::doShotDamage(UnitPtr shooter, const Bullet& bullet) {
 		b2Vec2 dir(std::cos(bullet.direction_),std::sin(bullet.direction_));
-		b2Vec2 endP = b2Vec2(shooter->getPosition().x,shooter->getPosition().y) + bullet.range_ * dir;
+		b2Vec2 endP = shooter->getPosition() + bullet.range_ * dir;
 		lastBullet_ = bullet;
-		world_->RayCast(this,b2Vec2(shooter->getPosition().x,shooter->getPosition().y),endP);
-	}
 
-	float32 ZombieGame::ReportFixture(b2Fixture* fixture, const b2Vec2 &point, const b2Vec2 &normal, float32 fraction) {			
-		std::cout << "Hit! "<< " \n";
-		Object* ob = static_cast<Object*>(fixture->GetUserData());
+		ClosestRayCastCallback callback;		
 
-		if (Unit* unit = dynamic_cast<Unit*>(ob)) {
-			// Target alive?
-			if (!unit->isDead()) {
-				unit->updateHealthPoint(-lastBullet_.damage_);
-				Position p = unit->getPosition();
-				// Target killed?
-				if(unit->isDead()){					
-					//taskManager_->add(new Death(p.x_,p.y_,time_),2);
-					taskManager_->add(new BloodStain(p.x,p.y,time_));
-					taskManager_->add(new Blood(p.x,p.y,time_));
-				} else {
-					taskManager_->add(new BloodSplash(p.x,p.y,time_));
+		world_->RayCast(&callback,shooter->getPosition(),endP);
+		b2Fixture* fixture = callback.getClosest();
+
+		// Did bullet hit something?
+		if (fixture != nullptr) {
+			Object* ob = static_cast<Object*>(fixture->GetUserData());
+
+			if (Unit* target = dynamic_cast<Unit*>(ob)) {
+				// Target alive?
+				if (!target->isDead()) {
+					target->updateHealthPoint(-lastBullet_.damage_);
+					endP = target->getPosition();
+					// Target killed?
+					if(target->isDead()){					
+						//taskManager_->add(new Death(p.x_,p.y_,time_),2);
+						taskManager_->add(new BloodStain(endP.x,endP.y,time_));
+						taskManager_->add(new Blood(endP.x,endP.y,time_));
+					} else {
+						taskManager_->add(new BloodSplash(endP.x,endP.y,time_));
+					}
 				}
 			}
+		} else {
+			std::cout << endP.x << " " << endP.y << std::endl;
 		}
-		return fraction;
+
+		taskManager_->add(new Shot(shooter->getPosition(),endP,time_));
+		std::cout << endP.x << " " << endP.y << std::endl;
+
 	}
 
 	bool ZombieGame::isVisible(UnitPtr unitToBeSeen, UnitPtr unitThatSees) const {
 		Position dr = unitToBeSeen->getPosition() - unitThatSees->getPosition();
-		double length = dr.Length();
-		double stepLength = 1;
-		double step = 0.0;
+		float length = dr.Length();
+		float stepLength = 1;
+		float step = 0.0;
 		dr.Normalize();
 
 		Position p = unitThatSees->getPosition();

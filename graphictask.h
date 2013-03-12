@@ -65,13 +65,14 @@ namespace zombie {
 
 	class Shot : public GraphicTask {
 	public:
-		Shot(double x, double y, double currentTime);
-		void drawFirst(double time) override;		
+		Shot(Position start, Position end, float startTime);
+		void drawSecond(double time) override;		
 
 		bool isRunning() const override;
 	private:
-		double startTime_;
-		double x_, y_;
+		float startTime_;
+		Position start_;
+		Position end_;
 		bool running_;
 	};
 

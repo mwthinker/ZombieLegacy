@@ -23,7 +23,7 @@ namespace zombie {
 // Forward declaration.
 class TaskManager;
 
-class ZombieGame : public b2RayCastCallback {
+class ZombieGame {
 public:
     ZombieGame(int width = 500, int height = 500);
     ~ZombieGame();
@@ -33,7 +33,7 @@ public:
 
 	// Draws the graphic and (deltaTime) should be the time past 
 	// from the previous call to this funtion.
-	void update(double deltaTime);
+	void update(float deltaTime);
 
 	// Makes the game reacting on the evennt (windowEvent).
 	void eventUpdate(const SDL_Event& windowEvent);
@@ -41,12 +41,10 @@ public:
 	void zoom(double scale);
 
 	void updateSize(int width, int height);
-protected:
-	// Ray-cast callback.
-	float32 ReportFixture(b2Fixture* fixture, const b2Vec2 &point, const b2Vec2 &normal, float32 fraction) override;
 
+protected:
 	// Updates the game time by (msDeltaTime).
-    void updatePhysics(double timeStep);
+    void updatePhysics(float timeStep);
 
 	void reshapeWindowsOpenGL(int width, int height) {		
 	}
@@ -74,7 +72,7 @@ protected:
 	void spawnAndCleanUpUnits();	// Spawns new zombies
 
 	bool started_; // The game time is started.	
-	double time_; // Local game time.
+	float time_; // Local game time.
 
 	typedef std::pair<HumanPlayerPtr,UnitPtr> PairHumanUnit;
 	typedef std::pair<AiPlayerPtr,UnitPtr> PairAiUnit;
@@ -94,14 +92,14 @@ protected:
 
 	int unitLevel_; // Specifies the wanted number of zombies on the map
 	double scale_;
-	double innerSpawnRadius_;
-	double outerSpawnRadius_;
+	float innerSpawnRadius_;
+	float outerSpawnRadius_;
 	Map map_;
 
 	Position viewPosition_;
 
-	double timeStep_;
-	double accumulator_;
+	float timeStep_;
+	float accumulator_;
 
 	b2World* world_;
 	Bullet lastBullet_;

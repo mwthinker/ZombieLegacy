@@ -178,18 +178,21 @@ namespace zombie {
 		}
 	}
 
-	Shot::Shot(double x, double y, double currentTime) {
+	Shot::Shot(Position start, Position end, float currentTime) {
 		startTime_ = currentTime;
-		x_ = x;
-		y_ = y;
+		start_ = start;
+		end_ = end;
 		running_ = true;
 	}
 
-	void Shot::drawFirst(double time) {
+	void Shot::drawSecond(double time) {
 		if (time < startTime_ + 2) {
 			// Draw view sphere
-			glColor3d(0,1,0);
-			drawCircle(x_,y_,0.5,10,true);
+			glColor3d(1,1,1);
+			glBegin(GL_LINES);
+			glVertex2d(start_.x,start_.y);
+			glVertex2d(end_.x,end_.y);
+			glEnd();
 		} else {
 			running_ = false;
 		}

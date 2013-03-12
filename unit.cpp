@@ -13,14 +13,14 @@
 
 namespace zombie {
 
-	Unit::Unit(b2World* world, double x, double y, double angle, Weapon weapon, bool infected) : weapon_(weapon) {		
+	Unit::Unit(float x, float y, float angle, Weapon weapon, bool infected) : weapon_(weapon) {		
 		//PhysicalUnit(x,y,0.4, 50.0,0.0,10.0)
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_dynamicBody;
 		bodyDef.position.Set(x, y);
 		bodyDef.angle = angle;
 		bodyDef.fixedRotation = true;
-		body_ = world->CreateBody(&bodyDef);
+		body_ = getWorld()->CreateBody(&bodyDef);
 
 		b2CircleShape circle;
 		circle.m_p.Set(0, 0);
@@ -34,31 +34,32 @@ namespace zombie {
 		fixture->SetUserData(this);
 		//fixture->SetUserData(this);
 		
-		angleVelocity_ = 0.0;
+		angleVelocity_ = 0.0f;
 
 		isInfected_ = infected;
 
 		// Properties
-		viewDistance_ = 10.0;
-		viewAngle_ = 120.0/180.0*mw::PI;
+		viewDistance_ = 10.f;
+		viewAngle_ = 120/180.0*b2_pi;
 		smallViewDistance_ = 2;
 
 		// Unit's direction Angle.
 		angle_ = angle;
 
 		// Health
-		healthPoints_ = 100.0;
+		healthPoints_ = 100.0f;
 		isDead_ = false;
 		
-		timeLeftToRun_ = 5;
+		timeLeftToRun_ = 5.f;
 	}
 
 	Unit::~Unit() {
+		getWorld()->DestroyBody(body_);
 	}
 
-	void Unit::updatePhysics(double time, double timeStep, Input input) {
+	void Unit::updatePhysics(float time, float timeStep, Input input) {
 		if (!isDead()) {
-			double angle = moveDirection();	
+			float angle = moveDirection();	
 
 			Force move = Vec3(std::cos(angle),std::sin(angle));
 
@@ -142,29 +143,29 @@ namespace zombie {
 		return state;
 	}
 
-	double Unit::viewDistance() {
+	float Unit::viewDistance() {
 		return viewDistance_;
 	}
 
-	double Unit::smallViewDistance() {
+	float Unit::smallViewDistance() {
 		return smallViewDistance_;
 	}
 
-	double Unit::viewAngle() const {
+	float Unit::viewAngle() const {
 		return viewAngle_;
 	}
 
-	bool Unit::isInside(double x, double y) const {
+	bool Unit::isInside(float x, float y) const {
 		Position p = getPosition();
 		return (x - p.x)*(x - p.x) + (y - p.y)*(y - p.y) < radius()*radius();
 	}
 
-	bool Unit::isInsideSmalViewDistance(double x, double y) const {
+	bool Unit::isInsideSmalViewDistance(float x, float y) const {
 		Position p = Position(x,y) - getPosition();
 		return p.LengthSquared() < smallViewDistance_*smallViewDistance_;
 	}
 
-	bool Unit::isPointViewable(double x, double y) {
+	bool Unit::isPointViewable(float x, float y) {
 		Position p = Position(x,y) - getPosition();
 		double angle = std::atan2(p.y, p.x);
 		return calculateDifferenceBetweenAngles(angle,angle_ + viewAngle() * 0.5) < 0 
@@ -172,7 +173,7 @@ namespace zombie {
 			&& p.LengthSquared() < viewDistance() * viewDistance();
 	}
 
-	double Unit::moveDirection() const {
+	float Unit::moveDirection() const {
 		return angle_;
 	}
 
@@ -191,21 +192,21 @@ namespace zombie {
 		eventHandlers_.push_back(handler);
 	}
 
-	void Unit::turn(double angle) {
+	void Unit::turn(float angle) {
 		angle_ += angle;
 
-		if (angle_ > mw::PI) {
-			angle_ -= 2*mw::PI;
-		} else if (angle_ < -mw::PI) {
-			angle_ += 2*mw::PI;
+		if (angle_ > b2_pi) {
+			angle_ -= 2*b2_pi;
+		} else if (angle_ < -b2_pi) {
+			angle_ += 2*b2_pi;
 		}
 	}
 
-	double Unit::healthPoints() const {
+	float Unit::healthPoints() const {
 		return healthPoints_;
 	}
 
-	void Unit::updateHealthPoint(double deltaLife) {
+	void Unit::updateHealthPoint(float deltaLife) {
 		if (!isDead_) {
 			healthPoints_ += deltaLife;
 		}
