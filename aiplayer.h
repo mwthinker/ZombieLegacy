@@ -17,8 +17,8 @@ namespace zombie {
 
 		Input currentInput() override;
 
-		void calculateInput(const UnitPtr& unit, double time);
-		void updateUnitsInView(const std::vector<UnitPtr>& units);
+		void calculateInput(Unit* unit, double time);
+		void updateUnitsInView(const std::vector<Unit*>& units);
 
 		Input input_;
 		AiBehaviorPtr behavior_;

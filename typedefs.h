@@ -22,7 +22,8 @@ namespace zombie {
 	typedef std::shared_ptr<Building> BuildingPtr;
 
 	class Unit;
-	typedef std::shared_ptr<Unit> UnitPtr;
+	typedef Unit* UnitPtr;
+	//typedef std::shared_ptr<Unit> UnitPtr;
 
 	class HumanPlayer;
 	typedef std::shared_ptr<HumanPlayer> HumanPlayerPtr;

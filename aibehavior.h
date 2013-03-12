@@ -13,7 +13,7 @@ namespace zombie {
 		AiBehavior();
 		virtual ~AiBehavior();
 
-		virtual Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) = 0;	
+		virtual Input calculateInput(UnitPtr unit, const std::vector<Unit*>& units, double time) = 0;	
 	private:
 
 	};
@@ -22,7 +22,7 @@ namespace zombie {
 	public:
 		SimpleZombieBehavior();
 
-		Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) override;	
+		Input calculateInput(UnitPtr unit, const std::vector<Unit*>& units, double time) override;	
 	private: 
 		int timeBeforeInputChange_;
 		Input current_;
@@ -34,7 +34,7 @@ namespace zombie {
 	public:
 		BoringZombieBehavior();
 
-		Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) override;
+		Input calculateInput(UnitPtr unit, const std::vector<Unit*>& units, double time) override;
 
 	private: 
 		int timeBeforeInputChange_;
@@ -47,7 +47,7 @@ namespace zombie {
 	public:
 		AgressiveZombieBehavior();
 
-		Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) override;	
+		Input calculateInput(UnitPtr unit, const std::vector<Unit*>& units, double time) override;	
 
 		bool setTarget(const std::vector<UnitPtr>& units);
 

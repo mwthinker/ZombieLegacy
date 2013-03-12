@@ -50,10 +50,10 @@ protected:
 	}
 
 	// Add a human player (unitPtr) to the game.
-	void addHuman(HumanPlayerPtr human, UnitPtr unitPtr);
+	void addHuman(HumanPlayerPtr human, Unit* unit);
 
 	// Add a new ai (unitPtr) to the game.
-	void addNewAi(UnitPtr unitPtr);
+	void addNewAi(Unit* unit);
 
 	//void updateWindowSize(int width, int height);
 
@@ -64,19 +64,19 @@ protected:
 	void initGame();
 
 	// Returns a vector of all units visible by the unit (unit).
-	std::vector<UnitPtr> calculateUnitsInView(const UnitPtr& unit);	
+	std::vector<Unit*> calculateUnitsInView(Unit* unit);	
 
-	void doShotDamage(UnitPtr shooter, const Bullet& properties);
-	bool isVisible(UnitPtr unitToBeSeen, UnitPtr unitThatSees) const;
+	void doShotDamage(Unit* shooter, const Bullet& properties);
+	bool isVisible(Unit* unitToBeSeen, Unit* unitThatSees) const;
 
 	void spawnAndCleanUpUnits();	// Spawns new zombies
 
 	bool started_; // The game time is started.	
 	float time_; // Local game time.
 
-	typedef std::pair<HumanPlayerPtr,UnitPtr> PairHumanUnit;
-	typedef std::pair<AiPlayerPtr,UnitPtr> PairAiUnit;
-	typedef std::pair<PlayerPtr,UnitPtr> PairPlayerUnit;
+	typedef std::pair<HumanPlayerPtr,Unit*> PairHumanUnit;
+	typedef std::pair<AiPlayerPtr,Unit*> PairAiUnit;
+	typedef std::pair<PlayerPtr,Unit*> PairPlayerUnit;
 	
 	std::vector<PairHumanUnit> humanPlayers_;
 	std::vector<PairAiUnit> aiPlayers_;

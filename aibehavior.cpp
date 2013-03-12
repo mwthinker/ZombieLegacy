@@ -20,7 +20,7 @@ namespace zombie {
 		time_ = 0;
 	}
 
-	Input SimpleZombieBehavior::calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) {
+	Input SimpleZombieBehavior::calculateInput(UnitPtr unit, const std::vector<Unit*>& units, double time) {
 		Input input;
 		int t = static_cast<int>(time);
 		input.forward_ = true;
@@ -38,7 +38,7 @@ namespace zombie {
 	AgressiveZombieBehavior::AgressiveZombieBehavior() {
 	}
 
-	Input AgressiveZombieBehavior::calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) {
+	Input AgressiveZombieBehavior::calculateInput(UnitPtr unit, const std::vector<Unit*>& units, double time) {
 		Input input;
 		//input.forward_ = true;
 		// is there a  valid target? OR is there a new target available?
@@ -145,7 +145,7 @@ namespace zombie {
 		time_ = 0;
 	}
 
-	Input BoringZombieBehavior::calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) {
+	Input BoringZombieBehavior::calculateInput(UnitPtr unit, const std::vector<Unit*>& units, double time) {
 		Input input;
 		double r = rand() % 100 / 100.0;
 		//std::cout<<"  "<<r<<"  ";

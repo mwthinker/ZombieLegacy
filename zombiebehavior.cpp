@@ -13,12 +13,13 @@ namespace zombie {
 		timeToUpdateAngleDirection_ = random() * 1;
 		targetAngle_ = random() * mw::PI * 2;
 		forward_ = true;
+		target_ = nullptr;
 	}
 
 	ZombieBehavior::~ZombieBehavior() {
 	}
 
-	Input ZombieBehavior::calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) {
+	Input ZombieBehavior::calculateInput(UnitPtr unit, const std::vector<Unit*>& units, double time) {
 		Input input;
 
 		// Target is valid and dead?
@@ -68,10 +69,10 @@ namespace zombie {
 		return input;
 	}
 
-	UnitPtr ZombieBehavior::findUninfectedTarget(Position position, const std::vector<UnitPtr>& units) const {			
-		UnitPtr target(nullptr);
+	Unit* ZombieBehavior::findUninfectedTarget(Position position, const std::vector<Unit*>& units) const {			
+		Unit* target(nullptr);
 		double distant = 100;
-		for (const UnitPtr& unit : units) {
+		for (Unit* unit : units) {
 			// Not infected?
 			if (!unit->isInfected()) {
 				double tmp = (position - unit->getPosition()).LengthSquared();					

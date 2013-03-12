@@ -14,13 +14,13 @@ namespace zombie {
 		ZombieBehavior();
 		~ZombieBehavior();
 
-		Input calculateInput(const UnitPtr& unit, const std::vector<UnitPtr>& units, double time) override;
+		Input calculateInput(Unit* unit, const std::vector<Unit*>& units, double time) override;
 
 	private:
-		UnitPtr findUninfectedTarget(Position position, const std::vector<UnitPtr>& units) const;
+		Unit* findUninfectedTarget(Position position, const std::vector<Unit*>& units) const;
 
 		double findNewTargetTime_;
-		UnitPtr target_;
+		Unit* target_;
 
 		double timeToUpdateAngleDirection_;
 		double targetAngle_;
