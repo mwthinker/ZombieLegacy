@@ -2,6 +2,8 @@
 #include "building.h"
 #include "linefeature.h"
 #include "map.h"
+#include "auxiliary.h"
+
 #include <algorithm> 
 #include <vector>
 #include <cstdlib>
@@ -170,7 +172,6 @@ namespace zombie {
 		TileManager(const std::vector<Tile>& tiles, int nbrOfTiles) {
 			nbrOfTiles_ = nbrOfTiles;
 			unsortedTiles_ = tiles;
-			srand((unsigned int)std::time(NULL));
 		}
 
 		bool sortTiles() {
@@ -223,7 +224,7 @@ namespace zombie {
 		}
 
 		Tile getRandomTile() {
-			int index = rand() % unsortedTiles_.size();
+			int index = random() * unsortedTiles_.size();
 			return unsortedTiles_[index];
 		}
 

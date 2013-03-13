@@ -74,7 +74,7 @@ namespace zombie {
 			// Attack - implement later
 		} else {
 			//Input input;
-			double r = rand() % 100 / 100.0;
+			double r = random();
 			//std::cout<<"  "<<r<<"  ";
 
 			input.forward_ = true;
@@ -104,7 +104,6 @@ namespace zombie {
 	}
 
 	bool AgressiveZombieBehavior::setTarget(const std::vector<UnitPtr>& units) {
-
 		double minimumDist = 99999999;
 		for (UnitPtr unit : units) {
 			// if unit is in range
@@ -112,8 +111,6 @@ namespace zombie {
 			std::cout<<"UNITS VECTOR APEAR EMPTY!";
 			if(!unit->isInfected()) { 
 				target_ = unit;
-
-
 				return true;
 			}
 			return false;
@@ -130,7 +127,7 @@ namespace zombie {
 	}
 
 	bool AgressiveZombieBehavior::randomWalk() {
-		int turn = rand() % 5 + 1;
+		int turn = (int) (random() * 5 + 1);
 		if (turn == 2) {
 			return true;
 		} else {
@@ -147,7 +144,7 @@ namespace zombie {
 
 	Input BoringZombieBehavior::calculateInput(UnitPtr unit, const std::vector<Unit*>& units, double time) {
 		Input input;
-		double r = rand() % 100 / 100.0;
+		double r = random();
 		//std::cout<<"  "<<r<<"  ";
 
 		input.forward_ = true;
