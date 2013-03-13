@@ -1,7 +1,5 @@
 #include <memory>
-
 #include <Box2D\Box2D.h>
-#include <mw/mathvector.h>
 
 #ifndef TYPEDEFS_H
 #define TYPEDEFS_H

@@ -329,12 +329,16 @@ namespace zombie {
 		glColor3d(0.6,0.6,0.6);
 		grassTexture->bind();	
 
-        glEnable(GL_BLEND);
+        //glEnable(GL_BLEND);
         glEnable(GL_TEXTURE_2D);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		//glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+		//std::cout << "OpenGl error: " << glGetError() << std::endl;
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		//std::cout << "OpenGl error: " << glGetError() << std::endl;
+		//glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		//std::cout << "OpenGl error: " << glGetError() << std::endl;
 
 		double maxX = map_.maxX();
 		double maxY = map_.maxY();
@@ -357,7 +361,7 @@ namespace zombie {
 		glEnd();
 
 		glDisable(GL_TEXTURE_2D);
-		glDisable(GL_BLEND);
+		//glDisable(GL_BLEND);
 	}
 
 	void MapDraw::drawFirst(double time) {

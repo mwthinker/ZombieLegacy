@@ -5,7 +5,6 @@
 #include "weapon.h"
 #include "auxiliary.h"
 
-#include <mw/mathvector.h>
 #include <Box2D/Box2D.h>
 
 #include <cmath>
