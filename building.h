@@ -13,7 +13,6 @@ class Building : public Object {
 public:
 	Building(float x, float y, float width, float height) {
 		Position position = Position(x,y);
-
 		corners_.push_back(position);
 		corners_.push_back(position + Position(width,0));
 		corners_.push_back(position + Position(width,height));
@@ -28,11 +27,11 @@ public:
 		bodyDef.fixedRotation = true;
 		bodyDef.position.Set(position_.x,position_.y);
 		
-		b2Body* groundBody = world->CreateBody(&bodyDef);
+		body_ = world->CreateBody(&bodyDef);		
 		
 		unsigned int size = corners.size();
 		// Is last and first point the same point?
-		if (size > 0 && (corners[size-1]-corners[0]).LengthSquared() > 0.00001f) {
+		if (size > 0 && (corners[size-1]-corners[0]).LengthSquared() < 0.001f) {
 			// Ignore last point.
 			--size;
 		}
@@ -42,18 +41,24 @@ public:
 		unsigned int count = 0;
 		// Save global vertex points to local shape coordinates.
 		for (; count < size && count < b2_maxPolygonVertices; ++count) {
-			vertices[count] = groundBody->GetLocalPoint(corners[count]);
+			vertices[count] = body_->GetLocalPoint(corners[count]);
 		}
 		
 		b2PolygonShape shape;
 		shape.Set(vertices, count);
 
-		b2Fixture* fixture = groundBody->CreateFixture(&shape,0.f);
+		b2Fixture* fixture = body_->CreateFixture(&shape,0.f);
 		fixture->SetUserData(this);
 	}
 
 	Building(const std::vector<Position>& corners) : corners_(corners) {
 		init();
+	}
+
+	~Building() {
+		if (body_ != nullptr) {
+			getWorld()->DestroyBody(body_);
+		}
 	}
 
 	const std::vector<Position>& getCorners() const {
@@ -74,6 +79,8 @@ public:
 
 protected:
 	void init() {
+		body_ = nullptr;
+
 		float xLeft = std::numeric_limits<float>::max();
 		float xRight = -xLeft;
 		float yUp = -xLeft;
