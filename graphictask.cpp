@@ -40,7 +40,7 @@ namespace zombie {
 		timeNewFrame_ = 0.0;
 		index_ = 0;
 		lastTime_ = 0.0;
-		color_ = Color(random(),random(),random());
+		color_ = Color();
 
 		sprites_.push_back(human1);
 		sprites_.push_back(human2);
@@ -121,7 +121,7 @@ namespace zombie {
 		});
 
 		timeNewFrame_ = 0.0;
-		color_ = Color(random(),random(),random());
+		color_ = Color();
 
 		sprites_.push_back(zombie1);
 		sprites_.push_back(zombie2);
