@@ -26,49 +26,53 @@
 
 namespace zombie {
 
-	class InViewQueryCallback : public b2QueryCallback {
-	public:
-		InViewQueryCallback() {
+	namespace {
 
-		}
+		class InViewQueryCallback : public b2QueryCallback {
+		public:
+			InViewQueryCallback() {
 
-		std::vector<b2Fixture*> foundFixtures;
+			}
 
-		bool ReportFixture(b2Fixture* fixture) {
-			foundFixtures.push_back(fixture);
-			return true;//keep going to find all fixtures in the query area
-		}
+			std::vector<b2Fixture*> foundFixtures;
 
-		void reset() {
-			foundFixtures.clear();
-		}
-	};
+			bool ReportFixture(b2Fixture* fixture) {
+				foundFixtures.push_back(fixture);
+				return true;//keep going to find all fixtures in the query area
+			}
 
-	class ClosestRayCastCallback : public b2RayCastCallback {
-	public:
-		ClosestRayCastCallback() {
-			closestFraction_ = 100.f;
-			closest_ = nullptr;
-		}
+			void reset() {
+				foundFixtures.clear();
+			}
+		};
 
-		b2Fixture* getClosest() const {
-			return closest_;
-		}
+		class ClosestRayCastCallback : public b2RayCastCallback {
+		public:
+			ClosestRayCastCallback() {
+				closestFraction_ = 100.f;
+				closest_ = nullptr;
+			}
 
-		// Ray-cast callback.
-		float32 ReportFixture(b2Fixture* fixture, const b2Vec2 &point, const b2Vec2 &normal, float32 fraction) override {
-			closest_ = fixture;
-			return fraction;//keep going to find all fixtures in the query area
-		}
+			b2Fixture* getClosest() const {
+				return closest_;
+			}
 
-		void reset() {
-			closestFraction_ = 100.f;
-			closest_ = nullptr;
-		}
-	private:
-		b2Fixture* closest_;
-		float closestFraction_;
-	};
+			// Ray-cast callback.
+			float32 ReportFixture(b2Fixture* fixture, const b2Vec2 &point, const b2Vec2 &normal, float32 fraction) override {
+				closest_ = fixture;
+				return fraction;//keep going to find all fixtures in the query area
+			}
+
+			void reset() {
+				closestFraction_ = 100.f;
+				closest_ = nullptr;
+			}
+		private:
+			b2Fixture* closest_;
+			float closestFraction_;
+		};
+
+	}
 
 	ZombieGame::ZombieGame(int width, int height) {
 		world_ = new b2World(b2Vec2(0,0));
