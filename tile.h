@@ -220,11 +220,11 @@ namespace zombie {
 			//Position center = Position(sortedTiles_[0].getTileSide()*nbrOfTiles_ / 2.0,sortedTiles_[0].getTileSide()*nbrOfTiles_ / 2.0);
 			//double width = sortedTiles_[0].getTileSide()*nbrOfTiles_;
 			//double height = sortedTiles_[0].getTileSide()*nbrOfTiles_;
-			return Map(100*nbrOfTiles_,allBuildings,allRoads);
+			return Map(100.f*(float)nbrOfTiles_,allBuildings,allRoads);
 		}
 
 		Tile getRandomTile() {
-			int index = random() * unsortedTiles_.size();
+			int index = (int) (random() * unsortedTiles_.size());
 			return unsortedTiles_[index];
 		}
 
@@ -379,11 +379,11 @@ namespace zombie {
 		// b = (x2 – x1)
 		// c = (x1*y2 – x2*y1)
 
-		double a = l.getStart().y - l.getEnd().y;
-		double b = l.getEnd().x - l.getStart().x;
-		double c = l.getStart().x * l.getEnd().y - l.getEnd().x * l.getStart().y;
+		float a = l.getStart().y - l.getEnd().y;
+		float b = l.getEnd().x - l.getStart().x;
+		float c = l.getStart().x * l.getEnd().y - l.getEnd().x * l.getStart().y;
 
-		return abs(a*p.x+b*p.y+c) / sqrt(a*a+b*b);		 
+		return abs(a*p.x+b*p.y+c) / sqrtf(a*a+b*b);
 	}
 
 	float distPointToPoint(Position p1, Position p2) {
