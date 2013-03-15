@@ -76,7 +76,7 @@ namespace zombie {
 		color_.glColor3d();
 		glPushMatrix();
 		glTranslated(p.x,p.y,0);
-		glScaled(unit_->radius(),unit_->radius(),1);
+		glScaled(unit_->radius()*0.9,unit_->radius()*0.9,1);
 		glRotated(unit_->getState().angle_*180/mw::PI,0,0,1);
 		mw::TexturePtr texture = sprites_[index_].getTexture();
 		glScaled(texture->getTexWidth()/128.0,texture->getTexHeight()/128.0,1);
@@ -159,7 +159,7 @@ namespace zombie {
 		color_.glColor3d();
 		glPushMatrix();
 		glTranslated(unit_->getPosition().x,unit_->getPosition().y,0);
-		glScaled(unit_->radius(),unit_->radius(),1);
+		glScaled(unit_->radius()*0.9,unit_->radius()*0.9,1);
 		glRotated(unit_->getState().angle_*180/mw::PI,0,0,1);
 		glScaled(1069.0/128.0,1069.0/128.0,1);
 		sprites_[index_].draw();
