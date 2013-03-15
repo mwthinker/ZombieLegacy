@@ -77,7 +77,9 @@ public:
 	}
 
 	float radius() const {
-		return 0.4f;
+		b2Fixture* f = body_->GetFixtureList();             
+        b2CircleShape* circle = (b2CircleShape*) f->GetShape();
+		return circle->m_radius;        
 	}
 
 	void addEventHandler(std::function<void(UnitEvent)> handler);
