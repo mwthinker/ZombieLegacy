@@ -130,7 +130,7 @@ namespace zombie {
 		angle_ = state.angle_;
 		//setPosition(state.position_);
 		//setVelocity(state.velocity_);
-		angleVelocity_ = state.angleVelocity_;
+		angleVelocity_ = state.anglularVelocity_;
 	}
 
 	State Unit::getState() const {
@@ -138,7 +138,7 @@ namespace zombie {
 		state.angle_ = angle_;
 		state.position_ = Position(body_->GetPosition().x,body_->GetPosition().y);
 		state.velocity_ = Position(body_->GetLinearVelocity().x,body_->GetLinearVelocity().y);
-		state.angleVelocity_ = angleVelocity_;
+		state.anglularVelocity_ = angleVelocity_;
 		return state;
 	}
 

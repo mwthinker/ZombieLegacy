@@ -10,7 +10,7 @@ public:
 	Position position_;
 	Velocity velocity_;
 	float angle_;
-	float angleVelocity_;
+	float anglularVelocity_;
 };
 
 } // namespace zombie.

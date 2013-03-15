@@ -14,6 +14,7 @@
 #include "aiplayer.h"
 #include "survivaltimer.h"
 #include "graphictask.h"
+#include "car.h"
 
 #include <Box2D/Box2D.h>
 #include <SDL.h>
