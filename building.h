@@ -77,6 +77,10 @@ public:
 		return position_;
 	}
 
+	b2Body* getBody() const override {
+		return body_;
+	}
+
 protected:
 	void init() {
 		body_ = nullptr;

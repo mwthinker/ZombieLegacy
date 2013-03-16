@@ -25,6 +25,7 @@ namespace zombie {
 	class Car;
 	class Unit;
 	class Weapon;
+	class MovingObject;
 
 	class ZombieGame {
 	public:
@@ -58,12 +59,15 @@ namespace zombie {
 		// Add a new ai (unitPtr) to the game.
 		void addNewAi(Unit* unit);
 
+		void addNewCar(Car* car);
+
 		// Inits the game.
 		void initGame();
 
 		// Returns a vector of all units visible by the unit (unit).
 		std::vector<Unit*> calculateUnitsInView(Unit* unit);	
 
+		void doAction(Unit* unit);
 		void doShotDamage(Unit* shooter, const Bullet& properties);
 		bool isVisible(Unit* unitToBeSeen, Unit* unitThatSees) const;
 
@@ -72,9 +76,9 @@ namespace zombie {
 		bool started_; // The game time is started.	
 		float time_; // Local game time.
 
-		typedef std::pair<HumanPlayerPtr,Unit*> PairHumanUnit;
+		typedef std::pair<HumanPlayerPtr,MovingObject*> PairHumanUnit;
 		typedef std::pair<AiPlayerPtr,Unit*> PairAiUnit;
-		typedef std::tuple<PlayerPtr,Unit*, Car*> PairPlayerUnit;
+		typedef std::tuple<PlayerPtr,MovingObject*> PairPlayerUnit;
 
 		std::vector<PairHumanUnit> humanPlayers_;
 		std::vector<PairAiUnit> aiPlayers_;

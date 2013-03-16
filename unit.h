@@ -56,7 +56,7 @@ namespace zombie {
 
 		bool isDead() const;
 
-		void setIsDead() {
+		void kill() {
 			isDead_ = true;
 		}
 
@@ -78,10 +78,11 @@ namespace zombie {
 			return circle->m_radius;
 		}
 
+		boost::signals::connection addActionHandler(std::function<void(Unit*)> handler);
 		boost::signals::connection addEventHandler(std::function<void(UnitEvent)> handler);
 		boost::signals::connection addShootHandler(std::function<void(Unit*, const Bullet& bullet)> handler);
 
-		b2Body* getBody() const {
+		b2Body* getBody() const override {
 			return body_;
 		}
 
@@ -106,6 +107,7 @@ namespace zombie {
 
 		float timeLeftToRun_;
 
+		boost::signal<void(Unit*)> actionSignal_;
 		boost::signal<void(Unit*, Bullet)> shootSignal_;
 		boost::signal<void(UnitEvent)> eventSignal_;
 

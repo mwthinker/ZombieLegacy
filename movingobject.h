@@ -16,6 +16,8 @@ namespace zombie {
 		}
 
 		virtual void updatePhysics(float time, float timeStep, Input input) = 0;
+
+		virtual void kill() = 0;
 	};
 
 } // namespace zombie

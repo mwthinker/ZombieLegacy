@@ -90,6 +90,10 @@ namespace zombie {
 				//addForce(-getVelocity()*5);
 				eventSignal_(UnitEvent::STANDSTILL);
 			}
+			
+			// Add friction.
+			body_->ApplyForceToCenter(-body_->GetLinearVelocity());
+
 
 			//std::cout << getState().position_ << std::endl;
 
@@ -116,6 +120,10 @@ namespace zombie {
 			if (input.reload_ && weapon_.reload()) {
 				input.reload_ = true;
 				eventSignal_(UnitEvent::RELOADING);
+			}
+
+			if (input.action_) {
+				actionSignal_(this);
 			}
 		}
 	}
@@ -168,6 +176,10 @@ namespace zombie {
 
 	float Unit::moveDirection() const {
 		return angle_;
+	}
+
+	boost::signals::connection Unit::addActionHandler(std::function<void(Unit*)> handler) {
+		return actionSignal_.connect(handler);
 	}
 
 	boost::signals::connection Unit::addEventHandler(std::function<void(UnitEvent)> handler) {

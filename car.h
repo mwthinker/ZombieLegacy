@@ -4,6 +4,7 @@
 #include "movingobject.h"
 #include "input.h"
 #include "state.h"
+#include "unit.h"
 
 #include <Box2D/Box2D.h>
 #include <mw/mathvector.h>
@@ -42,37 +43,23 @@ namespace zombie {
 			steeringAngle_ = 0.0f;
 			wheelDelta_ = 0.4f;
 
-			nbrOfUnits_ = 0;
+			driver_ = nullptr;
 		}
 
 		~Car() {
 			getWorld()->DestroyBody(body_);
 		}
-
-		bool addUnitInside() {
-			if (nbrOfUnits_ > 1) {
-				return false;
-			}
-			++nbrOfUnits_;
-			return true;
+		
+		Unit* getDriver() const{
+			return driver_;
 		}
 
-		bool removeUnitInside() {
-			if (nbrOfUnits_ < 0) {
-				return false;
-			}
-			--nbrOfUnits_;
-			return true;
-		}
-
-		int getNbrOfUnitsInside() const {
-			return nbrOfUnits_;
+		void setDriver(Unit* unit) {
+			driver_ = driver_;
 		}
 
 		void updatePhysics(float time, float timeStep, Input input) override {
 			b2Vec2 force = getDirection();
-			//std::cout << "Angle: " << body_->GetAngle() << std::endl;
-			//std::cout << "MassC: " << body_->GetWorldCenter().x << " " << body_->GetWorldCenter().y << std::endl;
 			
 			// Accelate or decelerate
 			float throttle = 0.0f;
@@ -90,15 +77,7 @@ namespace zombie {
 				steering = 1.0f;
 			} else if (!input.turnLeft_ && input.turnRight_) {
 				steering = -1.0f;
-			}
-
-			/*
-			b2RayCastOutput* rOut;
-			b2RayCastInput rIn;			
-			rIn.maxFraction = 5;
-			rIn.p1 = getBackWheelPosition();
-			rIn.p2 = getFrontWheelPosition();
-			*/
+			}		
 
 			if (input.shoot_) {
 				if (callbackShoot_ != 0) {
@@ -167,7 +146,10 @@ namespace zombie {
 			return length_;
 		}
 
-		b2Body* getBody() const {
+		void kill() {
+		}
+
+		b2Body* getBody() const override {
 			return body_;
 		}
 
@@ -176,13 +158,11 @@ namespace zombie {
 		}
 	private:
 		std::function<void(Car*)> callbackShoot_;
-		int nbrOfUnits_;
 
 		b2Body* body_;
 		float steeringAngle_;
 
-		Input currentInput_;
-
+		Unit* driver_;
 		float length_, width_;
 		State state_;
 		float currentTime_;

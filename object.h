@@ -16,8 +16,7 @@ namespace zombie {
 		virtual ~Object() {
 		}
 
-		// Returns true if the position (x,y) is inside the object.
-		//virtual bool isInside(double x, double y) const = 0;
+		virtual b2Body* getBody() const = 0;
 
 		static b2World* getWorld() {
 			return world_;
