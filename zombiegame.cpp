@@ -24,6 +24,7 @@
 #include <string>
 #include <fstream>
 #include <gl/GLU.h>
+#include <tuple>
 
 namespace zombie {
 
@@ -141,8 +142,10 @@ namespace zombie {
 
 			// Update all units.
 			for (PairPlayerUnit& pair : players_) {
-				Unit* unit = pair.second;
-				unit->updatePhysics(time_, timeStep,pair.first->currentInput());
+				Unit* unit = std::get<1>(pair);
+				Car* car = std::get<2>(pair);
+				Input input = std::get<0>(pair)->currentInput();
+				unit->updatePhysics(time_, timeStep,input);
 				b2Body* body = unit->getBody();
 				body->ApplyForceToCenter(-body->GetLinearVelocity());
 
@@ -167,11 +170,11 @@ namespace zombie {
 		// delete zombies outside of perimiter ***************
 		Unit* temp = nullptr;
 		for (auto it = players_.begin(); it != players_.end(); it++) {
-			Position unitPos = it->second->getPosition();
+			Position unitPos = std::get<1>(*it)->getPosition();
 			if ((unitPos-center).LengthSquared() > outerSpawnRadius_*outerSpawnRadius_) {
 				// REMOVE UNIT
-				it->second->setIsDead();
-				temp = it->second;
+				std::get<1>(*it)->setIsDead();
+				temp = std::get<1>(*it);
 				players_.erase(it);
 				break;
 			}
@@ -248,7 +251,7 @@ namespace zombie {
 		taskManager_->add(new HumanAnimation(unit));
 		taskManager_->add(new HumanStatus(unit,HumanStatus::ONE));
 		humanPlayers_.push_back(PairHumanUnit(human,unit));
-		players_.push_back(PairPlayerUnit(human,unit));
+		players_.push_back(PairPlayerUnit(human,unit,nullptr));
 	}
 
 	void ZombieGame::addNewAi(Unit* unit) {
@@ -259,7 +262,7 @@ namespace zombie {
 		}
 		AiPlayerPtr aiPlayer(new AiPlayer());
 		aiPlayers_.push_back(PairAiUnit(aiPlayer,unit));
-		players_.push_back(PairPlayerUnit(aiPlayer,unit));
+		players_.push_back(PairPlayerUnit(aiPlayer,unit,nullptr));
 	}
 
 	void ZombieGame::normalizeBuildings() {

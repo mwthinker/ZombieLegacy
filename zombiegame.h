@@ -22,6 +22,7 @@ namespace zombie {
 
 // Forward declaration.
 class TaskManager;
+class Car;
 
 class ZombieGame {
 public:
@@ -76,7 +77,7 @@ protected:
 
 	typedef std::pair<HumanPlayerPtr,Unit*> PairHumanUnit;
 	typedef std::pair<AiPlayerPtr,Unit*> PairAiUnit;
-	typedef std::pair<PlayerPtr,Unit*> PairPlayerUnit;
+	typedef std::tuple<PlayerPtr,Unit*, Car*> PairPlayerUnit;
 	
 	std::vector<PairHumanUnit> humanPlayers_;
 	std::vector<PairAiUnit> aiPlayers_;

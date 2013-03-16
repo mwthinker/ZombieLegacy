@@ -13,7 +13,7 @@
 
 namespace zombie {
 
-	enum CarEvent {CAREVENT_EXPLODE, CAREVENT_ACCELERATE, CAREVENT_BRAKE};
+	enum CarEvent {CAREVENT_EXPLODE, CAREVENT_ACCELERATE, CAREVENT_BRAKE};	
 
 	class Car : public Object {
 	public:
@@ -40,11 +40,33 @@ namespace zombie {
 
 			currentTime_ = 0.0f;
 			steeringAngle_ = 0.0f;
-			wheelDelta_ = 0.4f;			
+			wheelDelta_ = 0.4f;
+
+			nbrOfUnits_ = 0;
 		}
 
 		~Car() {
 			getWorld()->DestroyBody(body_);
+		}
+
+		bool addUnitInside() {
+			if (nbrOfUnits_ > 1) {
+				return false;
+			}
+			++nbrOfUnits_;
+			return true;
+		}
+
+		bool removeUnitInside() {
+			if (nbrOfUnits_ < 0) {
+				return false;
+			}
+			--nbrOfUnits_;
+			return true;
+		}
+
+		int getNbrOfUnitsInside() const {
+			return nbrOfUnits_;
 		}
 
 		void updatePhysics(float time, float timeStep, Input input) {
@@ -85,6 +107,8 @@ namespace zombie {
 			}
 
 			steeringAngle_ = 0.3f*steering;
+
+			applyFriction(0.001f,0.001f,100.0f,100.0f);
 		}
 
 		void applyFriction(float frictionForwardFrontWheel, float frictionForwardBackWheel,
@@ -152,6 +176,7 @@ namespace zombie {
 		}
 	private:
 		std::function<void(Car*)> callbackShoot_;
+		int nbrOfUnits_;
 
 		b2Body* body_;
 		float steeringAngle_;
