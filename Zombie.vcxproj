@@ -85,6 +85,7 @@
     <ClInclude Include="building.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="car.h" />
+    <ClInclude Include="caranimation.h" />
     <ClInclude Include="color.h" />
     <ClInclude Include="gamefont.h" />
     <ClInclude Include="gamesprite.h" />
@@ -95,6 +96,7 @@
     <ClInclude Include="map.h" />
     <ClInclude Include="mapeditorwindow.h" />
     <ClInclude Include="graphictask.h" />
+    <ClInclude Include="movingobject.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="pathfinder.h" />
     <ClInclude Include="player.h" />
@@ -117,6 +119,7 @@
     <ClCompile Include="aiplayer.cpp" />
     <ClCompile Include="auxiliary.cpp" />
     <ClCompile Include="blood.cpp" />
+    <ClCompile Include="caranimation.cpp" />
     <ClCompile Include="gamefont.cpp" />
     <ClCompile Include="gamesound.cpp" />
     <ClCompile Include="gamesprite.cpp" />
