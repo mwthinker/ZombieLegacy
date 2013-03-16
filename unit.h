@@ -18,7 +18,7 @@ namespace zombie {
 	public:
 		enum UnitEvent {SHOOT,RELOADING,DIE,WALK,STANDSTILL,RUN};
 
-		Unit(float x, float y, float angle, Weapon weapon, bool infected);
+		Unit(float x, float y, float angle, const Weapon& weapon, bool infected);
 		virtual ~Unit();
 
 		// Simulates the physics at time (time) one time step (timeStep) ahead.

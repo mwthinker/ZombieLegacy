@@ -23,6 +23,8 @@ namespace zombie {
 	// Forward declaration.
 	class TaskManager;
 	class Car;
+	class Unit;
+	class Weapon;
 
 	class ZombieGame {
 	public:
@@ -49,6 +51,8 @@ namespace zombie {
 
 		void reshapeWindowsOpenGL(int width, int height) {		
 		}
+
+		Unit* createUnit(float x, float y, float angle, const Weapon& weapon, bool infected);
 
 		// Add a human player (unitPtr) to the game.
 		void addHuman(HumanPlayerPtr human, Unit* unit);

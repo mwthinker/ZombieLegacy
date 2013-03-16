@@ -12,7 +12,7 @@
 
 namespace zombie {
 
-	Unit::Unit(float x, float y, float angle, Weapon weapon, bool infected) : weapon_(weapon) {		
+	Unit::Unit(float x, float y, float angle, const Weapon& weapon, bool infected) : weapon_(weapon) {		
 		//PhysicalUnit(x,y,0.4, 50.0,0.0,10.0)
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_dynamicBody;

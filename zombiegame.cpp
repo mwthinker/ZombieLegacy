@@ -186,7 +186,7 @@ namespace zombie {
 		while (nbrOfZombies < unitLevel_) {
 			// INSERT ZOMBIE
 			Position p = map_.generateSpawnPosition(humanPlayers_[0].second->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
-			Unit* zombie(new Unit(p.x,p.y,0.3f,Weapon(25,0.5f,1,12),true));
+			Unit* zombie = createUnit(p.x,p.y,0.3f,Weapon(25,0.5f,1,12),true);
 			addNewAi(zombie);
 			nbrOfZombies++;
 		}
@@ -241,12 +241,17 @@ namespace zombie {
 		}
 	}
 
+	Unit* ZombieGame::createUnit(float x, float y, float angle, const Weapon& weapon, bool infected) {
+		Unit* unit = new Unit(x, y, angle, weapon, infected);
+		unit->addShootHandler(std::bind(&ZombieGame::doShotDamage,this,std::placeholders::_1,std::placeholders::_2));
+		return unit;
+	}
+
 	void ZombieGame::addHuman(HumanPlayerPtr human, Unit* unit) {
 		taskManager_->add(new HumanAnimation(unit));
 		taskManager_->add(new HumanStatus(unit,HumanStatus::ONE));
 		humanPlayers_.push_back(PairHumanUnit(human,unit));
-		players_.push_back(PairPlayerUnit(human,unit,nullptr));
-		unit->addShootHandler(std::bind(&ZombieGame::doShotDamage,this,std::placeholders::_1,std::placeholders::_2));
+		players_.push_back(PairPlayerUnit(human,unit,nullptr));		
 	}
 
 	void ZombieGame::addNewAi(Unit* unit) {
@@ -258,7 +263,6 @@ namespace zombie {
 		AiPlayerPtr aiPlayer(new AiPlayer());
 		aiPlayers_.push_back(PairAiUnit(aiPlayer,unit));
 		players_.push_back(PairPlayerUnit(aiPlayer,unit,nullptr));
-		unit->addShootHandler(std::bind(&ZombieGame::doShotDamage,this,std::placeholders::_1,std::placeholders::_2));
 	}
 
 	void ZombieGame::normalizeBuildings() {
@@ -298,7 +302,7 @@ namespace zombie {
 
 		// Add human controlled by first input device.
 		Position position = map_.generateSpawnPosition();
-		UnitPtr human(new Unit(position.x,position.y,0.3f,Weapon(55,0.2f,8,12),false));
+		Unit* human = createUnit(position.x,position.y,0.3f,Weapon(55,0.2f,8,12),false);
 		viewPosition_ = human->getPosition();
 
 		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r,SDLK_LSHIFT));
@@ -309,13 +313,13 @@ namespace zombie {
 		// Add zombie with standard behavior.
 		for (int i = 30; i < 40; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
-			UnitPtr zombie(new Unit(spawn.x,spawn.y,0.3f,Weapon(35,0.5f,1,12),true));
+			Unit* zombie = createUnit(spawn.x,spawn.y,0.3f,Weapon(35,0.5f,1,12),true);
 			addNewAi(zombie);
 		}
 
 		for (int i = 5; i < 5; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,innerSpawnRadius_);
-			UnitPtr survivor(new Unit(spawn.x,spawn.x,0.f,Weapon(35,0.5,8,12),false));
+			Unit* survivor = createUnit(spawn.x,spawn.x,0.f,Weapon(35,0.5,8,12),false);
 			addNewAi(survivor);
 		}
 	}
