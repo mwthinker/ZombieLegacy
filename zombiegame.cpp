@@ -148,12 +148,6 @@ namespace zombie {
 				unit->updatePhysics(time_, timeStep,input);
 				b2Body* body = unit->getBody();
 				body->ApplyForceToCenter(-body->GetLinearVelocity());
-
-				Bullet bullet;
-				// Alive? And shooting?
-				if (!unit->isDead() && unit->pollShot(bullet)) {
-					doShotDamage(unit, bullet);
-				}
 			}
 
 			// Update the objects physics interactions.
@@ -252,6 +246,7 @@ namespace zombie {
 		taskManager_->add(new HumanStatus(unit,HumanStatus::ONE));
 		humanPlayers_.push_back(PairHumanUnit(human,unit));
 		players_.push_back(PairPlayerUnit(human,unit,nullptr));
+		unit->addShootHandler(std::bind(&ZombieGame::doShotDamage,this,std::placeholders::_1,std::placeholders::_2));
 	}
 
 	void ZombieGame::addNewAi(Unit* unit) {
@@ -263,6 +258,7 @@ namespace zombie {
 		AiPlayerPtr aiPlayer(new AiPlayer());
 		aiPlayers_.push_back(PairAiUnit(aiPlayer,unit));
 		players_.push_back(PairPlayerUnit(aiPlayer,unit,nullptr));
+		unit->addShootHandler(std::bind(&ZombieGame::doShotDamage,this,std::placeholders::_1,std::placeholders::_2));
 	}
 
 	void ZombieGame::normalizeBuildings() {

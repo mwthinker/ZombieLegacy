@@ -10,112 +10,107 @@
 #include <Box2D/Box2D.h>
 
 #include <functional>
-#include <queue>
 #include <boost/signal.hpp>
 
 namespace zombie {
 
-class Unit : public Object {
-public:
-	enum UnitEvent {SHOOT,RELOADING,DIE,WALK,STANDSTILL,RUN};
+	class Unit : public Object {
+	public:
+		enum UnitEvent {SHOOT,RELOADING,DIE,WALK,STANDSTILL,RUN};
 
-	Unit(float x, float y, float angle, Weapon weapon, bool infected);
-	virtual ~Unit();
+		Unit(float x, float y, float angle, Weapon weapon, bool infected);
+		virtual ~Unit();
 
-	// Simulates the physics at time (time) one time step (timeStep) ahead.
-	// Based on the input given.
-	void updatePhysics(float time, float timeStep, Input input);
-	
-	void setState(State state);
-	State getState() const;
+		// Simulates the physics at time (time) one time step (timeStep) ahead.
+		// Based on the input given.
+		void updatePhysics(float time, float timeStep, Input input);
 
-	// Return the view distance.
-	float viewDistance();
+		void setState(State state);
+		State getState() const;
 
-	// Return the distance of where all things are being visible, 
-	// no matter of orientation.
-	float smallViewDistance();
+		// Return the view distance.
+		float viewDistance();
 
-	// Return the current view direction, i.e. the unit's orientation.
-	float viewAngle() const;
+		// Return the distance of where all things are being visible, 
+		// no matter of orientation.
+		float smallViewDistance();
 
-	// Return true if the point (x, y) is inside the unit.	
-	bool isInside(float x, float y) const;
+		// Return the current view direction, i.e. the unit's orientation.
+		float viewAngle() const;
 
-	// Return true if the point (x, y) is inside the units small view distance,
-	// where all things are being visible.
-	bool isInsideSmalViewDistance(float x, float y) const;
+		// Return true if the point (x, y) is inside the unit.	
+		bool isInside(float x, float y) const;
 
-	// Return true if the point is viewable by the unit, else fals.
-	bool isPointViewable(float x, float y);
-	
-	// Return the angle for the current 
-	float moveDirection() const;	
+		// Return true if the point (x, y) is inside the units small view distance,
+		// where all things are being visible.
+		bool isInsideSmalViewDistance(float x, float y) const;
 
-	float healthPoints() const;
-	void updateHealthPoint(float deltaLife);
+		// Return true if the point is viewable by the unit, else fals.
+		bool isPointViewable(float x, float y);
 
-	bool isDead() const;
+		// Return the angle for the current 
+		float moveDirection() const;	
 
-	void setIsDead() {
-		isDead_ = true;
-	}
+		float healthPoints() const;
+		void updateHealthPoint(float deltaLife);
 
-	bool isInfected() const {
-		return isInfected_;
-	}
+		bool isDead() const;
 
-	// The bullet is polled and and saved in (bullet) and true is returned.
-	// If no bullet has been shot the function returns false;
-	bool pollShot(Bullet& bullet);
+		void setIsDead() {
+			isDead_ = true;
+		}
 
-	Weapon getWeapon() const {
-		return weapon_;
-	}
+		bool isInfected() const {
+			return isInfected_;
+		}
 
-	Position getPosition() const {
-		return Position(body_->GetPosition().x,body_->GetPosition().y);
-	}
+		Weapon getWeapon() const {
+			return weapon_;
+		}
 
-	float radius() const {
-		b2Fixture* f = body_->GetFixtureList();             
-        b2CircleShape* circle = (b2CircleShape*) f->GetShape();
-		return circle->m_radius;
-	}
+		Position getPosition() const {
+			return Position(body_->GetPosition().x,body_->GetPosition().y);
+		}
 
-	boost::signals::connection addEventHandler(std::function<void(UnitEvent)> handler);
+		float radius() const {
+			b2Fixture* f = body_->GetFixtureList();             
+			b2CircleShape* circle = (b2CircleShape*) f->GetShape();
+			return circle->m_radius;
+		}
 
-	b2Body* getBody() const {
-		return body_;
-	}
-private:
-	void sendEventToHandlers(UnitEvent unitEvent) const;
+		boost::signals::connection addEventHandler(std::function<void(UnitEvent)> handler);
+		boost::signals::connection addShootHandler(std::function<void(Unit*, const Bullet& bullet)> handler);
 
-	void turn(float angle);
+		b2Body* getBody() const {
+			return body_;
+		}
 
-	// Physical States.
-	float angleVelocity_;
-	float angle_;
+	private:
+		void turn(float angle);
 
-	// Properties
-	float viewDistance_;
-	float viewAngle_;
-	float smallViewDistance_;
+		// Physical States.
+		float angleVelocity_;
+		float angle_;
 
-	// Health
-	float healthPoints_;
-	bool isDead_;
-		
-	Weapon weapon_;
-	bool isInfected_;
+		// Properties
+		float viewDistance_;
+		float viewAngle_;
+		float smallViewDistance_;
 
-	float timeLeftToRun_;
+		// Health
+		float healthPoints_;
+		bool isDead_;
 
-	std::queue<Bullet> bullets_;
-	boost::signal<void(UnitEvent)> signal_;
+		Weapon weapon_;
+		bool isInfected_;
 
-	b2Body* body_;
-};
+		float timeLeftToRun_;
+
+		boost::signal<void(Unit*, Bullet)> shootSignal_;
+		boost::signal<void(UnitEvent)> eventSignal_;
+
+		b2Body* body_;
+	};
 
 } // namespace zombie
 

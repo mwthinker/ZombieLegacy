@@ -67,7 +67,7 @@ namespace zombie {
 				if (input.forward_ && input.run_) {
 					timeLeftToRun_ -= timeStep;
 					move *= 2;
-					sendEventToHandlers(UnitEvent::RUN);
+					eventSignal_(UnitEvent::RUN);
 				} else if (timeLeftToRun_ < 5) {
 					timeLeftToRun_ += timeStep;
 				}
@@ -79,16 +79,16 @@ namespace zombie {
 			if (input.forward_ && !input.backward_) {
 				body_->ApplyForceToCenter(b2Vec2(move.x,move.y));
 				//addForce(move);
-				sendEventToHandlers(UnitEvent::WALK);
+				eventSignal_(UnitEvent::WALK);
 			} else if (!input.forward_ && input.backward_) {
 				body_->ApplyForceToCenter(-b2Vec2(move.x,move.y));
 				//addForce(-move);
-				sendEventToHandlers(UnitEvent::WALK);
+				eventSignal_(UnitEvent::WALK);
 			} else {
 				// In order to make the unit stop when not moving.
 				//body_->ApplyForceToCenter(-body_->GetLinearVelocity());
 				//addForce(-getVelocity()*5);
-				sendEventToHandlers(UnitEvent::STANDSTILL);
+				eventSignal_(UnitEvent::STANDSTILL);
 			}
 
 			//std::cout << getState().position_ << std::endl;
@@ -107,21 +107,17 @@ namespace zombie {
 				bullet.range_ = weapon_.range();
 				bullet.postion_ = getPosition();
 				bullet.damage_ = weapon_.damage();
-				bullets_.push(bullet);
+				shootSignal_(this,bullet);
 			
-				sendEventToHandlers(UnitEvent::SHOOT);
+				eventSignal_(UnitEvent::SHOOT);
 			}
 
 			// Want to reload? And weapon is ready?
 			if (input.reload_ && weapon_.reload()) {
 				input.reload_ = true;
-				sendEventToHandlers(UnitEvent::RELOADING);
+				eventSignal_(UnitEvent::RELOADING);
 			}
 		}
-	}
-
-	void Unit::sendEventToHandlers(UnitEvent unitEvent) const {		
-		signal_(unitEvent);
 	}
 
 	void Unit::setState(State state) {
@@ -174,19 +170,12 @@ namespace zombie {
 		return angle_;
 	}
 
-	bool Unit::pollShot(Bullet& bullet) {
-		if (bullets_.empty()) {
-			return false;
-		}
-
-		bullet = bullets_.front();
-		bullets_.pop();
-
-		return true;
+	boost::signals::connection Unit::addEventHandler(std::function<void(UnitEvent)> handler) {
+		return eventSignal_.connect(handler);
 	}
 
-	boost::signals::connection Unit::addEventHandler(std::function<void(UnitEvent)> handler) {
-		return signal_.connect(handler);
+	boost::signals::connection Unit::addShootHandler(std::function<void(Unit*, const Bullet&)> handler) {
+		return shootSignal_.connect(handler);
 	}
 
 	void Unit::turn(float angle) {
