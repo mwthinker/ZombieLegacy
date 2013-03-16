@@ -49,9 +49,7 @@ namespace zombie {
 		// Updates the game time by (msDeltaTime).
 		void updatePhysics(float timeStep);
 
-		void reshapeWindowsOpenGL(int width, int height) {		
-		}
-
+		// Creates a unit and add &doShotDamage to receive bullets fired.
 		Unit* createUnit(float x, float y, float angle, const Weapon& weapon, bool infected);
 
 		// Add a human player (unitPtr) to the game.
@@ -59,11 +57,6 @@ namespace zombie {
 
 		// Add a new ai (unitPtr) to the game.
 		void addNewAi(Unit* unit);
-
-		//void updateWindowSize(int width, int height);
-
-		// sets the most south west building in "origo"
-		void normalizeBuildings();
 
 		// Inits the game.
 		void initGame();
@@ -91,9 +84,9 @@ namespace zombie {
 		TaskManager* taskManager_;
 
 		int indexAiPlayer_;
-		double timeToUpdateView_;
-		double timeToUpdateSpawn_;
-		double timeSinceSpawn_;
+		float timeToUpdateView_;
+		float timeToUpdateSpawn_;
+		float timeSinceSpawn_;
 
 		int unitLevel_; // Specifies the wanted number of zombies on the map
 		double scale_;

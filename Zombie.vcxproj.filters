@@ -111,6 +111,9 @@
     <ClInclude Include="car.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="blood.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -159,6 +162,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="auxiliary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="blood.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

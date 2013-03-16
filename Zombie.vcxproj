@@ -81,6 +81,7 @@
     <ClInclude Include="aibehavior.h" />
     <ClInclude Include="aiplayer.h" />
     <ClInclude Include="auxiliary.h" />
+    <ClInclude Include="blood.h" />
     <ClInclude Include="building.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="car.h" />
@@ -115,6 +116,7 @@
     <ClCompile Include="aibehavior.cpp" />
     <ClCompile Include="aiplayer.cpp" />
     <ClCompile Include="auxiliary.cpp" />
+    <ClCompile Include="blood.cpp" />
     <ClCompile Include="gamefont.cpp" />
     <ClCompile Include="gamesound.cpp" />
     <ClCompile Include="gamesprite.cpp" />

@@ -15,6 +15,7 @@
 #include "survivaltimer.h"
 #include "graphictask.h"
 #include "car.h"
+#include "blood.h"
 
 #include <Box2D/Box2D.h>
 #include <SDL.h>
@@ -77,34 +78,37 @@ namespace zombie {
 	}
 
 	ZombieGame::ZombieGame(int width, int height) {
+		// Create a world with no "gravity".
 		world_ = new b2World(b2Vec2(0,0));
 		Object::setWorld(world_);
 
-		taskManager_ = new TaskManager();
-
+		// Set windows size.
 		updateSize(width,height);
+
+		taskManager_ = new TaskManager();		
 		scale_ = 1.0;
 
 		started_ = false;
 		time_ = 0.0;
 		timeToUpdateView_ = 0.25; // Seconds in which the view is assumed to be constant in order to 
-		// speed up calculations.
-
-		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups
+		
+		// Speed up calculations.
+		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups.
 		timeSinceSpawn_ = 0.0;
 		indexAiPlayer_ = 0;
 		unitLevel_ = 50;
 		innerSpawnRadius_ = 10;
 		outerSpawnRadius_ = 40;
 
-		timeStep_ = 0.017f;  // Fix time step for physics update.
-		accumulator_ = 0.0;      // Time accumulator.
+		timeStep_ = 0.017f; // Fix time step for physics update.
+		accumulator_ = 0.0; // Time accumulator.
 
 		initGame();
 	}
 
 	ZombieGame::~ZombieGame() {
 		delete taskManager_;
+		delete world_;
 	}
 
 	void ZombieGame::startGame() {
@@ -265,27 +269,13 @@ namespace zombie {
 		players_.push_back(PairPlayerUnit(aiPlayer,unit,nullptr));
 	}
 
-	void ZombieGame::normalizeBuildings() {
-		for (BuildingPtr building : buildings_) {
-
-		}
-	}
-
 	void ZombieGame::initGame() {
 		taskManager_->add(new SurvivalTimer());		
 
 		//map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
 		map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
 		//Map mapTile1 = loadTile("housesFME.mif","roadsFME.mif",100);
-
 		//map_ = createTiledMap(mapTile1);
-
-		/*b2BodyDef groundBodyDef;
-		groundBodyDef.position.Set((map_.minX()+map_.maxX())*0.5, (map_.minY()+map_.maxY())*0.5);
-		b2Body* groundBody = world_->CreateBody(&groundBodyDef);		
-		b2PolygonShape groundBox;
-		groundBox.SetAsBox(map_.width(), map_.height());
-		groundBody->CreateFixture(&groundBox, 0.0f);*/
 
 		buildings_ = Quadtree<BuildingPtr>(map_.minX(),map_.minY(),map_.width(),map_.height(),4);
 
@@ -343,6 +333,7 @@ namespace zombie {
 
 		world_->QueryAABB(&queryCallback,area);
 
+		// Find all units in view.
 		std::vector<Unit*> unitsInView;
 		for (unsigned int i = 0; i < queryCallback.foundFixtures.size(); i++) {
 			Object* ob = static_cast<Object*>(queryCallback.foundFixtures[i]->GetUserData());
@@ -379,10 +370,9 @@ namespace zombie {
 					target->updateHealthPoint(-lastBullet_.damage_);
 					endP = target->getPosition();
 					// Target killed?
-					if (target->isDead()){					
-						//taskManager_->add(new Death(p.x_,p.y_,time_),2);
-						taskManager_->add(new BloodStain(endP.x,endP.y,time_));
+					if (target->isDead()) {
 						taskManager_->add(new Blood(endP.x,endP.y,time_));
+						taskManager_->add(new BloodStain(endP.x,endP.y,time_));
 					} else {
 						taskManager_->add(new BloodSplash(endP.x,endP.y,time_));
 					}
