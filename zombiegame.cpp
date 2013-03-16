@@ -16,6 +16,7 @@
 #include "graphictask.h"
 #include "car.h"
 #include "blood.h"
+#include "caranimation.h"
 
 #include <Box2D/Box2D.h>
 #include <SDL.h>
@@ -89,19 +90,19 @@ namespace zombie {
 		scale_ = 1.0;
 
 		started_ = false;
-		time_ = 0.0;
-		timeToUpdateView_ = 0.25; // Seconds in which the view is assumed to be constant in order to 
+		time_ = 0.0f;
+		timeToUpdateView_ = 0.25f; // Seconds in which the view is assumed to be constant in order to 
 		
 		// Speed up calculations.
-		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups.
-		timeSinceSpawn_ = 0.0;
+		timeToUpdateSpawn_ = 0.5f; // Time between spawns and unit clean ups.
+		timeSinceSpawn_ = 0.0f;
 		indexAiPlayer_ = 0;
 		unitLevel_ = 50;
-		innerSpawnRadius_ = 10;
-		outerSpawnRadius_ = 40;
+		innerSpawnRadius_ = 10.f;
+		outerSpawnRadius_ = 40.f;
 
 		timeStep_ = 0.017f; // Fix time step for physics update.
-		accumulator_ = 0.0; // Time accumulator.
+		accumulator_ = 0.0f; // Time accumulator.
 
 		initGame();
 	}
@@ -179,7 +180,7 @@ namespace zombie {
 		}
 
 		for (auto it = aiPlayers_.begin(); it != aiPlayers_.end(); it++) {
-			if(it->second == temp) {
+			if (it->second == temp) {
 				aiPlayers_.erase(it);
 				break;
 			}

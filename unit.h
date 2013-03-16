@@ -1,7 +1,7 @@
 #ifndef UNIT_H
 #define UNIT_H
 
-#include "object.h"
+#include "movingobject.h"
 #include "input.h"
 #include "weapon.h"
 #include "state.h"
@@ -14,7 +14,7 @@
 
 namespace zombie {
 
-	class Unit : public Object {
+	class Unit : public MovingObject {
 	public:
 		enum UnitEvent {SHOOT,RELOADING,DIE,WALK,STANDSTILL,RUN};
 
@@ -23,7 +23,7 @@ namespace zombie {
 
 		// Simulates the physics at time (time) one time step (timeStep) ahead.
 		// Based on the input given.
-		void updatePhysics(float time, float timeStep, Input input);
+		void updatePhysics(float time, float timeStep, Input input) override;
 
 		void setState(State state);
 		State getState() const;

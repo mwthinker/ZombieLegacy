@@ -1,7 +1,7 @@
 #ifndef CAR_H
 #define CAR_H
 
-#include "object.h"
+#include "movingobject.h"
 #include "input.h"
 #include "state.h"
 
@@ -15,7 +15,7 @@ namespace zombie {
 
 	enum CarEvent {CAREVENT_EXPLODE, CAREVENT_ACCELERATE, CAREVENT_BRAKE};	
 
-	class Car : public Object {
+	class Car : public MovingObject {
 	public:
 		Car(float x, float y, float angle = 0.0) {
 			length_ = 2.0f;
@@ -69,7 +69,7 @@ namespace zombie {
 			return nbrOfUnits_;
 		}
 
-		void updatePhysics(float time, float timeStep, Input input) {
+		void updatePhysics(float time, float timeStep, Input input) override {
 			b2Vec2 force = getDirection();
 			//std::cout << "Angle: " << body_->GetAngle() << std::endl;
 			//std::cout << "MassC: " << body_->GetWorldCenter().x << " " << body_->GetWorldCenter().y << std::endl;
