@@ -32,10 +32,7 @@ namespace zombie {
 
 	HumanAnimation::HumanAnimation(const UnitPtr& unit) {
 		unit_ = unit;
-		//unit->addEventHandler(std::bind(&HumanAnimation::unitEventHandler,this));
-		unit->addEventHandler([&](Unit::UnitEvent unitEvent){
-			this->unitEventHandler(unitEvent);
-		});
+		connection_ = unit->addEventHandler(std::bind(&HumanAnimation::unitEventHandler,this,std::placeholders::_1));
 
 		timeNewFrame_ = 0.0;
 		index_ = 0;
@@ -46,6 +43,10 @@ namespace zombie {
 		sprites_.push_back(human2);
 		sprites_.push_back(human1);
 		sprites_.push_back(human3);
+	}
+
+	HumanAnimation::~HumanAnimation() {
+		connection_.disconnect();
 	}
 
 	void HumanAnimation::drawSecond(double time) {
@@ -115,10 +116,7 @@ namespace zombie {
 
 	ZombieAnimation::ZombieAnimation(const UnitPtr& unit) {
 		unit_ = unit;
-		//unit->addEventHandler(std::bind(&ZombieAnimation::unitEventHandler,this,Unit::UnitEvent::DIE));
-		unit->addEventHandler([&](Unit::UnitEvent unitEvent){
-			this->unitEventHandler(unitEvent);
-		});
+		connection_ = unit->addEventHandler(std::bind(&ZombieAnimation::unitEventHandler,this,std::placeholders::_1));
 
 		timeNewFrame_ = 0.0;
 		color_ = Color();
@@ -130,6 +128,10 @@ namespace zombie {
 		sprites_.push_back(zombie5);
 		sprites_.push_back(zombie6);
 		index_ = (int) (random() * sprites_.size());
+	}
+
+	ZombieAnimation::~ZombieAnimation() {
+		connection_.disconnect();
 	}
 
 	void ZombieAnimation::drawSecond(double time) {

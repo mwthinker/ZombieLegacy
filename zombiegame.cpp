@@ -92,7 +92,7 @@ namespace zombie {
 		timeToUpdateSpawn_ = 0.5; // Time between spawns and unit clean ups
 		timeSinceSpawn_ = 0.0;
 		indexAiPlayer_ = 0;
-		unitLevel_ = 1000;
+		unitLevel_ = 50;
 		innerSpawnRadius_ = 10;
 		outerSpawnRadius_ = 40;
 
@@ -166,14 +166,9 @@ namespace zombie {
 
 		// delete zombies outside of perimiter ***************
 		Unit* temp = nullptr;
-		/*std::remove_if(players_.begin(), players_.end(),[] (const PairPlayerUnit& pair) {
-		Position unitPos = pair.second->getPosition();
-		return pair.second;
-		});*/
-
 		for (auto it = players_.begin(); it != players_.end(); it++) {
 			Position unitPos = it->second->getPosition();
-			if((unitPos-center).LengthSquared() > outerSpawnRadius_*outerSpawnRadius_) {
+			if ((unitPos-center).LengthSquared() > outerSpawnRadius_*outerSpawnRadius_) {
 				// REMOVE UNIT
 				it->second->setIsDead();
 				temp = it->second;
@@ -381,7 +376,7 @@ namespace zombie {
 					target->updateHealthPoint(-lastBullet_.damage_);
 					endP = target->getPosition();
 					// Target killed?
-					if(target->isDead()){					
+					if (target->isDead()){					
 						//taskManager_->add(new Death(p.x_,p.y_,time_),2);
 						taskManager_->add(new BloodStain(endP.x,endP.y,time_));
 						taskManager_->add(new Blood(endP.x,endP.y,time_));
@@ -400,24 +395,6 @@ namespace zombie {
 	}
 
 	bool ZombieGame::isVisible(UnitPtr unitToBeSeen, UnitPtr unitThatSees) const {
-		Position dr = unitToBeSeen->getPosition() - unitThatSees->getPosition();
-		float length = dr.Length();
-		float stepLength = 1;
-		float step = 0.0;
-		dr.Normalize();
-
-		Position p = unitThatSees->getPosition();
-
-		auto buildings = buildings_.getObjectsAt(p.x,p.y,length*2);
-		while (step < length) {
-			p += stepLength*dr;
-			step += stepLength;
-			for (const BuildingPtr& building : buildings) {
-				if (building->isInside(p.x,p.y)) {
-					return false;
-				}
-			}
-		}
 		return true;
 	}
 } // namespace zombie

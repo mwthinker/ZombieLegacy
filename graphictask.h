@@ -13,6 +13,7 @@
 #include "color.h"
 
 #include <mw/text.h>
+#include <boost/signal.hpp>
 
 namespace zombie {
 
@@ -29,6 +30,7 @@ namespace zombie {
 	class HumanAnimation : public GraphicTask {
 	public:
 		HumanAnimation(const UnitPtr& unit);
+		~HumanAnimation();
 		void drawSecond(double time) override;		
 
 		bool isRunning() const override;
@@ -37,6 +39,7 @@ namespace zombie {
 	private:
 		void draw(double timestep);
 
+		boost::signals::connection connection_;
 		UnitPtr unit_;
 		double timeNewFrame_;
 		int index_;
@@ -48,6 +51,8 @@ namespace zombie {
 	class ZombieAnimation : public GraphicTask {
 	public:
 		ZombieAnimation(const UnitPtr& unit);
+		~ZombieAnimation();
+
 		void drawSecond(double time) override;		
 
 		bool isRunning() const override;
@@ -55,7 +60,8 @@ namespace zombie {
 
 	private:
 		void draw(double timestep);
-
+		
+		boost::signals::connection connection_;
 		UnitPtr unit_;
 		double timeNewFrame_;
 		int index_;

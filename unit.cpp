@@ -120,10 +120,8 @@ namespace zombie {
 		}
 	}
 
-	void Unit::sendEventToHandlers(UnitEvent unitEvent) const {
-		for (auto handler : eventHandlers_) {
-			handler(unitEvent);
-		}
+	void Unit::sendEventToHandlers(UnitEvent unitEvent) const {		
+		signal_(unitEvent);
 	}
 
 	void Unit::setState(State state) {
@@ -187,8 +185,8 @@ namespace zombie {
 		return true;
 	}
 
-	void Unit::addEventHandler(std::function<void(UnitEvent)> handler) {
-		eventHandlers_.push_back(handler);
+	boost::signals::connection Unit::addEventHandler(std::function<void(UnitEvent)> handler) {
+		return signal_.connect(handler);
 	}
 
 	void Unit::turn(float angle) {

@@ -11,6 +11,7 @@
 
 #include <functional>
 #include <queue>
+#include <boost/signal.hpp>
 
 namespace zombie {
 
@@ -79,10 +80,10 @@ public:
 	float radius() const {
 		b2Fixture* f = body_->GetFixtureList();             
         b2CircleShape* circle = (b2CircleShape*) f->GetShape();
-		return circle->m_radius;        
+		return circle->m_radius;
 	}
 
-	void addEventHandler(std::function<void(UnitEvent)> handler);
+	boost::signals::connection addEventHandler(std::function<void(UnitEvent)> handler);
 
 	b2Body* getBody() const {
 		return body_;
@@ -111,7 +112,7 @@ private:
 	float timeLeftToRun_;
 
 	std::queue<Bullet> bullets_;
-	std::vector<std::function<void(UnitEvent)>> eventHandlers_;
+	boost::signal<void(UnitEvent)> signal_;
 
 	b2Body* body_;
 };

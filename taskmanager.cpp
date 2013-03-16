@@ -65,7 +65,7 @@ void TaskManager::update(double deltaTime) {
 		}
 	}
 
-	auto removeIfFunction = [] (Task* task) {
+	auto removeIfFunctionT = [] (Task* task) {
 		// Is active?
 		if (task->isRunning()) {			
 			return false;
@@ -76,8 +76,20 @@ void TaskManager::update(double deltaTime) {
 		return true;
 	};
 
+	auto removeIfFunctionG = [] (GraphicTask* task) {
+		// Is active?
+		if (task->isRunning()) {			
+			return false;
+		}
+
+		// Not active, delete and remove!
+ 		delete task;
+		return true;
+	};
+
 	// Remove dead tasks.
-	tasks_.remove_if(removeIfFunction);
+	tasks_.remove_if(removeIfFunctionT);
+	graphicTasks_.remove_if(removeIfFunctionG);
 }
 
 void TaskManager::runGraphicTask(GraphicTask* task, int i) {
