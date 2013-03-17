@@ -30,5 +30,19 @@ public:
 
 	double red_, green_, blue_, alpha_;
 };
+// BLACK/WHITE
+const Color BLACK(0,0,0);
+const Color WHITE(1,1,1);
+
+//COLORS
+const Color RED(1,0,0);
+const Color GREEN(0,1,0);
+const Color BLUE(0,0,1);
+
+// GRAYSCALES
+const Color GRAY1(0.1,0.1,0.1);
+const Color GRAY2(0.2,0.2,0.2);
+const Color GRAY3(0.3,0.3,0.3);
+const Color GRAY4(0.4,0.4,0.4);
 
 #endif // COLOR_H
