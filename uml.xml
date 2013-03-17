@@ -1,0 +1,231 @@
+<umldiagrams>
+  <UMLClassDiagram name="ZombieGame" backgroundNodes="#ffffbb">
+    <UMLComponent id="UMLComponent_21" x="145" y="544" width="278" height="53" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="HumanAnimation::unitEventHandler()"/>
+      <superitem id="attributes" visibleSubComponents="false"/>
+      <superitem id="operations" visibleSubComponents="false"/>
+    </UMLComponent>
+    <UMLComponent id="UMLComponent_20" x="205" y="467" width="214" height="53" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="ZombieGame::doShotDamage()"/>
+      <superitem id="attributes" visibleSubComponents="false"/>
+      <superitem id="operations" visibleSubComponents="false"/>
+    </UMLComponent>
+    <UMLClass id="UMLClass_19" x="490" y="433" width="153" height="62" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="Unit"/>
+      <superitem id="attributes" visibleSubComponents="true">
+        <item value="signal shotSignal"/>
+        <item value="signal eventSignal"/>
+      </superitem>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_18" x="815" y="226" width="129" height="49" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="ZombieBehavior"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true">
+        <item value="calcuateInput()"/>
+      </superitem>
+    </UMLClass>
+    <UMLClass id="UMLClass_17" x="590" y="151" width="113" height="49" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="AIplayer"/>
+      <superitem id="attributes" visibleSubComponents="true">
+        <item value="behavior"/>
+      </superitem>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_16" x="225" y="16" width="113" height="49" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="ZombieGame"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_15" x="565" y="46" width="96" height="52" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="Player"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_14" x="120" y="297" width="118" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="HumanAnimation"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_13" x="15" y="90" width="102" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="TaskMangager"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_12" x="495" y="371" width="102" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="MovingObject"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_11" x="485" y="152" width="94" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="HumanPlayer"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_10" x="20" y="375" width="94" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="&quot;GUI-tasks&quot;"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_9" x="115" y="209" width="94" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="GraphicTask"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_8" x="815" y="152" width="86" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="AIbehavior"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_1" x="685" y="399" width="78" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="Car"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_7" x="380" y="59" width="78" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="Map"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_6" x="491" y="313" width="78" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="Object"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_5" x="225" y="210" width="78" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="QuadTree"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_4" x="395" y="372" width="78" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="Building"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_3" x="900" y="45" width="78" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="Input"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_2" x="490" y="526" width="78" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="Weapon"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLClass id="UMLClass_0" x="15" y="203" width="78" height="40" backgroundColor="#ffffbb" lineColor="#294253" lineWidth="1" tagValues="">
+      <superitem id="stereotypes" visibleSubComponents="true"/>
+      <item id="name" value="Task"/>
+      <superitem id="attributes" visibleSubComponents="true"/>
+      <superitem id="operations" visibleSubComponents="true"/>
+    </UMLClass>
+    <UMLGeneralization id="UMLGeneralization_0" side_A="UMLClass_17" side_B="UMLClass_15">
+      <point x="638.5700483091788" y="151"/>
+      <point x="621.4154589371981" y="98"/>
+      <superitem id="stereotype" visibleSubComponents="true"/>
+      <item id="name" value=""/>
+    </UMLGeneralization>
+    <UMLGeneralization id="UMLGeneralization_1" side_A="UMLClass_11" side_B="UMLClass_15">
+      <point x="548.2" y="152"/>
+      <point x="591.94" y="98"/>
+      <superitem id="stereotype" visibleSubComponents="true"/>
+      <item id="name" value=""/>
+    </UMLGeneralization>
+    <UMLGeneralization id="UMLGeneralization_2" side_A="UMLClass_12" side_B="UMLClass_6">
+      <point x="540.4827586206897" y="371"/>
+      <point x="535.5172413793103" y="353"/>
+      <superitem id="stereotype" visibleSubComponents="true"/>
+      <item id="name" value=""/>
+    </UMLGeneralization>
+    <UMLGeneralization id="UMLGeneralization_3" side_A="UMLClass_19" side_B="UMLClass_12">
+      <point x="557.7945205479452" y="433"/>
+      <point x="551.6164383561644" y="411"/>
+      <superitem id="stereotype" visibleSubComponents="true"/>
+      <item id="name" value=""/>
+    </UMLGeneralization>
+    <UMLGeneralization id="UMLGeneralization_4" side_A="UMLClass_1" side_B="UMLClass_12">
+      <point x="685" y="412.86516853932585"/>
+      <point x="597" y="399.02247191011236"/>
+      <superitem id="stereotype" visibleSubComponents="true"/>
+      <item id="name" value=""/>
+    </UMLGeneralization>
+    <UMLUsage id="UMLUsage_5" side_A="UMLClass_17" side_B="UMLClass_8">
+      <point x="703" y="174.56501182033097"/>
+      <point x="815" y="172.7115839243499"/>
+      <item id="stereotype" value="«use»"/>
+    </UMLUsage>
+    <UMLGeneralization id="UMLGeneralization_6" side_A="UMLClass_18" side_B="UMLClass_8">
+      <point x="872.7898089171974" y="226"/>
+      <point x="863.4777070063694" y="192"/>
+      <superitem id="stereotype" visibleSubComponents="true"/>
+      <item id="name" value=""/>
+    </UMLGeneralization>
+    <UMLGeneralization id="UMLGeneralization_7" side_A="UMLClass_4" side_B="UMLClass_6">
+      <point x="466.54237288135596" y="372"/>
+      <point x="497.45762711864404" y="353"/>
+      <superitem id="stereotype" visibleSubComponents="true"/>
+      <item id="name" value=""/>
+    </UMLGeneralization>
+    <UMLUsage id="UMLUsage_8" side_A="UMLClass_13" side_B="UMLClass_0">
+      <point x="63.876106194690266" y="130"/>
+      <point x="56.123893805309734" y="203"/>
+      <item id="stereotype" value="«use»"/>
+    </UMLUsage>
+    <UMLUsage id="UMLUsage_9" side_A="UMLClass_13" side_B="UMLClass_9">
+      <point x="82.1344537815126" y="130"/>
+      <point x="145.8655462184874" y="209"/>
+      <item id="stereotype" value="«use»"/>
+    </UMLUsage>
+    <UMLUsage id="UMLUsage_10" side_A="UMLClass_0" side_B="UMLClass_10">
+      <point x="55.51162790697674" y="243"/>
+      <point x="65.48837209302326" y="375"/>
+      <item id="stereotype" value="«use»"/>
+    </UMLUsage>
+    <UMLUsage id="UMLUsage_11" side_A="UMLClass_19" side_B="UMLClass_2">
+      <point x="552.3231707317074" y="495"/>
+      <point x="538.1463414634146" y="526"/>
+      <item id="stereotype" value="«use»"/>
+    </UMLUsage>
+    <UMLUsage id="UMLUsage_12" side_A="UMLClass_19" side_B="UMLComponent_20">
+      <point x="490" y="472.8673870333988"/>
+      <point x="419" y="481.0972495088409"/>
+      <item id="stereotype" value="«use»"/>
+    </UMLUsage>
+    <UMLUsage id="UMLUsage_13" side_A="UMLClass_19" side_B="UMLComponent_21">
+      <point x="490" y="492.8398230088496"/>
+      <point x="354.293427230047" y="544"/>
+      <item id="stereotype" value="«use»"/>
+    </UMLUsage>
+    <UMLGeneralization id="UMLGeneralization_14" side_A="UMLClass_14" side_B="UMLClass_9">
+      <point x="175.13636363636363" y="297"/>
+      <point x="165.86363636363637" y="249"/>
+      <superitem id="stereotype" visibleSubComponents="true"/>
+      <item id="name" value=""/>
+    </UMLGeneralization>
+    <UMLUsage id="UMLUsage_15" side_A="UMLClass_16" side_B="UMLClass_7">
+      <point x="338" y="56.32"/>
+      <point x="380" y="68.08"/>
+      <item id="stereotype" value="«use»"/>
+    </UMLUsage>
+  </UMLClassDiagram>
+</umldiagrams>
