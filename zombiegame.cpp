@@ -102,6 +102,7 @@ namespace zombie {
 		// Create a world with no "gravity".
 		world_ = new b2World(b2Vec2(0,0));
 		Object::setWorld(world_);
+		world_->SetContactListener(this);
 
 		// Set windows size.
 		updateSize(width,height);
@@ -442,5 +443,36 @@ namespace zombie {
 
 	bool ZombieGame::isVisible(UnitPtr unitToBeSeen, UnitPtr unitThatSees) const {
 		return true;
+	}
+
+	void ZombieGame::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
+		Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
+		Object* ob2 = static_cast<Object*>(contact->GetFixtureB()->GetUserData());
+				
+		if (Unit* unit = dynamic_cast<Unit*>(ob1)) {
+			if (std::abs(impulse->normalImpulses[0]) > 0.5f) {
+				unit->updateHealthPoint(-101.0);
+				Position p = unit->getPosition();
+				if (unit->isDead()) {
+					taskManager_->add(new Blood(p.x,p.y,time_));
+					taskManager_->add(new BloodStain(p.x,p.y,time_));
+				} else {
+					taskManager_->add(new BloodSplash(p.x,p.y,time_));
+				}
+			}
+		}
+
+		if (Unit* unit = dynamic_cast<Unit*>(ob2)) {
+			if (std::abs(impulse->normalImpulses[0]) > 0.5f) {
+				unit->updateHealthPoint(-101.0);
+				Position p = unit->getPosition();
+				if (unit->isDead()) {
+					taskManager_->add(new Blood(p.x,p.y,time_));
+					taskManager_->add(new BloodStain(p.x,p.y,time_));
+				} else {
+					taskManager_->add(new BloodSplash(p.x,p.y,time_));
+				}
+			}
+		}
 	}
 } // namespace zombie

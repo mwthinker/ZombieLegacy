@@ -27,7 +27,7 @@ namespace zombie {
 	class Weapon;
 	class MovingObject;
 
-	class ZombieGame {
+	class ZombieGame : public b2ContactListener {
 	public:
 		ZombieGame(int width = 500, int height = 500);
 		~ZombieGame();
@@ -70,6 +70,7 @@ namespace zombie {
 		void doAction(Unit* unit);
 		void doShotDamage(Unit* shooter, const Bullet& properties);
 		bool isVisible(Unit* unitToBeSeen, Unit* unitThatSees) const;
+		void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
 
 		void spawnAndCleanUpUnits();	// Spawns new zombies
 
