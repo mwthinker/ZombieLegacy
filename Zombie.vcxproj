@@ -137,6 +137,9 @@
   <ItemGroup>
     <Text Include="buildings.txt" />
     <Text Include="todo.txt" />
+    <Text Include="uml.xml">
+      <SubType>Designer</SubType>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="buildings.mif" />

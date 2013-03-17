@@ -184,6 +184,9 @@
     <Text Include="todo.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="uml.xml">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="byggnader.mif">
