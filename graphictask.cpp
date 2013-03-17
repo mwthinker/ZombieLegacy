@@ -312,6 +312,7 @@ namespace zombie {
 	}
 
 	DrawFake3DBuildning::DrawFake3DBuildning(const BuildingPtr& building) {
+		
 		buildning_ = building;
 		road_ = drawRoad;
 		d_ = random()* 1.0/3.0;
@@ -376,9 +377,19 @@ namespace zombie {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		std::vector<Color> grayScale;
+		grayScale.push_back(GRAY1);
+		grayScale.push_back(GRAY2);
+		grayScale.push_back(GRAY3);
+		grayScale.push_back(GRAY4);
+		
+		
+
 		
 		for(LineFeature l : front_) {
+			
 			glColor3d(r_,g_,b_);
+			//grayScale[(int) random()*4].glColor3d();
 			glBegin(GL_TRIANGLE_FAN);
 			glVertex2d(l.getStart().x,l.getStart().y);
 			glVertex2d(l.getEnd().x,l.getEnd().y);
@@ -386,7 +397,7 @@ namespace zombie {
 			glVertex2d(l.getStart().x,l.getStart().y+height_);
 			glEnd();			
 		}
-		glColor3d(0,0,0);
+		BLACK.glColor3d();
 		for(LineFeature l : front_) {
 			glBegin(GL_LINE_STRIP);			
 			glVertex2d(l.getStart().x,l.getStart().y);
@@ -406,7 +417,7 @@ namespace zombie {
 			double sX = (l.getStart().x + l.getEnd().x)/2;			
 			double sY = (l.getStart().y + l.getEnd().y)/2;
 
-			glColor3d(0,0,0);
+			
 			glBegin(GL_TRIANGLE_FAN);
 			
 			glVertex2d(sX+doorWidth,getLineY(a,b,c,sX+doorWidth));
