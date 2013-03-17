@@ -76,6 +76,26 @@ namespace zombie {
 			float closestFraction_;
 		};
 
+		class ContactCallback : public b2ContactListener {
+		public:
+			void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
+				Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
+				Object* ob2 = static_cast<Object*>(contact->GetFixtureB()->GetUserData());
+				
+				if (Unit* unit = dynamic_cast<Unit*>(ob1)) {
+					if (std::abs(impulse->normalImpulses[0]) > 1.f) {
+						unit->updateHealthPoint(-101.0);
+					}
+				}
+
+				if (Unit* unit = dynamic_cast<Unit*>(ob2)) {
+					if (std::abs(impulse->normalImpulses[1]) > 1.f) {
+						unit->updateHealthPoint(-101.0);
+					}
+				}
+			}
+		};
+
 	}
 
 	ZombieGame::ZombieGame(int width, int height) {
