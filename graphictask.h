@@ -29,7 +29,7 @@ namespace zombie {
 
 	class HumanAnimation : public GraphicTask {
 	public:
-		HumanAnimation(const UnitPtr& unit);
+		HumanAnimation(Unit* unit);
 		~HumanAnimation();
 		void drawSecond(double time) override;		
 
@@ -40,7 +40,7 @@ namespace zombie {
 		void draw(double timestep);
 
 		boost::signals::connection connection_;
-		UnitPtr unit_;
+		Unit* unit_;
 		double timeNewFrame_;
 		int index_;
 		std::vector<mw::Sprite> sprites_;
@@ -50,7 +50,7 @@ namespace zombie {
 
 	class ZombieAnimation : public GraphicTask {
 	public:
-		ZombieAnimation(const UnitPtr& unit);
+		ZombieAnimation(Unit* unit);
 		~ZombieAnimation();
 
 		void drawSecond(double time) override;		
@@ -62,7 +62,7 @@ namespace zombie {
 		void draw(double timestep);
 		
 		boost::signals::connection connection_;
-		UnitPtr unit_;
+		Unit* unit_;
 		double timeNewFrame_;
 		int index_;
 		std::vector<mw::Sprite> sprites_;

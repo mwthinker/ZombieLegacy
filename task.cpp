@@ -58,7 +58,7 @@ namespace zombie {
 		glEnd();
 	}	
 
-	HumanStatus::HumanStatus(const UnitPtr& unit, Player player) {
+	HumanStatus::HumanStatus(Unit* unit, Player player) {
 		unit_ = unit;
 		lastTime_ = 0.0;
 		name_ = mw::Text("", font15);

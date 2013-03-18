@@ -73,14 +73,14 @@ namespace zombie {
 	public:
 		enum Player {ONE, TWO, THREE, FOUR};
 
-		HumanStatus(const UnitPtr& unit, Player player);
+		HumanStatus(Unit* unit, Player player);
 		void excecute(double time) override;
 		bool isRunning() const override;
 
 	private:
 		void draw(double timestep);
 
-		UnitPtr unit_;
+		Unit* unit_;
 		double lastTime_;
 		mw::Text name_;
 		mw::Text life_;

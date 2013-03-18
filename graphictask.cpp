@@ -30,7 +30,7 @@ namespace zombie {
 	void GraphicTask::drawThird(double time) {
 	}
 
-	HumanAnimation::HumanAnimation(const UnitPtr& unit) {
+	HumanAnimation::HumanAnimation(Unit* unit) {
 		unit_ = unit;
 		connection_ = unit->addEventHandler(std::bind(&HumanAnimation::unitEventHandler,this,std::placeholders::_1));
 
@@ -114,7 +114,7 @@ namespace zombie {
 		}
 	}
 
-	ZombieAnimation::ZombieAnimation(const UnitPtr& unit) {
+	ZombieAnimation::ZombieAnimation(Unit* unit) {
 		unit_ = unit;
 		connection_ = unit->addEventHandler(std::bind(&ZombieAnimation::unitEventHandler,this,std::placeholders::_1));
 

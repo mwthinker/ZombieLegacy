@@ -71,30 +71,11 @@ namespace zombie {
 				closestFraction_ = 100.f;
 				closest_ = nullptr;
 			}
+
 		private:
 			b2Fixture* closest_;
 			float closestFraction_;
-		};
-
-		class ContactCallback : public b2ContactListener {
-		public:
-			void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
-				Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
-				Object* ob2 = static_cast<Object*>(contact->GetFixtureB()->GetUserData());
-				
-				if (Unit* unit = dynamic_cast<Unit*>(ob1)) {
-					if (std::abs(impulse->normalImpulses[0]) > 1.f) {
-						unit->updateHealthPoint(-101.0);
-					}
-				}
-
-				if (Unit* unit = dynamic_cast<Unit*>(ob2)) {
-					if (std::abs(impulse->normalImpulses[1]) > 1.f) {
-						unit->updateHealthPoint(-101.0);
-					}
-				}
-			}
-		};
+		};		
 
 	}
 
@@ -113,7 +94,7 @@ namespace zombie {
 		started_ = false;
 		time_ = 0.0f;
 		timeToUpdateView_ = 0.25f; // Seconds in which the view is assumed to be constant in order to 
-		
+
 		// Speed up calculations.
 		timeToUpdateSpawn_ = 0.5f; // Time between spawns and unit clean ups.
 		timeSinceSpawn_ = 0.0f;
@@ -174,7 +155,7 @@ namespace zombie {
 			}
 
 			// Update the objects physics interactions.
-			world_->Step((float)timeStep,6,2);
+			world_->Step(timeStep,6,2);
 
 			// Move the time ahead.
 			time_ += timeStep;
@@ -441,16 +422,14 @@ namespace zombie {
 		std::cout << endP.x << " " << endP.y << std::endl;
 	}
 
-	bool ZombieGame::isVisible(UnitPtr unitToBeSeen, UnitPtr unitThatSees) const {
+	bool ZombieGame::isVisible(Unit* unitToBeSeen, Unit* unitThatSees) const {
 		return true;
 	}
 
 	void ZombieGame::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
-		Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
-		Object* ob2 = static_cast<Object*>(contact->GetFixtureB()->GetUserData());
-				
-		if (Unit* unit = dynamic_cast<Unit*>(ob1)) {
-			if (std::abs(impulse->normalImpulses[0]) > 0.5f) {
+		if (std::abs(impulse->normalImpulses[0]) > 0.8f) {
+			Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
+			if (Unit* unit = dynamic_cast<Unit*>(ob1)) {
 				unit->updateHealthPoint(-101.0);
 				Position p = unit->getPosition();
 				if (unit->isDead()) {
@@ -460,10 +439,9 @@ namespace zombie {
 					taskManager_->add(new BloodSplash(p.x,p.y,time_));
 				}
 			}
-		}
 
-		if (Unit* unit = dynamic_cast<Unit*>(ob2)) {
-			if (std::abs(impulse->normalImpulses[0]) > 0.5f) {
+			Object* ob2 = static_cast<Object*>(contact->GetFixtureB()->GetUserData());
+			if (Unit* unit = dynamic_cast<Unit*>(ob2)) {
 				unit->updateHealthPoint(-101.0);
 				Position p = unit->getPosition();
 				if (unit->isDead()) {
@@ -472,7 +450,9 @@ namespace zombie {
 				} else {
 					taskManager_->add(new BloodSplash(p.x,p.y,time_));
 				}
+
 			}
 		}
 	}
-} // namespace zombie
+
+} // Namespace zombie.

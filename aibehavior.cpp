@@ -14,6 +14,7 @@ namespace zombie {
 	AiBehavior::~AiBehavior() {
 	}
 
+	/*
 	SimpleZombieBehavior::SimpleZombieBehavior() {
 		timeBeforeInputChange_ = 5;
 		current_.forward_ = true;
@@ -170,5 +171,5 @@ namespace zombie {
 
 		return input;
 	}
-
+	*/
 } // namespace zombie.

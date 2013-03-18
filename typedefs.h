@@ -19,10 +19,6 @@ namespace zombie {
 	class Building;
 	typedef std::shared_ptr<Building> BuildingPtr;
 
-	class Unit;
-	typedef Unit* UnitPtr;
-	//typedef std::shared_ptr<Unit> UnitPtr;
-
 	class HumanPlayer;
 	typedef std::shared_ptr<HumanPlayer> HumanPlayerPtr;
 
@@ -30,7 +26,7 @@ namespace zombie {
 	typedef std::shared_ptr<AiPlayer> AiPlayerPtr;
 
 	class Player;
-	typedef std::shared_ptr<Player> PlayerPtr;	
+	typedef std::shared_ptr<Player> PlayerPtr;
 
 } // Namespace zombie.
 

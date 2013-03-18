@@ -9,6 +9,8 @@
 
 namespace zombie {
 
+	class Unit;
+
 	class AiPlayer : public Player {
 	public:
 		AiPlayer(AiBehaviorPtr behavior);
@@ -22,7 +24,7 @@ namespace zombie {
 
 		Input input_;
 		AiBehaviorPtr behavior_;
-		std::vector<UnitPtr> units_;
+		std::vector<Unit*> units_;
 	};
 
 } // namespace zombie.

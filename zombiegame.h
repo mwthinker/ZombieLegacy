@@ -25,7 +25,7 @@ namespace zombie {
 	class Car;
 	class Unit;
 	class Weapon;
-	class MovingObject;
+	class MovingObject;	
 
 	class ZombieGame : public b2ContactListener {
 	public:
@@ -79,7 +79,7 @@ namespace zombie {
 
 		typedef std::pair<HumanPlayerPtr,MovingObject*> PairHumanUnit;
 		typedef std::pair<AiPlayerPtr,Unit*> PairAiUnit;
-		typedef std::tuple<PlayerPtr,MovingObject*> PairPlayerUnit;
+		typedef std::pair<PlayerPtr,MovingObject*> PairPlayerUnit;
 
 		std::vector<PairHumanUnit> humanPlayers_;
 		std::vector<PairAiUnit> aiPlayers_;

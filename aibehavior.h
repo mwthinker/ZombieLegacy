@@ -8,16 +8,19 @@
 
 namespace zombie {
 
+	class Unit;
+
 	class AiBehavior {
 	public:
 		AiBehavior();
 		virtual ~AiBehavior();
 
-		virtual Input calculateInput(UnitPtr unit, const std::vector<Unit*>& units, double time) = 0;	
+		virtual Input calculateInput(Unit* unit, const std::vector<Unit*>& units, double time) = 0;
 	private:
 
 	};
 
+	/*
 	class SimpleZombieBehavior : public AiBehavior {
 	public:
 		SimpleZombieBehavior();
@@ -56,13 +59,14 @@ namespace zombie {
 		bool targetLocked();
 
 		bool randomWalk();
+
 	private: 
 		int timeBeforeInputChange_;
 		UnitPtr target_;
 		Input current_;
 		double time_;
-
 	};
+	*/
 
 } // namespace zombie.
 

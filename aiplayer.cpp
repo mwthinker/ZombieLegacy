@@ -10,11 +10,7 @@ namespace zombie {
 	}	
 
 	AiPlayer::AiPlayer() {
-		//behavior_ = AiBehaviorPtr(new SimpleZombieBehavior());
-		//behavior_ = AiBehaviorPtr(new AgressiveZombieBehavior());
-		//behavior_ = AiBehaviorPtr(new BoringZombieBehavior());
 		behavior_ = AiBehaviorPtr(new ZombieBehavior());
-		
 	}
 
 	Input AiPlayer::currentInput() {
@@ -25,7 +21,7 @@ namespace zombie {
 		input_ = behavior_->calculateInput(unit, units_, time);
 	}
 
-	void AiPlayer::updateUnitsInView(const std::vector<UnitPtr>& units) {
+	void AiPlayer::updateUnitsInView(const std::vector<Unit*>& units) {
 		units_ = units;
 	}
 

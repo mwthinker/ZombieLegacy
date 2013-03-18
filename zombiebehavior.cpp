@@ -19,7 +19,7 @@ namespace zombie {
 	ZombieBehavior::~ZombieBehavior() {
 	}
 
-	Input ZombieBehavior::calculateInput(UnitPtr unit, const std::vector<Unit*>& units, double time) {
+	Input ZombieBehavior::calculateInput(Unit* unit, const std::vector<Unit*>& units, double time) {
 		Input input;
 
 		// Target is valid and dead?
