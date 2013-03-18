@@ -154,6 +154,8 @@ namespace zombie {
 				movingOb->updatePhysics(time_, timeStep,input);
 			}
 
+			removeAllDeadUnits();
+
 			// Update the objects physics interactions.
 			world_->Step(timeStep,6,2);
 
@@ -212,8 +214,12 @@ namespace zombie {
 		// Draw map centered around first humna player.
 		glPushMatrix();
 
-		Position p = humanPlayers_[0].second->getBody()->GetPosition();
-		viewPosition_ += deltaTime * (p - viewPosition_);
+		b2Body* body = humanPlayers_[0].second->getBody();
+
+		if (body != nullptr) {
+			Position p = body->GetPosition();
+			viewPosition_ += deltaTime * (p - viewPosition_);
+		}
 
 		glTranslated(0.5, 0.5, 0);
 		glScaled(1.0/50,1.0/50,1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
@@ -451,6 +457,17 @@ namespace zombie {
 					taskManager_->add(new BloodSplash(p.x,p.y,time_));
 				}
 
+			}
+		}
+	}
+
+	void ZombieGame::removeAllDeadUnits() {
+		std::vector<Unit*> units;
+
+		for (PairPlayerUnit& pair : players_) {
+			MovingObject* movingOb = std::get<1>(pair);
+			if (movingOb->isDead()) {
+				//movingOb->removeBody();
 			}
 		}
 	}

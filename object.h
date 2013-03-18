@@ -17,6 +17,7 @@ namespace zombie {
 		}
 
 		virtual b2Body* getBody() const = 0;
+		virtual void removeBody() = 0;
 
 		static b2World* getWorld() {
 			return world_;

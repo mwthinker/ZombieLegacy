@@ -53,7 +53,6 @@ namespace zombie {
 	}
 
 	Unit::~Unit() {
-		getWorld()->DestroyBody(body_);
 	}
 
 	void Unit::updatePhysics(float time, float timeStep, Input input) {

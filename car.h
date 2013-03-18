@@ -14,7 +14,7 @@
 
 namespace zombie {
 
-	enum CarEvent {CAREVENT_EXPLODE, CAREVENT_ACCELERATE, CAREVENT_BRAKE};	
+	enum CarEvent {CAREVENT_EXPLODE, CAREVENT_ACCELERATE, CAREVENT_BRAKE};
 
 	class Car : public MovingObject {
 	public:
@@ -47,7 +47,6 @@ namespace zombie {
 		}
 
 		~Car() {
-			getWorld()->DestroyBody(body_);
 		}
 		
 		Unit* getDriver() const{
@@ -151,6 +150,13 @@ namespace zombie {
 
 		b2Body* getBody() const override {
 			return body_;
+		}
+
+		void removeBody() override {
+			if (body_ != nullptr) {
+				getWorld()->DestroyBody(body_);
+				body_ = nullptr;
+			}
 		}
 
 		void setShootCallback(std::function<void(Car*)> callbackShoot) {

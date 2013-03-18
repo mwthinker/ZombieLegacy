@@ -73,6 +73,7 @@ namespace zombie {
 		void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
 
 		void spawnAndCleanUpUnits();	// Spawns new zombies
+		void removeAllDeadUnits();
 
 		bool started_; // The game time is started.	
 		float time_; // Local game time.
