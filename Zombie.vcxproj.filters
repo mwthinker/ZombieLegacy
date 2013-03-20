@@ -81,9 +81,6 @@
     <ClInclude Include="gamesprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="quadtree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="linefeature.h">
       <Filter>Header Files</Filter>
     </ClInclude>

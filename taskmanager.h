@@ -1,7 +1,7 @@
 #ifndef TASKMANAGER_H
 #define TASKMANAGER_H
 
-#include "quadtree.h"
+#include <mw/quadtree.h>
 
 #include <list>
 #include <utility>
@@ -28,7 +28,7 @@ namespace zombie {
 		void runGraphicTask(GraphicTask* task, int i);
 
 		std::list<Task*> tasks_;
-		Quadtree<GraphicTask*> graphicMaptasks_;
+		mw::Quadtree<GraphicTask*> graphicMaptasks_;
 		std::list<GraphicTask*> graphicTasks_;
 
 		double time_;

@@ -9,7 +9,7 @@
 #include "tile.h"
 #include "input.h"
 #include "task.h"
-#include "quadtree.h"
+
 #include "taskmanager.h"
 #include "aiplayer.h"
 #include "survivaltimer.h"
@@ -22,6 +22,7 @@
 #include <SDL.h>
 #include <memory>
 #include <vector>
+#include <mw/quadtree.h>
 
 #include <string>
 #include <fstream>
@@ -286,7 +287,7 @@ namespace zombie {
 		//Map mapTile1 = loadTile("housesFME.mif","roadsFME.mif",100);
 		//map_ = createTiledMap(mapTile1);
 
-		buildings_ = Quadtree<BuildingPtr>(map_.minX(),map_.minY(),map_.width(),map_.height(),4);
+		buildings_ = mw::Quadtree<BuildingPtr>(map_.minX(),map_.minY(),map_.width(),map_.height(),4);
 
 		taskManager_->add(new MapDraw(map_));
 		taskManager_->add(new RoadDraw(map_));

@@ -101,7 +101,6 @@
     <ClInclude Include="pathfinder.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="gamesound.h" />
-    <ClInclude Include="quadtree.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="survivaltimer.h" />
     <ClInclude Include="task.h" />

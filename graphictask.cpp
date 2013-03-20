@@ -80,7 +80,7 @@ namespace zombie {
 		glScaled(unit_->radius()*0.9,unit_->radius()*0.9,1);
 		glRotated(unit_->getState().angle_*180/mw::PI,0,0,1);
 		mw::TexturePtr texture = sprites_[index_].getTexture();
-		glScaled(texture->getTexWidth()/128.0,texture->getTexHeight()/128.0,1);
+		glScaled(texture->getWidth()/128.0,texture->getHeight()/128.0,1);
 		sprites_[index_].draw();
 		glPopMatrix();
 	}
@@ -243,8 +243,8 @@ namespace zombie {
 
 		double maxX = map_.maxX();
 		double maxY = map_.maxY();
-		double tH = grassTexture->getTexHeight()*1.0 / grassTexture->getPixHeight();
-		double tW = grassTexture->getTexWidth()*1.0 / grassTexture->getPixWidth();
+		double tH = 1.0;
+		double tW = 1.0;
 
 		glBegin(GL_QUADS);
 		for (double x = map_.minX(); x < maxX; x += 10.0) {

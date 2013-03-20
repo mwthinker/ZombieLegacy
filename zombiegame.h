@@ -4,7 +4,6 @@
 #include "inputkeyboard.h"
 //#include "inputjoystick.h"
 
-#include "quadtree.h"
 #include "input.h"
 #include "map.h"
 #include "bullet.h"
@@ -13,6 +12,7 @@
 
 #include <Box2D/Box2D.h>
 #include <SDL.h>
+#include <mw/quadtree.h>
 
 #include <memory>
 #include <vector>
@@ -86,7 +86,7 @@ namespace zombie {
 		std::vector<PairAiUnit> aiPlayers_;
 		std::vector<PairPlayerUnit> players_; // All units.
 
-		Quadtree<BuildingPtr> buildings_; // All buildings.
+		mw::Quadtree<BuildingPtr> buildings_; // All buildings.
 		TaskManager* taskManager_;
 
 		int indexAiPlayer_;
