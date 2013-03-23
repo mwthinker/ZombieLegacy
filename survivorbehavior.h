@@ -24,7 +24,7 @@ namespace zombie {
 
 		double timeToUpdateAngleDirection_;
 		double targetAngle_;
-		bool forward_;
+		bool forward_, backward_;
 	};
 
 } // Namespace zombie.

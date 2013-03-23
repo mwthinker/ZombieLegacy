@@ -68,6 +68,10 @@ namespace zombie {
 			return weapon_;
 		}
 
+		double getAngle() const {
+			return angle_;
+		}
+
 		Position getPosition() const {
 			return Position(body_->GetPosition().x,body_->GetPosition().y);
 		}

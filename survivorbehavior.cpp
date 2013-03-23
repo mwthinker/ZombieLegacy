@@ -13,6 +13,7 @@ namespace zombie {
 		timeToUpdateAngleDirection_ = random() * 1;
 		targetAngle_ = random() * mw::PI * 2;
 		forward_ = true;
+		backward_ = false;
 		target_ = nullptr;
 	}
 
@@ -21,7 +22,7 @@ namespace zombie {
 
 	Input SurvivorBehavior::calculateInput(Unit* unit, const std::vector<Unit*>& units, double time) {
 		Input input;
-
+		
 		// Target is valid and dead?
 		if (target_ != nullptr && target_ ->isDead()) {
 			target_ = nullptr;
@@ -45,7 +46,15 @@ namespace zombie {
 				// Target is in range?
 				if (distSquared < unit->getWeapon().range()*unit->getWeapon().range()) {
 					// Attack!
-					input.shoot_ = true;
+					if((targetAngle_ - unit->getAngle())*(targetAngle_ - unit->getAngle()) < 0.05 ) {
+						input.shoot_ = true;
+						forward_ = false;
+						backward_ = random() > 0.50;
+					} else {
+						backward_ = false;
+					}
+				} else {
+					backward_ = false;
 				}
 			} else {
 				targetAngle_ += (random()-0.5)*2 * mw::PI * 2 * 0.1;
@@ -65,7 +74,7 @@ namespace zombie {
 		}
 
 		input.forward_ = forward_;
-
+		input.backward_ = backward_;
 		return input;
 	}
 

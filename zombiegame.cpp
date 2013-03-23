@@ -103,7 +103,7 @@ namespace zombie {
 		timeToUpdateSpawn_ = 0.5f; // Time between spawns and unit clean ups.
 		timeSinceSpawn_ = 0.0f;
 		indexAiPlayer_ = 0;
-		unitLevel_ = 50;
+		unitLevel_ = 200;
 		innerSpawnRadius_ = 10.f;
 		outerSpawnRadius_ = 40.f;
 
@@ -328,9 +328,9 @@ namespace zombie {
 			addNewAi(zombie);
 		}
 
-		for (int i = 1; i < 5; i++) {
-			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,innerSpawnRadius_);
-			Unit* survivor = createUnit(spawn.x,spawn.x,0.f,Weapon(35,0.5,8,12),false);
+		for (int i = 1; i < 100; i++) {
+			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,10);
+			Unit* survivor = createUnit(spawn.x,spawn.y,0.f,Weapon(35,0.5,8,120),false);
 			addNewAi(survivor);
 		}
 
