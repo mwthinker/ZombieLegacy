@@ -10,6 +10,9 @@
 #include "input.h"
 #include "task.h"
 
+#include "zombiebehavior.h"
+#include "survivorbehavior.h"
+
 #include "taskmanager.h"
 #include "aiplayer.h"
 #include "survivaltimer.h"
@@ -265,12 +268,15 @@ namespace zombie {
 	}
 
 	void ZombieGame::addNewAi(Unit* unit) {
+		AiBehaviorPtr b;
 		if (unit->isInfected()) {
 			taskManager_->add(new ZombieAnimation(unit));
+			b = std::make_shared<ZombieBehavior>();
 		} else {
 			taskManager_->add(new HumanAnimation(unit));
+			b = std::make_shared<SurvivorBehavior>();
 		}
-		AiPlayerPtr aiPlayer(new AiPlayer());
+		AiPlayerPtr aiPlayer(new AiPlayer(b));
 		aiPlayers_.push_back(PairAiUnit(aiPlayer,unit));
 		players_.push_back(PairPlayerUnit(aiPlayer,unit,nullptr));
 	}
@@ -322,7 +328,7 @@ namespace zombie {
 			addNewAi(zombie);
 		}
 
-		for (int i = 5; i < 5; i++) {
+		for (int i = 1; i < 5; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,innerSpawnRadius_);
 			Unit* survivor = createUnit(spawn.x,spawn.x,0.f,Weapon(35,0.5,8,12),false);
 			addNewAi(survivor);
