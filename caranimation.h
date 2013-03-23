@@ -10,7 +10,7 @@ namespace zombie {
 
 	class CarAnimation : public GraphicTask {
 	public:
-		CarAnimation(Car* car);
+		CarAnimation(Car* carParam);
 		~CarAnimation();
 		
 		void drawSecond(double time) override;
@@ -19,6 +19,7 @@ namespace zombie {
 	private:
 		void draw(double timestep);		
 		
+		mw::Sprite s_;
 		Car* car_;
 		double lastTime_;
 	};

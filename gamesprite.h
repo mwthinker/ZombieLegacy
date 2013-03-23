@@ -22,6 +22,7 @@ namespace zombie {
 	extern const mw::Sprite human3;
 
 	extern const mw::Sprite blood;
+	extern const mw::Sprite car;
 
 } // Namespace zombie.
 

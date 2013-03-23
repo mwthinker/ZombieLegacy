@@ -21,5 +21,6 @@ namespace zombie {
 	const mw::Sprite human3("images/human/human3.png");
 
 	const mw::Sprite blood("images/blood.png");
+	const mw::Sprite car("images/car.png");
 
 } // Namespace zombie.
