@@ -22,7 +22,56 @@ namespace zombie {
 
 	Input SurvivorBehavior::calculateInput(Unit* unit, const std::vector<Unit*>& units, double time) {
 		Input input;
+		// extract information from memory
+		// analyze situation - enviroment and units when neccesarry
+		// make decision on what activity to perform
+
+		// PANIC
+		ACTIVITY a;
+		a = PANIC;
 		
+		return activityToInput(a);
+	}
+
+	Input SurvivorBehavior::activityToInput(ACTIVITY a) {
+		Input input;
+		switch(a) {
+			case PANIC:
+				input.turnLeft_ = true;
+			break;
+			case FLEE:
+				input.forward_ = true;
+			break;
+
+		}
+		return input;
+	}
+
+	Unit* SurvivorBehavior::findUninfectedTarget(Position position, const std::vector<Unit*>& units) const {			
+		Unit* target(nullptr);
+		double distant = 100;
+		for (Unit* unit : units) {
+			// Not infected?
+			if (unit->isInfected()) {
+				double tmp = (position - unit->getPosition()).LengthSquared();					
+				// Closer?
+				if (tmp < distant) {
+					target = unit;
+					distant = tmp;
+				}
+			}
+		}
+
+		return target;
+	}
+
+} // Namespace zombie.
+
+
+
+// OLD CODE
+/*
+
 		// Target is valid and dead?
 		if (target_ != nullptr && target_ ->isDead()) {
 			target_ = nullptr;
@@ -75,25 +124,4 @@ namespace zombie {
 
 		input.forward_ = forward_;
 		input.backward_ = backward_;
-		return input;
-	}
-
-	Unit* SurvivorBehavior::findUninfectedTarget(Position position, const std::vector<Unit*>& units) const {			
-		Unit* target(nullptr);
-		double distant = 100;
-		for (Unit* unit : units) {
-			// Not infected?
-			if (unit->isInfected()) {
-				double tmp = (position - unit->getPosition()).LengthSquared();					
-				// Closer?
-				if (tmp < distant) {
-					target = unit;
-					distant = tmp;
-				}
-			}
-		}
-
-		return target;
-	}
-
-} // Namespace zombie.
+		*/
