@@ -33,14 +33,14 @@ namespace zombie {
 		ZombieGame(int width = 500, int height = 500);
 		~ZombieGame();
 
-		// Starts the game. The connection need to be active else nothing happens.
+		// Starts the game.
 		void startGame();
 
 		// Draws the graphic and (deltaTime) should be the time past 
 		// from the previous call to this funtion.
 		void update(float deltaTime);
 
-		// Makes the game reacting on the evennt (windowEvent).
+		// Makes the game reacting on an event (windowEvent).
 		void eventUpdate(const SDL_Event& windowEvent);
 
 		void zoom(double scale);
@@ -66,42 +66,38 @@ namespace zombie {
 		void initGame();
 
 		// Returns a vector of all units visible by the unit (unit).
-		std::vector<Unit*> calculateUnitsInView(Unit* unit);	
+		std::vector<Unit*> calculateUnitsInView(Unit* unit);
 
 		void doAction(Unit* unit);
 		void doShotDamage(Unit* shooter, const Bullet& properties);
 		bool isVisible(Unit* unitToBeSeen, Unit* unitThatSees) const;
 		void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
 
-		void spawnAndCleanUpUnits();	// Spawns new zombies.
+		void spawnAndCleanUpUnits(); // Spawns new zombies.
 
-		bool started_; // The game time is started.	
+		bool started_; // The game is started.
 		float time_; // Local game time.
 		
 		typedef std::pair<PlayerPtr,MovingObject*> PairPlayerUnit;
 		
 		std::list<PairPlayerUnit> players_; // All units.
-
-		mw::Quadtree<BuildingPtr> buildings_; // All buildings.
+		
 		TaskManager* taskManager_;
 
-		float timeToUpdateView_;
-		float timeToUpdateSpawn_;
-		float timeSinceSpawn_;
-
-		int unitLevel_; // Specifies the wanted number of zombies on the map
+		int unitLevel_; // Specifies the wanted number of zombies on the map.
 		double scale_;
 		float innerSpawnRadius_;
 		float outerSpawnRadius_;
 		Map map_;
 
+		// The view is centered in.
 		Position viewPosition_;
 
+		// Fix timestep.
 		float timeStep_;
 		float accumulator_;
 
 		b2World* world_;
-		Bullet lastBullet_;
 
 		mw::Signal<const SDL_Event&> sdlEventSignal_;
 	};

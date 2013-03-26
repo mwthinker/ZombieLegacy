@@ -97,11 +97,7 @@ namespace zombie {
 
 		started_ = false;
 		time_ = 0.0f;
-		timeToUpdateView_ = 0.25f; // Seconds in which the view is assumed to be constant in order to 
-
-		// Speed up calculations.
-		timeToUpdateSpawn_ = 0.5f; // Time between spawns and unit clean ups.
-		timeSinceSpawn_ = 0.0f;
+				
 		unitLevel_ = 200;
 		innerSpawnRadius_ = 10.f;
 		outerSpawnRadius_ = 40.f;
@@ -125,12 +121,7 @@ namespace zombie {
 	void ZombieGame::updatePhysics(float timeStep) {
 		// Game is started?
 		if (started_) {
-			// Spawn and clean up units
-			if (timeSinceSpawn_ > timeToUpdateSpawn_) {
-				spawnAndCleanUpUnits();
-				timeSinceSpawn_ = 0;
-			}
-			timeSinceSpawn_ += timeStep;
+			spawnAndCleanUpUnits();
 			
 			// Update the view.
 			for (PairPlayerUnit& pair : players_) {
@@ -276,8 +267,6 @@ namespace zombie {
 		//Map mapTile1 = loadTile("housesFME.mif","roadsFME.mif",100);
 		//map_ = createTiledMap(mapTile1);
 
-		buildings_ = mw::Quadtree<BuildingPtr>(map_.minX(),map_.minY(),map_.width(),map_.height(),4);
-
 		taskManager_->add(new MapDraw(map_));
 		taskManager_->add(new RoadDraw(map_));
 
@@ -382,7 +371,6 @@ namespace zombie {
 	void ZombieGame::doShotDamage(Unit* shooter, const Bullet& bullet) {
 		b2Vec2 dir(std::cos(bullet.direction_),std::sin(bullet.direction_));
 		b2Vec2 endP = shooter->getPosition() + bullet.range_ * dir;
-		lastBullet_ = bullet;
 
 		ClosestRayCastCallback callback;		
 
@@ -396,7 +384,7 @@ namespace zombie {
 			if (Unit* target = dynamic_cast<Unit*>(ob)) {
 				// Target alive?
 				if (!target->isDead()) {
-					target->updateHealthPoint(-lastBullet_.damage_);
+					target->updateHealthPoint(-bullet.damage_);
 					endP = target->getPosition();
 					// Target killed?
 					if (target->isDead()) {
