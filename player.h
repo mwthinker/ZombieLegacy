@@ -4,7 +4,11 @@
 #include "input.h"
 #include "player.h"
 
+#include <vector>
+
 namespace zombie {
+
+class Unit;
 
 class Player {
 public:
@@ -12,6 +16,9 @@ public:
 	}
 
 	virtual Input currentInput() = 0;
+
+	virtual void calculateInput(Unit* unit, double time) = 0;
+	virtual void updateUnitsInView(const std::vector<Unit*>& units) = 0;
 };
 
 } // namespace zombie.

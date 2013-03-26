@@ -13,6 +13,7 @@
 #include <Box2D/Box2D.h>
 #include <SDL.h>
 #include <mw/quadtree.h>
+#include <mw/signal.h>
 
 #include <memory>
 #include <vector>
@@ -72,24 +73,18 @@ namespace zombie {
 		bool isVisible(Unit* unitToBeSeen, Unit* unitThatSees) const;
 		void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
 
-		void spawnAndCleanUpUnits();	// Spawns new zombies
-		void removeAllDeadUnits();
+		void spawnAndCleanUpUnits();	// Spawns new zombies.
 
 		bool started_; // The game time is started.	
 		float time_; // Local game time.
-
-		typedef std::pair<HumanPlayerPtr,MovingObject*> PairHumanUnit;
-		typedef std::pair<AiPlayerPtr,Unit*> PairAiUnit;
+		
 		typedef std::pair<PlayerPtr,MovingObject*> PairPlayerUnit;
-
-		std::vector<PairHumanUnit> humanPlayers_;
-		std::vector<PairAiUnit> aiPlayers_;
-		std::vector<PairPlayerUnit> players_; // All units.
+		
+		std::list<PairPlayerUnit> players_; // All units.
 
 		mw::Quadtree<BuildingPtr> buildings_; // All buildings.
 		TaskManager* taskManager_;
 
-		int indexAiPlayer_;
 		float timeToUpdateView_;
 		float timeToUpdateSpawn_;
 		float timeSinceSpawn_;
@@ -107,6 +102,8 @@ namespace zombie {
 
 		b2World* world_;
 		Bullet lastBullet_;
+
+		mw::Signal<const SDL_Event&> sdlEventSignal_;
 	};
 
 } // namespace zombie
