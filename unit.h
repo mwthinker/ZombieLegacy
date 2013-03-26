@@ -10,7 +10,7 @@
 #include <Box2D/Box2D.h>
 
 #include <functional>
-#include <boost/signal.hpp>
+#include <mw/signal.h>
 
 namespace zombie {
 
@@ -82,9 +82,9 @@ namespace zombie {
 			return circle->m_radius;
 		}
 
-		boost::signals::connection addActionHandler(std::function<void(Unit*)> handler);
-		boost::signals::connection addEventHandler(std::function<void(UnitEvent)> handler);
-		boost::signals::connection addShootHandler(std::function<void(Unit*, const Bullet& bullet)> handler);
+		mw::signals::Connection addActionHandler(std::function<void(Unit*)> handler);
+		mw::signals::Connection addEventHandler(std::function<void(UnitEvent)> handler);
+		mw::signals::Connection addShootHandler(std::function<void(Unit*, const Bullet& bullet)> handler);
 
 		b2Body* getBody() const override {
 			return body_;
@@ -117,9 +117,9 @@ namespace zombie {
 
 		float timeLeftToRun_;
 
-		boost::signal<void(Unit*)> actionSignal_;
-		boost::signal<void(Unit*, Bullet)> shootSignal_;
-		boost::signal<void(UnitEvent)> eventSignal_;
+		mw::Signal<Unit*> actionSignal_;
+		mw::Signal<Unit*, Bullet> shootSignal_;
+		mw::Signal<UnitEvent> eventSignal_;
 
 		b2Body* body_;
 	};

@@ -177,15 +177,15 @@ namespace zombie {
 		return angle_;
 	}
 
-	boost::signals::connection Unit::addActionHandler(std::function<void(Unit*)> handler) {
+	mw::signals::Connection Unit::addActionHandler(std::function<void(Unit*)> handler) {
 		return actionSignal_.connect(handler);
 	}
 
-	boost::signals::connection Unit::addEventHandler(std::function<void(UnitEvent)> handler) {
+	mw::signals::Connection Unit::addEventHandler(std::function<void(UnitEvent)> handler) {
 		return eventSignal_.connect(handler);
 	}
 
-	boost::signals::connection Unit::addShootHandler(std::function<void(Unit*, const Bullet&)> handler) {
+	mw::signals::Connection Unit::addShootHandler(std::function<void(Unit*, const Bullet&)> handler) {
 		return shootSignal_.connect(handler);
 	}
 

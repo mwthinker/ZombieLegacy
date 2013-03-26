@@ -13,7 +13,7 @@
 #include "color.h"
 
 #include <mw/text.h>
-#include <boost/signal.hpp>
+#include <mw/signal.h>
 
 namespace zombie {
 
@@ -39,7 +39,7 @@ namespace zombie {
 	private:
 		void draw(double timestep);
 
-		boost::signals::connection connection_;
+		mw::signals::Connection connection_;
 		Unit* unit_;
 		double timeNewFrame_;
 		int index_;
@@ -61,7 +61,7 @@ namespace zombie {
 	private:
 		void draw(double timestep);
 		
-		boost::signals::connection connection_;
+		mw::signals::Connection connection_;
 		Unit* unit_;
 		double timeNewFrame_;
 		int index_;
