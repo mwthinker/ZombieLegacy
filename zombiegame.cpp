@@ -126,25 +126,25 @@ namespace zombie {
 			spawnAndCleanUpUnits();
 			
 			// Update the view.
-			for (PairPlayerUnit& pair : players_) {
-				Unit* unit = dynamic_cast<Unit*>(pair.second);
+			for (TuplePlayerUnitGraphic& tuple : players_) {
+				Unit* unit = dynamic_cast<Unit*>(std::get<1>(tuple));
 				if (unit) {
 					std::vector<Unit*> unitsInView = calculateUnitsInView(unit);
-					pair.first->updateUnitsInView(unitsInView);
+					std::get<0>(tuple)->updateUnitsInView(unitsInView);
 				}
 			}
 
 			// Calculate all inputs.
-			for (auto& pair : players_) {
-				PlayerPtr player = pair.first;
-				Unit* unit = dynamic_cast<Unit*>(pair.second);
+			for (auto& tuple : players_) {
+				PlayerPtr player = std::get<0>(tuple);
+				Unit* unit = dynamic_cast<Unit*>(std::get<1>(tuple));
 				if (unit) {
 					player->calculateInput(unit,time_);
 				}
 			}
 
 			// Update all units.
-			for (PairPlayerUnit& pair : players_) {
+			for (TuplePlayerUnitGraphic& pair : players_) {
 				MovingObject* movingOb = std::get<1>(pair);
 				Input input = std::get<0>(pair)->currentInput();
 				movingOb->updatePhysics(time_, timeStep,input);
@@ -159,14 +159,14 @@ namespace zombie {
 	}
 
 	void ZombieGame::spawnAndCleanUpUnits() {
-		Position center = players_.front().second->getBody()->GetPosition();
+		Position center = std::get<1>(players_.front())->getBody()->GetPosition();
 
 		// Delete units outside of perimiter.
 		MovingObject* temp = nullptr;
-		players_.remove_if([&](const PairPlayerUnit& pair) {
-			Position unitPos = pair.second->getBody()->GetPosition();
+		players_.remove_if([&](const TuplePlayerUnitGraphic& tuple) {
+			Position unitPos = std::get<1>(tuple)->getBody()->GetPosition();
 			if ( (unitPos-center).LengthSquared() > outerSpawnRadius_*outerSpawnRadius_ ) {
-				pair.second->kill();
+				std::get<1>(tuple)->kill();
 				return true;
 			}
 			return false;
@@ -199,7 +199,7 @@ namespace zombie {
 		// Draw map centered around first humna player.
 		glPushMatrix();
 
-		b2Body* body = players_.front().second->getBody();
+		b2Body* body = std::get<1>(players_.front())->getBody();
 
 		if (body != nullptr) {
 			Position p = body->GetPosition();
@@ -241,7 +241,7 @@ namespace zombie {
 	void ZombieGame::addHuman(HumanPlayerPtr human, Unit* unit) {
 		taskManager_->add(new HumanAnimation(unit));
 		taskManager_->add(new HumanStatus(unit,HumanStatus::ONE));
-		players_.push_back(PairPlayerUnit(human,unit));
+		players_.push_back(TuplePlayerUnitGraphic(human,unit,nullptr));
 	}
 
 	void ZombieGame::addNewAi(Unit* unit) {
@@ -254,7 +254,7 @@ namespace zombie {
 			b = std::make_shared<SurvivorBehavior>();
 		}
 		AiPlayerPtr aiPlayer(new AiPlayer(b));
-		players_.push_back(PairPlayerUnit(aiPlayer,unit));
+		players_.push_back(TuplePlayerUnitGraphic(aiPlayer,unit,nullptr));
 	}
 
 	void ZombieGame::addNewCar(Car* car) {
@@ -293,7 +293,7 @@ namespace zombie {
 			humanPlayer = HumanPlayerPtr(new InputKeyboard(SDLK_w,SDLK_s,SDLK_a,SDLK_d,SDLK_f,SDLK_g,SDLK_h));
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
 			Car* car = new Car(spawn.x,spawn.y);
-			players_.push_back(PairPlayerUnit(humanPlayer,car));
+			players_.push_back(TuplePlayerUnitGraphic(humanPlayer,car,nullptr));
 			addNewCar(car);
 			auto connection = sdlEventSignal_.connect(std::bind(&HumanPlayer::eventUpdate,humanPlayer,std::placeholders::_1));
 			humanPlayer->setConnection(connection);

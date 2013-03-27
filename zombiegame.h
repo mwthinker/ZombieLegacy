@@ -7,6 +7,7 @@
 #include "input.h"
 #include "map.h"
 #include "bullet.h"
+#include "graphicobject.h"
 
 #include "typedefs.h"
 
@@ -78,9 +79,9 @@ namespace zombie {
 		bool started_; // The game is started.
 		float time_; // Local game time.
 		
-		typedef std::pair<PlayerPtr,MovingObject*> PairPlayerUnit;
+		typedef std::tuple<PlayerPtr,MovingObject*,GraphicObject*> TuplePlayerUnitGraphic;
 		
-		std::list<PairPlayerUnit> players_; // All units.
+		std::list<TuplePlayerUnitGraphic> players_; // All units.
 		
 		TaskManager* taskManager_;
 
