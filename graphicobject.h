@@ -5,6 +5,8 @@ namespace zombie {
 
 	class GraphicObject {
 	public:
+		virtual ~GraphicObject() {
+		}
 		virtual void draw(float timestep) = 0;
 	};
 
