@@ -8,18 +8,18 @@
 
 namespace zombie {
 
-class Unit;
+	class Unit;
 
-class Player {
-public:
-	virtual ~Player() {
-	}
+	class Player {
+	public:
+		virtual ~Player() {
+		}
 
-	virtual Input currentInput() = 0;
+		virtual Input currentInput() = 0;
 
-	virtual void calculateInput(Unit* unit, double time) = 0;
-	virtual void updateUnitsInView(const std::vector<Unit*>& units) = 0;
-};
+		virtual void calculateInput(Unit* unit, double time) = 0;
+		virtual void updateUnitsInView(const std::vector<Unit*>& units) = 0;
+	};
 
 } // namespace zombie.
 

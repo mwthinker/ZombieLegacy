@@ -14,10 +14,6 @@ TaskManager::~TaskManager() {
 		delete task;
 	}
 
-	for (GraphicTask* task : graphicMaptasks_) {
-		delete task;
-	}
-
 	for (GraphicTask* task : graphicTasks_) {
 		delete task;
 	}
@@ -31,23 +27,11 @@ void TaskManager::add(GraphicTask* task) {
 	graphicTasks_.push_back(task);
 }
 
-void TaskManager::add(GraphicTask* task, double x, double y, double width, double height) {
-	graphicMaptasks_.add(task,x,y,width,height);
-}
-
-void TaskManager::add(GraphicTask* task, double x, double y, double radius) {
-	graphicMaptasks_.add(task,x,y,radius);
-}
-
 void TaskManager::update(double deltaTime) {
 	// for each Task, call execute
 	time_ += deltaTime;
 	
 	for (int i = 0; i < 3; ++i) {
-		for (GraphicTask* task : graphicMaptasks_) {
-			runGraphicTask(task,i);
-		}
-
 		for (GraphicTask* task : graphicTasks_) {
 			runGraphicTask(task,i);
 		}
