@@ -11,6 +11,7 @@ namespace zombie {
 		connection_ = unit->addEventHandler(std::bind(&HumanAnimation::unitEventHandler,this,std::placeholders::_1));
 
 		timeNewFrame_ = 0.0;
+		time_ = 0.0;
 		index_ = 0;
 		lastTime_ = 0.0;
 		color_ = Color();
@@ -25,28 +26,22 @@ namespace zombie {
 		connection_.disconnect();
 	}
 
-	void HumanAnimation::drawSecond(double time) {
-		lastTime_ = time;
-		draw(0.0);
+	// private
+	void HumanAnimation::draw(float timestep) {
+		time_ += timestep;
+		lastTime_ = time_;
 
 		// Time is much larger?
-		if (time > timeNewFrame_ + 1) {
+		if (time_ > timeNewFrame_ + 1) {
 			// In order for frames to sync to current time.
-			timeNewFrame_ = 0.18 + time;
+			timeNewFrame_ = 0.18 + time_;
 		}
 
-		if (time > timeNewFrame_) {
+		if (time_ > timeNewFrame_) {
 			index_ = (1 + index_) % sprites_.size();
 			timeNewFrame_ += 0.18;
 		}
-	}
 
-	bool HumanAnimation::isRunning() const {
-		return !unit_->isDead();
-	}
-
-	// private
-	void HumanAnimation::draw(double timestep) {
 		Position p = unit_->getPosition();
 
 		// Draw body

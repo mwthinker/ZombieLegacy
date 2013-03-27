@@ -1,6 +1,8 @@
 #include "caranimation.h"
 #include "car.h"
 
+#include "gamesprite.h"
+
 #include <SDL_opengl.h>
 
 namespace zombie {	
@@ -8,22 +10,17 @@ namespace zombie {
 	CarAnimation::CarAnimation(Car* carParam) {
 		car_ = carParam;
 		s_ = car;
+		time_ = 0.0;
 	}
 
 	CarAnimation::~CarAnimation() {
 	}
 
-	void CarAnimation::drawSecond(double time) {
-		lastTime_ = time;
-		draw(0.0);
-	}
-
-	bool CarAnimation::isRunning() const {
-		return true;
-	}
-
 	// private
-	void CarAnimation::draw(double timestep) {
+	void CarAnimation::draw(float timestep) {
+		time_ += timestep;
+		lastTime_ = time_;
+
 		glPushMatrix();
 		State state = car_->state();
 		

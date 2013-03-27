@@ -11,6 +11,7 @@ namespace zombie {
 
 		timeNewFrame_ = 0.0;
 		color_ = Color();
+		time_ = 0.0;
 
 		sprites_.push_back(zombie1);
 		sprites_.push_back(zombie2);
@@ -25,27 +26,20 @@ namespace zombie {
 		connection_.disconnect();
 	}
 
-	void ZombieAnimation::drawSecond(double time) {
-		draw(0.0);
-		//if (walk_) 
+	void ZombieAnimation::draw(float timestep) {
+		time_ += timestep;
 
 		// Time is much larger?
-		if (time > timeNewFrame_ + 1) {
+		if (time_ > timeNewFrame_ + 1) {
 			// In order for frames to sync to current time.
-			timeNewFrame_ = 0.18 + time;
+			timeNewFrame_ = 0.18 + time_;
 		}
 
-		if (time > timeNewFrame_) {
+		if (time_ > timeNewFrame_) {
 			index_ = (1 + index_) % sprites_.size();
 			timeNewFrame_ += 0.18;
 		}
-	}
 
-	bool ZombieAnimation::isRunning() const {
-		return !unit_->isDead();
-	}
-
-	void ZombieAnimation::draw(double timestep) {
 		Position p = unit_->getPosition();
 
 		// Draw body

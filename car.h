@@ -47,6 +47,7 @@ namespace zombie {
 		}
 
 		~Car() {
+			getWorld()->DestroyBody(body_);
 		}
 		
 		Unit* getDriver() const{
@@ -150,13 +151,6 @@ namespace zombie {
 
 		b2Body* getBody() const override {
 			return body_;
-		}
-
-		void removeBody() override {
-			if (body_ != nullptr) {
-				getWorld()->DestroyBody(body_);
-				body_ = nullptr;
-			}
 		}
 
 		void setShootCallback(std::function<void(Car*)> callbackShoot) {
