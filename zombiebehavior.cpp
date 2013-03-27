@@ -22,6 +22,10 @@ namespace zombie {
 	Input ZombieBehavior::calculateInput(Unit* unit, const std::vector<Unit*>& units, double time) {
 		Input input;
 
+		if (!connectionToTaget_.connected()) {
+			target_ = nullptr;
+		}
+
 		// Target is valid and dead?
 		if (target_ != nullptr && target_ ->isDead()) {
 			target_ = nullptr;
@@ -29,7 +33,11 @@ namespace zombie {
 
 		if (time > findNewTargetTime_) {
 			findNewTargetTime_ = random() * 3 + time;
-			target_ = findUninfectedTarget(unit->getPosition(), units);				
+			connectionToTaget_.disconnect();
+			target_ = findUninfectedTarget(unit->getPosition(), units);
+			if (target_ != nullptr) {
+				target_->addEventHandler(std::bind(&ZombieBehavior::unitEventHandler,this,std::placeholders::_1));
+			}
 		}
 
 		if (time > timeToUpdateAngleDirection_) {
@@ -82,9 +90,11 @@ namespace zombie {
 					distant = tmp;
 				}
 			}
-		}
-
+		}		
 		return target;
+	}
+
+	void ZombieBehavior::unitEventHandler(Unit::UnitEvent unitEvent) {
 	}
 
 } // Namespace zombie.

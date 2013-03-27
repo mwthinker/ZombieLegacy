@@ -52,7 +52,8 @@ namespace zombie {
 		timeLeftToRun_ = 5.f;
 	}
 
-	Unit::~Unit() {
+	Unit::~Unit() {		
+		getWorld()->DestroyBody(body_);
 	}
 
 	void Unit::updatePhysics(float time, float timeStep, Input input) {

@@ -61,8 +61,6 @@ namespace zombie {
 		// Add a new ai (unitPtr) to the game.
 		void addNewAi(Unit* unit);
 
-		void addNewCar(Car* car);
-
 		// Inits the game.
 		void initGame();
 

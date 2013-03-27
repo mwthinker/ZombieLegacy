@@ -161,16 +161,21 @@ namespace zombie {
 	void ZombieGame::spawnAndCleanUpUnits() {
 		Position center = std::get<1>(players_.front())->getBody()->GetPosition();
 
-		// Delete units outside of perimiter.
+		// Delete units outside of perimiter and dead units.
 		MovingObject* temp = nullptr;
 		players_.remove_if([&](const TuplePlayerUnitGraphic& tuple) {
 			Position unitPos = std::get<1>(tuple)->getBody()->GetPosition();
-			if ( (unitPos-center).LengthSquared() > outerSpawnRadius_*outerSpawnRadius_ ) {
+			bool outside = (unitPos-center).LengthSquared() > outerSpawnRadius_*outerSpawnRadius_;
+			bool dead = std::get<1>(tuple)->isDead();
+
+			if (outside || dead) {
 				std::get<1>(tuple)->kill();
+				delete std::get<1>(tuple);
+				delete std::get<2>(tuple);
 				return true;
 			}
 			return false;
-		});
+		});		
 
 		// Spawn new units.
 		int nbrOfZombies = players_.size();
@@ -218,9 +223,22 @@ namespace zombie {
 		// Game is started?
 		if (started_) {
 			taskManager_->update(deltaTime);
+			for (auto& tuple : players_) {
+				GraphicObject* ob = std::get<2>(tuple);
+				if (ob != nullptr) {
+					ob->draw(deltaTime);
+				}
+			}
 		} else {
 			taskManager_->update(0.0);
-		}
+			for (auto& tuple : players_) {
+				GraphicObject* ob = std::get<2>(tuple);
+				if (ob != nullptr) {
+					ob->draw(0.0);
+				}
+			}
+		}		
+
 		glPopMatrix();
 	}
 
@@ -239,26 +257,20 @@ namespace zombie {
 	}
 
 	void ZombieGame::addHuman(HumanPlayerPtr human, Unit* unit) {
-		taskManager_->add(new HumanAnimation(unit));
 		taskManager_->add(new HumanStatus(unit,HumanStatus::ONE));
-		players_.push_back(TuplePlayerUnitGraphic(human,unit,nullptr));
+		players_.push_back(TuplePlayerUnitGraphic(human,unit,new HumanAnimation(unit)));
 	}
 
 	void ZombieGame::addNewAi(Unit* unit) {
-		AiBehaviorPtr b;
 		if (unit->isInfected()) {
-			taskManager_->add(new ZombieAnimation(unit));
-			b = std::make_shared<ZombieBehavior>();
+			AiBehaviorPtr b = std::make_shared<ZombieBehavior>();
+			AiPlayerPtr aiPlayer(new AiPlayer(b));
+			players_.push_back(TuplePlayerUnitGraphic(aiPlayer,unit,new ZombieAnimation(unit)));
 		} else {
-			taskManager_->add(new HumanAnimation(unit));
-			b = std::make_shared<SurvivorBehavior>();
-		}
-		AiPlayerPtr aiPlayer(new AiPlayer(b));
-		players_.push_back(TuplePlayerUnitGraphic(aiPlayer,unit,nullptr));
-	}
-
-	void ZombieGame::addNewCar(Car* car) {
-		taskManager_->add(new CarAnimation(car));
+			AiBehaviorPtr b = std::make_shared<SurvivorBehavior>();
+			AiPlayerPtr aiPlayer(new AiPlayer(b));
+			players_.push_back(TuplePlayerUnitGraphic(aiPlayer,unit,new HumanAnimation(unit)));
+		}		
 	}
 
 	void ZombieGame::initGame() {
@@ -293,8 +305,7 @@ namespace zombie {
 			humanPlayer = HumanPlayerPtr(new InputKeyboard(SDLK_w,SDLK_s,SDLK_a,SDLK_d,SDLK_f,SDLK_g,SDLK_h));
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
 			Car* car = new Car(spawn.x,spawn.y);
-			players_.push_back(TuplePlayerUnitGraphic(humanPlayer,car,nullptr));
-			addNewCar(car);
+			players_.push_back(TuplePlayerUnitGraphic(humanPlayer,car,new CarAnimation(car)));
 			auto connection = sdlEventSignal_.connect(std::bind(&HumanPlayer::eventUpdate,humanPlayer,std::placeholders::_1));
 			humanPlayer->setConnection(connection);
 		}
