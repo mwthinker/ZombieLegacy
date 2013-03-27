@@ -55,7 +55,10 @@ public:
 		init();
 	}
 
-	~Building() {		
+	~Building() {
+		if (body_ != nullptr) {
+			getWorld()->DestroyBody(body_);
+		}
 	}
 
 	const std::vector<Position>& getCorners() const {
@@ -78,12 +81,6 @@ public:
 		return body_;
 	}
 
-	void removeBody() override {
-		if (body_ != nullptr) {
-			getWorld()->DestroyBody(body_);
-			body_ = nullptr;
-		}
-	}
 protected:
 	void init() {
 		body_ = nullptr;

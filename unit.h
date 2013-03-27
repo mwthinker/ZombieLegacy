@@ -89,13 +89,6 @@ namespace zombie {
 		b2Body* getBody() const override {
 			return body_;
 		}
-
-		void removeBody() override {
-			if (body_ != nullptr) {
-				getWorld()->DestroyBody(body_);
-				body_ = nullptr;
-			}
-		}
 	private:
 		void turn(float angle);
 
