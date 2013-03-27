@@ -36,7 +36,7 @@ namespace zombie {
 			connectionToTaget_.disconnect();
 			target_ = findUninfectedTarget(unit->getPosition(), units);
 			if (target_ != nullptr) {
-				target_->addEventHandler(std::bind(&ZombieBehavior::unitEventHandler,this,std::placeholders::_1));
+				connectionToTaget_ = target_->addEventHandler(std::bind(&ZombieBehavior::unitEventHandler,this,std::placeholders::_1));
 			}
 		}
 

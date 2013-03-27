@@ -135,7 +135,7 @@ namespace zombie {
 			}
 
 			// Calculate all inputs.
-			for (auto& tuple : players_) {
+			for (TuplePlayerUnitGraphic& tuple : players_) {
 				PlayerPtr player = std::get<0>(tuple);
 				Unit* unit = dynamic_cast<Unit*>(std::get<1>(tuple));
 				if (unit) {
