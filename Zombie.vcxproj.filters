@@ -123,6 +123,12 @@
     <ClInclude Include="survivorbehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="zombieanimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="humananimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -180,6 +186,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="survivorbehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zombieanimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="humananimation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

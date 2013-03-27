@@ -25,49 +25,7 @@ namespace zombie {
 		virtual void drawSecond(double time);
 		virtual void drawThird(double time);
 		virtual bool isRunning() const = 0;
-	};
-
-	class HumanAnimation : public GraphicTask {
-	public:
-		HumanAnimation(Unit* unit);
-		~HumanAnimation();
-		void drawSecond(double time) override;		
-
-		bool isRunning() const override;
-		void unitEventHandler(Unit::UnitEvent unitEvent);
-
-	private:
-		void draw(double timestep);
-
-		mw::signals::Connection connection_;
-		Unit* unit_;
-		double timeNewFrame_;
-		int index_;
-		std::vector<mw::Sprite> sprites_;
-		double lastTime_;
-		Color color_;
-	};
-
-	class ZombieAnimation : public GraphicTask {
-	public:
-		ZombieAnimation(Unit* unit);
-		~ZombieAnimation();
-
-		void drawSecond(double time) override;		
-
-		bool isRunning() const override;
-		void unitEventHandler(Unit::UnitEvent unitEvent);
-
-	private:
-		void draw(double timestep);
-		
-		mw::signals::Connection connection_;
-		Unit* unit_;
-		double timeNewFrame_;
-		int index_;
-		std::vector<mw::Sprite> sprites_;
-		Color color_;
-	};
+	};	
 
 	class Shot : public GraphicTask {
 	public:

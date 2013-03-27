@@ -20,6 +20,8 @@
 #include "car.h"
 #include "blood.h"
 #include "caranimation.h"
+#include "zombieanimation.h"
+#include "humananimation.h"
 
 #include <Box2D/Box2D.h>
 #include <SDL.h>
