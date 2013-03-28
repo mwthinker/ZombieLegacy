@@ -42,13 +42,14 @@ namespace zombie {
 
 		Position p = unit_->getPosition();
 
-		// Draw body
+		// Draw body.
 		color_.glColor3d();
 		glPushMatrix();
 		glTranslated(unit_->getPosition().x,unit_->getPosition().y,0);
 		glScaled(unit_->radius()*0.9,unit_->radius()*0.9,1);
 		glRotated(unit_->getState().angle_*180/mw::PI,0,0,1);
-		glScaled(1069.0/128.0,1069.0/128.0,1);
+		double d = sprites_[index_].getTexture()->getWidth();
+		glScaled(d/128.0,d/128.0,1);
 		sprites_[index_].draw();
 		glPopMatrix();
 	}
