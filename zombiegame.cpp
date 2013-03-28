@@ -99,8 +99,8 @@ namespace zombie {
 
 		started_ = false;
 		time_ = 0.0f;
-				
-		unitLevel_ = 200;
+
+		unitLevel_ = 50;
 		innerSpawnRadius_ = 10.f;
 		outerSpawnRadius_ = 40.f;
 

@@ -195,6 +195,4 @@ namespace zombie {
 
 } // Namespace zombie.
 
-
-
 #endif // CAR_H
