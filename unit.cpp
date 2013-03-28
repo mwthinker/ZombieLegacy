@@ -12,8 +12,7 @@
 
 namespace zombie {
 
-	Unit::Unit(float x, float y, float angle, const Weapon& weapon, bool infected) : weapon_(weapon) {		
-		//PhysicalUnit(x,y,0.4, 50.0,0.0,10.0)
+	Unit::Unit(float x, float y, float angle, const Weapon& weapon, bool infected) : weapon_(weapon) {
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_dynamicBody;
 		bodyDef.position.Set(x, y);
@@ -31,10 +30,8 @@ namespace zombie {
 		fixtureDef.friction = 0.3f;
 		b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
 		fixture->SetUserData(this);
-		//fixture->SetUserData(this);
 		
 		angleVelocity_ = 0.0f;
-
 		isInfected_ = infected;
 
 		// Properties
@@ -58,7 +55,7 @@ namespace zombie {
 
 	void Unit::updatePhysics(float time, float timeStep, Input input) {
 		if (!isDead()) {
-			float angle = moveDirection();	
+			float angle = getDirection();	
 
 			Force move = Vec3(std::cos(angle),std::sin(angle));
 
@@ -77,25 +74,19 @@ namespace zombie {
 
 			// Move forward or backwards.
 			if (input.forward_ && !input.backward_) {
-				body_->ApplyForceToCenter(b2Vec2(move.x,move.y));
-				//addForce(move);
+				body_->ApplyForceToCenter(b2Vec2(move.x,move.y));				
 				eventSignal_(UnitEvent::WALK);
 			} else if (!input.forward_ && input.backward_) {
 				body_->ApplyForceToCenter(-b2Vec2(move.x,move.y));
-				//addForce(-move);
 				eventSignal_(UnitEvent::WALK);
 			} else {
 				// In order to make the unit stop when not moving.
-				//body_->ApplyForceToCenter(-body_->GetLinearVelocity());
-				//addForce(-getVelocity()*5);
+				body_->ApplyForceToCenter(-body_->GetLinearVelocity());
 				eventSignal_(UnitEvent::STANDSTILL);
 			}
 			
 			// Add friction.
 			body_->ApplyForceToCenter(-body_->GetLinearVelocity());
-
-
-			//std::cout << getState().position_ << std::endl;
 
 			// Turn left or right.
 			if (input.turnLeft_ && !input.turnRight_) {
@@ -111,8 +102,7 @@ namespace zombie {
 				bullet.range_ = weapon_.range();
 				bullet.postion_ = getPosition();
 				bullet.damage_ = weapon_.damage();
-				shootSignal_(this,bullet);
-			
+				shootSignal_(this,bullet);			
 				eventSignal_(UnitEvent::SHOOT);
 			}
 
@@ -128,13 +118,6 @@ namespace zombie {
 		}
 	}
 
-	void Unit::setState(State state) {
-		angle_ = state.angle_;
-		//setPosition(state.position_);
-		//setVelocity(state.velocity_);
-		angleVelocity_ = state.anglularVelocity_;
-	}
-
 	State Unit::getState() const {
 		State state;
 		state.angle_ = angle_;
@@ -144,7 +127,7 @@ namespace zombie {
 		return state;
 	}
 
-	float Unit::viewDistance() {
+	float Unit::getViewDistance() const {
 		return viewDistance_;
 	}
 
@@ -156,25 +139,24 @@ namespace zombie {
 		return viewAngle_;
 	}
 
-	bool Unit::isInside(float x, float y) const {
+	bool Unit::isInside(Position position) const {
 		Position p = getPosition();
-		return (x - p.x)*(x - p.x) + (y - p.y)*(y - p.y) < radius()*radius();
+		return (position - getPosition()).LengthSquared() < radius()*radius();
 	}
 
-	bool Unit::isInsideSmalViewDistance(float x, float y) const {
-		Position p = Position(x,y) - getPosition();
-		return p.LengthSquared() < smallViewDistance_*smallViewDistance_;
-	}
-
-	bool Unit::isPointViewable(float x, float y) {
-		Position p = Position(x,y) - getPosition();
+	bool Unit::isInsideViewArea(Position position) const {
+		Position p = position - getPosition();
 		double angle = std::atan2(p.y, p.x);
 		return calculateDifferenceBetweenAngles(angle,angle_ + viewAngle() * 0.5) < 0 
 			&& calculateDifferenceBetweenAngles(angle,angle_ - viewAngle() * 0.5) > 0
-			&& p.LengthSquared() < viewDistance() * viewDistance();
+			&& p.LengthSquared() < getViewDistance() * getViewDistance() || isInsideSmalViewDistance(position);
 	}
 
-	float Unit::moveDirection() const {
+	bool Unit::isInsideSmalViewDistance(Position position) const {
+		return (position - getPosition()).LengthSquared() < smallViewDistance_*smallViewDistance_;
+	}	
+
+	float Unit::getDirection() const {
 		return angle_;
 	}
 

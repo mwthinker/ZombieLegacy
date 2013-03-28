@@ -59,7 +59,7 @@ namespace zombie {
 		}
 
 		void updatePhysics(float time, float timeStep, Input input) override {
-			b2Vec2 force = getDirection();
+			b2Vec2 force = getDirectionVector();
 			
 			// Accelate or decelerate
 			float throttle = 0.0f;
@@ -99,12 +99,12 @@ namespace zombie {
 			//std::cout << "MassC: " << force.Length() << std::endl;
 
 			// Front wheel lateral friction.			
-			currentRightNormal = b2Vec2(-getDirection().y,getDirection().x);
+			currentRightNormal = b2Vec2(-getDirectionVector().y,getDirectionVector().x);
 			force = -frictionLateralFrontWheel * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getFrontWheelPosition())) * currentRightNormal;
 			body_->ApplyForce(force,getFrontWheelPosition());
 			
 			// Back wheel forward friction.
-			force = -frictionForwardBackWheel * b2Dot(getDirection(), body_->GetLinearVelocity()) * getDirection();
+			force = -frictionForwardBackWheel * b2Dot(getDirectionVector(), body_->GetLinearVelocity()) * getDirectionVector();
 			body_->ApplyForce(force, getBackWheelPosition());
 
 			// Front wheel forward friction.
@@ -133,11 +133,11 @@ namespace zombie {
 		b2Vec2 getBackWheelPosition() const {
 			return body_->GetWorldPoint(b2Vec2(-length_ * wheelDelta_,0));
 		}
-
-		b2Vec2 getDirection() const {
+		
+		b2Vec2 getDirectionVector() const {
 			return body_->GetWorldVector(b2Vec2(std::cos(steeringAngle_),std::sin(steeringAngle_)));
 		}
-
+		
 		double width() const {
 			return width_;
 		}
@@ -149,12 +149,36 @@ namespace zombie {
 		void kill() {
 		}
 
+		bool isInsideViewArea(Position position) const {
+			return true;
+		}
+
+		Position getPosition() const {
+			return Position(body_->GetPosition().x,body_->GetPosition().y);
+		}
+
 		b2Body* getBody() const override {
 			return body_;
 		}
 
 		void setShootCallback(std::function<void(Car*)> callbackShoot) {
 			callbackShoot_ = callbackShoot;
+		}
+
+		Weapon getWeapon() const {
+			return Weapon();
+		}
+
+		float getDirection() const {
+			return steeringAngle_;
+		}
+
+		bool isInfected() const {
+			return false;
+		}
+
+		float getViewDistance() const {
+			return 10;
 		}
 	private:
 		std::function<void(Car*)> callbackShoot_;

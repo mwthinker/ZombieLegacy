@@ -24,12 +24,11 @@ namespace zombie {
 		// Simulates the physics at time (time) one time step (timeStep) ahead.
 		// Based on the input given.
 		void updatePhysics(float time, float timeStep, Input input) override;
-
-		void setState(State state);
+		
 		State getState() const;
 
 		// Return the view distance.
-		float viewDistance();
+		float getViewDistance() const;
 
 		// Return the distance of where all things are being visible, 
 		// no matter of orientation.
@@ -39,17 +38,16 @@ namespace zombie {
 		float viewAngle() const;
 
 		// Return true if the point (x, y) is inside the unit.	
-		bool isInside(float x, float y) const;
+		bool isInside(Position position) const;
+
+		bool isInsideViewArea(Position position) const;
 
 		// Return true if the point (x, y) is inside the units small view distance,
 		// where all things are being visible.
-		bool isInsideSmalViewDistance(float x, float y) const;
-
-		// Return true if the point is viewable by the unit, else fals.
-		bool isPointViewable(float x, float y);
+		bool isInsideSmalViewDistance(Position position) const;
 
 		// Return the angle for the current 
-		float moveDirection() const;	
+		float getDirection() const;	
 
 		float healthPoints() const;
 		void updateHealthPoint(float deltaLife);

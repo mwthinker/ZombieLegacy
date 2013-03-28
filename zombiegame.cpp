@@ -335,7 +335,7 @@ namespace zombie {
 
 	std::vector<Unit*> ZombieGame::calculateUnitsInView(Unit* unit) {
 		b2AABB area;
-		b2Vec2 dist(unit->viewDistance(),unit->viewDistance());
+		b2Vec2 dist(unit->getViewDistance(),unit->getViewDistance());
 		area.upperBound = dist + unit->getPosition();
 		area.lowerBound = -dist + unit->getPosition();
 
@@ -350,9 +350,8 @@ namespace zombie {
 
 			if (Unit* unitInArea = dynamic_cast<Unit*>(ob)) {
 				Position p = unitInArea->getPosition();
-				if (unitInArea != unit && 
-					(unit->isInsideSmalViewDistance(p.x,p.y)) || (unit->isPointViewable(p.x,p.y)) ) {
-						unitsInView.push_back(unitInArea);
+				if (unitInArea != unit && unit->isInsideViewArea(p)) {
+					unitsInView.push_back(unitInArea);
 				}
 			}
 		}

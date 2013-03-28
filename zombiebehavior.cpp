@@ -61,7 +61,7 @@ namespace zombie {
 			}
 		}			
 
-		double diffAngle = calculateDifferenceBetweenAngles(targetAngle_,unit->moveDirection());
+		double diffAngle = calculateDifferenceBetweenAngles(targetAngle_,unit->getDirection());
 
 		// Turn?
 		if (std::abs(diffAngle) > 0.1 ) {
