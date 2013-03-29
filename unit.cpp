@@ -17,7 +17,6 @@ namespace zombie {
 		bodyDef.type = b2_dynamicBody;
 		bodyDef.position.Set(x, y);
 		bodyDef.angle = angle;
-		bodyDef.fixedRotation = true;
 		body_ = getWorld()->CreateBody(&bodyDef);
 
 		b2CircleShape circle;
@@ -27,20 +26,16 @@ namespace zombie {
 		b2FixtureDef fixtureDef;
 		fixtureDef.shape = &circle;
 		fixtureDef.density = 1.0f;
-		fixtureDef.friction = 0.3f;
+		fixtureDef.friction = 0.0f;
 		b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
 		fixture->SetUserData(this);
 		
-		angleVelocity_ = 0.0f;
 		isInfected_ = infected;
 
 		// Properties
 		viewDistance_ = 10.f;
 		viewAngle_ = 120/180.0*b2_pi;
 		smallViewDistance_ = 2;
-
-		// Unit's direction Angle.
-		angle_ = angle;
 
 		// Health
 		healthPoints_ = 100.0f;
@@ -89,10 +84,12 @@ namespace zombie {
 			body_->ApplyForceToCenter(-body_->GetLinearVelocity());
 
 			// Turn left or right.
-			if (input.turnLeft_ && !input.turnRight_) {
-				turn(3*timeStep);
+			if (input.turnLeft_ && !input.turnRight_) {				
+				body_->SetAngularVelocity(3.0f);
 			} else if (!input.turnLeft_ && input.turnRight_) {
-				turn(-3*timeStep);
+				body_->SetAngularVelocity(-3.0f);
+			} else {
+				body_->SetAngularVelocity(0.0);
 			}
 
 			// Want to shoot? And weapon is ready?
@@ -120,10 +117,10 @@ namespace zombie {
 
 	State Unit::getState() const {
 		State state;
-		state.angle_ = angle_;
-		state.position_ = Position(body_->GetPosition().x,body_->GetPosition().y);
-		state.velocity_ = Position(body_->GetLinearVelocity().x,body_->GetLinearVelocity().y);
-		state.anglularVelocity_ = angleVelocity_;
+		state.angle_ = body_->GetAngle();
+		state.position_ = body_->GetPosition();
+		state.velocity_ = body_->GetLinearVelocity();
+		state.anglularVelocity_ = body_->GetAngularVelocity();
 		return state;
 	}
 
@@ -147,8 +144,8 @@ namespace zombie {
 	bool Unit::isInsideViewArea(Position position) const {
 		Position p = position - getPosition();
 		double angle = std::atan2(p.y, p.x);
-		return calculateDifferenceBetweenAngles(angle,angle_ + viewAngle() * 0.5) < 0 
-			&& calculateDifferenceBetweenAngles(angle,angle_ - viewAngle() * 0.5) > 0
+		return calculateDifferenceBetweenAngles(angle,body_->GetAngle() + viewAngle() * 0.5) < 0 
+			&& calculateDifferenceBetweenAngles(angle,body_->GetAngle() - viewAngle() * 0.5) > 0
 			&& p.LengthSquared() < getViewDistance() * getViewDistance() || isInsideSmalViewDistance(position);
 	}
 
@@ -157,7 +154,7 @@ namespace zombie {
 	}	
 
 	float Unit::getDirection() const {
-		return angle_;
+		return body_->GetAngle();
 	}
 
 	mw::signals::Connection Unit::addActionHandler(std::function<void(Unit*)> handler) {
@@ -170,16 +167,6 @@ namespace zombie {
 
 	mw::signals::Connection Unit::addShootHandler(std::function<void(Unit*, const Bullet&)> handler) {
 		return shootSignal_.connect(handler);
-	}
-
-	void Unit::turn(float angle) {
-		angle_ += angle;
-
-		if (angle_ > b2_pi) {
-			angle_ -= 2*b2_pi;
-		} else if (angle_ < -b2_pi) {
-			angle_ += 2*b2_pi;
-		}
 	}
 
 	float Unit::healthPoints() const {

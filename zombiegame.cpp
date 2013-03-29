@@ -27,7 +27,6 @@
 #include <SDL.h>
 #include <memory>
 #include <vector>
-#include <mw/quadtree.h>
 
 #include <string>
 #include <fstream>
@@ -169,7 +168,6 @@ namespace zombie {
 			bool dead = std::get<1>(tuple)->isDead();
 
 			if (outside || dead) {
-				std::get<1>(tuple)->kill();
 				delete std::get<1>(tuple);
 				delete std::get<2>(tuple);
 				return true;
@@ -417,6 +415,14 @@ namespace zombie {
 
 	bool ZombieGame::isVisible(Unit* unitToBeSeen, Unit* unitThatSees) const {
 		return true;
+	}
+
+	void ZombieGame::BeginContact(b2Contact* contact) {
+
+	}
+	
+	void ZombieGame::EndContact(b2Contact* contact) {
+
 	}
 
 	void ZombieGame::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {

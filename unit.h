@@ -54,20 +54,12 @@ namespace zombie {
 
 		bool isDead() const;
 
-		void kill() {
-			isDead_ = true;
-		}
-
 		bool isInfected() const {
 			return isInfected_;
 		}
 
 		Weapon getWeapon() const {
 			return weapon_;
-		}
-
-		double getAngle() const {
-			return angle_;
 		}
 
 		Position getPosition() const {
@@ -87,13 +79,8 @@ namespace zombie {
 		b2Body* getBody() const override {
 			return body_;
 		}
+
 	private:
-		void turn(float angle);
-
-		// Physical States.
-		float angleVelocity_;
-		float angle_;
-
 		// Properties
 		float viewDistance_;
 		float viewAngle_;

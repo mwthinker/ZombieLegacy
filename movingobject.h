@@ -12,15 +12,10 @@ namespace zombie {
 	// Represent a moving object inside the "zombie world".
 	class MovingObject : public Object {
 	public:
-		MovingObject() {
-		}		
-
 		virtual ~MovingObject() {
 		}
 		
-		virtual void updatePhysics(float time, float timeStep, Input input) = 0;
-
-		virtual Position getPosition() const = 0;
+		virtual void updatePhysics(float time, float timeStep, Input input) = 0;		
 
 		virtual Weapon getWeapon() const = 0;
 
@@ -28,15 +23,12 @@ namespace zombie {
 
 		virtual bool isInfected() const = 0;
 
+		virtual Position getPosition() const = 0;
 		virtual float getViewDistance() const = 0;
 
 		virtual bool isInsideViewArea(Position position) const = 0;
 
-		virtual void kill() = 0;
-
-		virtual bool isDead() const {
-			return false;
-		}
+		virtual bool isDead() const = 0;
 	};
 
 } // namespace zombie

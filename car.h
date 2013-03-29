@@ -146,9 +146,6 @@ namespace zombie {
 			return length_;
 		}
 
-		void kill() {
-		}
-
 		bool isInsideViewArea(Position position) const {
 			return true;
 		}
@@ -179,6 +176,10 @@ namespace zombie {
 
 		float getViewDistance() const {
 			return 10;
+		}
+
+		bool isDead() const {
+			return false;
 		}
 	private:
 		std::function<void(Car*)> callbackShoot_;

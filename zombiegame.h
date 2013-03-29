@@ -13,7 +13,6 @@
 
 #include <Box2D/Box2D.h>
 #include <SDL.h>
-#include <mw/quadtree.h>
 #include <mw/signal.h>
 
 #include <memory>
@@ -70,7 +69,10 @@ namespace zombie {
 		void doAction(Unit* unit);
 		void doShotDamage(Unit* shooter, const Bullet& properties);
 		bool isVisible(Unit* unitToBeSeen, Unit* unitThatSees) const;
-		void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
+
+		void BeginContact (b2Contact* contact) override;
+		void EndContact (b2Contact* contact) override;
+		void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override;
 
 		void spawnAndCleanUpUnits(); // Spawns new zombies.
 
