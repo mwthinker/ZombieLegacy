@@ -4,7 +4,7 @@
 
 #include <mw/mathvector.h>
 
-#include <vector>
+#include <list>
 
 namespace zombie {
 
@@ -19,7 +19,7 @@ namespace zombie {
 	ZombieBehavior::~ZombieBehavior() {
 	}
 
-	Input ZombieBehavior::calculateInput(Unit* unit, const std::vector<Unit*>& units, double time) {
+	Input ZombieBehavior::calculateInput(Unit* unit, double time) {
 		Input input;
 
 		if (!connectionToTaget_.connected()) {
@@ -34,9 +34,10 @@ namespace zombie {
 		if (time > findNewTargetTime_) {
 			findNewTargetTime_ = random() * 3 + time;
 			connectionToTaget_.disconnect();
-			target_ = findUninfectedTarget(unit->getPosition(), units);
+			
+			target_ = findUninfectedTarget(unit->getPosition(), unit->getVisibleObjects());
 			if (target_ != nullptr) {
-				connectionToTaget_ = target_->addEventHandler(std::bind(&ZombieBehavior::unitEventHandler,this,std::placeholders::_1));
+				connectionToTaget_ = target_->addExistHandler();
 			}
 		}
 
@@ -77,10 +78,10 @@ namespace zombie {
 		return input;
 	}
 
-	Unit* ZombieBehavior::findUninfectedTarget(Position position, const std::vector<Unit*>& units) const {			
-		Unit* target(nullptr);
+	MovingObject* ZombieBehavior::findUninfectedTarget(Position position, const std::list<MovingObject*>& units) const {			
+		MovingObject* target(nullptr);
 		double distant = 100;
-		for (Unit* unit : units) {
+		for (MovingObject* unit : units) {
 			// Not infected?
 			if (!unit->isInfected()) {
 				double tmp = (position - unit->getPosition()).LengthSquared();					

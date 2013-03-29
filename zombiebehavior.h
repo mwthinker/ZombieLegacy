@@ -7,7 +7,7 @@
 #include "unit.h"
 
 #include <mw/signal.h>
-#include <vector>
+#include <list>
 
 namespace zombie {
 
@@ -16,14 +16,14 @@ namespace zombie {
 		ZombieBehavior();
 		~ZombieBehavior();
 
-		Input calculateInput(Unit* unit, const std::vector<Unit*>& units, double time) override;
+		Input calculateInput(Unit* unit, double time) override;
 
 		void unitEventHandler(Unit::UnitEvent unitEvent);
 	private:
-		Unit* findUninfectedTarget(Position position, const std::vector<Unit*>& units) const;
+		MovingObject* findUninfectedTarget(Position position, const std::list<MovingObject*>& units) const;
 
 		double findNewTargetTime_;
-		Unit* target_;
+		MovingObject* target_;
 		mw::signals::Connection connectionToTaget_;
 
 		double timeToUpdateAngleDirection_;

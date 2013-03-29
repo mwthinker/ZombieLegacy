@@ -23,27 +23,32 @@ namespace zombie {
 			width_ = 1.0f;
 			float mass = 100.0f;
 
-			b2BodyDef bodyDef;
-			bodyDef.type = b2_dynamicBody;
-			bodyDef.position.Set(x, y);
-			bodyDef.angle = angle;
-			body_ = getWorld()->CreateBody(&bodyDef);
-			
-			b2PolygonShape dynamicBox;
-			dynamicBox.SetAsBox(length_, width_);
-
-			b2FixtureDef fixtureDef;
-			fixtureDef.shape = &dynamicBox;
-			fixtureDef.density = 1.0f;
-			fixtureDef.friction = 0.3f;
-			b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
-			fixture->SetUserData(this);
-
 			currentTime_ = 0.0f;
 			steeringAngle_ = 0.0f;
 			wheelDelta_ = 0.4f;
 
 			driver_ = nullptr;
+			
+			// Box2d properties.
+			b2BodyDef bodyDef;
+			bodyDef.type = b2_dynamicBody;
+			bodyDef.position.Set(x, y);
+			bodyDef.angle = angle;
+			body_ = getWorld()->CreateBody(&bodyDef);
+			body_->SetUserData(this);
+			
+			// Body properties.
+			{
+				b2PolygonShape dynamicBox;
+				dynamicBox.SetAsBox(length_, width_);
+
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &dynamicBox;
+				fixtureDef.density = 1.0f;
+				fixtureDef.friction = 0.3f;
+				b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
+				fixture->SetUserData(this);
+			}			
 		}
 
 		~Car() {

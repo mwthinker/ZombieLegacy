@@ -68,7 +68,6 @@ namespace zombie {
 
 		void doAction(Unit* unit);
 		void doShotDamage(Unit* shooter, const Bullet& properties);
-		bool isVisible(Unit* unitToBeSeen, Unit* unitThatSees) const;
 
 		void BeginContact (b2Contact* contact) override;
 		void EndContact (b2Contact* contact) override;

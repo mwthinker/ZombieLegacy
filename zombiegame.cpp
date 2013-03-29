@@ -68,7 +68,10 @@ namespace zombie {
 
 			// Ray-cast callback.
 			float32 ReportFixture(b2Fixture* fixture, const b2Vec2 &point, const b2Vec2 &normal, float32 fraction) override {
-				closest_ = fixture;
+				// Is a physical fixture?
+				if (!fixture->IsSensor()) {
+					closest_ = fixture;
+				}
 				return fraction;//keep going to find all fixtures in the query area
 			}
 
@@ -80,8 +83,7 @@ namespace zombie {
 		private:
 			b2Fixture* closest_;
 			float closestFraction_;
-		};		
-
+		};
 	}
 
 	ZombieGame::ZombieGame(int width, int height) {
@@ -99,7 +101,7 @@ namespace zombie {
 		started_ = false;
 		time_ = 0.0f;
 
-		unitLevel_ = 50;
+		unitLevel_ = 10;
 		innerSpawnRadius_ = 10.f;
 		outerSpawnRadius_ = 40.f;
 
@@ -123,22 +125,13 @@ namespace zombie {
 		// Game is started?
 		if (started_) {
 			spawnAndCleanUpUnits();
-			
-			// Update the view.
-			for (TuplePlayerUnitGraphic& tuple : players_) {
-				Unit* unit = dynamic_cast<Unit*>(std::get<1>(tuple));
-				if (unit) {
-					std::vector<Unit*> unitsInView = calculateUnitsInView(unit);
-					std::get<0>(tuple)->updateUnitsInView(unitsInView);
-				}
-			}
 
 			// Calculate all inputs.
 			for (TuplePlayerUnitGraphic& tuple : players_) {
 				PlayerPtr player = std::get<0>(tuple);
 				Unit* unit = dynamic_cast<Unit*>(std::get<1>(tuple));
 				if (unit) {
-					player->calculateInput(unit,time_);
+					player->calculateInput(unit, time_);
 				}
 			}
 
@@ -146,11 +139,11 @@ namespace zombie {
 			for (TuplePlayerUnitGraphic& pair : players_) {
 				MovingObject* movingOb = std::get<1>(pair);
 				Input input = std::get<0>(pair)->currentInput();
-				movingOb->updatePhysics(time_, timeStep,input);
+				movingOb->updatePhysics(time_, timeStep, input);
 			}
 
 			// Update the objects physics interactions.
-			world_->Step(timeStep,6,2);
+			world_->Step(timeStep,4,2);
 
 			// Move the time ahead.
 			time_ += timeStep;
@@ -309,13 +302,13 @@ namespace zombie {
 		}
 
 		// Add zombie with standard behavior.
-		for (int i = 30; i < 40; i++) {
+		for (int i = 0; i < 1; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
 			Unit* zombie = createUnit(spawn.x,spawn.y,0.3f,Weapon(35,0.5f,1,12),true);
 			addNewAi(zombie);
 		}
 
-		for (int i = 1; i < 100; i++) {
+		for (int i = 1; i < 10; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,10);
 			Unit* survivor = createUnit(spawn.x,spawn.y,0.f,Weapon(35,0.5,8,120),false);
 			addNewAi(survivor);
@@ -329,32 +322,6 @@ namespace zombie {
 	void ZombieGame::updateSize(int width, int height) {
 		Task::width = width;
 		Task::height = height;
-	}
-
-	std::vector<Unit*> ZombieGame::calculateUnitsInView(Unit* unit) {
-		b2AABB area;
-		b2Vec2 dist(unit->getViewDistance(),unit->getViewDistance());
-		area.upperBound = dist + unit->getPosition();
-		area.lowerBound = -dist + unit->getPosition();
-
-		InViewQueryCallback queryCallback;
-
-		world_->QueryAABB(&queryCallback,area);
-
-		// Find all units in view.
-		std::vector<Unit*> unitsInView;
-		for (unsigned int i = 0; i < queryCallback.foundFixtures.size(); i++) {
-			Object* ob = static_cast<Object*>(queryCallback.foundFixtures[i]->GetUserData());
-
-			if (Unit* unitInArea = dynamic_cast<Unit*>(ob)) {
-				Position p = unitInArea->getPosition();
-				if (unitInArea != unit && unit->isInsideViewArea(p)) {
-					unitsInView.push_back(unitInArea);
-				}
-			}
-		}
-
-		return unitsInView;
 	}
 
 	void ZombieGame::doAction(Unit* unit) {
@@ -413,16 +380,51 @@ namespace zombie {
 		std::cout << endP.x << " " << endP.y << std::endl;
 	}
 
-	bool ZombieGame::isVisible(Unit* unitToBeSeen, Unit* unitThatSees) const {
-		return true;
+	bool getVisibleObject(b2Contact* contact, MovingObject*& target, MovingObject*& looker) {
+		b2Fixture* fixtureA = contact->GetFixtureA();
+		b2Fixture* fixtureB = contact->GetFixtureB();
+
+		// Make sure only one of the fixtures was a sensor.
+		bool sensorA = fixtureA->IsSensor();
+		bool sensorB = fixtureB->IsSensor();
+		if (sensorA == sensorB) {
+			return false;
+		}
+
+		Object* ob1 = static_cast<Object*>(fixtureA->GetUserData());
+		Object* ob2 = static_cast<Object*>(fixtureB->GetUserData());
+		MovingObject* mOb1 = dynamic_cast<MovingObject*>(ob1);
+		MovingObject* mOb2 = dynamic_cast<MovingObject*>(ob2);
+
+		// Make sure both are moving objects.
+		if (mOb1 && mOb2) {
+			if (sensorA) {
+				looker = mOb1;
+				target = mOb2;
+			} else {
+				looker = mOb2;
+				target = mOb1;
+			}
+			return true;
+		}
+
+		return false;
 	}
 
 	void ZombieGame::BeginContact(b2Contact* contact) {
-
+		MovingObject* target;
+		MovingObject* looker;
+		if (getVisibleObject(contact, target, looker)) {
+			looker->addVisibleObject(target);
+		}
 	}
-	
-	void ZombieGame::EndContact(b2Contact* contact) {
 
+	void ZombieGame::EndContact(b2Contact* contact) {
+		MovingObject* target;
+		MovingObject* looker;
+		if (getVisibleObject(contact, target, looker)) {
+			looker->removeVisibleObject(target);
+		}
 	}
 
 	void ZombieGame::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
@@ -453,5 +455,5 @@ namespace zombie {
 			}
 		}
 	}
-	
+
 } // Namespace zombie.

@@ -20,11 +20,9 @@ namespace zombie {
 		Input currentInput() override;
 
 		void calculateInput(Unit* unit, double time);
-		void updateUnitsInView(const std::vector<Unit*>& units);
 
 		Input input_;
 		AiBehaviorPtr behavior_;
-		std::vector<Unit*> units_;
 	};
 
 } // namespace zombie.

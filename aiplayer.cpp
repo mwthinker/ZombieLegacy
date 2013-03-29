@@ -18,11 +18,6 @@ namespace zombie {
 	}
 
 	void AiPlayer::calculateInput(Unit* unit, double time) {
-		input_ = behavior_->calculateInput(unit, units_, time);
+		input_ = behavior_->calculateInput(unit, time);
 	}
-
-	void AiPlayer::updateUnitsInView(const std::vector<Unit*>& units) {
-		units_ = units;
-	}
-
 } // namespace zombie.

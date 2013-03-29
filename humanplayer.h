@@ -19,9 +19,6 @@ namespace zombie {
 		void calculateInput(Unit* unit, double time) {
 		}
 
-		void updateUnitsInView(const std::vector<Unit*>& units) {
-		}
-
 		void setConnection(mw::signals::Connection connection) {
 			connection_ = connection;
 		}

@@ -20,20 +20,20 @@ namespace zombie {
 	SurvivorBehavior::~SurvivorBehavior() {
 	}
 
-	Input SurvivorBehavior::calculateInput(Unit* unit, const std::vector<Unit*>& units, double time) {
+	Input SurvivorBehavior::calculateInput(Unit* unit, double time) {
 		Input input;
 		// extract information from memory
 		// analyze situation - enviroment and units when neccesarry
 		// make decision on what activity to perform
 
 		// PANIC
-		ACTIVITY a;
+		Activity a;
 		a = PANIC;
 		
 		return activityToInput(a);
 	}
 
-	Input SurvivorBehavior::activityToInput(ACTIVITY a) {
+	Input SurvivorBehavior::activityToInput(Activity a) {
 		Input input;
 		switch(a) {
 			case PANIC:

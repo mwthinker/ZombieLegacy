@@ -7,7 +7,11 @@
 #include "weapon.h"
 #include "typedefs.h"
 
-namespace zombie {
+#include <mw/signal.h>
+
+#include <list>
+
+namespace zombie {	
 
 	// Represent a moving object inside the "zombie world".
 	class MovingObject : public Object {
@@ -29,6 +33,26 @@ namespace zombie {
 		virtual bool isInsideViewArea(Position position) const = 0;
 
 		virtual bool isDead() const = 0;
+
+		const std::list<MovingObject*>& getVisibleObjects() const {
+			return visibleObjects_;
+		}
+
+		void addVisibleObject(MovingObject* object) {
+			visibleObjects_.push_back(object);
+		}
+
+		void removeVisibleObject(MovingObject* object) {
+			visibleObjects_.erase(std::find(visibleObjects_.begin(), visibleObjects_.end(), object));
+		}
+
+		mw::signals::Connection addExistHandler() {
+			return existSignal_.connect([]() {});
+		}
+
+	private:
+		std::list<MovingObject*> visibleObjects_;
+		mw::Signal<void> existSignal_;
 	};
 
 } // namespace zombie

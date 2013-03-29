@@ -13,23 +13,6 @@
 namespace zombie {
 
 	Unit::Unit(float x, float y, float angle, const Weapon& weapon, bool infected) : weapon_(weapon) {
-		b2BodyDef bodyDef;
-		bodyDef.type = b2_dynamicBody;
-		bodyDef.position.Set(x, y);
-		bodyDef.angle = angle;
-		body_ = getWorld()->CreateBody(&bodyDef);
-
-		b2CircleShape circle;
-		circle.m_p.Set(0, 0);
-		circle.m_radius = 0.4f;
-
-		b2FixtureDef fixtureDef;
-		fixtureDef.shape = &circle;
-		fixtureDef.density = 1.0f;
-		fixtureDef.friction = 0.0f;
-		b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
-		fixture->SetUserData(this);
-		
 		isInfected_ = infected;
 
 		// Properties
@@ -39,9 +22,50 @@ namespace zombie {
 
 		// Health
 		healthPoints_ = 100.0f;
-		isDead_ = false;
-		
+		isDead_ = false;	
+
 		timeLeftToRun_ = 5.f;
+		
+		// Box2d properties.
+		b2BodyDef bodyDef;
+		bodyDef.type = b2_dynamicBody;
+		bodyDef.position.Set(x, y);
+		bodyDef.angle = angle;
+		body_ = getWorld()->CreateBody(&bodyDef);
+		body_->SetUserData(this);
+
+		// Add tensor to make all objects inside the tenson visible.
+		{
+			b2CircleShape circle;
+			circle.m_p.Set(0, 0);
+			circle.m_radius = viewDistance_;
+
+			b2FixtureDef fixtureDef;
+			fixtureDef.shape = &circle;
+			fixtureDef.density = 0.0f;
+			fixtureDef.friction = 0.0f;
+			fixtureDef.isSensor = true;
+		
+			// Add Body fixture.
+			b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
+			fixture->SetUserData(this);
+		}
+
+		// Add body properties.
+		{
+			b2CircleShape circle;
+			circle.m_p.Set(0, 0);
+			circle.m_radius = 0.4f;
+
+			b2FixtureDef fixtureDef;
+			fixtureDef.shape = &circle;
+			fixtureDef.density = 1.0f;
+			fixtureDef.friction = 0.0f;
+		
+			// Add Body fixture.
+			b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
+			fixture->SetUserData(this);
+		}
 	}
 
 	Unit::~Unit() {		
