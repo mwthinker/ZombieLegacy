@@ -7,20 +7,14 @@
 #include <mw/mathvector.h>
 
 #include <vector>
-#include <random>
 #include <cmath>
 
-namespace zombie {
-
-	// Generater used in all random operations.
-	static std::default_random_engine generator_;
-
-	static std::uniform_real_distribution<float> distribution_;
+namespace zombie {	
 
 	class Map {
 	public:
-		Map(Position mapCentre_, float width, float height, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads = std::vector<LineFeature>());
-		Map(float tileSize, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads = std::vector<LineFeature>());
+		Map(Position mapCentre_, float width, float height, const std::vector<Points>& buildings, std::vector<LineFeature> roads = std::vector<LineFeature>());
+		
 		Map();
 				
 		Position getMapCentre() const;
@@ -58,7 +52,6 @@ namespace zombie {
 		float height() const {
 			return maxY_ - minY_;
 		}
-
 	private:
 		float minX_;
 		float minY_;
@@ -79,35 +72,4 @@ namespace zombie {
 
 } // namespace zombie.
 
-/*
-Map loadMap(std::string filename, int& unitId_) {
-		std::fstream mapFile(filename.c_str(),std::fstream::in);
-		
-		if (mapFile.good()) {
-			mapFile >> width_ >> height_;
-		}
-		
-		while (mapFile.good()) {
-			std::vector<Position> corners;
-			while (mapFile.good()) {
-				Position p;
-				mapFile >> p.x_ >> p.y_;
-				if (p.x_ < 0 || p.y_ < 0) {
-					break;
-				} else {
-					corners.push_back(p);
-				}
-			}
-			buildings_.push_back(BuildingPtr(new Building(corners,++unitId_)));
-		}	
-		
-		mapFile.close();
-
-		return Map(Position(width_*0.5,height_*0.5),std::min(width_,height_)*0.5,buildings_);
-	}
-*/
-
 #endif // MAP_H
-
-
-//std::default_random_engine generator_;

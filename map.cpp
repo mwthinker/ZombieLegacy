@@ -1,6 +1,7 @@
 #include "map.h"
 
 #include "building.h"
+#include "auxiliary.h"
 
 #include <limits>
 #include <string>
@@ -8,21 +9,22 @@
 
 namespace zombie {
 
-	Map::Map(Position mapCentre_, float width, float height, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads) {
-		buildings_ = buildings;
+	Map::Map(Position mapCentre_, float width, float height, const std::vector<Points>& buildings, std::vector<LineFeature> roads) {
+		for (const Points& points : buildings) {
+			unsigned int size = points.size();
+			// Is last and first point the same point?
+			if (size > 0 && (points[size-1]-points[0]).LengthSquared() < 0.001f) {
+				// Ignore last point.
+				--size;
+			}
+			Points tmp(points.begin(), points.begin() + size);
+			buildings_.push_back(std::make_shared<Building>(tmp));
+		}
+
 		minX_ = mapCentre_.x - width * 0.5f; 
 		minY_ = mapCentre_.y - height * 0.5f;
 		maxX_ = mapCentre_.x + width * 0.5f;
 		maxY_ = mapCentre_.y + height * 0.5f;
-		roads_ = roads;
-	}
-
-	Map::Map(float tileSize, std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads) {
-		buildings_ = buildings;
-		minX_ = 0;
-		minY_ = 0;
-		maxX_ = tileSize;
-		maxY_ = tileSize;
 		roads_ = roads;
 	}
 
@@ -38,12 +40,8 @@ namespace zombie {
 	}
 
 	Position Map::generateSpawnPosition(Position p, float innerRadie, float outerRadie) const {
-		std::random_device rd;
-		std::default_random_engine g(rd());
-		std::uniform_real_distribution<float> distReal(0,1);		
-
-		float alfa = distReal(g) * 2 * (float) mw::PI;
-		float dist = distReal(g) * (outerRadie-innerRadie);// + innerRadie;			
+		float alfa = random() * 2 * (float) mw::PI;
+		float dist = random() * (outerRadie-innerRadie);
 
 		for(float dr = 0; dr < outerRadie-innerRadie; dr += 1.0) {
 			for(float angle = 0; angle <  (float) 2 * mw::PI; angle += 0.2f) {
@@ -75,30 +73,25 @@ namespace zombie {
 		float side = 15;
 		int nbr = 10;
 
-		std::default_random_engine g;
-		std::uniform_int_distribution<int> distInt(4,7);
-		std::uniform_real_distribution<float> distReal(0,1);
-
-		std::vector<BuildingPtr> buildings;
+		std::vector<Points> buildings;
 
 		for (int i = 0; i < nbr; ++i) {
 			for (int j = 0; j < nbr; ++j) {
 
 				float x = i * side;
 				float y = j * side;
-				Position p1(x + distReal(g) * 4, y + distReal(g) * 4);
-				Position p2(x + distReal(g) * 4 + 8, y + distReal(g) * 4);
-				Position p3(x + distReal(g) * 4 + 8, y + distReal(g) * 4 + 8);
-				Position p4(x + distReal(g) * 4 , y + distReal(g) * 4 + 8);
+				Position p1(x + random() * 4, y + random() * 4);
+				Position p2(x + random() * 4 + 8, y + random() * 4);
+				Position p3(x + random() * 4 + 8, y + random() * 4 + 8);
+				Position p4(x + random() * 4 , y + random() * 4 + 8);
 
-				std::vector<Position> positions;
+				Points positions;
 				positions.push_back(p1);
 				positions.push_back(p2);
 				positions.push_back(p3);
 				positions.push_back(p4);
-
-				BuildingPtr building(new Building(positions));
-				buildings.push_back(building);
+				
+				buildings.push_back(positions);
 			}
 		}
 
@@ -164,10 +157,9 @@ namespace zombie {
 		// Get world size.
 		float height = maxX + minX;
 		float width = maxY + minY;
-		std::vector<BuildingPtr> buildings;
-		for (std::vector<Position>& corners : allCorners) {			
-			BuildingPtr building = BuildingPtr(new Building(corners));
-			buildings.push_back(building);
+		std::vector<Points> buildings;
+		for (std::vector<Position>& corners : allCorners) {
+			buildings.push_back(corners);
 		}
 
 		mapFile.close();
@@ -227,7 +219,6 @@ namespace zombie {
 		return roads;
 	}
 
-
 	Map loadTile(std::string filename, std::string fileRoads, float tileSize) {
 		std::fstream mapFile(filename.c_str(),std::fstream::in);
 		
@@ -253,15 +244,13 @@ namespace zombie {
 				allCorners.push_back(corners);					
 			}
 		}
-		std::vector<BuildingPtr> buildings;
-		for (std::vector<Position>& corners : allCorners) {			
-			BuildingPtr building = BuildingPtr(new Building(corners));
-			buildings.push_back(building);
+		std::vector<Points> buildings;
+		for (std::vector<Position>& corners : allCorners) {
+			buildings.push_back(corners);
 		}
 
 		mapFile.close();
 
-		//********
 		std::vector<LineFeature> roads;
 		std::fstream mapFile2(fileRoads.c_str(),std::fstream::in);
 		while (mapFile2.good()) {
@@ -306,9 +295,8 @@ namespace zombie {
 				}
 			}
 		}
-		//************
 
-		return Map(tileSize, buildings, roads);
+		return Map(Position(tileSize*0.5f,tileSize*0.5f),tileSize, tileSize, buildings, roads);
 	}
-
+	
 } // namespace zombie.

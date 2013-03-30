@@ -1,7 +1,6 @@
 #include "typedefs.h"
-#include "building.h"
+
 #include "linefeature.h"
-#include "map.h"
 #include "auxiliary.h"
 
 #include <algorithm> 
@@ -21,6 +20,13 @@ namespace zombie {
 	float distPointToLine(LineFeature l, Position p);
 	float distPointToPoint(Position p1, Position p2);
 
+	struct MapDef {
+		std::vector<LineFeature> roads_;
+		std::vector<Points> buildings_;
+		float maxX_;
+		float minX_;		
+	};
+
 	class Tile {
 	public:
 		Tile() {
@@ -32,14 +38,14 @@ namespace zombie {
 
 		}
 
-		Tile(Map m) {
-			buildings_ = m.getBuildings();
-			roads_ = m.getRoads();
-			tileSide_ = m.maxX() - m.minX();
+		Tile(MapDef m) {
+			buildings_ = m.buildings_;
+			roads_ = m.roads_;
+			tileSide_ = float(m.maxX_ - m.minX_);
 			snapDist_ = 0.5f;
 		}
 
-		Tile(std::vector<BuildingPtr> buildings, std::vector<LineFeature> roads, std::string desc) {
+		Tile(std::vector<Points> buildings, std::vector<LineFeature> roads, std::string desc) {
 			buildings_ = buildings;
 			roads_ = roads;
 			tileSide_ = 10.0f;
@@ -51,7 +57,7 @@ namespace zombie {
 			return roads_;
 		}
 
-		std::vector<BuildingPtr> getBuildings() {
+		std::vector<Points> getBuildings() {
 			return buildings_;
 		}
 
@@ -160,7 +166,7 @@ namespace zombie {
 	private:
 		float tileSide_;
 		float snapDist_;
-		std::vector<BuildingPtr> buildings_;
+		std::vector<Points> buildings_;
 		std::vector<LineFeature> roads_;	
 	};
 
@@ -189,23 +195,23 @@ namespace zombie {
 			return true;
 		}
 
-		Map stitchTiles() {
-			std::vector<BuildingPtr> allBuildings;
+		MapDef stitchTiles() {
+			std::vector<Points> allBuildings;
 			std::vector<LineFeature> allRoads;			
 
 			for (int i = 0; i < nbrOfTiles_*nbrOfTiles_; i++) {
 				std::vector<Position> corners;
 				// Add buildings from tile
-				for (BuildingPtr b : sortedTiles_[i].getBuildings()) {
+				for (const Points& b : sortedTiles_[i].getBuildings()) {
 					std::vector<Position> modifiedCorners;
-					corners = b->getCorners();
+					corners = b;
 					for (Position p : corners) {						
 						p.x = p.x + sortedTiles_[i].getTileSide() * (i % nbrOfTiles_);
 						p.y = p.y + sortedTiles_[i].getTileSide() * (i / nbrOfTiles_);
 						modifiedCorners.push_back(p);
 					}
-					BuildingPtr building = BuildingPtr(new Building(modifiedCorners));
-					allBuildings.push_back(building);
+					
+					allBuildings.push_back(modifiedCorners);
 				}
 				// Add roads from tile
 				for (LineFeature l : sortedTiles_[i].getRoads()) {
@@ -220,7 +226,13 @@ namespace zombie {
 			//Position center = Position(sortedTiles_[0].getTileSide()*nbrOfTiles_ / 2.0,sortedTiles_[0].getTileSide()*nbrOfTiles_ / 2.0);
 			//double width = sortedTiles_[0].getTileSide()*nbrOfTiles_;
 			//double height = sortedTiles_[0].getTileSide()*nbrOfTiles_;
-			return Map(100.f*(float)nbrOfTiles_,allBuildings,allRoads);
+			float dist = 100.f*(float)nbrOfTiles_;
+			MapDef map;
+			map.buildings_ = allBuildings;
+			map.roads_ = allRoads;
+			map.maxX_ = dist;
+			map.minX_ = 0;
+			return map;
 		}
 
 		Tile getRandomTile() {
@@ -273,9 +285,8 @@ namespace zombie {
 
 	Map createTiledMap() {
 		// Create variables
-		BuildingPtr b;
 		std::vector<Position> corners;
-		std::vector<BuildingPtr> buildings;
+		std::vector<Points> buildings;
 
 		// TILE S ************************************************
 
@@ -283,9 +294,8 @@ namespace zombie {
 		corners.push_back(Position(8.5,1.5));
 		corners.push_back(Position(8.5,2.5));
 		corners.push_back(Position(8.0,2.0));
-		b = BuildingPtr(new Building(corners));
+		buildings.push_back(corners);
 
-		buildings.push_back(b);
 		std::vector<LineFeature> roads;
 		Tile s = Tile(buildings,roads,"litetHus");
 
@@ -296,9 +306,9 @@ namespace zombie {
 		corners.push_back(Position(5.5,4.5));
 		corners.push_back(Position(6.5,1));
 		corners.push_back(Position(3,1));
-		b = BuildingPtr(new Building(corners));
+		buildings.push_back(corners);
 		buildings.clear();
-		buildings.push_back(b);
+
 		roads.clear();
 		Tile t = Tile(buildings,roads,"stortHus");
 
@@ -361,16 +371,16 @@ namespace zombie {
 		tiles.push_back(DD);
 		TileManager tManager(tiles,30);
 		tManager.sortTiles();
-		return tManager.stitchTiles();
+		MapDef madDef = tManager.stitchTiles();
+		return Map();
 	}
 
-	Map createTiledMap(Map m) {
+	MapDef createTiledMap(MapDef m) {
 		std::vector<Tile> tiles;
 		tiles.push_back(Tile(m));
 		TileManager tManager(tiles,1);
 		tManager.sortTiles();
 		return tManager.stitchTiles();
-
 	}
 
 	float distPointToLine(LineFeature l, Position p) {

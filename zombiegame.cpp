@@ -112,6 +112,7 @@ namespace zombie {
 	}
 
 	ZombieGame::~ZombieGame() {
+		Object::setWorld(nullptr);
 		delete taskManager_;
 		delete world_;
 	}
@@ -277,9 +278,8 @@ namespace zombie {
 
 		auto buildings = map_.getBuildings();
 
-		for (BuildingPtr building : buildings) {
-			BuildingPtr tmp(new Building(world_,building->getCorners()));
-			taskManager_->add(new DrawFake3DBuildning(tmp));
+		for (const BuildingPtr& building : buildings) {
+			taskManager_->add(new DrawFake3DBuildning(building));
 		}
 
 		// Add human controlled by first input device.

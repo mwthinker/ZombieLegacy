@@ -11,30 +11,17 @@ namespace zombie {
 
 class Building : public Object {
 public:
-	Building(float x, float y, float width, float height) {
-		Position position = Position(x,y);
-		corners_.push_back(position);
-		corners_.push_back(position + Position(width,0));
-		corners_.push_back(position + Position(width,height));
-		corners_.push_back(position + Position(0,height));
-		init();
-	}
-
-	Building(b2World* world, const std::vector<Position>& corners) : corners_(corners) {
+	Building(const std::vector<Position>& corners) : corners_(corners) {
 		init();
 
 		b2BodyDef bodyDef;
 		bodyDef.fixedRotation = true;
 		bodyDef.position.Set(position_.x,position_.y);
 		
-		body_ = world->CreateBody(&bodyDef);		
+		body_ = getWorld()->CreateBody(&bodyDef);
+		body_->SetUserData(this);
 		
 		unsigned int size = corners.size();
-		// Is last and first point the same point?
-		if (size > 0 && (corners[size-1]-corners[0]).LengthSquared() < 0.001f) {
-			// Ignore last point.
-			--size;
-		}
 		
 		// Create polygon.
 		b2Vec2 vertices[b2_maxPolygonVertices];		
@@ -51,12 +38,8 @@ public:
 		fixture->SetUserData(this);
 	}
 
-	Building(const std::vector<Position>& corners) : corners_(corners) {
-		init();
-	}
-
 	~Building() {
-		if (body_ != nullptr) {
+		if (getWorld() != nullptr) {
 			getWorld()->DestroyBody(body_);
 		}
 	}
