@@ -53,17 +53,17 @@ namespace zombie {
 		float healthPoints() const;
 		void updateHealthPoint(float deltaLife);
 
-		bool isDead() const;
+		bool isDead() const override;
 
-		bool isInfected() const {
+		bool isInfected() const override {
 			return isInfected_;
 		}
 
-		Weapon getWeapon() const {
+		Weapon getWeapon() const override {
 			return weapon_;
 		}
 
-		Position getPosition() const {
+		Position getPosition() const override {
 			return Position(body_->GetPosition().x,body_->GetPosition().y);
 		}
 

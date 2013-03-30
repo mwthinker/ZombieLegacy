@@ -173,7 +173,7 @@ namespace zombie {
 		while (nbrOfZombies < unitLevel_) {
 			// Insert zombie.
 			Position p = map_.generateSpawnPosition(center,innerSpawnRadius_,outerSpawnRadius_);
-			Unit* zombie = createUnit(p.x,p.y,0.3f,Weapon(25,0.5f,1,12),true);
+			Unit* zombie = createUnit(p.x,p.y,0.3f,Weapon(25,0.5f,1,10000),true);
 			addNewAi(zombie);
 			nbrOfZombies++;
 		}
@@ -304,7 +304,7 @@ namespace zombie {
 		// Add zombie with standard behavior.
 		for (int i = 0; i < 1; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
-			Unit* zombie = createUnit(spawn.x,spawn.y,0.3f,Weapon(35,0.5f,1,12),true);
+			Unit* zombie = createUnit(spawn.x,spawn.y,0.3f,Weapon(35,0.5f,1,10000),true);
 			addNewAi(zombie);
 		}
 
