@@ -13,6 +13,7 @@
 #include "zombiebehavior.h"
 #include "survivorbehavior.h"
 
+#include "gamesound.h"
 #include "taskmanager.h"
 #include "aiplayer.h"
 #include "survivaltimer.h"
@@ -440,6 +441,15 @@ namespace zombie {
 	}
 
 	void ZombieGame::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
+		if (std::abs(impulse->normalImpulses[0]) > 1.8f) {
+			Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
+			Object* ob2 = static_cast<Object*>(contact->GetFixtureB()->GetUserData());
+			if (dynamic_cast<Car*>(ob1) || dynamic_cast<Car*>(ob2)) {
+				mw::Sound tmp = crash;
+				tmp.play();
+			}
+		}
+
 		if (std::abs(impulse->normalImpulses[0]) > 0.8f) {
 			Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
 			if (Unit* unit = dynamic_cast<Unit*>(ob1)) {
@@ -451,7 +461,7 @@ namespace zombie {
 				} else {
 					taskManager_->add(new BloodSplash(p.x,p.y,time_));
 				}
-			}
+			}			
 
 			Object* ob2 = static_cast<Object*>(contact->GetFixtureB()->GetUserData());
 			if (Unit* unit = dynamic_cast<Unit*>(ob2)) {
