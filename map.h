@@ -9,7 +9,9 @@
 #include <vector>
 #include <cmath>
 
-namespace zombie {	
+namespace zombie {
+
+	class Building;
 
 	class Map {
 	public:
@@ -21,7 +23,7 @@ namespace zombie {
 		Position generateSpawnPosition() const;
 		Position generateSpawnPosition(Position p, float innerRadie, float outerRadie) const;
 
-		const std::vector<BuildingPtr>& getBuildings() const {
+		const std::vector<Building*>& getBuildings() const {
 			return buildings_;
 		}
 
@@ -59,7 +61,7 @@ namespace zombie {
 		float maxY_;
 		
 		std::vector<LineFeature> roads_;
-		std::vector<BuildingPtr> buildings_;
+		std::vector<Building*> buildings_;
 	};
 
 	Map generateMap(); 

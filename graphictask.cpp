@@ -161,7 +161,7 @@ namespace zombie {
 		return true;
 	}
 
-	DrawFake3DBuildning::DrawFake3DBuildning(const BuildingPtr& building) {
+	DrawFake3DBuildning::DrawFake3DBuildning(Building* building) {
 		
 		buildning_ = building;
 		road_ = drawRoad;

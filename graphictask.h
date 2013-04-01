@@ -81,7 +81,7 @@ namespace zombie {
 
 	class DrawFake3DBuildning : public GraphicTask {
 	public:
-		DrawFake3DBuildning(const BuildingPtr& building);
+		DrawFake3DBuildning(Building* building);
 		void drawSecond(double time) override;
 		void drawThird(double time) override;
 
@@ -90,7 +90,7 @@ namespace zombie {
 	private:
 		void draw();
 		mw::Sprite road_;
-		BuildingPtr buildning_;
+		Building* buildning_;
 		std::vector<LineFeature> front_;
 		std::vector<LineFeature> back_;
 		std::vector<LineFeature> rightCorner_;

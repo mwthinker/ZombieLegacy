@@ -84,6 +84,37 @@ namespace zombie {
 			b2Fixture* closest_;
 			float closestFraction_;
 		};
+
+		bool getVisibleObject(b2Contact* contact, MovingObject*& target, MovingObject*& looker) {
+			b2Fixture* fixtureA = contact->GetFixtureA();
+			b2Fixture* fixtureB = contact->GetFixtureB();
+
+			// Make sure only one of the fixtures was a sensor.
+			bool sensorA = fixtureA->IsSensor();
+			bool sensorB = fixtureB->IsSensor();
+			if (sensorA == sensorB) {
+				return false;
+			}
+
+			Object* ob1 = static_cast<Object*>(fixtureA->GetUserData());
+			Object* ob2 = static_cast<Object*>(fixtureB->GetUserData());
+			MovingObject* mOb1 = dynamic_cast<MovingObject*>(ob1);
+			MovingObject* mOb2 = dynamic_cast<MovingObject*>(ob2);
+
+			// Make sure both are moving objects.
+			if (mOb1 && mOb2) {
+				if (sensorA) {
+					looker = mOb1;
+					target = mOb2;
+				} else {
+					looker = mOb2;
+					target = mOb1;
+				}
+				return true;
+			}
+
+			return false;
+		}
 	}
 
 	ZombieGame::ZombieGame(int width, int height) {
@@ -112,9 +143,21 @@ namespace zombie {
 	}
 
 	ZombieGame::~ZombieGame() {
-		Object::setWorld(nullptr);
-		delete taskManager_;
+		// Remove all game objects.
+		std::vector<Object*> objects;
+		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
+			Object* ob = static_cast<Object*>(b->GetUserData());
+			objects.push_back(ob);
+		}
+		for (Object* ob : objects) {
+			delete ob;
+		}
+
+		// When all game objects are removed then remove world.
 		delete world_;
+
+		// Remove all tasks depending on gameobjects.
+		delete taskManager_;
 	}
 
 	void ZombieGame::startGame() {
@@ -278,7 +321,7 @@ namespace zombie {
 
 		auto buildings = map_.getBuildings();
 
-		for (const BuildingPtr& building : buildings) {
+		for (Building* building : buildings) {
 			taskManager_->add(new DrawFake3DBuildning(building));
 		}
 
@@ -378,38 +421,7 @@ namespace zombie {
 
 		taskManager_->add(new Shot(shooter->getPosition(),endP,time_));
 		std::cout << endP.x << " " << endP.y << std::endl;
-	}
-
-	bool getVisibleObject(b2Contact* contact, MovingObject*& target, MovingObject*& looker) {
-		b2Fixture* fixtureA = contact->GetFixtureA();
-		b2Fixture* fixtureB = contact->GetFixtureB();
-
-		// Make sure only one of the fixtures was a sensor.
-		bool sensorA = fixtureA->IsSensor();
-		bool sensorB = fixtureB->IsSensor();
-		if (sensorA == sensorB) {
-			return false;
-		}
-
-		Object* ob1 = static_cast<Object*>(fixtureA->GetUserData());
-		Object* ob2 = static_cast<Object*>(fixtureB->GetUserData());
-		MovingObject* mOb1 = dynamic_cast<MovingObject*>(ob1);
-		MovingObject* mOb2 = dynamic_cast<MovingObject*>(ob2);
-
-		// Make sure both are moving objects.
-		if (mOb1 && mOb2) {
-			if (sensorA) {
-				looker = mOb1;
-				target = mOb2;
-			} else {
-				looker = mOb2;
-				target = mOb1;
-			}
-			return true;
-		}
-
-		return false;
-	}
+	}	
 
 	void ZombieGame::BeginContact(b2Contact* contact) {
 		MovingObject* target;
@@ -451,7 +463,6 @@ namespace zombie {
 				} else {
 					taskManager_->add(new BloodSplash(p.x,p.y,time_));
 				}
-
 			}
 		}
 	}

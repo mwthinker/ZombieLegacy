@@ -18,10 +18,10 @@ namespace zombie {
 				--size;
 			}
 			Points tmp(points.begin(), points.begin() + size);
-			buildings_.push_back(std::make_shared<Building>(tmp));
+			buildings_.push_back(new Building(tmp));
 		}
 
-		minX_ = mapCentre_.x - width * 0.5f; 
+		minX_ = mapCentre_.x - width * 0.5f;
 		minY_ = mapCentre_.y - height * 0.5f;
 		maxX_ = mapCentre_.x + width * 0.5f;
 		maxY_ = mapCentre_.y + height * 0.5f;
@@ -51,7 +51,7 @@ namespace zombie {
 				float x = p.x + std::cos(alfa+angle)*(dist+innerRadie);
 				float y = p.y + std::sin(alfa+angle)*(dist+innerRadie);
 								
-				for (BuildingPtr building : buildings_) {
+				for (Building* building : buildings_) {
 					// if inside one building, break
 					if (building->isInside(x,y)) {
 						buildingFound = true;

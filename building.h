@@ -14,34 +14,38 @@ public:
 	Building(const std::vector<Position>& corners) : corners_(corners) {
 		init();
 
-		b2BodyDef bodyDef;
-		bodyDef.fixedRotation = true;
-		bodyDef.position.Set(position_.x,position_.y);
+		// Create body.
+		{
+			b2BodyDef bodyDef;
+			bodyDef.fixedRotation = true;
+			bodyDef.position.Set(position_.x,position_.y);
 		
-		body_ = getWorld()->CreateBody(&bodyDef);
-		body_->SetUserData(this);
-		
-		unsigned int size = corners.size();
-		
-		// Create polygon.
-		b2Vec2 vertices[b2_maxPolygonVertices];		
-		unsigned int count = 0;
-		// Save global vertex points to local shape coordinates.
-		for (; count < size && count < b2_maxPolygonVertices; ++count) {
-			vertices[count] = body_->GetLocalPoint(corners[count]);
+			body_ = getWorld()->CreateBody(&bodyDef);
+			body_->SetUserData(this);
 		}
 		
-		b2PolygonShape shape;
-		shape.Set(vertices, count);
+		// Create fixture to body.
+		{
+			unsigned int size = corners.size();
+		
+			// Create polygon.
+			b2Vec2 vertices[b2_maxPolygonVertices];		
+			unsigned int count = 0;
+			// Save global vertex points to local shape coordinates.
+			for (; count < size && count < b2_maxPolygonVertices; ++count) {
+				vertices[count] = body_->GetLocalPoint(corners[count]);
+			}
+		
+			b2PolygonShape shape;
+			shape.Set(vertices, count);
 
-		b2Fixture* fixture = body_->CreateFixture(&shape,0.f);
-		fixture->SetUserData(this);
+			b2Fixture* fixture = body_->CreateFixture(&shape,0.f);
+			fixture->SetUserData(this);
+		}
 	}
 
 	~Building() {
-		if (getWorld() != nullptr) {
-			getWorld()->DestroyBody(body_);
-		}
+		getWorld()->DestroyBody(body_);
 	}
 
 	const std::vector<Position>& getCorners() const {

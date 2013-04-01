@@ -21,9 +21,6 @@ namespace zombie {
 	class AiBehavior;
 	typedef std::shared_ptr<AiBehavior> AiBehaviorPtr;
 
-	class Building;
-	typedef std::shared_ptr<Building> BuildingPtr;
-
 	class HumanPlayer;
 	typedef std::shared_ptr<HumanPlayer> HumanPlayerPtr;
 
