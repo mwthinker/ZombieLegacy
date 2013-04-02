@@ -22,7 +22,7 @@ namespace zombie {
 	Input ZombieBehavior::calculateInput(const Unit* unit, double time) {
 		Input input;
 
-		if (!connectionToTaget_.connected()) {
+		if (!inMemoryTarget_.isValid()) {
 			target_ = nullptr;
 		}
 
@@ -33,11 +33,11 @@ namespace zombie {
 
 		if (time > findNewTargetTime_) {
 			findNewTargetTime_ = random() * 3 + time;
-			connectionToTaget_.disconnect();
+			inMemoryTarget_.disconnect();
 			
 			target_ = findUninfectedTarget(unit->getPosition(), unit->getVisibleObjects());
 			if (target_ != nullptr) {
-				connectionToTaget_ = target_->addExistHandler();
+				inMemoryTarget_ = target_->getInMemory();
 			}
 		}
 

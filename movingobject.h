@@ -51,13 +51,7 @@ namespace zombie {
 		// The objects are only guaranteed to exist in the current game time.
 		const std::list<MovingObject*>& getVisibleObjects() const {
 			return visibleObjects_;
-		}		
-
-		// Returns a connected connection that will be disconnected when this 
-		// object removes from memory.
-		mw::signals::Connection addExistHandler() {
-			return existSignal_.connect([]() {});
-		}		
+		}
 
 	private:
 		void addVisibleObject(MovingObject* object) {

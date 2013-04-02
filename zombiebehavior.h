@@ -24,7 +24,7 @@ namespace zombie {
 
 		double findNewTargetTime_;
 		MovingObject* target_;
-		mw::signals::Connection connectionToTaget_;
+		InMemory inMemoryTarget_;
 
 		double timeToUpdateAngleDirection_;
 		double targetAngle_;
