@@ -9,6 +9,7 @@
 
 #include "unit.h"
 #include "building.h"
+#include "weaponobject.h"
 
 #include <mw/text.h>
 
@@ -29,45 +30,7 @@ namespace zombie {
 		std::queue<Task*> tasks_;
 	};
 
-	void drawCircle(double cx, double cy, double r, int num_segments, bool filled);
-	/*
-	class DrawBuildning : public Task {
-	public:
-		DrawBuildning(const BuildingPtr& building);
-		void excecute(double time) override;		
-		bool isRunning() const override;
-
-	private:
-		void draw();
-
-		BuildingPtr buildning_;
-	};
-
-	class SurvivorAnimation : public Task {
-	public:
-		SurvivorAnimation(const UnitPtr& unit);
-		void excecute(double time) override;		
-		bool isRunning() const override;
-
-	private:
-		void draw(double timestep);
-
-		UnitPtr unit_;
-	};
-
-	class HumanAnimation3D : public Task {
-	public:
-		HumanAnimation3D(const UnitPtr& unit);
-		void excecute(double time) override;
-		bool isRunning() const override;
-
-	private:
-		void draw(double timestep);
-
-		UnitPtr unit_;
-		double lastTime_;
-	};
-	*/
+	void drawCircle(double cx, double cy, double r, int num_segments, bool filled);	
 
 	class HumanStatus : public Task {
 	public:
@@ -88,18 +51,5 @@ namespace zombie {
 		Player player_;
 	};
 
-	/*
-	class Buildning3DTask : public Task {
-	public:
-		Buildning3DTask(const BuildingPtr& building);
-		void excecute(double time) override;		
-		bool isRunning() const override;
-
-	private:
-		void draw();
-
-		BuildingPtr buildning_;
-	};
-	*/
 }
 #endif // TASK_H

@@ -138,6 +138,9 @@
     <ClInclude Include="building.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
+    <ClInclude Include="weaponobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

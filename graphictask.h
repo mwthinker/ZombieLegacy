@@ -11,6 +11,7 @@
 #include "building.h"
 #include "graphictask.h"
 #include "color.h"
+#include "weaponobject.h"
 
 #include <mw/text.h>
 #include <mw/signal.h>
@@ -101,7 +102,22 @@ namespace zombie {
 	};
 
 	unsigned int circularIndex(int i, int s);
-	double getLineY(double a,double b,double c,double x) ;
+	double getLineY(double a,double b,double c,double x);
+
+	class DrawWeaponObject : public GraphicTask {
+	private:
+		DrawWeaponObject(WeaponObject* wOb) {
+
+		}
+
+		void drawFirst(double time) override {
+
+		}
+
+		bool isRunning() const override {
+
+		}
+	};
 
 } // Namespace zombie.
 

@@ -9,6 +9,7 @@
 #include "tile.h"
 #include "input.h"
 #include "task.h"
+#include "weaponobject.h"
 
 #include "zombiebehavior.h"
 #include "survivorbehavior.h"
@@ -91,6 +92,7 @@ namespace zombie {
 			b2Fixture* fixtureB = contact->GetFixtureB();
 
 			// Make sure only one of the fixtures was a sensor.
+			// Assumes that the first fixture in the fixture list is the tensor.
 			bool sensorA = fixtureA->IsSensor();
 			bool sensorB = fixtureB->IsSensor();
 			if (sensorA == sensorB) {

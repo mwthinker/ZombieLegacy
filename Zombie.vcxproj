@@ -112,6 +112,7 @@
     <ClInclude Include="typedefs.h" />
     <ClInclude Include="unit.h" />
     <ClInclude Include="weapon.h" />
+    <ClInclude Include="weaponobject.h" />
     <ClInclude Include="zombieanimation.h" />
     <ClInclude Include="zombiebehavior.h" />
     <ClInclude Include="zombiegame.h" />
