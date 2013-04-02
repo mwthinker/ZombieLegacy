@@ -19,7 +19,7 @@ namespace zombie {
 
 		Input currentInput() override;
 
-		void calculateInput(Unit* unit, double time);
+		void calculateInput(const Unit* unit, double time);
 
 		Input input_;
 		AiBehaviorPtr behavior_;

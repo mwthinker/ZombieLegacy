@@ -20,7 +20,7 @@ namespace zombie {
 	SurvivorBehavior::~SurvivorBehavior() {
 	}
 
-	Input SurvivorBehavior::calculateInput(Unit* unit, double time) {
+	Input SurvivorBehavior::calculateInput(const Unit* unit, double time) {
 		Input input;
 		// extract information from memory
 		// analyze situation - enviroment and units when neccesarry

@@ -16,7 +16,7 @@ namespace zombie {
 		}
 
 		virtual Input currentInput() = 0;
-		virtual void calculateInput(Unit* unit, double time) = 0;
+		virtual void calculateInput(const Unit* unit, double time) = 0;
 	};
 
 } // namespace zombie.

@@ -17,7 +17,7 @@ namespace zombie {
 		return input_;
 	}
 
-	void AiPlayer::calculateInput(Unit* unit, double time) {
+	void AiPlayer::calculateInput(const Unit* unit, double time) {
 		input_ = behavior_->calculateInput(unit, time);
 	}
 } // namespace zombie.

@@ -19,7 +19,7 @@ namespace zombie {
 	ZombieBehavior::~ZombieBehavior() {
 	}
 
-	Input ZombieBehavior::calculateInput(Unit* unit, double time) {
+	Input ZombieBehavior::calculateInput(const Unit* unit, double time) {
 		Input input;
 
 		if (!connectionToTaget_.connected()) {

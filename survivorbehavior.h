@@ -16,7 +16,7 @@ namespace zombie {
 		SurvivorBehavior();
 		~SurvivorBehavior();
 
-		Input calculateInput(Unit* unit, double time) override;
+		Input calculateInput(const Unit* unit, double time) override;
 		Input activityToInput(Activity a);
 	private:
 		Unit* findUninfectedTarget(Position position, const std::vector<Unit*>& units) const;

@@ -16,7 +16,7 @@ namespace zombie {
 
 		virtual void eventUpdate(const SDL_Event& windowEvent) = 0;
 
-		void calculateInput(Unit* unit, double time) {
+		void calculateInput(const Unit* unit, double time) {
 		}
 
 		void setConnection(mw::signals::Connection connection) {

@@ -15,7 +15,7 @@ namespace zombie {
 		AiBehavior();
 		virtual ~AiBehavior();
 
-		virtual Input calculateInput(Unit* unit, double time) = 0;
+		virtual Input calculateInput(const Unit* unit, double time) = 0;
 	private:
 
 	};

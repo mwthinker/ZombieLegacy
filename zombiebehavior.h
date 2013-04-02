@@ -16,7 +16,7 @@ namespace zombie {
 		ZombieBehavior();
 		~ZombieBehavior();
 
-		Input calculateInput(Unit* unit, double time) override;
+		Input calculateInput(const Unit* unit, double time) override;
 
 		void unitEventHandler(Unit::UnitEvent unitEvent);
 	private:
