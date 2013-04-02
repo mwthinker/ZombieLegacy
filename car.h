@@ -60,7 +60,7 @@ namespace zombie {
 		}
 
 		void setDriver(Unit* unit) {
-			driver_ = driver_;
+			driver_ = unit;
 		}
 
 		void updatePhysics(float time, float timeStep, Input input) override {

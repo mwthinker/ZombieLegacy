@@ -289,6 +289,7 @@ namespace zombie {
 	Unit* ZombieGame::createUnit(float x, float y, float angle, const Weapon& weapon, bool infected) {
 		Unit* unit = new Unit(x, y, angle, weapon, infected);
 		unit->addShootHandler(std::bind(&ZombieGame::doShotDamage,this,std::placeholders::_1,std::placeholders::_2));
+		unit->addActionHandler(std::bind(&ZombieGame::doAction,this,std::placeholders::_1));
 		return unit;
 	}
 
@@ -331,13 +332,13 @@ namespace zombie {
 		Unit* human = createUnit(position.x,position.y,0.3f,Weapon(55,0.2f,8,12),false);
 		viewPosition_ = human->getPosition();
 
-		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r,SDLK_LSHIFT));
+		HumanPlayerPtr humanPlayer(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r,SDLK_LSHIFT,SDLK_e));
 		addHuman(humanPlayer,human);
 		auto connection = sdlEventSignal_.connect(std::bind(&HumanPlayer::eventUpdate,humanPlayer,std::placeholders::_1));
 		humanPlayer->setConnection(connection);
 
 		{
-			humanPlayer = HumanPlayerPtr(new InputKeyboard(SDLK_w,SDLK_s,SDLK_a,SDLK_d,SDLK_f,SDLK_g,SDLK_h));
+			humanPlayer = HumanPlayerPtr(new InputKeyboard(SDLK_w,SDLK_s,SDLK_a,SDLK_d,SDLK_f,SDLK_g,SDLK_h,SDLK_z));
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
 			Car* car = new Car(spawn.x,spawn.y);
 			players_.push_back(TuplePlayerUnitGraphic(humanPlayer,car,new CarAnimation(car)));
