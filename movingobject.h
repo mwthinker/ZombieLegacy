@@ -57,7 +57,7 @@ namespace zombie {
 		// object removes from memory.
 		mw::signals::Connection addExistHandler() {
 			return existSignal_.connect([]() {});
-		}
+		}		
 
 	private:
 		void addVisibleObject(MovingObject* object) {
