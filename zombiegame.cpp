@@ -209,7 +209,6 @@ namespace zombie {
 
 			if (outside || dead) {
 				delete std::get<1>(tuple);
-				delete std::get<2>(tuple);
 				return true;
 			}
 			return false;
@@ -260,21 +259,9 @@ namespace zombie {
 
 		// Game is started?
 		if (started_) {
-			taskManager_->update(deltaTime);
-			for (auto& tuple : players_) {
-				GraphicObject* ob = std::get<2>(tuple);
-				if (ob != nullptr) {
-					ob->draw(deltaTime);
-				}
-			}
+			taskManager_->update(deltaTime);			
 		} else {
 			taskManager_->update(0.0);
-			for (auto& tuple : players_) {
-				GraphicObject* ob = std::get<2>(tuple);
-				if (ob != nullptr) {
-					ob->draw(0.0);
-				}
-			}
 		}		
 
 		glPopMatrix();
@@ -297,18 +284,21 @@ namespace zombie {
 
 	void ZombieGame::addHuman(HumanPlayerPtr human, Unit* unit) {
 		taskManager_->add(new HumanStatus(unit,HumanStatus::ONE));
-		players_.push_back(TuplePlayerUnitGraphic(human,unit,new HumanAnimation(unit)));
+		taskManager_->add(new HumanAnimation(unit));
+		players_.push_back(TuplePlayerUnitGraphic(human,unit));
 	}
 
 	void ZombieGame::addNewAi(Unit* unit) {
 		if (unit->isInfected()) {
 			AiBehaviorPtr b = std::make_shared<ZombieBehavior>();
 			AiPlayerPtr aiPlayer(new AiPlayer(b));
-			players_.push_back(TuplePlayerUnitGraphic(aiPlayer,unit,new ZombieAnimation(unit)));
+			taskManager_->add(new ZombieAnimation(unit));
+			players_.push_back(TuplePlayerUnitGraphic(aiPlayer,unit));
 		} else {
 			AiBehaviorPtr b = std::make_shared<SurvivorBehavior>();
 			AiPlayerPtr aiPlayer(new AiPlayer(b));
-			players_.push_back(TuplePlayerUnitGraphic(aiPlayer,unit,new HumanAnimation(unit)));
+			taskManager_->add(new HumanAnimation(unit));
+			players_.push_back(TuplePlayerUnitGraphic(aiPlayer,unit));
 		}		
 	}
 
@@ -343,7 +333,8 @@ namespace zombie {
 			humanPlayer = HumanPlayerPtr(new InputKeyboard(SDLK_w,SDLK_s,SDLK_a,SDLK_d,SDLK_f,SDLK_g,SDLK_h,SDLK_z));
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
 			Car* car = new Car(spawn.x,spawn.y);
-			players_.push_back(TuplePlayerUnitGraphic(humanPlayer,car,new CarAnimation(car)));
+			players_.push_back(TuplePlayerUnitGraphic(humanPlayer,car));
+			taskManager_->add(new CarAnimation(car));
 			auto connection = sdlEventSignal_.connect(std::bind(&HumanPlayer::eventUpdate,humanPlayer,std::placeholders::_1));
 			humanPlayer->setConnection(connection);
 		}

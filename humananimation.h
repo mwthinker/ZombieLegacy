@@ -2,7 +2,7 @@
 #define HUMANANIMAITON_H
 
 #include "unit.h"
-#include "graphicobject.h"
+#include "graphictask.h"
 #include "color.h"
 
 #include <vector>
@@ -10,16 +10,18 @@
 
 namespace zombie {
 
-	class HumanAnimation : public GraphicObject {
+	class HumanAnimation : public GraphicTask {
 	public:
 		HumanAnimation(Unit* unit);
 		~HumanAnimation();
 		
 		void unitEventHandler(Unit::UnitEvent unitEvent);
 	
-		void draw(float timestep);
-	private:
+		void drawSecond(double time) override;
+		bool isRunning() const override;
 
+	private:
+		InMemory inMemory_;
 		mw::signals::Connection connection_;
 		Unit* unit_;
 		double timeNewFrame_;
@@ -27,7 +29,6 @@ namespace zombie {
 		std::vector<mw::Sprite> sprites_;
 		double lastTime_;
 		Color color_;
-		float time_;
 	};
 
 } // Namespace zombie.

@@ -8,10 +8,10 @@ namespace zombie {
 
 	HumanAnimation::HumanAnimation(Unit* unit) {
 		unit_ = unit;
+		inMemory_ = unit_->getInMemory();
 		connection_ = unit->addEventHandler(std::bind(&HumanAnimation::unitEventHandler,this,std::placeholders::_1));
 
 		timeNewFrame_ = 0.0;
-		time_ = 0.0;
 		index_ = 0;
 		lastTime_ = 0.0;
 		color_ = Color();
@@ -26,34 +26,39 @@ namespace zombie {
 		connection_.disconnect();
 	}
 
+	bool HumanAnimation::isRunning() const {
+		return inMemory_.isValid();
+	}
+
 	// private
-	void HumanAnimation::draw(float timestep) {
-		time_ += timestep;
-		lastTime_ = time_;
+	void HumanAnimation::drawSecond(double time) {
+		if (inMemory_.isValid()) {
+			lastTime_ = time;
 
-		// Time is much larger?
-		if (time_ > timeNewFrame_ + 1) {
-			// In order for frames to sync to current time.
-			timeNewFrame_ = 0.18 + time_;
+			// Time is much larger?
+			if (time > timeNewFrame_ + 1) {
+				// In order for frames to sync to current time.
+				timeNewFrame_ = 0.18 + time;
+			}
+
+			if (time > timeNewFrame_) {
+				index_ = (1 + index_) % sprites_.size();
+				timeNewFrame_ += 0.18;
+			}
+
+			Position p = unit_->getPosition();
+
+			// Draw body
+			color_.glColor3d();
+			glPushMatrix();
+			glTranslated(p.x,p.y,0);
+			glScaled(unit_->radius()*0.9,unit_->radius()*0.9,1);
+			glRotated(unit_->getState().angle_*180/mw::PI,0,0,1);
+			mw::TexturePtr texture = sprites_[index_].getTexture();
+			glScaled(texture->getWidth()/128.0,texture->getHeight()/128.0,1);
+			sprites_[index_].draw();
+			glPopMatrix();
 		}
-
-		if (time_ > timeNewFrame_) {
-			index_ = (1 + index_) % sprites_.size();
-			timeNewFrame_ += 0.18;
-		}
-
-		Position p = unit_->getPosition();
-
-		// Draw body
-		color_.glColor3d();
-		glPushMatrix();
-		glTranslated(p.x,p.y,0);
-		glScaled(unit_->radius()*0.9,unit_->radius()*0.9,1);
-		glRotated(unit_->getState().angle_*180/mw::PI,0,0,1);
-		mw::TexturePtr texture = sprites_[index_].getTexture();
-		glScaled(texture->getWidth()/128.0,texture->getHeight()/128.0,1);
-		sprites_[index_].draw();
-		glPopMatrix();
 	}
 
 	void HumanAnimation::unitEventHandler(Unit::UnitEvent unitEvent) {

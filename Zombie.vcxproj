@@ -89,7 +89,6 @@
     <ClInclude Include="color.h" />
     <ClInclude Include="gamefont.h" />
     <ClInclude Include="gamesprite.h" />
-    <ClInclude Include="graphicobject.h" />
     <ClInclude Include="humananimation.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="inputkeyboard.h" />

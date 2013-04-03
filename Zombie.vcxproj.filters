@@ -111,9 +111,6 @@
     <ClInclude Include="humananimation.h">
       <Filter>Header Files\GraphicAndSound</Filter>
     </ClInclude>
-    <ClInclude Include="graphicobject.h">
-      <Filter>Header Files\GraphicAndSound</Filter>
-    </ClInclude>
     <ClInclude Include="zombieanimation.h">
       <Filter>Header Files\GraphicAndSound</Filter>
     </ClInclude>

@@ -7,11 +7,11 @@ namespace zombie {
 
 	ZombieAnimation::ZombieAnimation(Unit* unit) {
 		unit_ = unit;
+		inMemory_ = unit_->getInMemory();
 		connection_ = unit->addEventHandler(std::bind(&ZombieAnimation::unitEventHandler,this,std::placeholders::_1));
 
 		timeNewFrame_ = 0.0;
 		color_ = Color();
-		time_ = 0.0;
 
 		sprites_.push_back(zombie1);
 		sprites_.push_back(zombie2);
@@ -26,32 +26,37 @@ namespace zombie {
 		connection_.disconnect();
 	}
 
-	void ZombieAnimation::draw(float timestep) {
-		time_ += timestep;
+	bool ZombieAnimation::isRunning() const {
+		return inMemory_.isValid();
+	}
 
-		// Time is much larger?
-		if (time_ > timeNewFrame_ + 1) {
-			// In order for frames to sync to current time.
-			timeNewFrame_ = 0.18 + time_;
+	void ZombieAnimation::drawSecond(double time) {
+		if (inMemory_.isValid()) {
+
+			// Time is much larger?
+			if (time > timeNewFrame_ + 1) {
+				// In order for frames to sync to current time.
+				timeNewFrame_ = 0.18 + time;
+			}
+
+			if (time > timeNewFrame_) {
+				index_ = (1 + index_) % sprites_.size();
+				timeNewFrame_ += 0.18;
+			}
+
+			Position p = unit_->getPosition();
+
+			// Draw body.
+			color_.glColor3d();
+			glPushMatrix();
+			glTranslated(unit_->getPosition().x,unit_->getPosition().y,0);
+			glScaled(unit_->radius()*0.9,unit_->radius()*0.9,1);
+			glRotated(unit_->getState().angle_*180/mw::PI,0,0,1);
+			double d = sprites_[index_].getTexture()->getWidth();
+			glScaled(d/128.0,d/128.0,1);
+			sprites_[index_].draw();
+			glPopMatrix();
 		}
-
-		if (time_ > timeNewFrame_) {
-			index_ = (1 + index_) % sprites_.size();
-			timeNewFrame_ += 0.18;
-		}
-
-		Position p = unit_->getPosition();
-
-		// Draw body.
-		color_.glColor3d();
-		glPushMatrix();
-		glTranslated(unit_->getPosition().x,unit_->getPosition().y,0);
-		glScaled(unit_->radius()*0.9,unit_->radius()*0.9,1);
-		glRotated(unit_->getState().angle_*180/mw::PI,0,0,1);
-		double d = sprites_[index_].getTexture()->getWidth();
-		glScaled(d/128.0,d/128.0,1);
-		sprites_[index_].draw();
-		glPopMatrix();
 	}
 
 	void ZombieAnimation::unitEventHandler(Unit::UnitEvent unitEvent) {

@@ -2,7 +2,7 @@
 #define ZOMBIEANIMAITON_H
 
 #include "unit.h"
-#include "graphicobject.h"
+#include "graphictask.h"
 #include "color.h"
 
 #include <vector>
@@ -10,22 +10,24 @@
 
 namespace zombie {
 
-	class ZombieAnimation : public GraphicObject {
+	class ZombieAnimation : public GraphicTask {
 	public:
 		ZombieAnimation(Unit* unit);
 		~ZombieAnimation();
 
 		void unitEventHandler(Unit::UnitEvent unitEvent);
-		void draw(float timestep);
+		
+		void drawSecond(double time) override;
+		bool isRunning() const override;
 	
 	private:
 		mw::signals::Connection connection_;
+		InMemory inMemory_;
 		Unit* unit_;
 		double timeNewFrame_;
 		int index_;
 		std::vector<mw::Sprite> sprites_;
 		Color color_;
-		float time_;
 	};
 
 } // Namespace zombie.
