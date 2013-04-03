@@ -28,7 +28,6 @@ namespace zombie {
 			glPushMatrix();
 			State state = car_->state();
 
-
 			glColor3d(1,1,1);
 			glTranslated(state.position_.x,state.position_.y,0);
 			glRotated(state.angle_*180/3.14,0,0,1);

@@ -1,6 +1,5 @@
-#include "task.h"
-
 #include "graphictask.h"
+#include "task.h"
 #include "typedefs.h"
 #include "unit.h"
 #include "building.h"
@@ -162,7 +161,6 @@ namespace zombie {
 	}
 
 	DrawFake3DBuildning::DrawFake3DBuildning(Building* building) {
-
 		buildning_ = building;
 		road_ = drawRoad;
 		d_ = random()* 1.0/3.0;
@@ -173,12 +171,12 @@ namespace zombie {
 
 		// Separate front from back *********************************************
 		std::vector<Position> corners = building->getCorners();
-		corners.pop_back();
+		
 		// Find mostleft corner as starting point
 		float minX = 9999999;
 		unsigned int startPos;
 		for (unsigned int i = 0; i < corners.size(); i++) {
-			if(corners[i].x < minX){
+			if (corners[i].x < minX){
 				startPos = i;
 				minX = corners[i].x;
 			}
@@ -195,20 +193,19 @@ namespace zombie {
 		bool previous = front;
 
 		// Push back linefeatures to draw!
-
-		for(unsigned int i = 0; i < corners.size(); i++) {
+		for (unsigned int i = 0; i < corners.size(); i++) {
 			unsigned index = circularIndex(startPos + i,corners.size());
 
-			if(front) {
-				if(corners[index].x < corners[circularIndex(index+1,corners.size())].x) {
+			if (front) {
+				if (corners[index].x < corners[circularIndex(index+1,corners.size())].x) {
 					front_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
 				} else {
 					back_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
 					rightCorner_.push_back((LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())])));
 					front = false;
-				}				
+				}
 			} else {
-				if(corners[circularIndex(index,corners.size())].x < corners[circularIndex(index+1,corners.size())].x) {
+				if (corners[circularIndex(index,corners.size())].x < corners[circularIndex(index+1,corners.size())].x) {
 					front_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
 					leftCorner_.push_back((LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())])));
 					front = true;
@@ -217,7 +214,6 @@ namespace zombie {
 					back_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
 				}				
 			}
-
 		}
 
 		// put in lineFeature vectors!
@@ -233,11 +229,7 @@ namespace zombie {
 		grayScale.push_back(GRAY3);
 		grayScale.push_back(GRAY4);
 
-
-
-
 		for(LineFeature l : front_) {
-
 			glColor3d(r_,g_,b_);
 			//grayScale[(int) random()*4].glColor3d();
 			glBegin(GL_TRIANGLE_FAN);
@@ -245,7 +237,7 @@ namespace zombie {
 			glVertex2d(l.getEnd().x,l.getEnd().y);
 			glVertex2d(l.getEnd().x,l.getEnd().y+height_);
 			glVertex2d(l.getStart().x,l.getStart().y+height_);
-			glEnd();			
+			glEnd();
 		}
 		BLACK.glColor3d();
 		for(LineFeature l : front_) {
@@ -267,21 +259,14 @@ namespace zombie {
 			double sX = (l.getStart().x + l.getEnd().x)/2;			
 			double sY = (l.getStart().y + l.getEnd().y)/2;
 
-
 			glBegin(GL_TRIANGLE_FAN);
-
 			glVertex2d(sX+doorWidth,getLineY(a,b,c,sX+doorWidth));
 			glVertex2d(sX+doorWidth,getLineY(a,b,c,sX+doorWidth)+doorHeight);
 			glVertex2d(sX-doorWidth,getLineY(a,b,c,sX-doorWidth)+doorHeight);
 			glVertex2d(sX-doorWidth,getLineY(a,b,c,sX-doorWidth));
-
 			glEnd();
-
 		}
 		glDisable(GL_BLEND);
-
-
-
 	}
 
 	double getLineY(double a,double b,double c,double x) {
@@ -309,8 +294,6 @@ namespace zombie {
 			glVertex2d(p.x,p.y+height_);
 		}		
 		glEnd();
-
-
 
 		// HELP AREAS
 		for(LineFeature l : rightCorner_) {

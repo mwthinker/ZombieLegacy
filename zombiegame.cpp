@@ -212,7 +212,7 @@ namespace zombie {
 				return true;
 			}
 			return false;
-		});		
+		});
 
 		// Spawn new units.
 		int nbrOfZombies = players_.size();
