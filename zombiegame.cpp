@@ -85,7 +85,7 @@ namespace zombie {
 		private:
 			b2Fixture* closest_;
 			float closestFraction_;
-		};
+		};		
 
 		bool getVisibleObject(b2Contact* contact, MovingObject*& target, MovingObject*& looker) {
 			b2Fixture* fixtureA = contact->GetFixtureA();
@@ -359,7 +359,13 @@ namespace zombie {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,10);
 			Unit* survivor = createUnit(spawn.x,spawn.y,0.f,Weapon(35,0.5,8,120),false);
 			addNewAi(survivor);
-		}		
+		}
+
+		for (int i = 1; i < 15; i++) {
+			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,50);
+			Weapon weapon;
+			taskManager_->add(new DrawWeaponObject(new WeaponObject(spawn.x,spawn.y,weapon)));
+		}
 	}
 
 	void ZombieGame::zoom(double scale) {
@@ -388,6 +394,9 @@ namespace zombie {
 				if (car->getDriver() != nullptr) {
 					car->setDriver(unit);
 				}
+			} else if (WeaponObject* wOb = dynamic_cast<WeaponObject*>(ob)) {
+				unit->setWeapon(wOb->getWeapon());
+				delete wOb;
 			}
 		}
 	}

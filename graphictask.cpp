@@ -53,7 +53,7 @@ namespace zombie {
 	bool Shot::isRunning() const {
 		return running_;
 	}
-	
+
 	Death::Death(double x, double y, double currentTime) {
 		startTime_ = currentTime;
 		x_ = x;
@@ -89,7 +89,7 @@ namespace zombie {
 		glColor3d(0.6,0.6,0.6);
 		grassTexture->bind();
 
-        glEnable(GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_2D);
 
 		double maxX = map_.maxX();
 		double maxY = map_.maxY();
@@ -127,7 +127,7 @@ namespace zombie {
 
 	void RoadDraw::draw() {
 		const std::vector<LineFeature>& l = map_.getRoads();
-		
+
 		for (auto it = l.begin(); it != l.end(); it++) {
 			double xStart =  it->getStart().x;
 			double yStart =  it->getStart().y;
@@ -162,7 +162,7 @@ namespace zombie {
 	}
 
 	DrawFake3DBuildning::DrawFake3DBuildning(Building* building) {
-		
+
 		buildning_ = building;
 		road_ = drawRoad;
 		d_ = random()* 1.0/3.0;
@@ -185,7 +185,7 @@ namespace zombie {
 		}
 		// define first segment as front/back
 		bool front;
-		 
+
 		if (corners[circularIndex(startPos+1, corners.size())].y < corners[circularIndex(-1,corners.size())].y) {
 			front = true;
 		} else {
@@ -195,10 +195,10 @@ namespace zombie {
 		bool previous = front;
 
 		// Push back linefeatures to draw!
-		
+
 		for(unsigned int i = 0; i < corners.size(); i++) {
 			unsigned index = circularIndex(startPos + i,corners.size());
-						
+
 			if(front) {
 				if(corners[index].x < corners[circularIndex(index+1,corners.size())].x) {
 					front_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
@@ -212,14 +212,14 @@ namespace zombie {
 					front_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
 					leftCorner_.push_back((LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())])));
 					front = true;
-					
+
 				} else {
 					back_.push_back(LineFeature(corners[circularIndex(index,corners.size())],corners[circularIndex(index+1,corners.size())]));
 				}				
 			}
 
 		}
-		
+
 		// put in lineFeature vectors!
 	}
 
@@ -232,12 +232,12 @@ namespace zombie {
 		grayScale.push_back(GRAY2);
 		grayScale.push_back(GRAY3);
 		grayScale.push_back(GRAY4);
-		
-		
 
-		
+
+
+
 		for(LineFeature l : front_) {
-			
+
 			glColor3d(r_,g_,b_);
 			//grayScale[(int) random()*4].glColor3d();
 			glBegin(GL_TRIANGLE_FAN);
@@ -267,9 +267,9 @@ namespace zombie {
 			double sX = (l.getStart().x + l.getEnd().x)/2;			
 			double sY = (l.getStart().y + l.getEnd().y)/2;
 
-			
+
 			glBegin(GL_TRIANGLE_FAN);
-			
+
 			glVertex2d(sX+doorWidth,getLineY(a,b,c,sX+doorWidth));
 			glVertex2d(sX+doorWidth,getLineY(a,b,c,sX+doorWidth)+doorHeight);
 			glVertex2d(sX-doorWidth,getLineY(a,b,c,sX-doorWidth)+doorHeight);
@@ -280,7 +280,7 @@ namespace zombie {
 		}
 		glDisable(GL_BLEND);
 
-		
+
 
 	}
 
@@ -310,7 +310,7 @@ namespace zombie {
 		}		
 		glEnd();
 
-		
+
 
 		// HELP AREAS
 		for(LineFeature l : rightCorner_) {
@@ -344,16 +344,16 @@ namespace zombie {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		const auto& corners = buildning_->getCorners();
-		
+
 		for (unsigned int i = 0; i < corners.size(); i++) {
-			
+
 			//WALLS
 			glColor3d(r_,g_,b_);
 			if (i == corners.size()-1){
-			
+
 			} else {
 				//glBegin(GL_LINE_LOOP);
-				
+
 				glBegin(GL_TRIANGLE_FAN);
 				glVertex2d(corners[i].x,corners[i].y);
 				glVertex2d(corners[i+1].x,corners[i+1].y);
@@ -367,7 +367,7 @@ namespace zombie {
 		glColor3d(0,0,0);
 		glLineWidth(3);
 		for (unsigned int i = 0; i < corners.size(); i++) {
-			
+
 			glBegin(GL_LINES);
 			unsigned int s = corners.size();
 			glEnd();
@@ -379,7 +379,7 @@ namespace zombie {
 
 		glLineWidth(0.01f);
 		// ROOF
-		
+
 		glBegin(GL_TRIANGLE_FAN);
 		glColor3d(r_,g_,b_);
 		for (const Position& p : corners) {
@@ -404,5 +404,21 @@ namespace zombie {
 		return r;
 	}
 
-	
+	DrawWeaponObject::DrawWeaponObject(WeaponObject* wOb) {
+		inMemory_ = wOb->getInMemory();
+		wOb_ = wOb;
+	}
+
+	void DrawWeaponObject::drawFirst(double time) {
+		if (inMemory_.isValid()) {
+			Position p = wOb_->getPosition();
+			glColor3d(0,0,1);
+			drawCircle(p.x,p.y,wOb_->getRadius(),6,true);
+		}
+	}
+
+	bool DrawWeaponObject::isRunning() const {
+		return inMemory_.isValid();
+	}
+
 } // Namespace zombie.

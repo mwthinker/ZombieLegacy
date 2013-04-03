@@ -12,6 +12,8 @@ namespace zombie {
 	class WeaponObject : public Object {
 	public:
 		WeaponObject(float x, float y, const Weapon& weapon) {
+			radius_ = 0.5;
+			
 			// Box2d properties.
 			b2BodyDef bodyDef;
 			bodyDef.position.Set(x, y);
@@ -23,7 +25,7 @@ namespace zombie {
 			{
 				b2CircleShape circle;
 				circle.m_p.Set(0, 0);
-				circle.m_radius = 2;
+				circle.m_radius = radius_;
 
 				b2FixtureDef fixtureDef;
 				fixtureDef.shape = &circle;
@@ -45,12 +47,21 @@ namespace zombie {
 			return weapon;
 		}
 
+		Position getPosition() const {
+			return body_->GetPosition();
+		}
+
+		float getRadius() const {
+			return radius_;
+		}
+
 		b2Body* getBody() const {
 			return body_;
 		}
 
 	private:
 		Weapon weapon;
+		float radius_;
 		b2Body* body_;
 	};
 

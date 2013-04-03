@@ -63,6 +63,10 @@ namespace zombie {
 			return weapon_;
 		}
 
+		void setWeapon(const Weapon& weapon) {
+			weapon_ = weapon;
+		}
+
 		Position getPosition() const override {
 			return Position(body_->GetPosition().x,body_->GetPosition().y);
 		}
