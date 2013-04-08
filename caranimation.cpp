@@ -32,7 +32,7 @@ namespace zombie {
 			glTranslated(state.position_.x,state.position_.y,0);
 			glRotated(state.angle_*180/3.14,0,0,1);
 			glRotated(270,0,0,1);
-			double width = 1.2;
+			double width = 1;
 			double length = 2;
 			glScaled(width,length,1);
 

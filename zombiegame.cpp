@@ -135,7 +135,7 @@ namespace zombie {
 		started_ = false;
 		time_ = 0.0f;
 
-		unitLevel_ = 10;
+		unitLevel_ = 200;
 		innerSpawnRadius_ = 10.f;
 		outerSpawnRadius_ = 40.f;
 
@@ -226,6 +226,9 @@ namespace zombie {
 	}
 
 	void ZombieGame::update(float deltaTime) {
+		
+
+
 		// DeltaTime to big?
 		if (deltaTime > 0.250) {
 			// To avoid spiral of death.

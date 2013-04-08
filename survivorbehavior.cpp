@@ -29,6 +29,7 @@ namespace zombie {
 		// PANIC
 		Activity a;
 		a = PANIC;
+		a = FLEE;
 		
 		return activityToInput(a);
 	}

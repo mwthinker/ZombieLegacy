@@ -10,6 +10,7 @@ namespace zombie {
 	extern mw::Sound reload;
 	extern mw::Sound zombieAttack;
 	extern mw::Sound crash;
+	extern mw::Sound car_sound;
 
 } // namespace zombie.
 
