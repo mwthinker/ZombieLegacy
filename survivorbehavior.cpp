@@ -25,20 +25,29 @@ namespace zombie {
 		// extract information from memory
 		// analyze situation - enviroment and units when neccesarry
 		// make decision on what activity to perform
-
-		// PANIC
 		Activity a;
-		a = PANIC;
-		a = FLEE;
+		auto units = unit->getVisibleObjects();
+
+		if(units.size() > 0) {
+			std::cout << units.size() << " "; 
+			a = FLEE;
+		} else {
+			a = PANIC;
+		}
+
 		
-		return activityToInput(a);
+		return activityToInput(a, unit, time);
 	}
 
-	Input SurvivorBehavior::activityToInput(Activity a) {
+	Input SurvivorBehavior::activityToInput(Activity a, const Unit* unit, double time) {
+		if(s_.size() > 0) {
+			// Do planned subroutines		
+		}
 		Input input;
 		switch(a) {
 			case PANIC:
 				input.turnLeft_ = true;
+				input.forward_ = false;
 			break;
 			case FLEE:
 				input.forward_ = true;

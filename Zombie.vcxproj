@@ -99,6 +99,7 @@
     <ClInclude Include="graphictask.h" />
     <ClInclude Include="movingobject.h" />
     <ClInclude Include="object.h" />
+    <ClInclude Include="order.h" />
     <ClInclude Include="pathfinder.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="gamesound.h" />
@@ -131,6 +132,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="object.cpp" />
+    <ClCompile Include="order.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="survivorbehavior.cpp" />
     <ClCompile Include="task.cpp" />
