@@ -3,7 +3,7 @@
 
 #include "unit.h"
 #include "graphictask.h"
-#include "color.h"
+#include "typedefs.h"
 
 #include <vector>
 #include <mw/sprite.h>

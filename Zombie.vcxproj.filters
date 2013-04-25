@@ -126,9 +126,6 @@
     <ClInclude Include="gamefont.h">
       <Filter>Header Files\GraphicAndSound</Filter>
     </ClInclude>
-    <ClInclude Include="color.h">
-      <Filter>Header Files\GraphicAndSound</Filter>
-    </ClInclude>
     <ClInclude Include="linefeature.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>

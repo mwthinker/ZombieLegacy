@@ -1,9 +1,9 @@
 #ifndef HUMANANIMAITON_H
 #define HUMANANIMAITON_H
 
-#include "unit.h"
+#include "object.h"
 #include "graphictask.h"
-#include "color.h"
+#include "typedefs.h"
 
 #include <vector>
 #include <mw/sprite.h>

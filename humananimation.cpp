@@ -1,7 +1,7 @@
 #include "humananimation.h"
 #include "gamesprite.h"
 #include "gamesound.h"
-#include "color.h"
+#include "typedefs.h"
 #include "auxiliary.h"
 
 namespace zombie {

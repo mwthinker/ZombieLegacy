@@ -1,7 +1,8 @@
 #include <memory>
 #include <vector>
 
-#include <Box2D\Box2D.h>
+#include <mw/color.h>
+#include <Box2D/Box2D.h>
 
 #ifndef TYPEDEFS_H
 #define TYPEDEFS_H
@@ -29,6 +30,20 @@ namespace zombie {
 
 	class Player;
 	typedef std::shared_ptr<Player> PlayerPtr;
+
+	typedef mw::Color Color;
+
+	const Color BLACK(0,0,0);
+	const Color WHITE(1,1,1);
+
+	const Color RED(1,0,0);
+	const Color GREEN(0,1,0);
+	const Color BLUE(0,0,1);
+
+	const Color GRAY1(0.1,0.1,0.1);
+	const Color GRAY2(0.2,0.2,0.2);
+	const Color GRAY3(0.3,0.3,0.3);
+	const Color GRAY4(0.4,0.4,0.4);
 
 } // Namespace zombie.
 

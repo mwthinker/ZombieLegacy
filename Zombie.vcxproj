@@ -86,7 +86,6 @@
     <ClInclude Include="bullet.h" />
     <ClInclude Include="car.h" />
     <ClInclude Include="caranimation.h" />
-    <ClInclude Include="color.h" />
     <ClInclude Include="gamefont.h" />
     <ClInclude Include="gamesprite.h" />
     <ClInclude Include="humananimation.h" />

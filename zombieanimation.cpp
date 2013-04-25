@@ -1,6 +1,6 @@
 #include "zombieanimation.h"
 #include "gamesprite.h"
-#include "color.h"
+#include "typedefs.h"
 #include "auxiliary.h"
 
 namespace zombie {
