@@ -3,11 +3,8 @@
 
 #include "object.h"
 #include "input.h"
-
 #include "weapon.h"
 #include "typedefs.h"
-
-#include <mw/signal.h>
 
 #include <list>
 
@@ -63,7 +60,6 @@ namespace zombie {
 		}
 		
 		std::list<MovingObject*> visibleObjects_;
-		mw::Signal<void> existSignal_;
 	};
 
 } // namespace zombie
