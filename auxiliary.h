@@ -5,6 +5,8 @@
 
 #include <mw/mathvector.h>
 
+namespace zombie {
+
 static double calculateDifferenceBetweenAngles(double firstAngle, double secondAngle) {
 	double difference = firstAngle - secondAngle;
 	while (difference < -mw::PI) difference += 2*mw::PI;
@@ -33,4 +35,7 @@ float random();
 // Remove some objects from a vector which fulfill some type of condition.
 //void removeIf(std::vector s, fucntion)
 
+} // Namespace zombie.
+
 #endif // AUXILIARY_H
+

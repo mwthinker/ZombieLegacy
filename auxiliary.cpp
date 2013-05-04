@@ -2,6 +2,8 @@
 
 #include <random>
 
+namespace zombie {
+
 namespace {
 
 	std::random_device rd;
@@ -13,3 +15,5 @@ namespace {
 float random() {
 	return distribution(generator);
 }
+
+} // Namespace zombie.

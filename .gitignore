@@ -5,6 +5,8 @@
 *.wav
 *.7z
 *.zip
+*~
+*.layout
 
 #################
 ## Eclipse
