@@ -7,8 +7,9 @@
 #include "typedefs.h"
 
 #include <list>
+#include <algorithm>
 
-namespace zombie {	
+namespace zombie {
 
 	// Represent a moving object inside the "zombie world".
 	class MovingObject : public Object {
@@ -17,9 +18,9 @@ namespace zombie {
 
 		virtual ~MovingObject() {
 		}
-		
+
 		// Update all internal states based on the input.
-		virtual void updatePhysics(float time, float timeStep, Input input) = 0;		
+		virtual void updatePhysics(float time, float timeStep, Input input) = 0;
 
 		// Returns the current weapon.
 		virtual Weapon getWeapon() const = 0;
@@ -58,7 +59,7 @@ namespace zombie {
 		void removeVisibleObject(MovingObject* object) {
 			visibleObjects_.erase(std::find(visibleObjects_.begin(), visibleObjects_.end(), object));
 		}
-		
+
 		std::list<MovingObject*> visibleObjects_;
 	};
 

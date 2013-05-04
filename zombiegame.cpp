@@ -27,12 +27,12 @@
 
 #include <Box2D/Box2D.h>
 #include <SDL.h>
+#include <SDL_opengl.h>
+
 #include <memory>
 #include <vector>
-
 #include <string>
 #include <fstream>
-#include <gl/GLU.h>
 #include <tuple>
 
 namespace zombie {
@@ -85,7 +85,7 @@ namespace zombie {
 		private:
 			b2Fixture* closest_;
 			float closestFraction_;
-		};		
+		};
 
 		bool getVisibleObject(b2Contact* contact, MovingObject*& target, MovingObject*& looker) {
 			b2Fixture* fixtureA = contact->GetFixtureA();
@@ -129,7 +129,7 @@ namespace zombie {
 		// Set windows size.
 		updateSize(width,height);
 
-		taskManager_ = new TaskManager();		
+		taskManager_ = new TaskManager();
 		scale_ = 1.0;
 
 		started_ = false;
@@ -226,7 +226,7 @@ namespace zombie {
 	}
 
 	void ZombieGame::update(float deltaTime) {
-		
+
 
 
 		// DeltaTime to big?
@@ -237,7 +237,7 @@ namespace zombie {
 
 		accumulator_ += deltaTime;
 		while (accumulator_ >= timeStep_) {
-			accumulator_ -= timeStep_;		
+			accumulator_ -= timeStep_;
 			updatePhysics(timeStep_);
 		}
 
@@ -256,16 +256,16 @@ namespace zombie {
 
 		drawCircle(0,0,0.5,20,false);
 		glScaled(scale_,scale_,1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
-		drawCircle(0,0,0.5,20,false);				
+		drawCircle(0,0,0.5,20,false);
 
 		glTranslated(-viewPosition_.x,-viewPosition_.y,0.0);
 
 		// Game is started?
 		if (started_) {
-			taskManager_->update(deltaTime);			
+			taskManager_->update(deltaTime);
 		} else {
 			taskManager_->update(0.0);
-		}		
+		}
 
 		glPopMatrix();
 	}
@@ -302,11 +302,11 @@ namespace zombie {
 			AiPlayerPtr aiPlayer(new AiPlayer(b));
 			taskManager_->add(new HumanAnimation(unit));
 			players_.push_back(TuplePlayerUnitGraphic(aiPlayer,unit));
-		}		
+		}
 	}
 
 	void ZombieGame::initGame() {
-		taskManager_->add(new SurvivalTimer());		
+		taskManager_->add(new SurvivalTimer());
 
 		//map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
 		map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
@@ -399,7 +399,7 @@ namespace zombie {
 		b2Vec2 dir(std::cos(bullet.direction_),std::sin(bullet.direction_));
 		b2Vec2 endP = shooter->getPosition() + bullet.range_ * dir;
 
-		ClosestRayCastCallback callback;		
+		ClosestRayCastCallback callback;
 
 		world_->RayCast(&callback,shooter->getPosition(),endP);
 		b2Fixture* fixture = callback.getClosest();
@@ -428,7 +428,7 @@ namespace zombie {
 
 		taskManager_->add(new Shot(shooter->getPosition(),endP,time_));
 		std::cout << endP.x << " " << endP.y << std::endl;
-	}	
+	}
 
 	void ZombieGame::BeginContact(b2Contact* contact) {
 		MovingObject* target;
@@ -467,7 +467,7 @@ namespace zombie {
 				} else {
 					taskManager_->add(new BloodSplash(p.x,p.y,time_));
 				}
-			}			
+			}
 
 			Object* ob2 = static_cast<Object*>(contact->GetFixtureB()->GetUserData());
 			if (Unit* unit = dynamic_cast<Unit*>(ob2)) {
