@@ -1,0 +1,849 @@
+# depslib dependency file v1.0
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/aibehavior.cpp
+	"aibehavior.h"
+	"auxiliary.h"
+	"input.h"
+	"unit.h"
+	<cmath>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/aibehavior.h
+	"typedefs.h"
+	"input.h"
+	<vector>
+
+1367673783 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/typedefs.h
+	<memory>
+	<vector>
+	<mw/color.h>
+	<Box2D/Box2D.h>
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/color.h
+	<SDL_opengl.h>
+
+1343821716 /usr/include/SDL/SDL_opengl.h
+	"SDL_config.h"
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<gl.h>
+	<glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<windows.h>
+	<stddef.h>
+
+1343821716 /usr/include/SDL/SDL_config.h
+	"SDL_platform.h"
+	<stdarg.h>
+
+1343821716 /usr/include/SDL/SDL_platform.h
+
+1315039138 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Box2D.h
+	<Box2D/Common/b2Settings.h>
+	<Box2D/Common/b2Draw.h>
+	<Box2D/Common/b2Timer.h>
+	<Box2D/Collision/Shapes/b2CircleShape.h>
+	<Box2D/Collision/Shapes/b2EdgeShape.h>
+	<Box2D/Collision/Shapes/b2ChainShape.h>
+	<Box2D/Collision/Shapes/b2PolygonShape.h>
+	<Box2D/Collision/b2BroadPhase.h>
+	<Box2D/Collision/b2Distance.h>
+	<Box2D/Collision/b2DynamicTree.h>
+	<Box2D/Collision/b2TimeOfImpact.h>
+	<Box2D/Dynamics/b2Body.h>
+	<Box2D/Dynamics/b2Fixture.h>
+	<Box2D/Dynamics/b2WorldCallbacks.h>
+	<Box2D/Dynamics/b2TimeStep.h>
+	<Box2D/Dynamics/b2World.h>
+	<Box2D/Dynamics/Contacts/b2Contact.h>
+	<Box2D/Dynamics/Joints/b2DistanceJoint.h>
+	<Box2D/Dynamics/Joints/b2FrictionJoint.h>
+	<Box2D/Dynamics/Joints/b2GearJoint.h>
+	<Box2D/Dynamics/Joints/b2WheelJoint.h>
+	<Box2D/Dynamics/Joints/b2MouseJoint.h>
+	<Box2D/Dynamics/Joints/b2PrismaticJoint.h>
+	<Box2D/Dynamics/Joints/b2PulleyJoint.h>
+	<Box2D/Dynamics/Joints/b2RevoluteJoint.h>
+	<Box2D/Dynamics/Joints/b2RopeJoint.h>
+	<Box2D/Dynamics/Joints/b2WeldJoint.h>
+
+1315043361 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Common/b2Settings.h
+	<cassert>
+	<cmath>
+
+1301250700 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Common/b2Draw.h
+	<Box2D/Common/b2Math.h>
+
+1315100881 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Common/b2Math.h
+	<Box2D/Common/b2Settings.h>
+	<cmath>
+	<cfloat>
+	<cstddef>
+	<limits>
+
+1315809995 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Common/b2Timer.h
+	<Box2D/Common/b2Settings.h>
+
+1300987018 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Collision/Shapes/b2CircleShape.h
+	<Box2D/Collision/Shapes/b2Shape.h>
+
+1313981392 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Collision/Shapes/b2Shape.h
+	<Box2D/Common/b2BlockAllocator.h>
+	<Box2D/Common/b2Math.h>
+	<Box2D/Collision/b2Collision.h>
+
+1300987018 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Common/b2BlockAllocator.h
+	<Box2D/Common/b2Settings.h>
+
+1307305361 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Collision/b2Collision.h
+	<Box2D/Common/b2Math.h>
+	<climits>
+
+1314859986 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Collision/Shapes/b2EdgeShape.h
+	<Box2D/Collision/Shapes/b2Shape.h>
+
+1314859342 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Collision/Shapes/b2ChainShape.h
+	<Box2D/Collision/Shapes/b2Shape.h>
+
+1300987018 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Collision/Shapes/b2PolygonShape.h
+	<Box2D/Collision/Shapes/b2Shape.h>
+
+1301261002 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Collision/b2BroadPhase.h
+	<Box2D/Common/b2Settings.h>
+	<Box2D/Collision/b2Collision.h>
+	<Box2D/Collision/b2DynamicTree.h>
+	<algorithm>
+
+1308987989 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Collision/b2DynamicTree.h
+	<Box2D/Collision/b2Collision.h>
+	<Box2D/Common/b2GrowableStack.h>
+
+1300987018 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Common/b2GrowableStack.h
+	<Box2D/Common/b2Settings.h>
+	<cstring>
+
+1300987018 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Collision/b2Distance.h
+	<Box2D/Common/b2Math.h>
+
+1300987018 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Collision/b2TimeOfImpact.h
+	<Box2D/Common/b2Math.h>
+	<Box2D/Collision/b2Distance.h>
+
+1315087942 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/b2Body.h
+	<Box2D/Common/b2Math.h>
+	<Box2D/Collision/Shapes/b2Shape.h>
+	<memory>
+
+1315072341 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/b2Fixture.h
+	<Box2D/Dynamics/b2Body.h>
+	<Box2D/Collision/b2Collision.h>
+	<Box2D/Collision/Shapes/b2Shape.h>
+
+1314073600 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/b2WorldCallbacks.h
+	<Box2D/Common/b2Settings.h>
+
+1315809130 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/b2TimeStep.h
+	<Box2D/Common/b2Math.h>
+
+1315173996 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/b2World.h
+	<Box2D/Common/b2Math.h>
+	<Box2D/Common/b2BlockAllocator.h>
+	<Box2D/Common/b2StackAllocator.h>
+	<Box2D/Dynamics/b2ContactManager.h>
+	<Box2D/Dynamics/b2WorldCallbacks.h>
+	<Box2D/Dynamics/b2TimeStep.h>
+
+1300987018 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Common/b2StackAllocator.h
+	<Box2D/Common/b2Settings.h>
+
+1300987018 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/b2ContactManager.h
+	<Box2D/Collision/b2BroadPhase.h>
+
+1305786818 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/Contacts/b2Contact.h
+	<Box2D/Common/b2Math.h>
+	<Box2D/Collision/b2Collision.h>
+	<Box2D/Collision/Shapes/b2Shape.h>
+	<Box2D/Dynamics/b2Fixture.h>
+
+1315162982 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/Joints/b2DistanceJoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315175198 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/Joints/b2Joint.h
+	<Box2D/Common/b2Math.h>
+
+1315174277 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/Joints/b2FrictionJoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315174532 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/Joints/b2GearJoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315175150 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/Joints/b2WheelJoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315175210 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/Joints/b2MouseJoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315365926 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/Joints/b2PrismaticJoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315174919 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/Joints/b2PulleyJoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315172372 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/Joints/b2RevoluteJoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315194213 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/Joints/b2RopeJoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1315170663 /home/marcus/Dokument/Programmering/Codeblocks/SDK/Box2D/Box2D/Dynamics/Joints/b2WeldJoint.h
+	<Box2D/Dynamics/Joints/b2Joint.h>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/input.h
+
+1367672848 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/auxiliary.h
+	<cmath>
+	<mw/mathvector.h>
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/mathvector.h
+	<cmath>
+	<iostream>
+
+1367673783 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/unit.h
+	"movingobject.h"
+	"input.h"
+	"weapon.h"
+	"state.h"
+	"bullet.h"
+	<Box2D/Box2D.h>
+	<functional>
+	<mw/signal.h>
+	<list>
+
+1367674356 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/movingobject.h
+	"object.h"
+	"input.h"
+	"weapon.h"
+	"typedefs.h"
+	<list>
+	<algorithm>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/object.h
+	<Box2D/Dynamics/b2Body.h>
+	<memory>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/weapon.h
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/state.h
+	"typedefs.h"
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/bullet.h
+	"typedefs.h"
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/signal.h
+	"signals/connection.h"
+	<tuple>
+	<functional>
+	<list>
+	<memory>
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/signals/connection.h
+	<tuple>
+	<memory>
+	<list>
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/aiplayer.cpp
+	"aiplayer.h"
+	"typedefs.h"
+	"input.h"
+	"zombiebehavior.h"
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/aiplayer.h
+	"typedefs.h"
+	"input.h"
+	"player.h"
+	<vector>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/player.h
+	"input.h"
+	"player.h"
+	<vector>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/zombiebehavior.h
+	"aibehavior.h"
+	"typedefs.h"
+	"auxiliary.h"
+	"unit.h"
+	<mw/signal.h>
+	<list>
+
+1367672428 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/auxiliary.cpp
+	"auxiliary.h"
+	<random>
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/blood.cpp
+	"blood.h"
+	"task.h"
+	"gamesound.h"
+	<SDL_opengl.h>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/blood.h
+	"typedefs.h"
+	"graphictask.h"
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/graphictask.h
+	"graphictask.h"
+	"map.h"
+	"gamesprite.h"
+	"unit.h"
+	"building.h"
+	"typedefs.h"
+	"weaponobject.h"
+	<mw/text.h>
+	<mw/signal.h>
+	<SDL_opengl.h>
+	<vector>
+	<queue>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/map.h
+	"typedefs.h"
+	"linefeature.h"
+	<mw/mathvector.h>
+	<vector>
+	<cmath>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/linefeature.h
+	"typedefs.h"
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/gamesprite.h
+	<mw/sprite.h>
+	<mw/texture.h>
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/sprite.h
+	"texture.h"
+	<string>
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/texture.h
+	<string>
+	<SDL_opengl.h>
+	<SDL_image.h>
+	<memory>
+
+1365188180 /usr/include/SDL/SDL_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_audio.h"
+	"SDL_cdrom.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_loadso.h"
+	"SDL_mutex.h"
+	"SDL_rwops.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_video.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<iconv.h>
+	"begin_code.h"
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	"close_code.h"
+
+1343821716 /usr/include/SDL/begin_code.h
+
+1343821716 /usr/include/SDL/close_code.h
+
+1343821716 /usr/include/SDL/SDL_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_endian.h
+	"SDL_stdinc.h"
+	<endian.h>
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_cdrom.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_cpuinfo.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_active.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_quit.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_active.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keysym.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_keysym.h
+
+1343821716 /usr/include/SDL/SDL_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_video.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1343821716 /usr/include/SDL/SDL_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1367673783 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/building.h
+	"object.h"
+	"typedefs.h"
+	<Box2D/Box2D.h>
+	<limits>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/weaponobject.h
+	"object.h"
+	"typedefs.h"
+	"weapon.h"
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/text.h
+	"initttf.h"
+	"font.h"
+	"sprite.h"
+	"texture.h"
+	<SDL_ttf.h>
+	<string>
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/initttf.h
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/font.h
+	"initttf.h"
+	<SDL_ttf.h>
+	<string>
+	<iostream>
+	<memory>
+
+1335800845 /usr/include/SDL/SDL_ttf.h
+	"SDL.h"
+	"begin_code.h"
+	"close_code.h"
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/task.h
+	<vector>
+	<queue>
+	<SDL_opengl.h>
+	"map.h"
+	"gamesprite.h"
+	"unit.h"
+	"building.h"
+	"weaponobject.h"
+	<mw/text.h>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/gamesound.h
+	<mw/sound.h>
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/sound.h
+	"soundbuffer.h"
+	<string>
+	<map>
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/soundbuffer.h
+	"initsdl.h"
+	<SDL_mixer.h>
+	<iostream>
+	<string>
+	<map>
+	<memory>
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/initsdl.h
+
+1348478958 /usr/include/SDL/SDL_mixer.h
+	"SDL_types.h"
+	"SDL_rwops.h"
+	"SDL_audio.h"
+	"SDL_endian.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1343821716 /usr/include/SDL/SDL_types.h
+	"SDL_stdinc.h"
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/caranimation.cpp
+	"caranimation.h"
+	"car.h"
+	"gamesprite.h"
+	<SDL_opengl.h>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/caranimation.h
+	"typedefs.h"
+	"graphictask.h"
+	<mw/sprite.h>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/car.h
+	"movingobject.h"
+	"input.h"
+	"state.h"
+	"unit.h"
+	<Box2D/Box2D.h>
+	<mw/mathvector.h>
+	<cmath>
+	<functional>
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/gamefont.cpp
+	"gamefont.h"
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/gamefont.h
+	<mw/font.h>
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/gamesound.cpp
+	"gamesound.h"
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/gamesprite.cpp
+	"gamesprite.h"
+	<mw/sprite.h>
+	<mw/texture.h>
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/graphictask.cpp
+	"graphictask.h"
+	"task.h"
+	"typedefs.h"
+	"unit.h"
+	"building.h"
+	"gamesound.h"
+	"gamefont.h"
+	"auxiliary.h"
+	<mw/text.h>
+	<SDL_opengl.h>
+	<memory>
+	<sstream>
+	<vector>
+	<queue>
+	<cmath>
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/humananimation.cpp
+	"humananimation.h"
+	"gamesprite.h"
+	"gamesound.h"
+	"typedefs.h"
+	"auxiliary.h"
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/humananimation.h
+	"object.h"
+	"graphictask.h"
+	"typedefs.h"
+	<vector>
+	<mw/sprite.h>
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/main.cpp
+	"zombiewindow.h"
+	"mapeditorwindow.h"
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/zombiewindow.h
+	"zombiegame.h"
+	<mw/gamewindow.h>
+	<mw/sprite.h>
+	<SDL_opengl.h>
+	<iostream>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/zombiegame.h
+	"inputkeyboard.h"
+	"input.h"
+	"map.h"
+	"bullet.h"
+	"typedefs.h"
+	<Box2D/Box2D.h>
+	<SDL.h>
+	<mw/signal.h>
+	<memory>
+	<vector>
+	<string>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/inputkeyboard.h
+	"humanplayer.h"
+	<SDL.h>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/humanplayer.h
+	"player.h"
+	<mw/signals/connection.h>
+	<SDL.h>
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/gamewindow.h
+	"window.h"
+	<string>
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/window.h
+	"initsdl.h"
+	"joystick.h"
+	<string>
+	<SDL_opengl.h>
+	<SDL_image.h>
+	<vector>
+
+1367624987 /home/marcus/Dokument/Programmering/Codeblocks/SDK/MwLibrary/mw/joystick.h
+	<SDL.h>
+	<memory>
+	<string>
+	<vector>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/mapeditorwindow.h
+	"mw/gamewindow.h"
+	"mw/sprite.h"
+	"zombiegame.h"
+	<SDL_opengl.h>
+	<iostream>
+
+1367675752 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/map.cpp
+	"map.h"
+	"building.h"
+	"auxiliary.h"
+	<limits>
+	<string>
+	<fstream>
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/object.cpp
+	"object.h"
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/order.cpp
+	"order.h"
+	"typedefs.h"
+	"auxiliary.h"
+	<vector>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/order.h
+	"typedefs.h"
+	"auxiliary.h"
+	<vector>
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/player.cpp
+	"player.h"
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/survivorbehavior.cpp
+	"survivorbehavior.h"
+	"unit.h"
+	<mw/mathvector.h>
+	<vector>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/survivorbehavior.h
+	"aibehavior.h"
+	"order.h"
+	"typedefs.h"
+	"auxiliary.h"
+	<vector>
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/task.cpp
+	"task.h"
+	"unit.h"
+	"building.h"
+	"gamesound.h"
+	"gamefont.h"
+	<mw/text.h>
+	<SDL_opengl.h>
+	<memory>
+	<sstream>
+	<vector>
+	<queue>
+	<cmath>
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/taskmanager.cpp
+	"taskmanager.h"
+	"task.h"
+	"graphictask.h"
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/taskmanager.h
+	<list>
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/unit.cpp
+	"unit.h"
+	"object.h"
+	"input.h"
+	"weapon.h"
+	"auxiliary.h"
+	<Box2D/Box2D.h>
+	<cmath>
+	<memory>
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/zombieanimation.cpp
+	"zombieanimation.h"
+	"gamesprite.h"
+	"typedefs.h"
+	"auxiliary.h"
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/zombieanimation.h
+	"unit.h"
+	"graphictask.h"
+	"typedefs.h"
+	<vector>
+	<mw/sprite.h>
+
+1367670985 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/zombiebehavior.cpp
+	"zombiebehavior.h"
+	"unit.h"
+	<mw/mathvector.h>
+	<list>
+
+1367674069 source:/home/marcus/Dokument/Programmering/Codeblocks/Zombie/zombiegame.cpp
+	"zombiegame.h"
+	"typedefs.h"
+	"inputkeyboard.h"
+	"unit.h"
+	"building.h"
+	"bullet.h"
+	"map.h"
+	"tile.h"
+	"input.h"
+	"task.h"
+	"weaponobject.h"
+	"zombiebehavior.h"
+	"survivorbehavior.h"
+	"gamesound.h"
+	"taskmanager.h"
+	"aiplayer.h"
+	"survivaltimer.h"
+	"graphictask.h"
+	"car.h"
+	"blood.h"
+	"caranimation.h"
+	"zombieanimation.h"
+	"humananimation.h"
+	<Box2D/Box2D.h>
+	<SDL.h>
+	<SDL_opengl.h>
+	<memory>
+	<vector>
+	<string>
+	<fstream>
+	<tuple>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/tile.h
+	"typedefs.h"
+	"linefeature.h"
+	"auxiliary.h"
+	<algorithm>
+	<vector>
+	<cstdlib>
+	<ctime>
+
+1367670985 /home/marcus/Dokument/Programmering/Codeblocks/Zombie/survivaltimer.h
+	"task.h"
+	"typedefs.h"
+	"gamefont.h"
+	<mw/text.h>
+	<vector>
+	<sstream>
+	<cmath>
+
