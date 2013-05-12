@@ -33,7 +33,7 @@ namespace zombie {
 
 	Position Map::getMapCentre() const {
 		return Position((minX_+maxX_)/2,(minY_+maxY_)/2);
-	}		
+	}
 
 	Position Map::generateSpawnPosition() const {
 		return generateSpawnPosition(getMapCentre(),0,std::min(maxX_-minX_,maxY_-minY_) * 0.7f);
@@ -50,7 +50,7 @@ namespace zombie {
 				dist = fmod(dist+dr,outerRadie-innerRadie);
 				float x = p.x + std::cos(alfa+angle)*(dist+innerRadie);
 				float y = p.y + std::sin(alfa+angle)*(dist+innerRadie);
-								
+
 				for (Building* building : buildings_) {
 					// if inside one building, break
 					if (building->isInside(x,y)) {
@@ -90,13 +90,13 @@ namespace zombie {
 				positions.push_back(p2);
 				positions.push_back(p3);
 				positions.push_back(p4);
-				
+
 				buildings.push_back(positions);
 			}
 		}
 
 		return Map(Position(),10,10,buildings);
-	}	
+	}
 
 	Map loadMapInfo(std::string filename, std::string fileRoads, float scale) {
 		std::fstream mapFile(filename.c_str(),std::fstream::in);
@@ -114,7 +114,7 @@ namespace zombie {
 				std::vector<Position> corners;
 				// Extract all points
 				int nbrLines;
-				mapFile >> nbrLines;	
+				mapFile >> nbrLines;
 				//std::cout<<"REGION " << nbrLines;
 				for (int i = 1; i <= nbrLines; i++) {
 					Position p;
@@ -136,14 +136,14 @@ namespace zombie {
 					}
 					corners.push_back(p);
 				}
-				allCorners.push_back(corners);					
+				allCorners.push_back(corners);
 			}
 		}
 
-		// Normalize map		
-		for (std::vector<Position>& corners : allCorners) {		
-			for (Position& corner : corners) {		
-				corner.x -= minX; 
+		// Normalize map
+		for (std::vector<Position>& corners : allCorners) {
+			for (Position& corner : corners) {
+				corner.x -= minX;
 				corner.y -= minY;
 			}
 		}
@@ -151,8 +151,8 @@ namespace zombie {
 		float normalizeY = minY;
 		maxX -= normalizeX;
 		minX -= normalizeX;
-		maxY -= normalizeY;		
-		minY -= normalizeY;		
+		maxY -= normalizeY;
+		minY -= normalizeY;
 
 		// Get world size.
 		float height = maxX + minX;
@@ -193,8 +193,10 @@ namespace zombie {
 							vertexes.push_back(p);
 						}
 
-						for (unsigned int i = 0; i < vertexes.size()-1; i++) {
-							roads.push_back(LineFeature(vertexes[i],vertexes[i+1]));	
+						int size = vertexes.size()-1;
+
+						for (int i = 0; i < size; i++) {
+							roads.push_back(LineFeature(vertexes[i],vertexes[i+1]));
 						}
 					}
 
@@ -221,7 +223,7 @@ namespace zombie {
 
 	Map loadTile(std::string filename, std::string fileRoads, float tileSize) {
 		std::fstream mapFile(filename.c_str(),std::fstream::in);
-		
+
 		std::vector< std::vector<Position> > allCorners;
 		while (mapFile.good()) {
 			//while (mapFile.good()) {
@@ -231,7 +233,7 @@ namespace zombie {
 				std::vector<Position> corners;
 				// Extract all points
 				int nbrLines;
-				mapFile >> nbrLines;	
+				mapFile >> nbrLines;
 				//std::cout<<"REGION " << nbrLines;
 				for (int i = 1; i <= nbrLines; i++) {
 					Position p;
@@ -241,7 +243,7 @@ namespace zombie {
 					p.y = (p.y);
 					corners.push_back(p);
 				}
-				allCorners.push_back(corners);					
+				allCorners.push_back(corners);
 			}
 		}
 		std::vector<Points> buildings;
@@ -278,7 +280,7 @@ namespace zombie {
 						}
 
 						for (unsigned int i = 0; i < vertexes.size()-1; i++) {
-							roads.push_back(LineFeature(vertexes[i],vertexes[i+1]));	
+							roads.push_back(LineFeature(vertexes[i],vertexes[i+1]));
 						}
 					}
 
@@ -298,5 +300,5 @@ namespace zombie {
 
 		return Map(Position(tileSize*0.5f,tileSize*0.5f),tileSize, tileSize, buildings, roads);
 	}
-	
+
 } // namespace zombie.
