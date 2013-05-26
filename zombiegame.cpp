@@ -135,9 +135,9 @@ namespace zombie {
 		started_ = false;
 		time_ = 0.0f;
 
-		unitLevel_ = 20;
+		unitLevel_ = 200;
 		innerSpawnRadius_ = 10.f;
-		outerSpawnRadius_ = 40.f;
+		outerSpawnRadius_ = 20.f;
 
 		timeStep_ = 0.017f; // Fix time step for physics update.
 		accumulator_ = 0.0f; // Time accumulator.
