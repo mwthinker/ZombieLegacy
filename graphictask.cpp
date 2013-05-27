@@ -220,6 +220,7 @@ namespace zombie {
 	}
 
 	void DrawFake3DBuildning::drawSecond(double time) {
+		/*
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -267,6 +268,7 @@ namespace zombie {
 			glEnd();
 		}
 		glDisable(GL_BLEND);
+		*/
 	}
 
 	double getLineY(double a,double b,double c,double x) {
@@ -274,6 +276,17 @@ namespace zombie {
 	}
 
 	void DrawFake3DBuildning::drawThird(double time) {
+		glEnable(GL_BLEND);
+		glBegin(GL_TRIANGLE_FAN);
+		glColor3d(r_,g_,b_);
+		const auto& corners = buildning_->getCorners();
+		for (const Position& p : corners) {
+			glVertex2d(p.x,p.y);
+		}		
+		glEnd();
+		glDisable(GL_BLEND);
+		
+		/*
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);		
 		for(LineFeature l : back_) {
@@ -285,7 +298,8 @@ namespace zombie {
 			glVertex2d(l.getStart().x,l.getStart().y+height_);
 			glEnd();			
 		}
-
+		
+		
 		// ROOF
 		glBegin(GL_TRIANGLE_FAN);
 		glColor3d(r_,g_,b_);
@@ -314,6 +328,7 @@ namespace zombie {
 		}		
 		glEnd();
 		glDisable(GL_BLEND);
+		*/
 	}
 
 	bool DrawFake3DBuildning::isRunning() const {
