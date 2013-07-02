@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CA6FCA2C-2B28-45BB-A9BD-38F9A812A3DE}</ProjectGuid>
+    <ProjectGuid>{9612EA26-DB6A-48BA-BB8F-1CCAA662C376}</ProjectGuid>
     <RootNamespace>Zombie</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -39,17 +39,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>c:\Programmering\SDK\SDL\SDL all\include;C:\Programmering\SDK\mw\include;C:\Programmering\SDK\Box2D\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>C:\Programmering\SDK\SDL\SDL all\lib;C:\Programmering\SDK\Box2D\lib-d;C:\Programmering\SDK\mw\lib-d;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86)</LibraryPath>
+    <OutDir>$(SolutionDir)DebugBuild\</OutDir>
+    <IncludePath>..\SDK\SDL\include;..\SDK\Box2D\include;..\SDK\MwLibrary\include;..\SDK\MwExtra\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\SDK\SDL\lib;..\SDK\Box2D\lib-d;..\SDK\MwLibrary\lib-d;..\SDK\MwExtra\lib-d;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>c:\Programmering\SDK\SDL\SDL all\include;C:\Programmering\SDK\mw\include;C:\Programmering\SDK\Box2D\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>C:\Programmering\SDK\SDL\SDL all\lib;C:\Programmering\SDK\Box2D\lib-r;C:\Programmering\SDK\mw\lib-r;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86)</LibraryPath>
+    <OutDir>$(SolutionDir)ReleaseBuild\</OutDir>
+    <IncludePath>..\SDK\SDL\include;..\SDK\Box2D\include;..\SDK\MwLibrary\include;..\SDK\MwExtra\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\SDK\SDL\lib;..\SDK\Box2D\lib-r;..\SDK\MwLibrary\lib-r;..\SDK\MwExtra\lib-r;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -65,6 +68,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -73,8 +77,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_ttf.lib;SDL.lib;OpenGl32.lib;glu32.lib;MwLibrary.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
-      <IgnoreSpecificDefaultLibraries>
-      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -87,21 +89,21 @@
     <ClInclude Include="car.h" />
     <ClInclude Include="caranimation.h" />
     <ClInclude Include="gamefont.h" />
+    <ClInclude Include="gamesound.h" />
     <ClInclude Include="gamesprite.h" />
+    <ClInclude Include="graphictask.h" />
     <ClInclude Include="humananimation.h" />
+    <ClInclude Include="humanplayer.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="inputkeyboard.h" />
-    <ClInclude Include="humanplayer.h" />
     <ClInclude Include="linefeature.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="mapeditorwindow.h" />
-    <ClInclude Include="graphictask.h" />
     <ClInclude Include="movingobject.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="order.h" />
     <ClInclude Include="pathfinder.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="gamesound.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="survivaltimer.h" />
     <ClInclude Include="survivorbehavior.h" />
@@ -142,18 +144,18 @@
     <ClCompile Include="zombiegame.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="buildings.txt" />
-    <Text Include="todo.txt" />
-    <Text Include="uml.xml">
-      <SubType>Designer</SubType>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="buildings.mif" />
     <None Include="buildings_subset.mif" />
     <None Include="byggnader.mif" />
     <None Include="housesFME.mif" />
     <None Include="roads.mif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="buildings.txt" />
+    <Text Include="todo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="uml.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

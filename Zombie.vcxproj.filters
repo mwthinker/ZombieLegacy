@@ -13,51 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\GraphicAndSound">
+      <UniqueIdentifier>{633c0170-a48f-41bb-baa3-6fa83dccd737}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Map">
-      <UniqueIdentifier>{41d90376-648b-4b66-86f6-a5649953c329}</UniqueIdentifier>
+      <UniqueIdentifier>{bd6e517e-ef0a-477a-a07e-e4e3bc0aabac}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Object">
-      <UniqueIdentifier>{d0bda59f-7b42-4d1f-9c38-882fc0e0738f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GraphicAndSound">
-      <UniqueIdentifier>{5551ed58-0482-4bbe-a8aa-0c884109d54f}</UniqueIdentifier>
+      <UniqueIdentifier>{df61a337-e4dd-4ad1-93fe-841ad073e061}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="zombiegame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zombiewindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inputkeyboard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="task.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="weapon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="state.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bullet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taskmanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="humanplayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="aibehavior.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zombiebehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="aiplayer.h">
@@ -66,55 +33,61 @@
     <ClInclude Include="auxiliary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="typedefs.h">
+    <ClInclude Include="bullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inputkeyboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="order.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="survivorbehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tile.h">
-      <Filter>Header Files\Map</Filter>
+    <ClInclude Include="task.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="map.h">
-      <Filter>Header Files\Map</Filter>
+    <ClInclude Include="taskmanager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pathfinder.h">
-      <Filter>Header Files\Map</Filter>
+    <ClInclude Include="typedefs.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mapeditorwindow.h">
-      <Filter>Header Files\Map</Filter>
+    <ClInclude Include="weapon.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="unit.h">
-      <Filter>Header Files\Object</Filter>
+    <ClInclude Include="weaponobject.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="car.h">
-      <Filter>Header Files\Object</Filter>
+    <ClInclude Include="zombiebehavior.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="movingobject.h">
-      <Filter>Header Files\Object</Filter>
+    <ClInclude Include="zombiegame.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="object.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="caranimation.h">
-      <Filter>Header Files\GraphicAndSound</Filter>
+    <ClInclude Include="zombiewindow.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="blood.h">
+      <Filter>Header Files\GraphicAndSound</Filter>
+    </ClInclude>
+    <ClInclude Include="caranimation.h">
       <Filter>Header Files\GraphicAndSound</Filter>
     </ClInclude>
     <ClInclude Include="graphictask.h">
       <Filter>Header Files\GraphicAndSound</Filter>
     </ClInclude>
-    <ClInclude Include="humananimation.h">
-      <Filter>Header Files\GraphicAndSound</Filter>
-    </ClInclude>
-    <ClInclude Include="zombieanimation.h">
-      <Filter>Header Files\GraphicAndSound</Filter>
-    </ClInclude>
-    <ClInclude Include="survivaltimer.h">
+    <ClInclude Include="gamefont.h">
       <Filter>Header Files\GraphicAndSound</Filter>
     </ClInclude>
     <ClInclude Include="gamesound.h">
@@ -123,66 +96,54 @@
     <ClInclude Include="gamesprite.h">
       <Filter>Header Files\GraphicAndSound</Filter>
     </ClInclude>
-    <ClInclude Include="gamefont.h">
+    <ClInclude Include="humanplayer.h">
+      <Filter>Header Files\GraphicAndSound</Filter>
+    </ClInclude>
+    <ClInclude Include="survivaltimer.h">
+      <Filter>Header Files\GraphicAndSound</Filter>
+    </ClInclude>
+    <ClInclude Include="zombieanimation.h">
+      <Filter>Header Files\GraphicAndSound</Filter>
+    </ClInclude>
+    <ClInclude Include="humananimation.h">
       <Filter>Header Files\GraphicAndSound</Filter>
     </ClInclude>
     <ClInclude Include="linefeature.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="mapeditorwindow.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="pathfinder.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="tile.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="car.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
     <ClInclude Include="building.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="weaponobject.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="object.h">
+      <Filter>Header Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="order.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="movingobject.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="unit.h">
+      <Filter>Header Files\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="unit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="zombiegame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="task.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="taskmanager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="aibehavior.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="zombiebehavior.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gamesound.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="aiplayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gamefont.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gamesprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="graphictask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="auxiliary.cpp">
@@ -194,18 +155,74 @@
     <ClCompile Include="caranimation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="survivorbehavior.cpp">
+    <ClCompile Include="gamefont.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="zombieanimation.cpp">
+    <ClCompile Include="gamesound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gamesprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="graphictask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="humananimation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="order.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="survivorbehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="task.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="taskmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="unit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zombieanimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zombiebehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zombiegame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="buildings.mif">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="buildings_subset.mif">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="byggnader.mif">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="housesFME.mif">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="roads.mif">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="buildings.txt">
@@ -214,25 +231,10 @@
     <Text Include="todo.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="uml.xml">
-      <Filter>Resource Files</Filter>
-    </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="byggnader.mif">
+    <Xml Include="uml.xml">
       <Filter>Resource Files</Filter>
-    </None>
-    <None Include="buildings.mif">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="roads.mif">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="buildings_subset.mif">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="housesFME.mif">
-      <Filter>Resource Files</Filter>
-    </None>
+    </Xml>
   </ItemGroup>
 </Project>

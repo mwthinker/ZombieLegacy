@@ -26,6 +26,10 @@ local.properties
 .classpath
 .settings/
 .loadpath
+Debug
+DebugBuild
+Release
+ReleaseBuild
 
 # External tool builders
 .externalToolBuilders/
