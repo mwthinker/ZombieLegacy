@@ -76,25 +76,18 @@ namespace zombie {
 
 	MapDraw::MapDraw(const Map& map) : map_(map) {
 		grass_ = drawGrass;
-
-		grassTexture->bind();
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
 
 	void MapDraw::draw() {
 		glColor3d(0.6,0.6,0.6);
-		grassTexture->bind();
-
-		glEnable(GL_TEXTURE_2D);
+		grassTexture->bind();		
 
 		double maxX = map_.maxX();
 		double maxY = map_.maxY();
 		double tH = 1.0;
 		double tW = 1.0;
 
+		glEnable(GL_TEXTURE_2D);
 		glBegin(GL_QUADS);
 		for (double x = map_.minX(); x < maxX; x += 10.0) {
 			for (double y = map_.minY(); y < map_.maxY(); y += 10.0) {

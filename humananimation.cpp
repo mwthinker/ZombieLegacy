@@ -6,40 +6,6 @@
 
 namespace zombie {
 
-	class Bubble {
-	public:
-		Bubble() {
-
-		}
-
-		void setText(std::string text) {
-			text_.setText(text);
-		}
-
-		void getText() const {
-			text_.getText();
-		}
-
-		double getWidth() const {
-			return width_;
-		}
-
-		double getHeight() const {
-			return height_;
-		}
-
-		void draw(double time) {
-			glPushMatrix();
-			
-			glPopMatrix();
-		}
-
-	private:
-		double width_, height_;
-		mw::Sprite bubble_;
-		mw::Text text_;
-	};
-
 	HumanAnimation::HumanAnimation(Unit* unit) {
 		unit_ = unit;
 		inMemory_ = unit_->getInMemory();
@@ -107,7 +73,7 @@ namespace zombie {
 		case Unit::UnitEvent::RELOADING:
 			{
 				// In order to be able to play even if the sound is not finnished!
-				mw::Sound tmp = reload;				
+				mw::Sound tmp = reload;
 				tmp.play();
 			}
 			break;

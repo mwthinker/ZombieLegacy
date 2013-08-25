@@ -3,7 +3,7 @@
 
 #include "zombiegame.h"
 
-#include <mw/gamewindow.h>
+#include <mw/window.h>
 #include <mw/sprite.h>
 
 #include <SDL_opengl.h>
@@ -48,14 +48,12 @@ private:
 
 		switch (windowEvent.type) {
 		case SDL_QUIT:
-			setQuiting(true);
+			quit();
 			break;
         case SDL_KEYDOWN:
             switch (windowEvent.key.keysym.sym) {
-            case SDLK_t:
-                mw::Window::setWindowsSize(100,100);
-                //SDL_SetVideoMode(300,300, 32, SDL_OPENGL);
-                //SDL_WM_ToggleFullScreen();
+			case SDLK_ESCAPE:
+				quit();
                 break;
 			case SDLK_PAGEUP:
 				zombieGame_.zoom(1.1);
@@ -69,9 +67,6 @@ private:
 			case SDLK_p:
 				// Fall through.
 			case SDLK_PAUSE:
-				break;
-			case SDLK_ESCAPE:
-				setQuiting(true);
 				break;
             default:
                 break;

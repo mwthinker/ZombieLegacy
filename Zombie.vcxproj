@@ -98,7 +98,6 @@
     <ClInclude Include="inputkeyboard.h" />
     <ClInclude Include="linefeature.h" />
     <ClInclude Include="map.h" />
-    <ClInclude Include="mapeditorwindow.h" />
     <ClInclude Include="movingobject.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="order.h" />

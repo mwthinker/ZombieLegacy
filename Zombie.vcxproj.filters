@@ -114,9 +114,6 @@
     <ClInclude Include="map.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
-    <ClInclude Include="mapeditorwindow.h">
-      <Filter>Header Files\Map</Filter>
-    </ClInclude>
     <ClInclude Include="pathfinder.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
