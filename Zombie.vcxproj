@@ -40,13 +40,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)DebugBuild\</OutDir>
-    <IncludePath>..\SDK\SDL\include;..\SDK\Box2D\include;..\SDK\MwLibrary\include;..\SDK\MwExtra\include;$(IncludePath)</IncludePath>
-    <LibraryPath>..\SDK\SDL\lib;..\SDK\Box2D\lib-d;..\SDK\MwLibrary\lib-d;..\SDK\MwExtra\lib-d;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\SDK\SDL2\include;..\SDK\Box2D\include;..\SDK\MwLibrary2\include;..\SDK\MwExtra\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\SDK\SDL2\x86\lib;..\SDK\Box2D\lib-d;..\SDK\MwLibrary2\lib-d;..\SDK\MwExtra\lib-d;$(LibraryPath);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)ReleaseBuild\</OutDir>
-    <IncludePath>..\SDK\SDL\include;..\SDK\Box2D\include;..\SDK\MwLibrary\include;..\SDK\MwExtra\include;$(IncludePath)</IncludePath>
-    <LibraryPath>..\SDK\SDL\lib;..\SDK\Box2D\lib-r;..\SDK\MwLibrary\lib-r;..\SDK\MwExtra\lib-r;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\SDK\SDL2\include;..\SDK\Box2D\include;..\SDK\MwLibrary2\include;..\SDK\MwExtra\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\SDK\SDL2\x86\lib;..\SDK\Box2D\lib-r;..\SDK\MwLibrary2\lib-r;..\SDK\MwExtra\lib-r;$(LibraryPath);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -57,7 +57,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_ttf.lib;SDL.lib;OpenGl32.lib;glu32.lib;MwLibrary.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;SDL2.lib;OpenGl32.lib;MwLibrary2.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
       <SubSystem>Console</SubSystem>
     </Link>
@@ -75,7 +75,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDLmain.lib;SDL_image.lib;SDL_mixer.lib;SDL_ttf.lib;SDL.lib;OpenGl32.lib;glu32.lib;MwLibrary.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;SDL2.lib;OpenGl32.lib;MwLibrary2.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>

@@ -9,7 +9,7 @@ namespace zombie {
 
 class InputKeyboard : public HumanPlayer {
 public:
-	InputKeyboard(SDLKey up, SDLKey down, SDLKey left, SDLKey right, SDLKey shoot, SDLKey reload, SDLKey run, SDLKey action) {
+	InputKeyboard(SDL_Keycode up, SDL_Keycode down, SDL_Keycode left, SDL_Keycode right, SDL_Keycode shoot, SDL_Keycode reload, SDL_Keycode run, SDL_Keycode action) {
 		up_ = up;
 		down_ = down;
 		right_ = right;
@@ -21,7 +21,7 @@ public:
 	}
 
     void eventUpdate(const SDL_Event& windowEvent) override {
-		SDLKey key = windowEvent.key.keysym.sym;
+		SDL_Keycode key = windowEvent.key.keysym.sym;
 		
         switch (windowEvent.type) {
         case SDL_KEYDOWN:
@@ -68,9 +68,10 @@ public:
 		input_.action_ = false;
 		return input;
 	}
+
 private:
 	Input input_;
-	SDLKey up_, down_, right_, left_, shoot_, reload_, run_, action_;
+	SDL_Keycode up_, down_, right_, left_, shoot_, reload_, run_, action_;
 };
 
 } // namespace zombie

@@ -5,12 +5,12 @@
 
 namespace zombie {
 
-	extern mw::Sound splat;
-	extern mw::Sound shot;
-	extern mw::Sound reload;
-	extern mw::Sound zombieAttack;
-	extern mw::Sound crash;
-	extern mw::Sound car_sound;
+	extern const mw::Sound splat;
+	extern const mw::Sound shot;
+	extern const mw::Sound reload;
+	extern const mw::Sound zombieAttack;
+	extern const mw::Sound crash;
+	extern const mw::Sound car_sound;
 
 } // namespace zombie.
 

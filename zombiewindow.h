@@ -13,14 +13,13 @@ namespace zombie {
 
 class ZombieWindow : public mw::Window {
 public:
-    ZombieWindow() : mw::Window(500,500,"Zombie","images/icon.bmp"), zombieGame_(500,500) {
-        setResizable(true);
-		setUnicodeInputEnable(true);
+    ZombieWindow() : mw::Window(500, 500, true, "Zombie","images/icon.bmp"), zombieGame_(500,500) {
 		reshapeWindowsOpenGL();
     }
 
 	~ZombieWindow() {
 	}
+
 private:
     void update(Uint32 msDeltaTime) override {
 		// Draw graphic.
@@ -50,6 +49,15 @@ private:
 		case SDL_QUIT:
 			quit();
 			break;
+		case SDL_WINDOWEVENT:
+			switch (windowEvent.window.event) {
+			case SDL_WINDOWEVENT_RESIZED:
+				resize(windowEvent.window.data1, windowEvent.window.data2);
+				break;
+			default:
+				break;
+			}
+			break;
         case SDL_KEYDOWN:
             switch (windowEvent.key.keysym.sym) {
 			case SDLK_ESCAPE:
@@ -77,7 +85,7 @@ private:
 		}
 	}
 	
-    void resize(int width, int height) override {
+    void resize(int width, int height) {
         reshapeWindowsOpenGL();
 		zombieGame_.updateSize(width,height);
     }
