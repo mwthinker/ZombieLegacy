@@ -135,6 +135,21 @@
     <ClInclude Include="unit.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
+    <ClInclude Include="shot.h">
+      <Filter>Header Files\GraphicAndSound</Filter>
+    </ClInclude>
+    <ClInclude Include="mapdraw.h">
+      <Filter>Header Files\GraphicAndSound</Filter>
+    </ClInclude>
+    <ClInclude Include="roaddraw.h">
+      <Filter>Header Files\GraphicAndSound</Filter>
+    </ClInclude>
+    <ClInclude Include="drawweaponobject.h">
+      <Filter>Header Files\GraphicAndSound</Filter>
+    </ClInclude>
+    <ClInclude Include="buildingdraw.h">
+      <Filter>Header Files\GraphicAndSound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aibehavior.cpp">
@@ -159,9 +174,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gamesprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="graphictask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="humananimation.cpp">
@@ -201,6 +213,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="zombiegame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mapdraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="roaddraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="drawweaponobject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

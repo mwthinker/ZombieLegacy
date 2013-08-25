@@ -13,7 +13,7 @@ namespace zombie {
 		running_ = true;
 	}
 
-	void BloodSplash::drawFirst(double time) {
+	void BloodSplash::draw(double time) {
 		if (time < startTime_ + 0.1) {
 			// Draw view sphere
 			glColor3d(1,0,0);
@@ -40,7 +40,7 @@ namespace zombie {
 		duration_ = 0.15;
 	}
 
-	void Blood::drawFirst(double time) {
+	void Blood::draw(double time) {
 		double dT = time - startTime_;
 		if (dT < duration_) {
 			// Draw view sphere
@@ -84,7 +84,7 @@ namespace zombie {
 		tmp.play();
 	}
 
-	void BloodStain::drawFirst(double time) {
+	void BloodStain::draw(double time) {
   		double dT = time - startTime_;
 		if (dT > delay_ && dT < duration_) {
 			// Draw view sphere

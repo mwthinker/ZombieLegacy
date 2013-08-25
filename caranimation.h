@@ -15,7 +15,7 @@ namespace zombie {
 		CarAnimation(Car* carParam);
 		~CarAnimation();
 
-		void drawSecond(double time) override;
+		void draw(double time) override;
 		bool isRunning() const override;
 	
 	private:				

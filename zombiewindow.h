@@ -23,7 +23,7 @@ public:
 private:
     void update(Uint32 msDeltaTime) override {
 		// Draw graphic.
-		glPushMatrix();		
+		glPushMatrix();
 		if (getWidth() > getHeight()) {
 			double dist = (getWidth() - getHeight()) * 0.5;
 			// Keep the view in centre.
@@ -47,10 +47,12 @@ private:
 
 		switch (windowEvent.type) {
 		case SDL_QUIT:
-			quit();
 			break;
 		case SDL_WINDOWEVENT:
 			switch (windowEvent.window.event) {
+			case SDL_WINDOWEVENT_CLOSE:
+				quit();
+				break;
 			case SDL_WINDOWEVENT_RESIZED:
 				resize(windowEvent.window.data1, windowEvent.window.data2);
 				break;

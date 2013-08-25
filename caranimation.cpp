@@ -21,7 +21,7 @@ namespace zombie {
 	}
 
 	// private
-	void CarAnimation::drawSecond(double time) {
+	void CarAnimation::draw(double time) {
 		if (inMemory_.isValid()) {
 			lastTime_ = time;
 

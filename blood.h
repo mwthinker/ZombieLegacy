@@ -9,7 +9,7 @@ namespace zombie {
 	class Blood : public GraphicTask {
 	public:
 		Blood(double x, double y, double currentTime);
-		void drawFirst(double time) override;
+		void draw(double time) override;
 
 		bool isRunning() const override;
 		double getScaleX(double dT) const;
@@ -30,7 +30,7 @@ namespace zombie {
 	class BloodStain : public GraphicTask {
 	public:
 		BloodStain(double x, double y, double currentTime);
-		void drawFirst(double time) override;		
+		void draw(double time) override;		
 
 		bool isRunning() const override;
 
@@ -48,7 +48,7 @@ namespace zombie {
 	class BloodSplash : public GraphicTask {
 	public:
 		BloodSplash(double x, double y, double currentTime);
-		void drawFirst(double time) override;
+		void draw(double time) override;
 
 		bool isRunning() const override;
 

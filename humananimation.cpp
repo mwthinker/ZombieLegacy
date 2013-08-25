@@ -31,7 +31,7 @@ namespace zombie {
 	}
 
 	// private
-	void HumanAnimation::drawSecond(double time) {
+	void HumanAnimation::draw(double time) {
 		if (inMemory_.isValid()) {
 			lastTime_ = time;
 
@@ -66,7 +66,7 @@ namespace zombie {
 		case Unit::UnitEvent::SHOOT:
 			{
 				// In order to be able to play even if the sound is not finnished!
-				mw::Sound tmp = shot;				
+				mw::Sound tmp = shot;
 				tmp.play();
 			}
 			break;

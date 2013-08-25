@@ -17,7 +17,7 @@ namespace zombie {
 
 		void unitEventHandler(Unit::UnitEvent unitEvent);
 		
-		void drawSecond(double time) override;
+		void draw(double time) override;
 		bool isRunning() const override;
 	
 	private:

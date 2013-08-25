@@ -28,8 +28,7 @@ namespace zombie {
 		Activity a;
 		auto units = unit->getVisibleObjects();
 
-		if(units.size() > 0) {
-			std::cout << units.size() << " "; 
+		if (units.size() > 0) {
 			a = FLEE;
 		} else {
 			a = PANIC;

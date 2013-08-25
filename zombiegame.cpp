@@ -10,6 +10,11 @@
 #include "input.h"
 #include "task.h"
 #include "weaponobject.h"
+#include "shot.h"
+#include "mapdraw.h"
+#include "roaddraw.h"
+#include "drawweaponobject.h"
+#include "buildingdraw.h"
 
 #include "zombiebehavior.h"
 #include "survivorbehavior.h"
@@ -226,9 +231,6 @@ namespace zombie {
 	}
 
 	void ZombieGame::update(float deltaTime) {
-
-
-
 		// DeltaTime to big?
 		if (deltaTime > 0.250) {
 			// To avoid spiral of death.
@@ -319,7 +321,7 @@ namespace zombie {
 		auto buildings = map_.getBuildings();
 
 		for (Building* building : buildings) {
-			taskManager_->add(new DrawFake3DBuildning(building));
+			taskManager_->add(new BuildingDraw(building));
 		}
 
 		// Add human controlled by first input device.
@@ -423,11 +425,10 @@ namespace zombie {
 				}
 			}
 		} else {
-			std::cout << endP.x << " " << endP.y << std::endl;
+			//std::cout << endP.x << " " << endP.y << std::endl;
 		}
 
 		taskManager_->add(new Shot(shooter->getPosition(),endP,time_));
-		std::cout << endP.x << " " << endP.y << std::endl;
 	}
 
 	void ZombieGame::BeginContact(b2Contact* contact) {

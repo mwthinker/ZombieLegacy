@@ -30,7 +30,7 @@ namespace zombie {
 		return inMemory_.isValid();
 	}
 
-	void ZombieAnimation::drawSecond(double time) {
+	void ZombieAnimation::draw(double time) {
 		if (inMemory_.isValid()) {
 
 			// Time is much larger?

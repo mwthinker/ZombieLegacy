@@ -78,16 +78,6 @@ void TaskManager::update(double deltaTime) {
 
 void TaskManager::runGraphicTask(GraphicTask* task, int i) {
 	if (task->isRunning()) {
-		switch (i) {
-		case 0:
-			task->drawFirst(time_);
-			break;
-		case 1:
-			task->drawSecond(time_);
-			break;
-		case 2:
-			task->drawThird(time_);
-			break;
-		};
+		task->draw(time_);
 	}
 }
