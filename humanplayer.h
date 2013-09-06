@@ -2,29 +2,24 @@
 #define HUMANPLAYER_H
 
 #include "player.h"
-
-#include <mw/signals/connection.h>
-#include <SDL.h>
+#include "device.h"
 
 namespace zombie {
 
 	class HumanPlayer : public Player {
 	public:
-		virtual ~HumanPlayer() {
-			connection_.disconnect();
+		HumanPlayer(DevicePtr device, const MovingObject* mOb) : Player(mOb), device_(device) {
 		}
 
-		virtual void eventUpdate(const SDL_Event& windowEvent) = 0;
-
-		void calculateInput(const Unit* unit, double time) {
+		void calculateInput(double time) override {
 		}
 
-		void setConnection(mw::signals::Connection connection) {
-			connection_ = connection;
+		Input currentInput() override {
+			return device_->currentInput();
 		}
 
 	private:
-		mw::signals::Connection connection_;
+		DevicePtr device_;
 	};
 
 } // namespace zombie.

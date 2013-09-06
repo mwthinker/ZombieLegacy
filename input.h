@@ -25,6 +25,6 @@ namespace zombie {
 		bool action_;
 	};
 
-} // namespace zombie
+} // Namespace zombie
 
 #endif // INPUT_H

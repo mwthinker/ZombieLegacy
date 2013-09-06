@@ -4,6 +4,8 @@
 #include "typedefs.h"
 #include "graphictask.h"
 
+#include <mw/sprite.h>
+
 namespace zombie {
 
 	class Blood : public GraphicTask {

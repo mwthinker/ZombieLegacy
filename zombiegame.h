@@ -1,6 +1,7 @@
 #ifndef ZOMBIEGAME_H
 #define ZOMBIEGAME_H
 
+#include "object.h"
 #include "inputkeyboard.h"
 //#include "inputjoystick.h"
 
@@ -25,7 +26,8 @@ namespace zombie {
 	class Car;
 	class Unit;
 	class Weapon;
-	class MovingObject;	
+	class MovingObject;
+	class Player;
 
 	class ZombieGame : public b2ContactListener {
 	public:
@@ -54,7 +56,7 @@ namespace zombie {
 		Unit* createUnit(float x, float y, float angle, const Weapon& weapon, bool infected);
 
 		// Add a human player (unitPtr) to the game.
-		void addHuman(HumanPlayerPtr human, Unit* unit);
+		void addHuman(DevicePtr device, Unit* unit);
 
 		// Add a new ai (unitPtr) to the game.
 		void addNewAi(Unit* unit);
@@ -77,9 +79,7 @@ namespace zombie {
 		bool started_; // The game is started.
 		float time_; // Local game time.
 		
-		typedef std::tuple<PlayerPtr,MovingObject*> TuplePlayerUnitGraphic;
-		
-		std::list<TuplePlayerUnitGraphic> players_; // All units.
+		std::list<Player*> players_; // All units.
 		
 		TaskManager* taskManager_;
 
@@ -97,8 +97,9 @@ namespace zombie {
 		float accumulator_;
 
 		b2World* world_;
+		WorldHash worldHash_;
 
-		mw::Signal<const SDL_Event&> sdlEventSignal_;
+		DevicePtr keyboard1_, keyboard2_;
 	};
 
 } // namespace zombie

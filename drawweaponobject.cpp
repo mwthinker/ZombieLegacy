@@ -6,19 +6,19 @@
 
 using namespace zombie;
 
-DrawWeaponObject::DrawWeaponObject(WeaponObject* wOb) {
-	inMemory_ = wOb->getInMemory();
-	wOb_ = wOb;
+DrawWeaponObject::DrawWeaponObject(WeaponObject* weapon) : idWeaponObject_(weapon->getId()) {
 }
 
 void DrawWeaponObject::draw(double time) {
-	if (inMemory_.isValid()) {
-		Position p = wOb_->getPosition();
+	const Object* ob = Object::getObject(idWeaponObject_);
+	if (ob != nullptr) {
+		const WeaponObject* wOb = static_cast<const WeaponObject*>(ob);
+		Position p = wOb->getPosition();
 		glColor3d(0,0,1);
-		drawCircle(p.x,p.y,wOb_->getRadius(),6,true);
+		drawCircle(p.x,p.y,wOb->getRadius(),6,true);
 	}
 }
 
 bool DrawWeaponObject::isRunning() const {
-	return inMemory_.isValid();
+	return Object::getObject(idWeaponObject_) != nullptr;
 }

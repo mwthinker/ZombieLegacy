@@ -6,7 +6,7 @@
 using namespace zombie;
 
 MapDraw::MapDraw(const Map& map) : map_(map) {
-	grass_ = drawGrass;
+	grass_ = grassSprite;
 }
 
 void MapDraw::draw(double time) {

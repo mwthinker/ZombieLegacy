@@ -1,6 +1,7 @@
 #include "blood.h"
 #include "task.h"
 #include "gamesound.h"
+#include "gamesprite.h"
 
 #include <SDL_opengl.h>
 
@@ -32,7 +33,7 @@ namespace zombie {
 		x_ = x;
 		y_ = y;
 		running_ = true;
-		blood_ = blood;
+		blood_ = bloodSprite;
 		startScaleX_ = 1;
 		startScaleY_ = 1;
 		endScaleX_ = 3.5;
@@ -75,7 +76,7 @@ namespace zombie {
 		x_ = x;
 		y_ = y;
 		running_ = true;
-		blood_ = blood;
+		blood_ = bloodSprite;
 		scaleX_ = 3;
 		scaleY_ = 3;
 		delay_ = 0.15;	// (Stain appears after splash is finished)

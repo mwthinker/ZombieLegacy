@@ -1,13 +1,13 @@
 #ifndef INPUTKEYBOARD_H
 #define INPUTKEYBOARD_H
 
-#include "humanplayer.h"
+#include "device.h"
 
 #include <SDL.h>
 
 namespace zombie {
 
-	class InputKeyboard : public HumanPlayer {
+	class InputKeyboard : public Device {
 	public:
 		InputKeyboard(SDL_Keycode up, SDL_Keycode down, SDL_Keycode left, SDL_Keycode right, SDL_Keycode shoot, SDL_Keycode reload, SDL_Keycode run, SDL_Keycode action) {
 			up_ = up;
@@ -74,6 +74,6 @@ namespace zombie {
 		SDL_Keycode up_, down_, right_, left_, shoot_, reload_, run_, action_;
 	};
 
-} // namespace zombie
+} // Namespace zombie.
 
 #endif // INPUTKEYBOARD_H

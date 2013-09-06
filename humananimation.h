@@ -1,12 +1,12 @@
 #ifndef HUMANANIMAITON_H
 #define HUMANANIMAITON_H
 
-#include "object.h"
 #include "graphictask.h"
-#include "typedefs.h"
+#include "unit.h"
 
 #include <vector>
 #include <mw/sprite.h>
+#include <mw/signals/connection.h>
 
 namespace zombie {
 
@@ -21,12 +21,13 @@ namespace zombie {
 		bool isRunning() const override;
 
 	private:
-		InMemory inMemory_;
 		mw::signals::Connection connection_;
-		Unit* unit_;
+		int humanId_;
+
 		double timeNewFrame_;
 		int index_;
 		std::vector<mw::Sprite> sprites_;
+
 		double lastTime_;
 		Color color_;
 	};

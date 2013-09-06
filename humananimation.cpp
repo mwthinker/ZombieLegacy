@@ -7,19 +7,18 @@
 namespace zombie {
 
 	HumanAnimation::HumanAnimation(Unit* unit) {
-		unit_ = unit;
-		inMemory_ = unit_->getInMemory();
 		connection_ = unit->addEventHandler(std::bind(&HumanAnimation::unitEventHandler,this,std::placeholders::_1));
+		humanId_ = unit->getId();
 
 		timeNewFrame_ = 0.0;
 		index_ = 0;
 		lastTime_ = 0.0;
 		color_ = Color();
 
-		sprites_.push_back(human1);
-		sprites_.push_back(human2);
-		sprites_.push_back(human1);
-		sprites_.push_back(human3);
+		sprites_.push_back(human1Sprite);
+		sprites_.push_back(human2Sprite);
+		sprites_.push_back(human1Sprite);
+		sprites_.push_back(human3Sprite);
 	}
 
 	HumanAnimation::~HumanAnimation() {
@@ -27,12 +26,15 @@ namespace zombie {
 	}
 
 	bool HumanAnimation::isRunning() const {
-		return inMemory_.isValid();
+		return Object::getObject(humanId_) != nullptr;
 	}
 
 	// private
 	void HumanAnimation::draw(double time) {
-		if (inMemory_.isValid()) {
+		const Object* ob = Object::getObject(humanId_);
+
+		if (ob != nullptr) {
+			const Unit* unit = static_cast<const Unit*>(ob);
 			lastTime_ = time;
 
 			// Time is much larger?
@@ -46,14 +48,14 @@ namespace zombie {
 				timeNewFrame_ += 0.18;
 			}
 
-			Position p = unit_->getPosition();
+			Position p = unit->getPosition();
 
 			// Draw body
 			color_.glColor3d();
 			glPushMatrix();
 			glTranslated(p.x,p.y,0);
-			glScaled(unit_->radius()*0.9,unit_->radius()*0.9,1);
-			glRotated(unit_->getState().angle_*180/mw::PI,0,0,1);
+			glScaled(unit->radius()*0.9,unit->radius()*0.9,1);
+			glRotated(unit->getState().angle_*180/mw::PI,0,0,1);
 			mw::TexturePtr texture = sprites_[index_].getTexture();
 			glScaled(texture->getWidth()/128.0,texture->getHeight()/128.0,1);
 			sprites_[index_].draw();

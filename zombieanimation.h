@@ -22,8 +22,8 @@ namespace zombie {
 	
 	private:
 		mw::signals::Connection connection_;
-		InMemory inMemory_;
-		Unit* unit_;
+
+		int idUnit_;
 		double timeNewFrame_;
 		int index_;
 		std::vector<mw::Sprite> sprites_;

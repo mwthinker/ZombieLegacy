@@ -3,64 +3,54 @@
 
 #include <Box2D/Dynamics/b2Body.h>
 #include <memory>
+#include <unordered_map>
 
 namespace zombie {
 
 	class Object;
-
-	class InMemory {
-	public:
-		friend class Object;
-
-		InMemory() {
-		}
-		
-		bool isValid() const {
-			return valid_ && *valid_;
-		}
-
-		void disconnect() {
-			valid_ = nullptr;
-		}
-	private:
-		InMemory(std::shared_ptr<bool> valid) {
-			valid_ = valid;
-		}
-		
-		std::shared_ptr<bool> valid_;
-	};
+	typedef std::unordered_map<int, Object*> WorldHash;
 
 	// Represent a object inside the "zombie world".
 	class Object {
 	public:
 		friend class ZombieGame;
 
-		Object() : inMemory_(std::make_shared<bool>(true)){
+		inline Object() {
+			id_ = ++lastId;
 		}
 
 		virtual ~Object() {
-			*inMemory_.valid_ = false;
-		}
-
-		InMemory getInMemory() const {
-			return inMemory_;
 		}
 
 		virtual b2Body* getBody() const = 0;
 
-		static b2World* getWorld() {
-			return world_;
+		inline int getId() const {
+			return id_;
 		}
-	private:
-		static void setWorld(b2World* world) {
-			world_ = world;
-		}
-		
-		InMemory inMemory_;
 
-		static b2World* world_;
+		static b2World* getWorld() {
+			return world;
+		}
+
+		static const Object* getObject(int id) {
+			unsigned int size = worldHash->size();
+			
+			Object*& object = (*worldHash)[id];
+
+			if (worldHash->size() > size) {
+				object = nullptr;
+			}
+
+			return object;
+		}
+
+	private:
+		int id_;
+		static int lastId;
+		static b2World* world;
+		static WorldHash* worldHash;
 	};
 
-} // namespace zombie
+} // Namespace zombie.
 
 #endif // OBJECT_H

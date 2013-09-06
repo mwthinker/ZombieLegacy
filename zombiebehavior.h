@@ -23,8 +23,7 @@ namespace zombie {
 		MovingObject* findUninfectedTarget(Position position, const std::list<MovingObject*>& units) const;
 
 		double findNewTargetTime_;
-		MovingObject* target_;
-		InMemory inMemoryTarget_;
+		int idTarget_;
 
 		double timeToUpdateAngleDirection_;
 		double targetAngle_;
@@ -34,4 +33,3 @@ namespace zombie {
 } // Namespace zombie.
 
 #endif // ZOMBIEBEHAVIOR_H
-

@@ -1,6 +1,6 @@
 #include "zombiebehavior.h"
 
-#include "unit.h"
+#include "movingobject.h"
 
 #include <mw/mathvector.h>
 
@@ -12,8 +12,7 @@ namespace zombie {
 		findNewTargetTime_ = random() * 3;
 		timeToUpdateAngleDirection_ = random() * 1;
 		targetAngle_ = random() * mw::PI * 2;
-		forward_ = true;
-		target_ = nullptr;
+		idTarget_ = 0;
 	}
 
 	ZombieBehavior::~ZombieBehavior() {
@@ -21,23 +20,24 @@ namespace zombie {
 
 	Input ZombieBehavior::calculateInput(const Unit* unit, double time) {
 		Input input;
-
-		if (!inMemoryTarget_.isValid()) {
-			target_ = nullptr;
+		
+		const Object* ob = Object::getObject(idTarget_);
+		const MovingObject* target = nullptr;
+		if (ob != nullptr) {
+			target = static_cast<const MovingObject*>(ob);
 		}
 
 		// Target is valid and dead?
-		if (target_ != nullptr && target_ ->isDead()) {
-			target_ = nullptr;
+		if (target != nullptr && target ->isDead()) {
+			target = nullptr;
 		}
 
 		if (time > findNewTargetTime_) {
 			findNewTargetTime_ = random() * 3 + time;
-			inMemoryTarget_.disconnect();
 			
-			target_ = findUninfectedTarget(unit->getPosition(), unit->getVisibleObjects());
-			if (target_ != nullptr) {
-				inMemoryTarget_ = target_->getInMemory();
+			target = findUninfectedTarget(unit->getPosition(), unit->getVisibleObjects());
+			if (target != nullptr) {
+				idTarget_ = target->getId();
 			}
 		}
 
@@ -45,8 +45,8 @@ namespace zombie {
 			timeToUpdateAngleDirection_ = random() * 1 + time;
 
 			// Has a target?
-			if (target_ != nullptr) {
-				Position dir = target_->getPosition() - unit->getPosition();
+			if (target != nullptr) {
+				Position dir = target->getPosition() - unit->getPosition();
 				targetAngle_ = std::atan2(dir.y,dir.x);
 				forward_ = true;
 

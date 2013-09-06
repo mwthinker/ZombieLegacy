@@ -13,18 +13,18 @@ namespace zombie {
 
 	class AiPlayer : public Player {
 	public:
-		AiPlayer(AiBehaviorPtr behavior);
+		AiPlayer(AiBehaviorPtr behavior, const Unit* mOb);
 
-		AiPlayer();
+		AiPlayer(const Unit* mOb);
 
 		Input currentInput() override;
 
-		void calculateInput(const Unit* unit, double time);
+		void calculateInput(double time) override;
 
 		Input input_;
 		AiBehaviorPtr behavior_;
 	};
 
-} // namespace zombie.
+} // Namespace zombie.
 
 #endif // AIPLAYER_H

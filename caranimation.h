@@ -1,7 +1,6 @@
 #ifndef CARANIMATION_H
 #define CARANIMATION_H
 
-#include "typedefs.h"
 #include "graphictask.h"
 
 #include <mw/sprite.h>
@@ -12,16 +11,15 @@ namespace zombie {
 
 	class CarAnimation : public GraphicTask {
 	public:
-		CarAnimation(Car* carParam);
+		CarAnimation(Car* car);
 		~CarAnimation();
 
 		void draw(double time) override;
 		bool isRunning() const override;
 	
 	private:				
-		InMemory inMemory_;
-		mw::Sprite s_;
-		Car* car_;
+		int idCarObject_;
+		mw::Sprite carSprite_;
 		double lastTime_;
 	};
 

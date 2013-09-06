@@ -48,7 +48,7 @@ namespace zombie {
 				fixtureDef.friction = 0.3f;
 				b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
 				fixture->SetUserData(this);
-			}			
+			}
 		}
 
 		~Car() {

@@ -6,7 +6,7 @@
 using namespace zombie;
 
 RoadDraw::RoadDraw(const Map& map) : map_(map) {
-	road_ = drawRoad;
+	road_ = roadSprite;
 }
 
 void RoadDraw::draw(double time) {

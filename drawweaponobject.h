@@ -9,15 +9,14 @@ namespace zombie {
 
 	class DrawWeaponObject : public GraphicTask {
 	public:
-		DrawWeaponObject(WeaponObject* wOb);
+		DrawWeaponObject(WeaponObject* weapon);
 
 		void draw(double time) override;
 
 		bool isRunning() const override;
 
 	private:
-		InMemory inMemory_;
-		WeaponObject* wOb_;
+		int idWeaponObject_;
 	};
 
 } // Namespace zombie.

@@ -89,6 +89,7 @@
     <ClInclude Include="car.h" />
     <ClInclude Include="caranimation.h" />
     <ClInclude Include="buildingdraw.h" />
+    <ClInclude Include="device.h" />
     <ClInclude Include="drawweaponobject.h" />
     <ClInclude Include="gamefont.h" />
     <ClInclude Include="gamesound.h" />

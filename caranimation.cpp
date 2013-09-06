@@ -1,32 +1,34 @@
 #include "caranimation.h"
-#include "car.h"
 
+#include "typedefs.h"
+#include "car.h"
 #include "gamesprite.h"
 
 #include <SDL_opengl.h>
 
 namespace zombie {	
 
-	CarAnimation::CarAnimation(Car* carParam) {
-		inMemory_ = carParam->getInMemory();
-		car_ = carParam;
-		s_ = car;
+	CarAnimation::CarAnimation(Car* car) : idCarObject_(car->getId()) {
+		carSprite_ = carSprite;
 	}
 
 	CarAnimation::~CarAnimation() {
 	}
 
 	bool CarAnimation::isRunning() const {
-		return inMemory_.isValid();
+		return Object::getObject(idCarObject_) != nullptr;
 	}
 
 	// private
 	void CarAnimation::draw(double time) {
-		if (inMemory_.isValid()) {
+		const Object* ob = Object::getObject(idCarObject_);
+		if (ob != nullptr) {
+			const Car* car = static_cast<const Car*>(ob);
+		
 			lastTime_ = time;
 
 			glPushMatrix();
-			State state = car_->state();
+			State state = car->state();
 
 			glColor3d(1,1,1);
 			glTranslated(state.position_.x,state.position_.y,0);
@@ -37,22 +39,8 @@ namespace zombie {
 			glScaled(width,length,1);
 
 			glScaled(2,2,1);
-			/*
-			glBegin(GL_QUADS);
-			glColor3d(1,0,0);
-			glVertex2d(-length*0.5,-width*0.5);
-			glVertex2d(length*0.5,-width*0.5);
-			glVertex2d(length*0.5,width*0.5);
-			glVertex2d(-length*0.5,width*0.5);
 
-			glColor3d(0,1,0);
-			glVertex2d(length*0.4,-width*0.5);
-			glVertex2d(length*0.5,-width*0.5);
-			glVertex2d(length*0.5,width*0.5);
-			glVertex2d(length*0.4,width*0.5);
-			glEnd();
-			*/
-			s_.draw();		
+			carSprite_.draw();
 
 			glPopMatrix();
 		}

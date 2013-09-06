@@ -22,15 +22,6 @@ namespace zombie {
 	class AiBehavior;
 	typedef std::shared_ptr<AiBehavior> AiBehaviorPtr;
 
-	class HumanPlayer;
-	typedef std::shared_ptr<HumanPlayer> HumanPlayerPtr;
-
-	class AiPlayer;
-	typedef std::shared_ptr<AiPlayer> AiPlayerPtr;
-
-	class Player;
-	typedef std::shared_ptr<Player> PlayerPtr;
-
 	typedef mw::Color Color;
 
 	const Color BLACK(0,0,0);
