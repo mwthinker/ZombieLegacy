@@ -14,8 +14,9 @@ TaskManager::~TaskManager() {
 		delete task;
 	}
 
-	for (GraphicTask* task : graphicTasks_) {
-		delete task;
+	// Delete all graphic tasks.
+	for (Pair pair : graphicTasks_) {
+		delete pair.first;
 	}
 }
 
@@ -23,23 +24,30 @@ void TaskManager::add(Task* task) {
 	tasks_.push_back(task);
 }
 
-void TaskManager::add(GraphicTask* task) {
-	graphicTasks_.push_back(task);
+void TaskManager::add(GraphicTask* task, GraphicLevel level) {
+	Pair pair(task, level);
+	auto it = graphicTasks_.begin();
+	for (;it != graphicTasks_.end(); ++it) {
+		if (it->second > level) {
+			break;
+		}
+	}
+	graphicTasks_.insert(it,pair);
 }
 
 void TaskManager::update(double deltaTime) {
 	// for each Task, call execute
 	time_ += deltaTime;
 
-	// Draw all tasks and remove the non drawable.
-	graphicTasks_.remove_if([&] (GraphicTask* task) {
+	// Draw all tasks in order and remove the non drawable.
+	graphicTasks_.remove_if([&] (const Pair& pair) {
 		// Is active?
-		if (task->draw(time_)) {
+		if (pair.first->draw(time_)) {
 			return false;
 		}
 
 		// Not active, delete and remove!
-		delete task;
+		delete pair.first;
 		return true;
 	});
 
@@ -69,4 +77,3 @@ void TaskManager::update(double deltaTime) {
 	// Remove dead tasks.
 	tasks_.remove_if(removeIfFunctionT);
 }
-
