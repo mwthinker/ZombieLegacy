@@ -76,6 +76,6 @@ namespace zombie {
 		mw::Text day_, hour_;
 	};
 
-} // namespace zombie.
+} // Namespace zombie.
 
 #endif // SURVIVALTIMER_H

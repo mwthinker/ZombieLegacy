@@ -5,7 +5,7 @@
 
 namespace zombie {
 
-	struct Bullet {
+	class Bullet {
 	public:
 		Position postion_;
 		float damage_;

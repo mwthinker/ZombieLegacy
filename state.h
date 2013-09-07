@@ -5,14 +5,14 @@
 
 namespace zombie {
 
-class State {
-public:	
-	Position position_;
-	Velocity velocity_;
-	float angle_;
-	float anglularVelocity_;
-};
+	class State {
+	public:	
+		Position position_;
+		Velocity velocity_;
+		float angle_;
+		float anglularVelocity_;
+	};
 
-} // namespace zombie.
+} // Namespace zombie.
 
 #endif // STATE_H

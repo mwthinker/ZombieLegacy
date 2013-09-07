@@ -1,6 +1,4 @@
 #include "unit.h"
-
-#include "object.h"
 #include "input.h"
 #include "weapon.h"
 #include "auxiliary.h"
@@ -210,4 +208,4 @@ namespace zombie {
 		return isDead_;
 	}
 
-} // namespace zombie.
+} // Namespace zombie.

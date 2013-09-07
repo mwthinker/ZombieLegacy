@@ -23,4 +23,5 @@ namespace zombie {
 	void drawCircle(double cx, double cy, double r, int num_segments, bool filled);
 
 }
+
 #endif // TASK_H

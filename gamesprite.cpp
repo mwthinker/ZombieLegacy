@@ -14,7 +14,7 @@ namespace zombie {
 
 	const mw::Sprite grassSprite(grassTexture);
 	const mw::Sprite roadSprite("images/roadtile2.jpg");
-	
+
 	const mw::Sprite zombie1Sprite("images/zombie/zombie1.png");
 	const mw::Sprite zombie2Sprite("images/zombie/zombie2.png");
 	const mw::Sprite zombie3Sprite("images/zombie/zombie3.png");

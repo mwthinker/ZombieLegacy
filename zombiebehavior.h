@@ -3,13 +3,14 @@
 
 #include "aibehavior.h"
 #include "typedefs.h"
-#include "auxiliary.h"
+#include "input.h"
 #include "unit.h"
 
-#include <mw/signal.h>
 #include <list>
 
 namespace zombie {
+
+	class MovingObject;
 
 	class ZombieBehavior : public AiBehavior {
 	public:

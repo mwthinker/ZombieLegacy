@@ -1,4 +1,3 @@
-// marcys dator = virus
 #ifndef PATHFINDER_H
 #define PATHFINDER_H
 
@@ -6,11 +5,13 @@
 
 class Node {
 public:
-	Node() {}
+	Node() {
+	}
+	
 	Node(int f) {
 		f_ = f;
-	}	
-	
+	}
+
 	inline Node const* parent() const {
 		return parent_;
 	}
@@ -36,7 +37,7 @@ class PathFinder {
 public:
 	PathFinder(int nbrOfRows, int nbrOfColons, double heightWorld, double widthWorld);
 	~PathFinder();
-	
+
 	Node const* findPath(double x, double y, double xDestination, double yDestination);
 
 	void setObstacle(int row, int colon, bool obstacle);
@@ -51,12 +52,13 @@ public:
 	double worldHeight() const;
 	int nbrOfRows() const;
 	int nbrOfColons() const;
+
 private:
 	Node const* findPath(int row, int colon, int rowDestination, int colonDestination);
 	void addSurroundingNodes(Node* node, const Node* end);
 	bool insideClosedList(const Node* node) const;
 	bool insideOpenList(const Node* node) const;
-	
+
 	Node*** map_;
 	std::vector<Node*> openList_;
 	std::vector<Node*> closeList_;

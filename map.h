@@ -72,6 +72,6 @@ namespace zombie {
 
 	std::vector<LineFeature> loadRoads(std::string filename, float scale, float normalizeX, float normalizeY);
 
-} // namespace zombie.
+} // Namespace zombie.
 
 #endif // MAP_H

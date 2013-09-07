@@ -63,6 +63,6 @@ namespace zombie {
 		std::list<MovingObject*> visibleObjects_;
 	};
 
-} // namespace zombie
+} // Namespace zombie
 
 #endif // OBJECT_H

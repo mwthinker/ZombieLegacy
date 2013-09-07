@@ -1,14 +1,14 @@
 #ifndef SURVIVORBEHAVIOR_H
 #define SURVIVORBEHAVIOR_H
 
+#include "input.h"
 #include "aibehavior.h"
-#include "order.h"
-#include "typedefs.h"
-#include "auxiliary.h"
 
 #include <vector>
 
 namespace zombie {
+
+	class Unit;
 
 	enum Activity { PANIC, FLEE, FOLLOW, DEFEND, ATTACK };
 	enum Subroutines { TURN_TO_ANGLE, RELOAD };
@@ -20,6 +20,7 @@ namespace zombie {
 
 		Input calculateInput(const Unit* unit, double time) override;
 		Input activityToInput(Activity a, const Unit* unit, double time);
+
 	private:
 		Unit* findUninfectedTarget(Position position, const std::vector<Unit*>& units) const;
 
@@ -35,4 +36,3 @@ namespace zombie {
 } // Namespace zombie.
 
 #endif // ZOMBIEBEHAVIOR_H
-

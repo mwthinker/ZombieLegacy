@@ -13,9 +13,6 @@ namespace zombie {
 		Blood(double x, double y, double currentTime);
 		bool draw(double time) override;
 
-		double getScaleX(double dT) const;
-		double getScaleY(double dT) const;
-
 	private:
 		double startTime_;
 		double x_, y_;

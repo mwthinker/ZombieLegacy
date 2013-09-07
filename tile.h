@@ -1,5 +1,4 @@
 #include "typedefs.h"
-
 #include "linefeature.h"
 #include "auxiliary.h"
 
@@ -210,7 +209,7 @@ namespace zombie {
 						p.y = p.y + sortedTiles_[i].getTileSide() * (i / nbrOfTiles_);
 						modifiedCorners.push_back(p);
 					}
-					
+
 					allBuildings.push_back(modifiedCorners);
 				}
 				// Add roads from tile
@@ -400,4 +399,4 @@ namespace zombie {
 		return sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y));
 	}
 
-}	// namespace zombie
+} // Namespace zombie.

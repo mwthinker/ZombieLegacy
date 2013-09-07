@@ -15,7 +15,6 @@ namespace zombie {
 	}
 
 	ZombieGame::~ZombieGame() {
-
 	}
 
 	// Starts the game.

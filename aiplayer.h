@@ -1,11 +1,9 @@
 #ifndef AIPLAYER_H
 #define AIPLAYER_H
 
-#include "typedefs.h"
+#include "aibehavior.h"
 #include "input.h"
 #include "player.h"
-
-#include <vector>
 
 namespace zombie {
 

@@ -2,11 +2,12 @@
 #define HUMANSTATUS_H
 
 #include "task.h"
-#include "unit.h"
 
 #include <mw/text.h>
 
 namespace zombie {
+
+	class Unit;
 
 	class HumanStatus : public Task {
 	public:

@@ -5,8 +5,8 @@
 
 namespace zombie {
 
-	extern mw::FontPtr font15;
+	extern const mw::FontPtr font15;
 
-} // namespace zombie.
+} // Namespace zombie.
 
 #endif // GAMEFONT_H

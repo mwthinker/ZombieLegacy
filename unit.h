@@ -6,11 +6,13 @@
 #include "weapon.h"
 #include "state.h"
 #include "bullet.h"
+#include "typedefs.h"
+
+#include <mw/signal.h>
 
 #include <Box2D/Box2D.h>
 
 #include <functional>
-#include <mw/signal.h>
 #include <list>
 
 namespace zombie {
@@ -107,6 +109,6 @@ namespace zombie {
 		b2Body* body_;
 	};
 
-} // namespace zombie
+} // Namespace zombie
 
 #endif // UNIT_H

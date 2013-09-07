@@ -1,5 +1,4 @@
 #include "map.h"
-
 #include "building.h"
 #include "auxiliary.h"
 
@@ -301,4 +300,4 @@ namespace zombie {
 		return Map(Position(tileSize*0.5f,tileSize*0.5f),tileSize, tileSize, buildings, roads);
 	}
 
-} // namespace zombie.
+} // Namespace zombie.

@@ -2,7 +2,6 @@
 #define OBJECT_H
 
 #include <Box2D/Dynamics/b2Body.h>
-#include <memory>
 #include <unordered_map>
 
 namespace zombie {

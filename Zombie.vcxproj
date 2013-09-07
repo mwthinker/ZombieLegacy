@@ -127,7 +127,6 @@
     <ClInclude Include="zombiewindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="aibehavior.cpp" />
     <ClCompile Include="aiplayer.cpp" />
     <ClCompile Include="auxiliary.cpp" />
     <ClCompile Include="blood.cpp" />
@@ -143,7 +142,6 @@
     <ClCompile Include="mapdraw.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="order.cpp" />
-    <ClCompile Include="player.cpp" />
     <ClCompile Include="roaddraw.cpp" />
     <ClCompile Include="shot.cpp" />
     <ClCompile Include="survivorbehavior.cpp" />

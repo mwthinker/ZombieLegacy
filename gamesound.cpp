@@ -1,8 +1,12 @@
 #include "gamesound.h"
 
-const mw::Sound zombie::splat;//("sound/splat2.wav");
-const mw::Sound zombie::shot;//("sound/handgun.wav");
-const mw::Sound zombie::reload;//("sound/handgunReload.wav");
-const mw::Sound zombie::zombieAttack;//("sound/zombieAttack.wav");
-const mw::Sound zombie::crash;//("sound/crash.wav");
-const mw::Sound zombie::car_sound;//("sound/car.wav");
+namespace zombie {
+
+	const mw::Sound splat;//("sound/splat2.wav");
+	const mw::Sound shot;//("sound/handgun.wav");
+	const mw::Sound reload;//("sound/handgunReload.wav");
+	const mw::Sound zombieAttack;//("sound/zombieAttack.wav");
+	const mw::Sound crash;//("sound/crash.wav");
+	const mw::Sound car_sound;//("sound/car.wav");
+
+} // Namespace zombie.

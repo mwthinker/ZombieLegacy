@@ -22,6 +22,6 @@ namespace zombie {
 		DevicePtr device_;
 	};
 
-} // namespace zombie.
+} // Namespace zombie.
 
 #endif // HUMANPLAYER_H

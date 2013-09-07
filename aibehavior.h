@@ -2,7 +2,6 @@
 #define AIBEHAVIOR_H
 
 #include "typedefs.h"
-
 #include "input.h"
 #include <vector>
 
@@ -12,14 +11,14 @@ namespace zombie {
 
 	class AiBehavior {
 	public:
-		AiBehavior();
-		virtual ~AiBehavior();
+		virtual ~AiBehavior() {
+		}
 
 		virtual Input calculateInput(const Unit* unit, double time) = 0;
 	private:
 
 	};
 
-} // namespace zombie.
+} // Namespace zombie.
 
 #endif // AIBEHAVIOR_H

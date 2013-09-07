@@ -3,6 +3,7 @@
 #include "gamesound.h"
 #include "typedefs.h"
 #include "auxiliary.h"
+#include "unit.h"
 
 namespace zombie {
 

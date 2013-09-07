@@ -2,10 +2,6 @@
 #define ORDER_H
 
 #include "typedefs.h"
-#include "auxiliary.h"
-
-#include <vector>
-
 
 namespace zombie {
 
@@ -25,6 +21,6 @@ namespace zombie {
 		Position targetPos_;
 	};
 
-}
+} // Namespace zombie.
 
 #endif // ORDER_H

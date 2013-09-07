@@ -1,5 +1,4 @@
 #include "zombieengine.h"
-
 #include "typedefs.h"
 #include "inputkeyboard.h"
 #include "unit.h"
@@ -316,31 +315,33 @@ namespace zombie {
 
 		// Add human controlled by first input device.
 		Position position = map_.generateSpawnPosition();
-		Unit* human = createUnit(position.x,position.y,0.3f,Weapon(55,0.2f,8,12),false);
+		Unit* human = createUnit(position.x, position.y, 0.3f, Weapon(55,0.2f,8,12), false);
 		viewPosition_ = human->getPosition();
 		addHuman(humanDevice, human);
 		{
-			Position spawn = map_.generateSpawnPosition(human->getPosition(),innerSpawnRadius_,outerSpawnRadius_);
+			Position spawn = map_.generateSpawnPosition(human->getPosition(), innerSpawnRadius_, outerSpawnRadius_);
 			Car* car = new Car(spawn.x,spawn.y);
 			players_.push_back(new HumanPlayer(carDevice,car));
 			worldHash_[car->getId()] = car;
 			taskManager_->add(new CarAnimation(car), GraphicLevel::ON_GROUND);
 		}
 
-		// Add zombie with standard behavior.
+		// Add zombie.
 		for (int i = 0; i < 1; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(), innerSpawnRadius_, outerSpawnRadius_);
 			Unit* zombie = createUnit(spawn.x, spawn.y, 0.3f, Weapon(35,0.5f,1,10000), true);
 			addNewAi(zombie);
 		}
 
+		// Add survivors.
 		for (int i = 1; i < 10; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,10);
 			Unit* survivor = createUnit(spawn.x, spawn.y, 0.f, Weapon(35,0.5,8,120), false);
 			addNewAi(survivor);
 		}
 
-		for (int i = 1; i < 15; i++) {
+		// Add weapons.
+		for (int i = 0; i < 10; i++) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,50);
 			Weapon weapon;
 			taskManager_->add(new DrawWeaponObject(new WeaponObject(spawn.x, spawn.y, weapon)), GraphicLevel::ON_GROUND);

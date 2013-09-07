@@ -65,6 +65,6 @@ namespace zombie {
 		b2Body* body_;
 	};
 
-} // namespace zombie.
+} // Namespace zombie.
 
 #endif // WEAPONOBJECT_H

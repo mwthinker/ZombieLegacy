@@ -1,5 +1,4 @@
 #include "aiplayer.h"
-
 #include "typedefs.h"
 #include "input.h"
 #include "zombiebehavior.h"
@@ -24,4 +23,4 @@ namespace zombie {
 		}
 	}
 
-} // namespace zombie.
+} // Namespace zombie.

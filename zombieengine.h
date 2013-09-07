@@ -3,11 +3,8 @@
 
 #include "object.h"
 #include "inputkeyboard.h"
-
 #include "input.h"
 #include "map.h"
-#include "bullet.h"
-
 #include "typedefs.h"
 
 #include <Box2D/Box2D.h>
@@ -27,6 +24,7 @@ namespace zombie {
 	class Weapon;
 	class MovingObject;
 	class Player;
+	class Bullet;
 
 	class ZombieEngine : public b2ContactListener {
 	public:
