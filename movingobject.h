@@ -14,7 +14,7 @@ namespace zombie {
 	// Represent a moving object inside the "zombie world".
 	class MovingObject : public Object {
 	public:
-		friend class ZombieGame;
+		friend class ZombieEngine;
 
 		virtual ~MovingObject() {
 		}

@@ -13,7 +13,7 @@ namespace zombie {
 	// Represent a object inside the "zombie world".
 	class Object {
 	public:
-		friend class ZombieGame;
+		friend class ZombieEngine;
 
 		inline Object() {
 			id_ = ++lastId;

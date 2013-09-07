@@ -97,6 +97,7 @@
     <ClInclude Include="graphictask.h" />
     <ClInclude Include="humananimation.h" />
     <ClInclude Include="humanplayer.h" />
+    <ClInclude Include="humanstatus.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="inputkeyboard.h" />
     <ClInclude Include="linefeature.h" />
@@ -121,6 +122,7 @@
     <ClInclude Include="weaponobject.h" />
     <ClInclude Include="zombieanimation.h" />
     <ClInclude Include="zombiebehavior.h" />
+    <ClInclude Include="zombieengine.h" />
     <ClInclude Include="zombiegame.h" />
     <ClInclude Include="zombiewindow.h" />
   </ItemGroup>
@@ -135,6 +137,7 @@
     <ClCompile Include="gamesound.cpp" />
     <ClCompile Include="gamesprite.cpp" />
     <ClCompile Include="humananimation.cpp" />
+    <ClCompile Include="humanstatus.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="mapdraw.cpp" />
@@ -149,6 +152,7 @@
     <ClCompile Include="unit.cpp" />
     <ClCompile Include="zombieanimation.cpp" />
     <ClCompile Include="zombiebehavior.cpp" />
+    <ClCompile Include="zombieengine.cpp" />
     <ClCompile Include="zombiegame.cpp" />
   </ItemGroup>
   <ItemGroup>

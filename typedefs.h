@@ -11,10 +11,9 @@ namespace zombie {
 
 	// MathVector.
 	typedef b2Vec2 Velocity;
-	typedef b2Vec2 Position;	
+	typedef b2Vec2 Position;
 	typedef b2Vec2 Force;
 	typedef b2Vec2 Vec3;
-
 	typedef b2Vec2 Point;
 	typedef std::vector<Position> Points;
 	
@@ -23,7 +22,6 @@ namespace zombie {
 	typedef std::shared_ptr<AiBehavior> AiBehaviorPtr;
 
 	typedef mw::Color Color;
-
 	const Color BLACK(0,0,0);
 	const Color WHITE(1,1,1);
 

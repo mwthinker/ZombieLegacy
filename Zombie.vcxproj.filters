@@ -153,6 +153,12 @@
     <ClInclude Include="humanplayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="humanstatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zombieengine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aibehavior.cpp">
@@ -228,6 +234,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="drawweaponobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="humanstatus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zombieengine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
