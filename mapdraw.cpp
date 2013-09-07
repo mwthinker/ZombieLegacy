@@ -9,7 +9,7 @@ MapDraw::MapDraw(const Map& map) : map_(map) {
 	grass_ = grassSprite;
 }
 
-void MapDraw::draw(double time) {
+bool MapDraw::draw(double time) {
 	glColor3d(0.6,0.6,0.6);
 	grassTexture->bind();		
 
@@ -34,8 +34,5 @@ void MapDraw::draw(double time) {
 	}
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
-}	
-
-bool MapDraw::isRunning() const {
 	return true;
 }

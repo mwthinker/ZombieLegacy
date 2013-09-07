@@ -8,8 +8,7 @@ namespace zombie {
 		virtual ~GraphicTask() {
 		}
 
-		virtual void draw(double time) = 0;
-		virtual bool isRunning() const = 0;
+		virtual bool draw(double time) = 0;
 	};
 
 } // Namespace zombie.

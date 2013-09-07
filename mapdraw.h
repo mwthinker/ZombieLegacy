@@ -11,9 +11,7 @@ namespace zombie {
 	class MapDraw : public GraphicTask {
 	public:
 		MapDraw(const Map& map);
-		void draw(double time) override;
-
-		bool isRunning() const override;
+		bool draw(double time) override;
 
 	private:
 		void draw();

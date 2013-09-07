@@ -19,9 +19,8 @@ namespace zombie {
 
 		// Updates each task in ascending order.
 		void update(double deltaTime);
+	
 	private:
-		void runGraphicTask(GraphicTask* task, int i);
-
 		std::list<Task*> tasks_;
 		std::list<GraphicTask*> graphicTasks_;
 

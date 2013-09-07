@@ -17,8 +17,7 @@ namespace zombie {
 		
 		void unitEventHandler(Unit::UnitEvent unitEvent);
 	
-		void draw(double time) override;
-		bool isRunning() const override;
+		bool draw(double time) override;
 
 	private:
 		mw::signals::Connection connection_;

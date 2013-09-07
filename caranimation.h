@@ -14,8 +14,7 @@ namespace zombie {
 		CarAnimation(Car* car);
 		~CarAnimation();
 
-		void draw(double time) override;
-		bool isRunning() const override;
+		bool draw(double time) override;
 	
 	private:				
 		int idCarObject_;

@@ -12,8 +12,7 @@ namespace zombie {
 	public:
 		RoadDraw(const Map& map);
 		
-		void draw(double time) override;
-		bool isRunning() const override;	
+		bool draw(double time) override;
 
 		const Map& map_;
 		mw::Sprite road_;

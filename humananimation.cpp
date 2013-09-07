@@ -25,12 +25,8 @@ namespace zombie {
 		connection_.disconnect();
 	}
 
-	bool HumanAnimation::isRunning() const {
-		return Object::getObject(humanId_) != nullptr;
-	}
-
 	// private
-	void HumanAnimation::draw(double time) {
+	bool HumanAnimation::draw(double time) {
 		const Object* ob = Object::getObject(humanId_);
 
 		if (ob != nullptr) {
@@ -60,7 +56,10 @@ namespace zombie {
 			glScaled(texture->getWidth()/128.0,texture->getHeight()/128.0,1);
 			sprites_[index_].draw();
 			glPopMatrix();
+			return true;
 		}
+
+		return false;
 	}
 
 	void HumanAnimation::unitEventHandler(Unit::UnitEvent unitEvent) {

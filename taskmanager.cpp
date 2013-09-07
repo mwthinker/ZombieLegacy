@@ -30,12 +30,18 @@ void TaskManager::add(GraphicTask* task) {
 void TaskManager::update(double deltaTime) {
 	// for each Task, call execute
 	time_ += deltaTime;
-	
-	for (int i = 0; i < 3; ++i) {
-		for (GraphicTask* task : graphicTasks_) {
-			runGraphicTask(task,i);
+
+	// Draw all tasks and remove the non drawable.
+	graphicTasks_.remove_if([&] (GraphicTask* task) {
+		// Is active?
+		if (task->draw(time_)) {
+			return false;
 		}
-	}
+
+		// Not active, delete and remove!
+		delete task;
+		return true;
+	});
 
 	// Update all tasks.
 	for (Task* task : tasks_) {
@@ -51,7 +57,7 @@ void TaskManager::update(double deltaTime) {
 
 	auto removeIfFunctionT = [] (Task* task) {
 		// Is active?
-		if (task->isRunning()) {			
+		if (task->isRunning()) {
 			return false;
 		}
 
@@ -60,24 +66,7 @@ void TaskManager::update(double deltaTime) {
 		return true;
 	};
 
-	auto removeIfFunctionG = [] (GraphicTask* task) {
-		// Is active?
-		if (task->isRunning()) {			
-			return false;
-		}
-
-		// Not active, delete and remove!
- 		delete task;
-		return true;
-	};
-
 	// Remove dead tasks.
 	tasks_.remove_if(removeIfFunctionT);
-	graphicTasks_.remove_if(removeIfFunctionG);
 }
 
-void TaskManager::runGraphicTask(GraphicTask* task, int i) {
-	if (task->isRunning()) {
-		task->draw(time_);
-	}
-}

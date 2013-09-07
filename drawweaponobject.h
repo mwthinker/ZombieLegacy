@@ -11,9 +11,7 @@ namespace zombie {
 	public:
 		DrawWeaponObject(WeaponObject* weapon);
 
-		void draw(double time) override;
-
-		bool isRunning() const override;
+		bool draw(double time) override;
 
 	private:
 		int idWeaponObject_;

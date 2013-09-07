@@ -22,13 +22,9 @@ namespace zombie {
 
 	ZombieAnimation::~ZombieAnimation() {
 		connection_.disconnect();
-	}
+	}	
 
-	bool ZombieAnimation::isRunning() const {
-		return Object::getObject(idUnit_) != nullptr;
-	}
-
-	void ZombieAnimation::draw(double time) {
+	bool ZombieAnimation::draw(double time) {
 		const Object* ob = Object::getObject(idUnit_);
 
 		if (ob != nullptr) {
@@ -57,6 +53,9 @@ namespace zombie {
 			glScaled(d/128.0,d/128.0,1);
 			sprites_[index_].draw();
 			glPopMatrix();
+			return true;
+		} else {
+			return false;
 		}
 	}
 

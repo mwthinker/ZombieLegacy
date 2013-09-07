@@ -9,7 +9,7 @@ RoadDraw::RoadDraw(const Map& map) : map_(map) {
 	road_ = roadSprite;
 }
 
-void RoadDraw::draw(double time) {
+bool RoadDraw::draw(double time) {
 	const std::vector<LineFeature>& l = map_.getRoads();
 
 	for (auto it = l.begin(); it != l.end(); it++) {
@@ -35,8 +35,5 @@ void RoadDraw::draw(double time) {
 			y = yStart + i*(yEnd-yStart)/100;
 		}
 	}
-}
-
-bool RoadDraw::isRunning() const {
 	return true;
 }

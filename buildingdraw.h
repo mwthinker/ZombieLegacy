@@ -13,7 +13,7 @@ namespace zombie {
 		BuildingDraw(Building* building) : building_(building) {
 		}
 
-		void draw(double time) override {
+		bool draw(double time) override {
 			glColor3d(0.9,0.7,0.7);
 			auto corners = building_->getCorners();
 			glBegin(GL_QUADS);
@@ -21,9 +21,6 @@ namespace zombie {
 				glVertex2d(corners[i].x, corners[i].y);
 			}
 			glEnd();
-		}
-
-		bool isRunning() const override {
 			return true;
 		}
 
