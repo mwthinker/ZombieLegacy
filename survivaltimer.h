@@ -1,19 +1,17 @@
 #ifndef SURVIVALTIMER_H
 #define SURVIVALTIMER_H
 
-#include "task.h"
-#include "typedefs.h"
+#include "graphictask.h"
 #include "gamefont.h"
 
 #include <mw/text.h>
 
-#include <vector>
 #include <sstream>
 #include <cmath>
 
 namespace zombie {
 
-	class SurvivalTimer : public Task {
+	class SurvivalTimer : public GraphicTask {
 	public:
 		SurvivalTimer() {
 			dayTime_ = 60.0;
@@ -21,7 +19,7 @@ namespace zombie {
 			hour_ = mw::Text("", font15);
 		}
 
-		void excecute(double time) override {
+		bool draw(double time) override {
 			glColor3d(1,1,1);			
 
 			std::stringstream stream;
@@ -66,11 +64,10 @@ namespace zombie {
 			glPopMatrix();
 			glMatrixMode(GL_MODELVIEW);
 			glPopMatrix();
-		}
 
-		bool isRunning() const override {
 			return true;
 		}
+
 	private:
 		double dayTime_;
 		mw::Text day_, hour_;

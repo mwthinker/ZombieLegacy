@@ -104,11 +104,12 @@ namespace zombie {
 
 		mw::Signal<Unit*> actionSignal_;
 		mw::Signal<Unit*, Bullet> shootSignal_;
-		mw::Signal<UnitEvent> eventSignal_;		
+		mw::Signal<UnitEvent> eventSignal_;
 
 		b2Body* body_;
+		Input lastInput_;
 	};
 
-} // Namespace zombie
+} // Namespace zombie.
 
 #endif // UNIT_H

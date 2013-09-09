@@ -19,9 +19,6 @@
     <Filter Include="Header Files\Map">
       <UniqueIdentifier>{bd6e517e-ef0a-477a-a07e-e4e3bc0aabac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Object">
-      <UniqueIdentifier>{df61a337-e4dd-4ad1-93fe-841ad073e061}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aiplayer.h">
@@ -114,21 +111,6 @@
     <ClInclude Include="tile.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
-    <ClInclude Include="car.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="building.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="object.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="movingobject.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="unit.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
     <ClInclude Include="shot.h">
       <Filter>Header Files\GraphicAndSound</Filter>
     </ClInclude>
@@ -157,6 +139,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="aibehavior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="unit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="car.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="movingobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="building.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

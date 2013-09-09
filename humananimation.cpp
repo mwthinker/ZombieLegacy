@@ -29,8 +29,9 @@ namespace zombie {
 	// private
 	bool HumanAnimation::draw(double time) {
 		const Object* ob = Object::getObject(humanId_);
-
-		if (ob != nullptr) {
+		
+		// Object alive and active?
+		if (ob != nullptr && ob->getBody()->IsActive()) {
 			const Unit* unit = static_cast<const Unit*>(ob);
 			lastTime_ = time;
 
@@ -60,7 +61,7 @@ namespace zombie {
 			return true;
 		}
 
-		return false;
+		return ob != nullptr;
 	}
 
 	void HumanAnimation::unitEventHandler(Unit::UnitEvent unitEvent) {

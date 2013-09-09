@@ -48,6 +48,8 @@ namespace zombie {
 		// Creates a unit and add &doShotDamage to receive bullets fired.
 		Unit* createUnit(float x, float y, float angle, const Weapon& weapon, bool infected);
 
+		Car* createCar(float x, float y);
+
 		// Add a human player (unitPtr) to the game.
 		void addHuman(DevicePtr device, Unit* unit);
 
@@ -55,7 +57,7 @@ namespace zombie {
 		void addNewAi(Unit* unit);
 
 		// Inits the engine.
-		void init(const Map& map, DevicePtr human, DevicePtr car);
+		void init(const Map& map, DevicePtr human);
 
 	private:
 		// Updates the game time by (msDeltaTime).
@@ -65,6 +67,7 @@ namespace zombie {
 		std::vector<Unit*> calculateUnitsInView(Unit* unit);
 
 		void doAction(Unit* unit);
+		void carDoAction(Car* unit);
 		void doShotDamage(Unit* shooter, const Bullet& properties);
 
 		void BeginContact (b2Contact* contact) override;

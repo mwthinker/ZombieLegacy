@@ -11,7 +11,7 @@ namespace zombie {
 		keyboard2_ = DevicePtr(new InputKeyboard(SDLK_w,SDLK_s,SDLK_a,SDLK_d,SDLK_f,SDLK_g,SDLK_h,SDLK_z));
 
 		map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
-		engine_.init(map_, keyboard1_, keyboard2_);
+		engine_.init(map_, keyboard1_);
 	}
 
 	ZombieGame::~ZombieGame() {

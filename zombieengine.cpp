@@ -136,7 +136,7 @@ namespace zombie {
 		// Set windows size.
 		updateSize(width,height);
 		taskManager_ = new TaskManager();
-		
+
 		scale_ = 1.0;
 
 		started_ = false;
@@ -144,7 +144,7 @@ namespace zombie {
 
 		unitLevel_ = 20;
 		innerSpawnRadius_ = 10.f;
-		outerSpawnRadius_ = 20.f;
+		outerSpawnRadius_ = 40.f;
 
 		timeStep_ = 0.017f; // Fix time step for physics update.
 		accumulator_ = 0.0f; // Time accumulator.
@@ -177,7 +177,7 @@ namespace zombie {
 		// Game is started?
 		if (started_) {
 			spawnAndCleanUpUnits();
-			
+
 			// Update all players.
 			for (Player* player: players_) {
 				Object* ob = worldHash_[player->getId()];
@@ -199,14 +199,14 @@ namespace zombie {
 	void ZombieEngine::spawnAndCleanUpUnits() {
 		const MovingObject* frontOb = static_cast<const MovingObject*>(worldHash_[players_.front()->getId()]);
 		Position center = frontOb->getPosition();
-		
+
 		// Delete units outside of perimiter and dead units.
 		MovingObject* temp = nullptr;
 		players_.remove_if([&](Player* player) {
 			Object*& ob = worldHash_[player->getId()];
 			if (ob != nullptr) {
 				const MovingObject* mOb = static_cast<const MovingObject*>(ob);
-				
+
 				bool outside = (mOb->getPosition() - center).LengthSquared() > outerSpawnRadius_ * outerSpawnRadius_;
 				bool dead = mOb->isDead();
 
@@ -217,7 +217,7 @@ namespace zombie {
 					return true;
 				}
 			}
-			
+
 			return false;
 		});
 
@@ -281,6 +281,13 @@ namespace zombie {
 		return unit;
 	}
 
+	Car* ZombieEngine::createCar(float x, float y) {
+		Car* car = new Car(x, y);
+		car->addActionHandler(std::bind(&ZombieEngine::carDoAction,this,std::placeholders::_1));
+		worldHash_[car->getId()] = car;
+		return car;
+	}
+
 	void ZombieEngine::addHuman(DevicePtr device, Unit* unit) {
 		players_.push_back(new HumanPlayer(device, unit));
 		taskManager_->add(new HumanStatus(unit, HumanStatus::ONE));
@@ -290,7 +297,7 @@ namespace zombie {
 	void ZombieEngine::addNewAi(Unit* unit) {
 		if (unit->isInfected()) {
 			AiBehaviorPtr b = std::make_shared<ZombieBehavior>();
-			taskManager_->add(new ZombieAnimation(unit), GraphicLevel::GROUND);
+			taskManager_->add(new ZombieAnimation(unit), GraphicLevel::ON_GROUND);
 			AiPlayer* aiPlayer(new AiPlayer(b, unit));
 			players_.push_back(aiPlayer);
 		} else {
@@ -301,10 +308,10 @@ namespace zombie {
 		}
 	}
 
-	void ZombieEngine::init(const Map& map, DevicePtr humanDevice, DevicePtr carDevice) {
+	void ZombieEngine::init(const Map& map, DevicePtr humanDevice) {
 		map_ = map;
-		taskManager_->add(new SurvivalTimer());
-		
+		taskManager_->add(new SurvivalTimer(), GraphicLevel::ABOWE_GROUND);
+
 		taskManager_->add(new MapDraw(map_), GraphicLevel::GROUND);
 		taskManager_->add(new RoadDraw(map_), GraphicLevel::GROUND);
 
@@ -318,30 +325,30 @@ namespace zombie {
 		Unit* human = createUnit(position.x, position.y, 0.3f, Weapon(55,0.2f,8,12), false);
 		viewPosition_ = human->getPosition();
 		addHuman(humanDevice, human);
-		{
+
+		// Add cars.
+		for (int i = 0; i < 10; ++i) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(), innerSpawnRadius_, outerSpawnRadius_);
-			Car* car = new Car(spawn.x,spawn.y);
-			players_.push_back(new HumanPlayer(carDevice,car));
-			worldHash_[car->getId()] = car;
+			Car* car = createCar(spawn.x, spawn.y);
 			taskManager_->add(new CarAnimation(car), GraphicLevel::ON_GROUND);
 		}
 
-		// Add zombie.
-		for (int i = 0; i < 1; i++) {
+		// Add zombies.
+		for (int i = 0; i < 1; ++i) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(), innerSpawnRadius_, outerSpawnRadius_);
 			Unit* zombie = createUnit(spawn.x, spawn.y, 0.3f, Weapon(35,0.5f,1,10000), true);
 			addNewAi(zombie);
 		}
 
 		// Add survivors.
-		for (int i = 1; i < 10; i++) {
+		for (int i = 1; i < 10; ++i) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,10);
 			Unit* survivor = createUnit(spawn.x, spawn.y, 0.f, Weapon(35,0.5,8,120), false);
 			addNewAi(survivor);
 		}
 
 		// Add weapons.
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; ++i) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,50);
 			Weapon weapon;
 			taskManager_->add(new DrawWeaponObject(new WeaponObject(spawn.x, spawn.y, weapon)), GraphicLevel::ON_GROUND);
@@ -362,7 +369,6 @@ namespace zombie {
 		b2Vec2 dir(std::cos(angle),std::sin(angle));
 		ClosestRayCastCallback callback;
 		world_->RayCast(&callback,unit->getPosition(),unit->getPosition() + dir);
-
 		b2Fixture* fixture = callback.getClosest();
 
 		// Is there an object near by?
@@ -370,15 +376,42 @@ namespace zombie {
 			Object* ob = static_cast<Object*>(fixture->GetUserData());
 
 			if (Car* car = dynamic_cast<Car*>(ob)) {
-				// Driver seat is empty.
-				if (car->getDriver() != nullptr) {
-					car->setDriver(unit);
+				// Driver seat is empty?
+				if (car->getDriverId() == 0) {
+					// The unit gets into the car.
+					std::find_if(players_.begin(), players_.end(), [car, unit](Player* player) {
+						if (unit->getId() == player->getId()) {
+							player->id_ = car->getId();
+							car->setDriver(unit);
+							unit->getBody()->SetActive(false);
+							return true;
+						}
+						return false;
+					});
 				}
 			} else if (WeaponObject* wOb = dynamic_cast<WeaponObject*>(ob)) {
+				// Change the weapon.
 				unit->setWeapon(wOb->getWeapon());
 				delete wOb;
 			}
 		}
+	}
+
+	void ZombieEngine::carDoAction(Car* car) {
+		Unit* driver = static_cast<Unit*>(worldHash_[car->getDriverId()]);
+		
+		// The driver gets out of the car.
+		std::find_if(players_.begin(), players_.end(), [driver, car](Player* player) {
+			if (car->getId() == player->getId()) {
+				player->id_ = driver->getId();
+				car->setDriver(0);
+				b2Body* body = driver->getBody();
+				body->SetActive(true);
+				body->SetTransform(car->getPosition(),body->GetAngle());
+				return true;
+			}
+			return false;
+		});
 	}
 
 	void ZombieEngine::doShotDamage(Unit* shooter, const Bullet& bullet) {

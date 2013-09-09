@@ -11,6 +11,8 @@ namespace zombie {
 
 	class Player {
 	public:
+		friend class ZombieEngine;
+
 		Player(const MovingObject* mOb) : id_(mOb->getId()) {
 		}
 

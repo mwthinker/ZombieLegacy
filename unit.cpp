@@ -72,8 +72,7 @@ namespace zombie {
 
 	void Unit::updatePhysics(float time, float timeStep, Input input) {
 		if (!isDead()) {
-			float angle = getDirection();	
-
+			float angle = getDirection();
 			Force move = Vec3(std::cos(angle),std::sin(angle));
 
 			// Time left to run?

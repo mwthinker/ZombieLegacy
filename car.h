@@ -27,7 +27,7 @@ namespace zombie {
 			steeringAngle_ = 0.0f;
 			wheelDelta_ = 0.4f;
 
-			driver_ = nullptr;
+			idDriver_ = 0;
 			
 			// Box2d properties.
 			b2BodyDef bodyDef;
@@ -55,12 +55,16 @@ namespace zombie {
 			getWorld()->DestroyBody(body_);
 		}
 		
-		Unit* getDriver() const{
-			return driver_;
+		int getDriverId() const{
+			return idDriver_;
 		}
 
 		void setDriver(Unit* unit) {
-			driver_ = unit;
+			if (unit == nullptr) {
+				idDriver_ = 0;
+			} else {
+				idDriver_ = unit->getId();
+			}
 		}
 
 		void updatePhysics(float time, float timeStep, Input input) override {
@@ -82,17 +86,15 @@ namespace zombie {
 				steering = 1.0f;
 			} else if (!input.turnLeft_ && input.turnRight_) {
 				steering = -1.0f;
-			}		
-
-			if (input.shoot_) {
-				if (callbackShoot_ != 0) {
-					callbackShoot_(this);
-				}
 			}
 
 			steeringAngle_ = 0.3f*steering;
 
 			applyFriction(0.001f,0.001f,100.0f,100.0f);
+
+			if (input.action_) {
+				actionSignal_(this);
+			}
 		}
 
 		void applyFriction(float frictionForwardFrontWheel, float frictionForwardBackWheel,
@@ -163,36 +165,37 @@ namespace zombie {
 			return body_;
 		}
 
-		void setShootCallback(std::function<void(Car*)> callbackShoot) {
-			callbackShoot_ = callbackShoot;
-		}
-
-		Weapon getWeapon() const {
+		Weapon getWeapon() const override {
 			return Weapon();
 		}
 
-		float getDirection() const {
+		float getDirection() const override {
 			return steeringAngle_;
 		}
 
-		bool isInfected() const {
-			return false;
+		bool isInfected() const override {
+			// When no driver the car is seen as infected and therefore ignored by the zombies.
+ 			return Object::getObject(idDriver_) == nullptr;
 		}
 
-		float getViewDistance() const {
+		float getViewDistance() const override {
 			return 10;
 		}
 
-		bool isDead() const {
+		bool isDead() const override {
 			return false;
 		}
+
+		mw::signals::Connection addActionHandler(std::function<void(Car*)> handler) {
+			return actionSignal_.connect(handler);
+		}
 	private:
-		std::function<void(Car*)> callbackShoot_;
+		mw::Signal<Car*> actionSignal_;
 
 		b2Body* body_;
 		float steeringAngle_;
 
-		Unit* driver_;
+		int idDriver_;
 		float length_, width_;
 		State state_;
 		float currentTime_;
