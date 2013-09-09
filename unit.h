@@ -73,15 +73,15 @@ namespace zombie {
 			return Position(body_->GetPosition().x,body_->GetPosition().y);
 		}
 
-		float radius() const {
+		float getRadius() const {
 			b2Fixture* f = body_->GetFixtureList();             
 			b2CircleShape* circle = (b2CircleShape*) f->GetShape();
 			return circle->m_radius;
 		}
 
-		mw::signals::Connection addActionHandler(std::function<void(Unit*)> handler);
-		mw::signals::Connection addEventHandler(std::function<void(UnitEvent)> handler);
-		mw::signals::Connection addShootHandler(std::function<void(Unit*, const Bullet& bullet)> handler);
+		mw::signals::Connection addActionHandler(mw::Signal<Unit*>::Callback);
+		mw::signals::Connection addEventHandler(mw::Signal<UnitEvent>::Callback);
+		mw::signals::Connection addShootHandler(mw::Signal<Unit*, Bullet>::Callback);
 
 		b2Body* getBody() const override {
 			return body_;

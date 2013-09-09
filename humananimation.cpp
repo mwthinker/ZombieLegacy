@@ -52,7 +52,7 @@ namespace zombie {
 			color_.glColor3d();
 			glPushMatrix();
 			glTranslated(p.x,p.y,0);
-			glScaled(unit->radius()*0.9,unit->radius()*0.9,1);
+			glScaled(unit->getRadius()*0.9,unit->getRadius()*0.9,1);
 			glRotated(unit->getState().angle_*180/mw::PI,0,0,1);
 			mw::TexturePtr texture = sprites_[index_].getTexture();
 			glScaled(texture->getWidth()/128.0,texture->getHeight()/128.0,1);

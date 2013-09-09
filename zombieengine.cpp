@@ -63,31 +63,35 @@ namespace zombie {
 
 		class ClosestRayCastCallback : public b2RayCastCallback {
 		public:
-			ClosestRayCastCallback() {
+			ClosestRayCastCallback(std::function<bool(b2Fixture*)> conditionFunc) {
 				closestFraction_ = 100.f;
-				closest_ = nullptr;
+				fixture_ = nullptr;
+				conditionFunc_ = conditionFunc;
 			}
 
-			b2Fixture* getClosest() const {
-				return closest_;
+			b2Fixture* getFixture() const {
+				return fixture_;
 			}
 
 			// Ray-cast callback.
 			float32 ReportFixture(b2Fixture* fixture, const b2Vec2 &point, const b2Vec2 &normal, float32 fraction) override {
 				// Is a physical fixture?
-				if (!fixture->IsSensor()) {
-					closest_ = fixture;
+				if (conditionFunc_(fixture)) {
+					fixture_ = fixture;
 				}
-				return fraction;//keep going to find all fixtures in the query area
+
+				// Fraction to clip the ray for closest hit.
+				return fraction;
 			}
 
 			void reset() {
 				closestFraction_ = 100.f;
-				closest_ = nullptr;
+				fixture_ = nullptr;
 			}
 
 		private:
-			b2Fixture* closest_;
+			b2Fixture* fixture_;
+			std::function<bool(b2Fixture*)> conditionFunc_;
 			float closestFraction_;
 		};
 
@@ -103,8 +107,8 @@ namespace zombie {
 				return false;
 			}
 
-			Object* ob1 = static_cast<Object*>(fixtureA->GetUserData());
-			Object* ob2 = static_cast<Object*>(fixtureB->GetUserData());
+			Object* ob1 = static_cast<Object*>(fixtureA->GetBody()->GetUserData());
+			Object* ob2 = static_cast<Object*>(fixtureB->GetBody()->GetUserData());
 			MovingObject* mOb1 = dynamic_cast<MovingObject*>(ob1);
 			MovingObject* mOb2 = dynamic_cast<MovingObject*>(ob2);
 
@@ -341,7 +345,7 @@ namespace zombie {
 		}
 
 		// Add survivors.
-		for (int i = 1; i < 10; ++i) {
+		for (int i = 0; i < 10; ++i) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,10);
 			Unit* survivor = createUnit(spawn.x, spawn.y, 0.f, Weapon(35,0.5,8,120), false);
 			addNewAi(survivor);
@@ -351,7 +355,9 @@ namespace zombie {
 		for (int i = 0; i < 10; ++i) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,50);
 			Weapon weapon;
-			taskManager_->add(new DrawWeaponObject(new WeaponObject(spawn.x, spawn.y, weapon)), GraphicLevel::ON_GROUND);
+			WeaponObject* wOb = new WeaponObject(spawn.x, spawn.y, weapon);
+			worldHash_[wOb->getId()] = wOb;
+			taskManager_->add(new DrawWeaponObject(wOb), GraphicLevel::ON_GROUND);
 		}
 	}
 
@@ -367,9 +373,11 @@ namespace zombie {
 	void ZombieEngine::doAction(Unit* unit) {
 		float angle = unit->getState().angle_;
 		b2Vec2 dir(std::cos(angle),std::sin(angle));
-		ClosestRayCastCallback callback;
+		ClosestRayCastCallback callback( [](b2Fixture* fixture) {
+			return !fixture->IsSensor() && fixture->GetBody()->GetUserData() != nullptr || fixture->IsSensor() && fixture->GetUserData() != nullptr;
+		});
 		world_->RayCast(&callback,unit->getPosition(),unit->getPosition() + dir);
-		b2Fixture* fixture = callback.getClosest();
+		b2Fixture* fixture = callback.getFixture();
 
 		// Is there an object near by?
 		if (fixture != nullptr) {
@@ -392,6 +400,7 @@ namespace zombie {
 			} else if (WeaponObject* wOb = dynamic_cast<WeaponObject*>(ob)) {
 				// Change the weapon.
 				unit->setWeapon(wOb->getWeapon());
+				worldHash_[wOb->getId()] = nullptr;
 				delete wOb;
 			}
 		}
@@ -418,10 +427,12 @@ namespace zombie {
 		b2Vec2 dir(std::cos(bullet.direction_),std::sin(bullet.direction_));
 		b2Vec2 endP = shooter->getPosition() + bullet.range_ * dir;
 
-		ClosestRayCastCallback callback;
+		ClosestRayCastCallback callback([](b2Fixture* fixture) {
+			return !fixture->IsSensor();
+		});
 
 		world_->RayCast(&callback,shooter->getPosition(),endP);
-		b2Fixture* fixture = callback.getClosest();
+		b2Fixture* fixture = callback.getFixture();
 
 		// Did bullet hit something?
 		if (fixture != nullptr) {

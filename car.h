@@ -6,15 +6,19 @@
 #include "state.h"
 #include "unit.h"
 
+#include <mw/signal.h>
+
 #include <Box2D/Box2D.h>
-#include <mw/mathvector.h>
 
 #include <cmath>
-#include <functional>
 
 namespace zombie {
 
-	enum CarEvent {CAREVENT_EXPLODE, CAREVENT_ACCELERATE, CAREVENT_BRAKE};
+	enum CarEvent {
+		CAREVENT_EXPLODE,
+		CAREVENT_ACCELERATE,
+		CAREVENT_BRAKE
+	};
 
 	class Car : public MovingObject {
 	public:
@@ -102,10 +106,10 @@ namespace zombie {
 			// Back wheel lateral friction.
 			b2Vec2 currentRightNormal = body_->GetWorldVector(b2Vec2(0,-1));
 			b2Vec2 force = -frictionLateralBackWheel * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getBackWheelPosition())) * currentRightNormal;
-			body_->ApplyForce(force,getBackWheelPosition());			
+			body_->ApplyForce(force,getBackWheelPosition());
 			//std::cout << "MassC: " << force.Length() << std::endl;
 
-			// Front wheel lateral friction.			
+			// Front wheel lateral friction.
 			currentRightNormal = b2Vec2(-getDirectionVector().y,getDirectionVector().x);
 			force = -frictionLateralFrontWheel * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getFrontWheelPosition())) * currentRightNormal;
 			body_->ApplyForce(force,getFrontWheelPosition());
@@ -186,8 +190,8 @@ namespace zombie {
 			return false;
 		}
 
-		mw::signals::Connection addActionHandler(std::function<void(Car*)> handler) {
-			return actionSignal_.connect(handler);
+		mw::signals::Connection addActionHandler(mw::Signal<Car*>::Callback callback) {
+			return actionSignal_.connect(callback);
 		}
 	private:
 		mw::Signal<Car*> actionSignal_;

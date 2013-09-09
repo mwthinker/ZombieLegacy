@@ -55,7 +55,7 @@ namespace zombie {
 			return radius_;
 		}
 
-		b2Body* getBody() const {
+		b2Body* getBody() const override {
 			return body_;
 		}
 

@@ -46,7 +46,7 @@ namespace zombie {
 		
 			// Add Body fixture.
 			b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
-			fixture->SetUserData(this);
+			fixture->SetUserData(nullptr);
 		}
 
 		// Add body properties.
@@ -159,7 +159,7 @@ namespace zombie {
 
 	bool Unit::isInside(Position position) const {
 		Position p = getPosition();
-		return (position - getPosition()).LengthSquared() < radius()*radius();
+		return (position - getPosition()).LengthSquared() < getRadius()*getRadius();
 	}
 
 	bool Unit::isInsideViewArea(Position position) const {
@@ -178,16 +178,16 @@ namespace zombie {
 		return body_->GetAngle();
 	}
 
-	mw::signals::Connection Unit::addActionHandler(std::function<void(Unit*)> handler) {
-		return actionSignal_.connect(handler);
+	mw::signals::Connection Unit::addActionHandler(mw::Signal<Unit*>::Callback callback) {
+		return actionSignal_.connect(callback);
 	}
 
-	mw::signals::Connection Unit::addEventHandler(std::function<void(UnitEvent)> handler) {
-		return eventSignal_.connect(handler);
+	mw::signals::Connection Unit::addEventHandler(mw::Signal<UnitEvent>::Callback callback) {
+		return eventSignal_.connect(callback);
 	}
 
-	mw::signals::Connection Unit::addShootHandler(std::function<void(Unit*, const Bullet&)> handler) {
-		return shootSignal_.connect(handler);
+	mw::signals::Connection Unit::addShootHandler(mw::Signal<Unit*, Bullet>::Callback callback) {
+		return shootSignal_.connect(callback);
 	}
 
 	float Unit::healthPoints() const {
