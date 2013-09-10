@@ -110,6 +110,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="roaddraw.h" />
     <ClInclude Include="shot.h" />
+    <ClInclude Include="sky.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="survivaltimer.h" />
     <ClInclude Include="survivorbehavior.h" />

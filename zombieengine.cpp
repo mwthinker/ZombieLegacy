@@ -15,6 +15,7 @@
 #include "drawweaponobject.h"
 #include "buildingdraw.h"
 #include "humanstatus.h"
+#include "sky.h"
 
 #include "zombiebehavior.h"
 #include "survivorbehavior.h"
