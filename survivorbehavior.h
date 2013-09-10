@@ -3,6 +3,7 @@
 
 #include "input.h"
 #include "aibehavior.h"
+#include "typedefs.h"
 
 #include <vector>
 

@@ -2,10 +2,7 @@
 #define PLAYER_H
 
 #include "input.h"
-#include "player.h"
-#include "unit.h"
-
-#include <vector>
+#include "movingobject.h"
 
 namespace zombie {
 
@@ -13,7 +10,7 @@ namespace zombie {
 	public:
 		friend class ZombieEngine;
 
-		Player(const MovingObject* mOb) : id_(mOb->getId()) {
+		inline Player(const MovingObject* mOb) : id_(mOb->getId()) {
 		}
 
 		virtual ~Player() {

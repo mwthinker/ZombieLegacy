@@ -94,7 +94,7 @@ namespace zombie {
 
 			steeringAngle_ = 0.3f*steering;
 
-			applyFriction(0.001f,0.001f,100.0f,100.0f);
+			applyFriction(2.0f,2.0f,100.0f,100.0f);
 
 			if (input.action_) {
 				actionSignal_(this);
@@ -106,13 +106,12 @@ namespace zombie {
 			// Back wheel lateral friction.
 			b2Vec2 currentRightNormal = body_->GetWorldVector(b2Vec2(0,-1));
 			b2Vec2 force = -frictionLateralBackWheel * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getBackWheelPosition())) * currentRightNormal;
-			body_->ApplyForce(force,getBackWheelPosition());
-			//std::cout << "MassC: " << force.Length() << std::endl;
+			body_->ApplyForce(force, getBackWheelPosition());
 
 			// Front wheel lateral friction.
 			currentRightNormal = b2Vec2(-getDirectionVector().y,getDirectionVector().x);
 			force = -frictionLateralFrontWheel * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getFrontWheelPosition())) * currentRightNormal;
-			body_->ApplyForce(force,getFrontWheelPosition());
+			body_->ApplyForce(force, getFrontWheelPosition());
 			
 			// Back wheel forward friction.
 			force = -frictionForwardBackWheel * b2Dot(getDirectionVector(), body_->GetLinearVelocity()) * getDirectionVector();

@@ -5,10 +5,6 @@
 #include "unit.h"
 #include "auxiliary.h"
 
-#include <mw/mathvector.h>
-
-#include <vector>
-
 namespace zombie {
 
 	SurvivorBehavior::SurvivorBehavior() {

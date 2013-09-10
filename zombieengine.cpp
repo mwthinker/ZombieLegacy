@@ -100,7 +100,6 @@ namespace zombie {
 			b2Fixture* fixtureB = contact->GetFixtureB();
 
 			// Make sure only one of the fixtures was a sensor.
-			// Assumes that the first fixture in the fixture list is the tensor.
 			bool sensorA = fixtureA->IsSensor();
 			bool sensorB = fixtureB->IsSensor();
 			if (sensorA == sensorB) {
@@ -182,6 +181,13 @@ namespace zombie {
 		if (started_) {
 			spawnAndCleanUpUnits();
 
+			// Update all cars without drivers.
+			for (Car* car : cars_) {
+				if (car->getDriverId() == 0) {
+					car->updatePhysics(time_, timeStep, Input());
+				}
+			}
+
 			// Update all players.
 			for (Player* player: players_) {
 				Object* ob = worldHash_[player->getId()];
@@ -204,7 +210,7 @@ namespace zombie {
 		const MovingObject* frontOb = static_cast<const MovingObject*>(worldHash_[players_.front()->getId()]);
 		Position center = frontOb->getPosition();
 
-		// Delete units outside of perimiter and dead units.
+		// Delete all units outside the perimiter, and all the dead units.
 		MovingObject* temp = nullptr;
 		players_.remove_if([&](Player* player) {
 			Object*& ob = worldHash_[player->getId()];
@@ -217,11 +223,15 @@ namespace zombie {
 				if (outside || dead) {
 					delete player;
 					delete ob;
+					// Hash to null.
 					ob = nullptr;
+
+					// Removes the pointer from the list.
 					return true;
 				}
 			}
 
+			// The pointer is not removed.
 			return false;
 		});
 
@@ -230,7 +240,7 @@ namespace zombie {
 		while (nbrOfZombies < unitLevel_) {
 			// Insert zombie.
 			Position p = map_.generateSpawnPosition(center, innerSpawnRadius_, outerSpawnRadius_);
-			Unit* zombie = createUnit(p.x,p.y,0.3f,Weapon(25,0.5f,1,10000),true);
+			Unit* zombie = createUnit(p.x, p.y, 0.3f, Weapon(25,0.5f,1,10000),true);
 			addNewAi(zombie);
 			nbrOfZombies++;
 		}
@@ -289,6 +299,7 @@ namespace zombie {
 		Car* car = new Car(x, y);
 		car->addActionHandler(std::bind(&ZombieEngine::carDoAction,this,std::placeholders::_1));
 		worldHash_[car->getId()] = car;
+		cars_.push_back(car);
 		return car;
 	}
 
@@ -373,6 +384,8 @@ namespace zombie {
 	void ZombieEngine::doAction(Unit* unit) {
 		float angle = unit->getState().angle_;
 		b2Vec2 dir(std::cos(angle),std::sin(angle));
+
+		// Return the closest object, physical or not.
 		ClosestRayCastCallback callback( [](b2Fixture* fixture) {
 			return !fixture->IsSensor() && fixture->GetBody()->GetUserData() != nullptr || fixture->IsSensor() && fixture->GetUserData() != nullptr;
 		});
@@ -427,6 +440,7 @@ namespace zombie {
 		b2Vec2 dir(std::cos(bullet.direction_),std::sin(bullet.direction_));
 		b2Vec2 endP = shooter->getPosition() + bullet.range_ * dir;
 
+		// Return the closest physcal object.
 		ClosestRayCastCallback callback([](b2Fixture* fixture) {
 			return !fixture->IsSensor();
 		});
@@ -445,10 +459,10 @@ namespace zombie {
 					endP = target->getPosition();
 					// Target killed?
 					if (target->isDead()) {
-						taskManager_->add(new Blood(endP.x,endP.y,time_), GraphicLevel::GROUND);
-						taskManager_->add(new BloodStain(endP.x,endP.y,time_), GraphicLevel::GROUND);
+						taskManager_->add(new Blood(endP.x, endP.y, time_), GraphicLevel::GROUND);
+						taskManager_->add(new BloodStain(endP.x, endP.y, time_), GraphicLevel::GROUND);
 					} else {
-						taskManager_->add(new BloodSplash(endP.x,endP.y,time_), GraphicLevel::GROUND);
+						taskManager_->add(new BloodSplash(endP.x, endP.y, time_), GraphicLevel::GROUND);
 					}
 				}
 			}

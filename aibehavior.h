@@ -1,9 +1,7 @@
 #ifndef AIBEHAVIOR_H
 #define AIBEHAVIOR_H
 
-#include "typedefs.h"
 #include "input.h"
-#include <vector>
 
 namespace zombie {
 
