@@ -371,6 +371,15 @@ namespace zombie {
 			worldHash_[wOb->getId()] = wOb;
 			taskManager_->add(new DrawWeaponObject(wOb), GraphicLevel::ON_GROUND);
 		}
+
+		// Add trees.
+		for (int i = 0; i < 10; ++i) {
+			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,50);
+			Weapon weapon;
+			WeaponObject* wOb = new WeaponObject(spawn.x, spawn.y, weapon);
+			worldHash_[wOb->getId()] = wOb;
+			taskManager_->add(new DrawWeaponObject(wOb), GraphicLevel::ON_GROUND);
+		}
 	}
 
 	void ZombieEngine::zoom(double scale) {

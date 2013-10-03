@@ -75,6 +75,8 @@ SET(SOURCES_ZOMBIE
 	src/taskmanager.cpp
 	src/taskmanager.h
 	src/tile.h
+	src/treedraw.cpp
+	src/treedraw.h
 	src/typedefs.h
 	src/unit.cpp
 	src/unit.h
