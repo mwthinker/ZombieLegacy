@@ -307,18 +307,18 @@ namespace zombie {
 	void ZombieEngine::addHuman(DevicePtr device, Unit* unit) {
 		players_.push_back(new HumanPlayer(device, unit));
 		taskManager_->add(new HumanStatus(unit, HumanStatus::ONE));
-		taskManager_->add(new HumanAnimation(unit), GraphicLevel::ON_GROUND);
+		taskManager_->add(new HumanAnimation(unit), GraphicLevel::UNIT_LEVEL);
 	}
 
 	void ZombieEngine::addNewAi(Unit* unit) {
 		if (unit->isInfected()) {
 			AiBehaviorPtr b = std::make_shared<ZombieBehavior>();
-			taskManager_->add(new ZombieAnimation(unit), GraphicLevel::ON_GROUND);
+			taskManager_->add(new ZombieAnimation(unit), GraphicLevel::UNIT_LEVEL);
 			AiPlayer* aiPlayer(new AiPlayer(b, unit));
 			players_.push_back(aiPlayer);
 		} else {
 			AiBehaviorPtr b = std::make_shared<SurvivorBehavior>();
-			taskManager_->add(new HumanAnimation(unit), GraphicLevel::ON_GROUND);
+			taskManager_->add(new HumanAnimation(unit), GraphicLevel::UNIT_LEVEL);
 			AiPlayer* aiPlayer(new AiPlayer(b, unit));
 			players_.push_back(aiPlayer);
 		}
@@ -326,14 +326,14 @@ namespace zombie {
 
 	void ZombieEngine::init(const Map& map, DevicePtr humanDevice) {
 		map_ = map;
-		taskManager_->add(new SurvivalTimer(), GraphicLevel::ABOWE_GROUND);
+		taskManager_->add(new SurvivalTimer(), GraphicLevel::INTERFACE_LEVEL);
 
-		taskManager_->add(new MapDraw(map_), GraphicLevel::GROUND);
-		taskManager_->add(new RoadDraw(map_), GraphicLevel::GROUND);
+		taskManager_->add(new MapDraw(map_), GraphicLevel::GROUND_LEVEL);
+		taskManager_->add(new RoadDraw(map_), GraphicLevel::ROAD_LEVEL);
 
 		auto buildings = map_.getBuildings();
 		for (Building* building : buildings) {
-			taskManager_->add(new BuildingDraw(building), GraphicLevel::ON_GROUND);
+			taskManager_->add(new BuildingDraw(building), GraphicLevel::BUILDING_LEVEL);
 		}
 
 		// Add human controlled by first input device.
@@ -346,7 +346,7 @@ namespace zombie {
 		for (int i = 0; i < 10; ++i) {
 			Position spawn = map_.generateSpawnPosition(human->getPosition(), innerSpawnRadius_, outerSpawnRadius_);
 			Car* car = createCar(spawn.x, spawn.y);
-			taskManager_->add(new CarAnimation(car), GraphicLevel::ON_GROUND);
+			taskManager_->add(new CarAnimation(car), GraphicLevel::UNIT_LEVEL);
 		}
 
 		// Add zombies.
@@ -369,7 +369,7 @@ namespace zombie {
 			Weapon weapon;
 			WeaponObject* wOb = new WeaponObject(spawn.x, spawn.y, weapon);
 			worldHash_[wOb->getId()] = wOb;
-			taskManager_->add(new DrawWeaponObject(wOb), GraphicLevel::ON_GROUND);
+			taskManager_->add(new DrawWeaponObject(wOb), GraphicLevel::WEAPON_LEVEL);
 		}
 
 		// Add trees.
@@ -378,7 +378,7 @@ namespace zombie {
 			Weapon weapon;
 			WeaponObject* wOb = new WeaponObject(spawn.x, spawn.y, weapon);
 			worldHash_[wOb->getId()] = wOb;
-			taskManager_->add(new DrawWeaponObject(wOb), GraphicLevel::ON_GROUND);
+			taskManager_->add(new DrawWeaponObject(wOb), GraphicLevel::TREE_LEVEL);
 		}
 	}
 
@@ -469,10 +469,10 @@ namespace zombie {
 					endP = target->getPosition();
 					// Target killed?
 					if (target->isDead()) {
-						taskManager_->add(new Blood(endP.x, endP.y, time_), GraphicLevel::GROUND);
-						taskManager_->add(new BloodStain(endP.x, endP.y, time_), GraphicLevel::GROUND);
+						taskManager_->add(new Blood(endP.x, endP.y, time_), GraphicLevel::BLOOD_LEVEL);
+						taskManager_->add(new BloodStain(endP.x, endP.y, time_), GraphicLevel::BLOOD_LEVEL);
 					} else {
-						taskManager_->add(new BloodSplash(endP.x, endP.y, time_), GraphicLevel::GROUND);
+						taskManager_->add(new BloodSplash(endP.x, endP.y, time_), GraphicLevel::BLOOD_LEVEL);
 					}
 				}
 			}
@@ -480,7 +480,7 @@ namespace zombie {
 			//std::cout << endP.x << " " << endP.y << std::endl;
 		}
 
-		taskManager_->add(new Shot(shooter->getPosition(),endP,time_), GraphicLevel::GROUND);
+		taskManager_->add(new Shot(shooter->getPosition(),endP,time_), GraphicLevel::SHOT_LEVEL);
 	}
 
 	void ZombieEngine::BeginContact(b2Contact* contact) {
@@ -515,10 +515,10 @@ namespace zombie {
 				unit->updateHealthPoint(-101.0);
 				Position p = unit->getPosition();
 				if (unit->isDead()) {
-					taskManager_->add(new Blood(p.x,p.y,time_), GraphicLevel::GROUND);
-					taskManager_->add(new BloodStain(p.x,p.y,time_), GraphicLevel::GROUND);
+					taskManager_->add(new Blood(p.x,p.y,time_), GraphicLevel::BLOOD_LEVEL);
+					taskManager_->add(new BloodStain(p.x,p.y,time_), GraphicLevel::BLOOD_LEVEL);
 				} else {
-					taskManager_->add(new BloodSplash(p.x,p.y,time_), GraphicLevel::GROUND);
+					taskManager_->add(new BloodSplash(p.x,p.y,time_), GraphicLevel::BLOOD_LEVEL);
 				}
 			}
 
@@ -527,10 +527,10 @@ namespace zombie {
 				unit->updateHealthPoint(-101.0);
 				Position p = unit->getPosition();
 				if (unit->isDead()) {
-					taskManager_->add(new Blood(p.x,p.y,time_), GraphicLevel::GROUND);
-					taskManager_->add(new BloodStain(p.x,p.y,time_), GraphicLevel::GROUND);
+					taskManager_->add(new Blood(p.x,p.y,time_), GraphicLevel::BLOOD_LEVEL);
+					taskManager_->add(new BloodStain(p.x,p.y,time_), GraphicLevel::BLOOD_LEVEL);
 				} else {
-					taskManager_->add(new BloodSplash(p.x,p.y,time_), GraphicLevel::GROUND);
+					taskManager_->add(new BloodSplash(p.x,p.y,time_), GraphicLevel::BLOOD_LEVEL);
 				}
 			}
 		}
