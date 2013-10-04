@@ -80,7 +80,7 @@ namespace zombie {
 		float time_; // Local game time.
 		
 		std::list<Player*> players_; // All units.
-		std::list<Car*> cars_; // All units.
+		std::list<Car*> cars_; // All cars.
 		TaskManager* taskManager_;
 
 		int unitLevel_; // Specifies the wanted number of zombies on the map.

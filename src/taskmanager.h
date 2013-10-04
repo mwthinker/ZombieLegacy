@@ -27,10 +27,15 @@ namespace zombie {
 		~TaskManager();
 
 		// Adds task to be managed in ascending order based on the level.
+		// The ownership now belongs to TaskManager.
 		void add(Task* task, GraphicLevel level);
 
-		// Updates each task in ascending order.
+		// Updates each task in ascending order. Tasks may been removed
+		// from memory after the execution of this function.
 		void update(double deltaTime);
+	
+		// Remove all tasks from internal list and from memory.
+		void clear();
 	
 	private:
 		typedef std::pair<Task*, GraphicLevel> Pair;

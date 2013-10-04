@@ -24,6 +24,8 @@ namespace zombie {
 
 	void ZombieGame::update(float deltaTime) {
 		engine_.update(deltaTime);
+
+
 	}
 
 	void ZombieGame::zoom(double scale) {
