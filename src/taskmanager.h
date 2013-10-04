@@ -10,9 +10,16 @@ namespace zombie {
 	class GraphicTask;
 
 	enum GraphicLevel {
-		GROUND,
-		ON_GROUND,
-		ABOWE_GROUND
+		GROUND_LEVEL,
+		ROAD_LEVEL,
+		TREE_LEVEL,
+		BUILDING_LEVEL,
+		BLOOD_LEVEL,
+		WEAPON_LEVEL,
+		SHOT_LEVEL,
+		UNIT_LEVEL,
+		HEAVEN_LEVEL,
+		INTERFACE_LEVEL
 	};
 
 	class TaskManager {
