@@ -1,7 +1,7 @@
 #ifndef CARANIMATION_H
 #define CARANIMATION_H
 
-#include "graphictask.h"
+#include "task.h"
 
 #include <mw/sprite.h>
 
@@ -9,12 +9,12 @@ namespace zombie {
 
 	class Car;
 
-	class CarAnimation : public GraphicTask {
+	class CarAnimation : public Task {
 	public:
 		CarAnimation(Car* car);
 		~CarAnimation();
 
-		bool draw(double time) override;
+		bool update(double time) override;
 	
 	private:				
 		int idCarObject_;

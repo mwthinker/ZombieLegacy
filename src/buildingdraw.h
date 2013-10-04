@@ -1,19 +1,19 @@
 #ifndef BUILDINGDRAW_H
 #define BUILDINGDRAW_H
 
-#include "graphictask.h"
+#include "task.h"
 #include "building.h"
 
 #include <SDL_opengl.h>
 
 namespace zombie {
 
-	class BuildingDraw : public GraphicTask {
+	class BuildingDraw : public Task {
 	public:
 		BuildingDraw(Building* building) : building_(building) {
 		}
 
-		bool draw(double time) override {
+		bool update(double time) override {
 			glColor3d(0.9,0.7,0.7);
 			auto corners = building_->getCorners();
 			glBegin(GL_QUADS);

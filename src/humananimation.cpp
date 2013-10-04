@@ -27,7 +27,7 @@ namespace zombie {
 	}
 
 	// private
-	bool HumanAnimation::draw(double time) {
+	bool HumanAnimation::update(double time) {
 		const Object* ob = Object::getObject(humanId_);
 		
 		// Object alive and active?

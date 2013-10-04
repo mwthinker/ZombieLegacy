@@ -1,15 +1,15 @@
 #ifndef SHOT_H
 #define SHOT_H
 
-#include "graphictask.h"
+#include "task.h"
 #include "typedefs.h"
 
 namespace zombie {
 
-	class Shot : public GraphicTask {
+	class Shot : public Task {
 	public:
 		Shot(Position start, Position end, float startTime);
-		bool draw(double time) override;
+		bool update(double time) override;
 	
 	private:
 		float startTime_;

@@ -2,7 +2,6 @@
 #define TASKMANAGER_H
 
 #include <list>
-#include <utility>
 
 namespace zombie {
 
@@ -28,16 +27,14 @@ namespace zombie {
 		~TaskManager();
 
 		// Adds task to be managed in ascending order based on the level.
-		void add(Task* task);
-		void add(GraphicTask* task, GraphicLevel level);
+		void add(Task* task, GraphicLevel level);
 
 		// Updates each task in ascending order.
 		void update(double deltaTime);
 	
 	private:
-		std::list<Task*> tasks_;
-		typedef std::pair<GraphicTask*, GraphicLevel> Pair;
-		std::list<Pair> graphicTasks_;
+		typedef std::pair<Task*, GraphicLevel> Pair;
+		std::list<Pair> tasks_;
 
 		double time_;
 	};

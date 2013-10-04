@@ -1,7 +1,7 @@
 #ifndef HUMANANIMAITON_H
 #define HUMANANIMAITON_H
 
-#include "graphictask.h"
+#include "task.h"
 #include "unit.h"
 
 #include <vector>
@@ -10,14 +10,14 @@
 
 namespace zombie {
 
-	class HumanAnimation : public GraphicTask {
+	class HumanAnimation : public Task {
 	public:
 		HumanAnimation(Unit* unit);
 		~HumanAnimation();
 		
 		void unitEventHandler(Unit::UnitEvent unitEvent);
 	
-		bool draw(double time) override;
+		bool update(double time) override;
 
 	private:
 		mw::signals::Connection connection_;

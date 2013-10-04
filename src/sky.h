@@ -1,14 +1,14 @@
 #ifndef SKY_H
 #define SKY_H
 
-#include "graphictask.h"
+#include "task.h"
 
 namespace zombie {
 
 	// A class responsible of drawing clouds, covering some part of the view.
 	// More clouds the higher the view is. Can also show diffent types of weather, 
 	// such as rain.
-	class Sky : public GraphicTask {
+	class Sky : public Task {
 	public:
 		Sky() {
 			remove_ = false;
@@ -18,7 +18,7 @@ namespace zombie {
 			remove_ = remove;
 		}
 
-		bool draw(double time) override {
+		bool update(double time) override {
 
 
 			return !remove_;

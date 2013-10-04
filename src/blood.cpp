@@ -13,7 +13,7 @@ namespace zombie {
 		y_ = y;
 	}
 
-	bool  BloodSplash::draw(double time) {
+	bool  BloodSplash::update(double time) {
 		if (time < startTime_ + 0.1) {
 			// Draw view sphere.
 			glColor3d(1,0,0);
@@ -36,7 +36,7 @@ namespace zombie {
 		duration_ = 0.15;
 	}
 
-	bool Blood::draw(double time) {
+	bool Blood::update(double time) {
 		double dT = time - startTime_;
 		if (dT < duration_) {
 			// Draw view sphere.
@@ -65,7 +65,7 @@ namespace zombie {
 		tmp.play();
 	}
 
-	bool BloodStain::draw(double time) {
+	bool BloodStain::update(double time) {
 		double dT = time - startTime_;
 		if (dT > delay_ && dT < duration_) {
 			// Draw view sphere
