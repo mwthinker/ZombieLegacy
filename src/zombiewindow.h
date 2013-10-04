@@ -48,6 +48,7 @@ namespace zombie {
 
 			switch (windowEvent.type) {
 			case SDL_QUIT:
+				quit();
 				break;
 			case SDL_WINDOWEVENT:
 				switch (windowEvent.window.event) {

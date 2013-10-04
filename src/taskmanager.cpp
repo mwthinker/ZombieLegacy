@@ -10,10 +10,7 @@ namespace zombie {
 	}
 
 	TaskManager::~TaskManager() {
-		// Delete all graphic tasks.
-		for (Pair pair : tasks_) {
-			delete pair.first;
-		}
+		clear();
 	}
 
 	void TaskManager::add(Task* task, GraphicLevel level) {
@@ -28,7 +25,7 @@ namespace zombie {
 	}
 
 	void TaskManager::update(double deltaTime) {
-		// for each Task, call execute
+		// For each Task, call execute
 		time_ += deltaTime;
 
 		// Update all tasks in order and remove all which returns false.
@@ -42,6 +39,14 @@ namespace zombie {
 			delete pair.first;
 			return true;
 		});
+	}
+
+	void TaskManager::clear() {
+		// Delete all graphic tasks.
+		for (Pair pair : tasks_) {
+			delete pair.first;
+		}
+		tasks_.clear();
 	}
 
 } // Namespace zombie.
