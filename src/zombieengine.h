@@ -26,6 +26,8 @@ namespace zombie {
 	class Player;
 	class Bullet;
 
+	// Responsible of all creatan and deallocation of game objects 
+	// and manage there physical and graphical representation.
 	class ZombieEngine : public b2ContactListener {
 	public:
 		ZombieEngine(int width = 500, int height = 500);

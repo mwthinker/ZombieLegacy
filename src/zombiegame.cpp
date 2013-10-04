@@ -7,8 +7,8 @@ namespace zombie {
 		// Set windows size.
 		updateSize(width,height);
 		
-		keyboard1_ = DevicePtr(new InputKeyboard(SDLK_UP,SDLK_DOWN,SDLK_LEFT,SDLK_RIGHT,SDLK_SPACE,SDLK_r,SDLK_LSHIFT,SDLK_e));
-		keyboard2_ = DevicePtr(new InputKeyboard(SDLK_w,SDLK_s,SDLK_a,SDLK_d,SDLK_f,SDLK_g,SDLK_h,SDLK_z));
+		keyboard1_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT, 
+			SDLK_RIGHT, SDLK_SPACE, SDLK_r,SDLK_LSHIFT,SDLK_e));
 
 		map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
 		engine_.init(map_, keyboard1_);
@@ -24,8 +24,6 @@ namespace zombie {
 
 	void ZombieGame::update(float deltaTime) {
 		engine_.update(deltaTime);
-
-
 	}
 
 	void ZombieGame::zoom(double scale) {
@@ -37,10 +35,8 @@ namespace zombie {
 	}
 
 	void ZombieGame::eventUpdate(const SDL_Event& windowEvent) {
-		// Game is started?
-		// Update all human input.
+		// Update human input.
 		keyboard1_->eventUpdate(windowEvent);
-		keyboard2_->eventUpdate(windowEvent);
 	}
 
 } // Namespace zombie.
