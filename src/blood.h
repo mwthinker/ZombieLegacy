@@ -2,16 +2,16 @@
 #define BLOOD_H
 
 #include "typedefs.h"
-#include "graphictask.h"
+#include "task.h"
 
 #include <mw/sprite.h>
 
 namespace zombie {
 
-	class Blood : public GraphicTask {
+	class Blood : public Task {
 	public:
 		Blood(double x, double y, double currentTime);
-		bool draw(double time) override;
+		bool update(double time) override;
 
 	private:
 		double startTime_;
@@ -25,11 +25,11 @@ namespace zombie {
 		mw::Sprite blood_;
 	};
 
-	class BloodStain : public GraphicTask {
+	class BloodStain : public Task {
 	public:
 		BloodStain(double x, double y, double currentTime);
 		
-		bool draw(double time) override;
+		bool update(double time) override;
 
 	private:
 		double startTime_;
@@ -42,11 +42,11 @@ namespace zombie {
 		mw::Sprite blood_;
 	};
 
-	class BloodSplash : public GraphicTask {
+	class BloodSplash : public Task {
 	public:
 		BloodSplash(double x, double y, double currentTime);
 		
-		bool draw(double time) override;
+		bool update(double time) override;
 
 	private:
 		double startTime_;

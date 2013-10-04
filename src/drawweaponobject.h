@@ -1,17 +1,17 @@
 #ifndef DRAWWEAPONOBJECT_H
 #define DRAWWEAPONOBJECT_H
 
-#include "graphictask.h"
+#include "task.h"
 
 namespace zombie {
 
 	class WeaponObject;
 
-	class DrawWeaponObject : public GraphicTask {
+	class DrawWeaponObject : public Task {
 	public:
 		DrawWeaponObject(WeaponObject* weapon);
 
-		bool draw(double time) override;
+		bool update(double time) override;
 
 	private:
 		int idWeaponObject_;

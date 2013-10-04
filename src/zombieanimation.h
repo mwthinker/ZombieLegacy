@@ -2,7 +2,7 @@
 #define ZOMBIEANIMAITON_H
 
 #include "unit.h"
-#include "graphictask.h"
+#include "task.h"
 #include "typedefs.h"
 
 #include <vector>
@@ -10,14 +10,14 @@
 
 namespace zombie {
 
-	class ZombieAnimation : public GraphicTask {
+	class ZombieAnimation : public Task {
 	public:
 		ZombieAnimation(Unit* unit);
 		~ZombieAnimation();
 
 		void unitEventHandler(Unit::UnitEvent unitEvent);
 		
-		bool draw(double time) override;
+		bool update(double time) override;
 	
 	private:
 		mw::signals::Connection connection_;

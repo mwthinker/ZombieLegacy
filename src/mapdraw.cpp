@@ -9,7 +9,7 @@ namespace zombie {
 		grass_ = grassSprite;
 	}
 
-	bool MapDraw::draw(double time) {
+	bool MapDraw::update(double time) {
 		glColor3d(0.6,0.6,0.6);
 		grassTexture->bind();		
 

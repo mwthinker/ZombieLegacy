@@ -1,18 +1,18 @@
 #ifndef ROADDRAW_H
 #define ROADDRAW_H
 
-#include "graphictask.h"
+#include "task.h"
 #include "gamesprite.h"
 
 namespace zombie {
 
 	class Map;
 
-	class RoadDraw : public GraphicTask {
+	class RoadDraw : public Task {
 	public:
 		RoadDraw(const Map& map);
 		
-		bool draw(double time) override;
+		bool update(double time) override;
 
 		const Map& map_;
 		mw::Sprite road_;

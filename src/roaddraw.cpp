@@ -9,7 +9,7 @@ namespace zombie {
 		road_ = roadSprite;
 	}
 
-	bool RoadDraw::draw(double time) {
+	bool RoadDraw::update(double time) {
 		const std::vector<LineFeature>& l = map_.getRoads();
 
 		for (auto it = l.begin(); it != l.end(); it++) {

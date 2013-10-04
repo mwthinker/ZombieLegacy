@@ -15,7 +15,7 @@ namespace zombie {
 	}
 
 	// private
-	bool CarAnimation::draw(double time) {
+	bool CarAnimation::update(double time) {
 		const Object* ob = Object::getObject(idCarObject_);
 		if (ob != nullptr) {
 			const Car* car = static_cast<const Car*>(ob);

@@ -10,7 +10,7 @@ namespace zombie {
 		end_ = end;
 	}
 
-	bool Shot::draw(double time) {
+	bool Shot::update(double time) {
 		if (time < startTime_ + 2) {
 			// Draw view sphere
 			glColor3d(1,1,1);

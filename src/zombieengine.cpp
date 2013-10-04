@@ -24,7 +24,6 @@
 #include "taskmanager.h"
 #include "aiplayer.h"
 #include "survivaltimer.h"
-#include "graphictask.h"
 #include "car.h"
 #include "blood.h"
 #include "caranimation.h"
@@ -306,7 +305,7 @@ namespace zombie {
 
 	void ZombieEngine::addHuman(DevicePtr device, Unit* unit) {
 		players_.push_back(new HumanPlayer(device, unit));
-		taskManager_->add(new HumanStatus(unit, HumanStatus::ONE));
+		taskManager_->add(new HumanStatus(unit, HumanStatus::ONE), GraphicLevel::INTERFACE_LEVEL);
 		taskManager_->add(new HumanAnimation(unit), GraphicLevel::UNIT_LEVEL);
 	}
 

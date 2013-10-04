@@ -16,11 +16,9 @@ namespace zombie {
 		player_ = player;
 	}
 
-	void HumanStatus::excecute(double time) {
+	bool HumanStatus::update(double time) {
 		draw(time-lastTime_);
-	}
 
-	bool HumanStatus::isRunning() const {
 		return Object::getObject(unitId_) != nullptr;
 	}
 

@@ -1,7 +1,7 @@
 #ifndef SURVIVALTIMER_H
 #define SURVIVALTIMER_H
 
-#include "graphictask.h"
+#include "task.h"
 #include "gamefont.h"
 
 #include <mw/text.h>
@@ -11,7 +11,7 @@
 
 namespace zombie {
 
-	class SurvivalTimer : public GraphicTask {
+	class SurvivalTimer : public Task {
 	public:
 		SurvivalTimer() {
 			dayTime_ = 60.0;
@@ -19,7 +19,7 @@ namespace zombie {
 			hour_ = mw::Text("", font15);
 		}
 
-		bool draw(double time) override {
+		bool update(double time) override {
 			glColor3d(1,1,1);			
 
 			std::stringstream stream;

@@ -24,7 +24,7 @@ namespace zombie {
 		connection_.disconnect();
 	}
 
-	bool ZombieAnimation::draw(double time) {
+	bool ZombieAnimation::update(double time) {
 		const Object* ob = Object::getObject(idUnit_);
 
 		if (ob != nullptr) {

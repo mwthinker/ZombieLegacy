@@ -1,17 +1,17 @@
 #ifndef MAPDRAW_H
 #define MAPDRAW_H
 
-#include "graphictask.h"
+#include "task.h"
 #include "gamesprite.h"
 
 namespace zombie {
 
 	class Map;
 
-	class MapDraw : public GraphicTask {
+	class MapDraw : public Task {
 	public:
 		MapDraw(const Map& map);
-		bool draw(double time) override;
+		bool update(double time) override;
 
 	private:
 		void draw();

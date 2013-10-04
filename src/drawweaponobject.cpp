@@ -9,7 +9,7 @@ namespace zombie {
 	DrawWeaponObject::DrawWeaponObject(WeaponObject* weapon) : idWeaponObject_(weapon->getId()) {
 	}
 
-	bool DrawWeaponObject::draw(double time) {
+	bool DrawWeaponObject::update(double time) {
 		const Object* ob = Object::getObject(idWeaponObject_);
 		if (ob != nullptr) {
 			const WeaponObject* wOb = static_cast<const WeaponObject*>(ob);

@@ -9,20 +9,6 @@ namespace zombie {
 
 	int Task::width = 0;
 	int Task::height = 0;
-
-	Task* Task::pull() {
-		if (tasks_.empty()) {
-			return nullptr;
-		}
-
-		Task* task = tasks_.front();
-		tasks_.pop();
-		return task;
-	}	
-
-	void Task::push(Task* task) {
-		tasks_.push(task);
-	}
 	
 	void drawCircle(double cx, double cy, double r, int num_segments, bool filled) {
 		double theta = 2 * 3.1415926 / double(num_segments);
