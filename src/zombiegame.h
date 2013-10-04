@@ -9,6 +9,10 @@
 
 namespace zombie {
 
+	// Responsible of loading map, units and initiate all
+	// game related things and to start the game engine.
+	// It also handle all game events triggered by the game engine,
+	// e.g. what happens when a unit dies.
 	class ZombieGame {
 	public:
 		ZombieGame(int width = 500, int height = 500);

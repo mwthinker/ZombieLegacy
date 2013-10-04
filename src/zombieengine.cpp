@@ -45,15 +45,11 @@ namespace zombie {
 
 		class InViewQueryCallback : public b2QueryCallback {
 		public:
-			InViewQueryCallback() {
-
-			}
-
 			std::vector<b2Fixture*> foundFixtures;
 
 			bool ReportFixture(b2Fixture* fixture) {
 				foundFixtures.push_back(fixture);
-				return true;//keep going to find all fixtures in the query area
+				return true; // Keep going to find all fixtures in the query area.
 			}
 
 			void reset() {
