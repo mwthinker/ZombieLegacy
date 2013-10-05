@@ -45,7 +45,7 @@ namespace zombie {
 			glLoadIdentity();
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glColor4d(0.1,0.1,0.1,0.2 * (1 + std::cos(h/12.0*mw::PI)*0.5 ) );
+			glColor4d(0.1,0.1,0.1,0.2 * (1 + std::cos(h/12.0*3.14)*0.5 ) );
 			glBegin(GL_QUADS);
 			glVertex2d(0,0);
 			glVertex2d(width,0);

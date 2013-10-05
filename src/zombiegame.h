@@ -33,9 +33,15 @@ namespace zombie {
 		void updateSize(int width, int height);
 
 	private:
+		void handleGameEvent(const GameEvent& gameEvent);
+		void handleRemoval(bool& remove, MovingObject* mOb);
+
+		float innerSpawnRadius_;
+		float outerSpawnRadius_;
+
 		Map map_;
 		ZombieEngine engine_;
-		DevicePtr keyboard1_, keyboard2_;
+		DevicePtr keyboard1_, keyboard2_;		
 	};
 
 } // Namespace zombie_;

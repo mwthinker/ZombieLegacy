@@ -1,27 +1,29 @@
 #include "mapdraw.h"
-#include "map.h"
+#include "gamesprite.h"
 
 #include <SDL_opengl.h>
 
 namespace zombie {
 
-	MapDraw::MapDraw(const Map& map) : map_(map) {
+	MapDraw::MapDraw(float minX, float maxX, float minY, float maxY) {
 		grass_ = grassSprite;
+		minX_ = minX;
+		maxX_ = maxX;
+		minY_ = minY;
+		maxY_ = maxY;
 	}
 
 	bool MapDraw::update(double time) {
 		glColor3d(0.6,0.6,0.6);
-		grassTexture->bind();		
-
-		double maxX = map_.maxX();
-		double maxY = map_.maxY();
+		grassTexture->bind();
+		
 		double tH = 1.0;
 		double tW = 1.0;
 
 		glEnable(GL_TEXTURE_2D);
 		glBegin(GL_QUADS);
-		for (double x = map_.minX(); x < maxX; x += 10.0) {
-			for (double y = map_.minY(); y < map_.maxY(); y += 10.0) {
+		for (double x = minX_; x < maxX_; x += 10.0) {
+			for (double y = minY_; y < maxY_; y += 10.0) {
 				glTexCoord2d(0, 0);
 				glVertex2d(x, y);
 				glTexCoord2d(tW, 0);

@@ -1,25 +1,18 @@
 #include "zombieengine.h"
 #include "typedefs.h"
-#include "inputkeyboard.h"
 #include "unit.h"
 #include "building.h"
 #include "bullet.h"
-#include "map.h"
-#include "tile.h"
 #include "input.h"
-#include "task.h"
 #include "weaponobject.h"
-#include "shot.h"
-#include "mapdraw.h"
 #include "roaddraw.h"
+#include "mapdraw.h"
 #include "drawweaponobject.h"
 #include "buildingdraw.h"
 #include "humanstatus.h"
 #include "sky.h"
-
 #include "zombiebehavior.h"
 #include "survivorbehavior.h"
-
 #include "gamesound.h"
 #include "taskmanager.h"
 #include "aiplayer.h"
@@ -30,6 +23,7 @@
 #include "zombieanimation.h"
 #include "humananimation.h"
 #include "humanplayer.h"
+#include "shot.h"
 
 #include <Box2D/Box2D.h>
 #include <SDL.h>
@@ -142,11 +136,11 @@ namespace zombie {
 		time_ = 0.0f;
 
 		unitLevel_ = 20;
-		innerSpawnRadius_ = 10.f;
-		outerSpawnRadius_ = 40.f;
 
 		timeStep_ = 0.017f; // Fix time step for physics update.
 		accumulator_ = 0.0f; // Time accumulator.
+
+		taskManager_->add(new SurvivalTimer(), GraphicLevel::INTERFACE_LEVEL);
 	}
 
 	ZombieEngine::~ZombieEngine() {
@@ -202,21 +196,24 @@ namespace zombie {
 		}
 	}
 
-	void ZombieEngine::spawnAndCleanUpUnits() {
-		const MovingObject* frontOb = static_cast<const MovingObject*>(worldHash_[players_.front()->getId()]);
-		Position center = frontOb->getPosition();
+	mw::signals::Connection ZombieEngine::addEventListener(mw::Signal<const GameEvent&>::Callback callback) {
+		return gameEventListener_.connect(callback);
+	}
 
+	mw::signals::Connection ZombieEngine::addRemoveListener(mw::Signal<bool&, const MovingObject*>::Callback callback) {
+		return removeListener_.connect(callback);
+	}
+
+	void ZombieEngine::spawnAndCleanUpUnits() {
 		// Delete all units outside the perimiter, and all the dead units.
 		MovingObject* temp = nullptr;
 		players_.remove_if([&](Player* player) {
 			Object*& ob = worldHash_[player->getId()];
 			if (ob != nullptr) {
 				const MovingObject* mOb = static_cast<const MovingObject*>(ob);
-
-				bool outside = (mOb->getPosition() - center).LengthSquared() > outerSpawnRadius_ * outerSpawnRadius_;
 				bool dead = mOb->isDead();
 
-				if (outside || dead) {
+				if (dead) {
 					delete player;
 					delete ob;
 					// Hash to null.
@@ -230,16 +227,6 @@ namespace zombie {
 			// The pointer is not removed.
 			return false;
 		});
-
-		// Spawn new units.
-		int nbrOfZombies = players_.size();
-		while (nbrOfZombies < unitLevel_) {
-			// Insert zombie.
-			Position p = map_.generateSpawnPosition(center, innerSpawnRadius_, outerSpawnRadius_);
-			Unit* zombie = createUnit(p.x, p.y, 0.3f, Weapon(25,0.5f,1,10000),true);
-			addNewAi(zombie);
-			nbrOfZombies++;
-		}
 	}
 
 	void ZombieEngine::update(float deltaTime) {
@@ -283,6 +270,57 @@ namespace zombie {
 		glPopMatrix();
 	}
 
+	void ZombieEngine::addHuman(DevicePtr device, float x, float y, float angle, const Weapon& weapon) {		
+		Unit* human = createUnit(x, y, 0.3f, weapon, false);
+		viewPosition_ = human->getPosition();
+		players_.push_back(new HumanPlayer(device, human));
+		taskManager_->add(new HumanStatus(human, HumanStatus::ONE), GraphicLevel::INTERFACE_LEVEL);
+		taskManager_->add(new HumanAnimation(human), GraphicLevel::UNIT_LEVEL);
+	}
+
+	void ZombieEngine::addAi(float x, float y, float angle, const Weapon& weapon, bool infected) {
+		Unit* unit = createUnit(x, y, 0.3f, weapon, infected);		
+		if (infected) {
+			AiBehaviorPtr b = std::make_shared<ZombieBehavior>();
+			taskManager_->add(new ZombieAnimation(unit), GraphicLevel::UNIT_LEVEL);
+			AiPlayer* aiPlayer(new AiPlayer(b, unit));
+			players_.push_back(aiPlayer);
+		} else {
+			AiBehaviorPtr b = std::make_shared<SurvivorBehavior>();
+			taskManager_->add(new HumanAnimation(unit), GraphicLevel::UNIT_LEVEL);
+			AiPlayer* aiPlayer(new AiPlayer(b, unit));
+			players_.push_back(aiPlayer);
+		}
+	}
+
+	void ZombieEngine::addCar(float x, float y) {
+		Car* car = createCar(x,y);		
+		taskManager_->add(new CarAnimation(car), GraphicLevel::UNIT_LEVEL);
+	}
+
+	void ZombieEngine::addBuilding(const std::vector<Position>& corners) {
+		Building* building = new Building(corners);
+		taskManager_->add(new BuildingDraw(building), GraphicLevel::BUILDING_LEVEL);
+	}
+
+	void ZombieEngine::addWeapon(float x, float y, const Weapon& weapon) {
+		WeaponObject* wOb = new WeaponObject(x, y, weapon);
+		worldHash_[wOb->getId()] = wOb;
+		taskManager_->add(new DrawWeaponObject(wOb), GraphicLevel::TREE_LEVEL);
+	}
+
+	void ZombieEngine::addGrassGround(float minX, float maxX, float minY, float maxY) {
+		taskManager_->add(new MapDraw(minX,maxX,minY,maxY), GraphicLevel::GROUND_LEVEL);
+	}
+
+	Position ZombieEngine::getMainUnitPostion() {
+		const MovingObject* frontOb = static_cast<const MovingObject*>(worldHash_[players_.front()->getId()]);
+		if (frontOb != nullptr) {
+			return frontOb->getPosition();
+		}
+		return Position();
+	}
+
 	Unit* ZombieEngine::createUnit(float x, float y, float angle, const Weapon& weapon, bool infected) {
 		Unit* unit = new Unit(x, y, angle, weapon, infected);
 		unit->addShootHandler(std::bind(&ZombieEngine::doShotDamage,this,std::placeholders::_1,std::placeholders::_2));
@@ -297,84 +335,6 @@ namespace zombie {
 		worldHash_[car->getId()] = car;
 		cars_.push_back(car);
 		return car;
-	}
-
-	void ZombieEngine::addHuman(DevicePtr device, Unit* unit) {
-		players_.push_back(new HumanPlayer(device, unit));
-		taskManager_->add(new HumanStatus(unit, HumanStatus::ONE), GraphicLevel::INTERFACE_LEVEL);
-		taskManager_->add(new HumanAnimation(unit), GraphicLevel::UNIT_LEVEL);
-	}
-
-	void ZombieEngine::addNewAi(Unit* unit) {
-		if (unit->isInfected()) {
-			AiBehaviorPtr b = std::make_shared<ZombieBehavior>();
-			taskManager_->add(new ZombieAnimation(unit), GraphicLevel::UNIT_LEVEL);
-			AiPlayer* aiPlayer(new AiPlayer(b, unit));
-			players_.push_back(aiPlayer);
-		} else {
-			AiBehaviorPtr b = std::make_shared<SurvivorBehavior>();
-			taskManager_->add(new HumanAnimation(unit), GraphicLevel::UNIT_LEVEL);
-			AiPlayer* aiPlayer(new AiPlayer(b, unit));
-			players_.push_back(aiPlayer);
-		}
-	}
-
-	void ZombieEngine::init(const Map& map, DevicePtr humanDevice) {
-		map_ = map;
-		taskManager_->add(new SurvivalTimer(), GraphicLevel::INTERFACE_LEVEL);
-
-		taskManager_->add(new MapDraw(map_), GraphicLevel::GROUND_LEVEL);
-		taskManager_->add(new RoadDraw(map_), GraphicLevel::ROAD_LEVEL);
-
-		auto buildings = map_.getBuildings();
-		for (Building* building : buildings) {
-			taskManager_->add(new BuildingDraw(building), GraphicLevel::BUILDING_LEVEL);
-		}
-
-		// Add human controlled by first input device.
-		Position position = map_.generateSpawnPosition();
-		Unit* human = createUnit(position.x, position.y, 0.3f, Weapon(55,0.2f,8,12), false);
-		viewPosition_ = human->getPosition();
-		addHuman(humanDevice, human);
-
-		// Add cars.
-		for (int i = 0; i < 10; ++i) {
-			Position spawn = map_.generateSpawnPosition(human->getPosition(), innerSpawnRadius_, outerSpawnRadius_);
-			Car* car = createCar(spawn.x, spawn.y);
-			taskManager_->add(new CarAnimation(car), GraphicLevel::UNIT_LEVEL);
-		}
-
-		// Add zombies.
-		for (int i = 0; i < 1; ++i) {
-			Position spawn = map_.generateSpawnPosition(human->getPosition(), innerSpawnRadius_, outerSpawnRadius_);
-			Unit* zombie = createUnit(spawn.x, spawn.y, 0.3f, Weapon(35,0.5f,1,10000), true);
-			addNewAi(zombie);
-		}
-
-		// Add survivors.
-		for (int i = 0; i < 10; ++i) {
-			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,10);
-			Unit* survivor = createUnit(spawn.x, spawn.y, 0.f, Weapon(35,0.5,8,120), false);
-			addNewAi(survivor);
-		}
-
-		// Add weapons.
-		for (int i = 0; i < 10; ++i) {
-			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,50);
-			Weapon weapon;
-			WeaponObject* wOb = new WeaponObject(spawn.x, spawn.y, weapon);
-			worldHash_[wOb->getId()] = wOb;
-			taskManager_->add(new DrawWeaponObject(wOb), GraphicLevel::WEAPON_LEVEL);
-		}
-
-		// Add trees.
-		for (int i = 0; i < 10; ++i) {
-			Position spawn = map_.generateSpawnPosition(human->getPosition(),1,50);
-			Weapon weapon;
-			WeaponObject* wOb = new WeaponObject(spawn.x, spawn.y, weapon);
-			worldHash_[wOb->getId()] = wOb;
-			taskManager_->add(new DrawWeaponObject(wOb), GraphicLevel::TREE_LEVEL);
-		}
 	}
 
 	void ZombieEngine::zoom(double scale) {

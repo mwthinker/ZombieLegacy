@@ -2,21 +2,20 @@
 #define MAPDRAW_H
 
 #include "task.h"
-#include "gamesprite.h"
+
+#include <mw/sprite.h>
 
 namespace zombie {
 
-	class Map;
-
 	class MapDraw : public Task {
 	public:
-		MapDraw(const Map& map);
+		MapDraw(float minX, float maxX, float minY, float maxY);
 		bool update(double time) override;
 
 	private:
 		void draw();
 
-		const Map& map_;
+		float minX_, maxX_, minY_, maxY_;
 		mw::Sprite grass_;
 	};
 
