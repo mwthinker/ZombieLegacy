@@ -2,9 +2,8 @@
 #define ZOMBIEENGINE_H
 
 #include "object.h"
-#include "inputkeyboard.h"
+#include "device.h"
 #include "input.h"
-#include "map.h"
 #include "typedefs.h"
 
 #include <Box2D/Box2D.h>
@@ -26,6 +25,20 @@ namespace zombie {
 	class Player;
 	class Bullet;
 
+	class GameEvent {
+	public:
+		virtual ~GameEvent() {
+		}
+	};
+
+	class UnitDie : public GameEvent {
+	public:
+		UnitDie(Unit* unit) : unit_(unit) {
+		}
+
+		const Unit* unit_;
+	};
+
 	// Responsible of all creatan and deallocation of game objects 
 	// and manage there physical and graphical representation.
 	class ZombieEngine : public b2ContactListener {
@@ -46,22 +59,33 @@ namespace zombie {
 		void zoom(double scale);
 
 		void updateSize(int width, int height);
-			
+
+		// Add a human player to the game.
+		void addHuman(DevicePtr device, float x, float y, float angle, const Weapon& weapon);
+
+		// Add a ai player to the game.
+		void addAi(float x, float y, float angle, const Weapon& weapon, bool infected);
+
+		// Add a car to the game.
+		void addCar(float x, float y);
+
+		void addBuilding(const std::vector<Position>& corners);
+
+		void addWeapon(float x, float y, const Weapon& weapon);
+
+		void addGrassGround(float minX, float maxX, float minY, float maxY);
+
+		Position getMainUnitPostion();
+
+		mw::signals::Connection addEventListener(mw::Signal<const GameEvent&>::Callback callback);
+		mw::signals::Connection addRemoveListener(mw::Signal<bool&, const MovingObject*>::Callback callback);
+
+	private:
 		// Creates a unit and add &doShotDamage to receive bullets fired.
 		Unit* createUnit(float x, float y, float angle, const Weapon& weapon, bool infected);
 
 		Car* createCar(float x, float y);
 
-		// Add a human player (unitPtr) to the game.
-		void addHuman(DevicePtr device, Unit* unit);
-
-		// Add a new ai (unitPtr) to the game.
-		void addNewAi(Unit* unit);
-
-		// Inits the engine.
-		void init(const Map& map, DevicePtr human);
-
-	private:
 		// Updates the game time by (msDeltaTime).
 		void updatePhysics(float timeStep);
 
@@ -87,9 +111,6 @@ namespace zombie {
 
 		int unitLevel_; // Specifies the wanted number of zombies on the map.
 		double scale_;
-		float innerSpawnRadius_;
-		float outerSpawnRadius_;
-		Map map_;
 
 		// The view is centered in.
 		Position viewPosition_;
@@ -100,6 +121,8 @@ namespace zombie {
 
 		b2World* world_;
 		WorldHash worldHash_;
+		mw::Signal<const GameEvent&> gameEventListener_;
+		mw::Signal<bool&, const MovingObject*> removeListener_;
 	};
 
 } // Namespace zombie.
