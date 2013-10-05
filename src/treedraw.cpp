@@ -9,7 +9,7 @@ namespace zombie {
 		tree_ = treeSprite;
 	}
 
-	bool TreeDraw::draw(double time) {
+	bool TreeDraw::update(double time) {
 		
 		return true;
 	}
