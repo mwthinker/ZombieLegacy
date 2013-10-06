@@ -6,15 +6,12 @@
 
 namespace zombie {
 
-	class Map;
-
 	class RoadDraw : public Task {
 	public:
-		RoadDraw(const Map& map);
+		RoadDraw();
 		
 		bool update(double time) override;
-
-		const Map& map_;
+		
 		mw::Sprite road_;
 	};
 
