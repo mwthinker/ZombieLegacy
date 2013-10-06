@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zombie>
+	<settings>
+		<unitlevel>20</unitlevel>
+		<zoomlevel>3</zoomlevel>	
+	</settings>
+	<weapons>
+		<weapon>
+			<id>handgun</id>
+			<animation>handgun.png</animation>
+		</weapon>
+		<weapon>
+			<id>grenade</id>
+			<animation>grenade.png</animation>
+		</weapon>
+	</weapons>
+	<maps>
+      <map>
+         <id>basedefense map</id>
+         <map_objects>
+            <map_object>
+               <type>building</type>
+               <geom>POLYGON ((30 10, 10 20, 20 40, 40 40, 30 10))</geom>
+               <physical>true</physical>
+               <animation>true</animation>
+            </map_object>
+            <map_object>
+               <type>road</type>
+               <geom>LINESTRING (130 110, 110 130, 140 140)</geom>
+               <physical>false</physical>
+               <animation>true</animation>
+            </map_object>
+            <map_object>
+               <type>bush</type>
+               <geom>CIRCLE (2,2,1)</geom>
+               <physical>true</physical>
+               <animation>tree.png</animation>
+            </map_object>
+            <map_object>
+               <type>maplimit</type>
+               <geom>CIRCLE (0,0,500)</geom>
+               <physical>true</physical>
+               <animation>false</animation>
+            </map_object>
+         </map_objects>
+         <map_units>
+            <map_unit>
+               <type>human</type>
+               <spawn>POINT (0 0)</spawn>
+               <direction>0</direction>
+            </map_unit>
+            <map_unit>
+               <type>survivor</type>
+               <spawn>POINT (-5 -5)</spawn>
+               <direction>0</direction>
+            </map_unit>
+            <map_unit>
+               <type>zombie</type>
+               <spawn>POINT (-25 -25)</spawn>
+               <direction>0</direction>
+            </map_unit>
+         </map_units>
+      </map>
+   </maps>
+</zombie>
