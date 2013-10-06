@@ -3,7 +3,6 @@
 
 #include "zombieengine.h"
 #include "device.h"
-#include "map.h"
 
 #include <SDL.h>
 
@@ -39,7 +38,6 @@ namespace zombie {
 		float innerSpawnRadius_;
 		float outerSpawnRadius_;
 
-		Map map_;
 		ZombieEngine engine_;
 		DevicePtr keyboard1_, keyboard2_;		
 	};

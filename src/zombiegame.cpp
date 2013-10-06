@@ -3,8 +3,18 @@
 #include "weapon.h"
 #include "movingobject.h"
 #include "building.h"
+#include "auxiliary.h"
+
+#include <cmath>
 
 namespace zombie {
+
+	// Returns a random postion between the defined outer and inner circle centered in position.
+	Position generatePosition(Position position, float innerRadius, float outerRadius) {
+		return position + (innerRadius + (outerRadius - innerRadius) * random()) * Position(std::cosf(random()*2.f*3.14f), std::sinf(random()*2.f*3.14f));
+	}
+
+	const Position ORIGO(0,0);
 
 	ZombieGame::ZombieGame(int width, int height) : engine_(width, height) {
 		// Set windows size.
@@ -13,43 +23,36 @@ namespace zombie {
 		keyboard1_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT, 
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r,SDLK_LSHIFT,SDLK_e));
 
-		map_ = loadMapInfo("housesFME.mif","roadsFME.mif", 1);
-
-		engine_.addGrassGround(map_.minX(), map_.maxX(), map_.minY(), map_.maxY());
+		engine_.addGrassGround(-50, 50, -50, 50);
 
 		innerSpawnRadius_ = 10.f;
 		outerSpawnRadius_ = 40.f;
 		
-		Position position = map_.generateSpawnPosition();
+		Position position = generatePosition(ORIGO, 0, 50);
 		engine_.addHuman(keyboard1_,position.x, position.y, 0.3f, Weapon(55,0.2f,8,12));
 		engine_.addEventListener(std::bind(&ZombieGame::handleGameEvent, this, std::placeholders::_1));
 
-		auto buildings = map_.getBuildings();
-		for (Building* building : buildings) {
-			engine_.addBuilding(building->getCorners());
-		}
-
 		// Add cars.
 		for (int i = 0; i < 10; ++i) {
-			Position spawn = map_.generateSpawnPosition(engine_.getMainUnitPostion(), innerSpawnRadius_, outerSpawnRadius_);
+			Position spawn = generatePosition(ORIGO, 0, 50);
 			engine_.addCar(spawn.x, spawn.y);
 		}
 
 		// Add zombies.
 		for (int i = 0; i < 1; ++i) {
-			Position spawn = map_.generateSpawnPosition(engine_.getMainUnitPostion(), innerSpawnRadius_, outerSpawnRadius_);
+			Position spawn = generatePosition(ORIGO, 0, 50);
 			engine_.addAi(spawn.x, spawn.y, 0.3f, Weapon(35,0.5f,1,10000), true);
 		}
 
 		// Add survivors.
 		for (int i = 0; i < 10; ++i) {
-			Position spawn = map_.generateSpawnPosition(engine_.getMainUnitPostion(),1,10);
+			Position spawn = generatePosition(ORIGO, 0, 50);
 			engine_.addAi(spawn.x, spawn.y, 0.f, Weapon(35,0.5,8,120), false);
 		}
 
 		// Add weapons.
 		for (int i = 0; i < 10; ++i) {
-			Position spawn = map_.generateSpawnPosition(engine_.getMainUnitPostion(),1,50);
+			Position spawn = generatePosition(ORIGO, 0, 50);
 			Weapon weapon;
 			engine_.addWeapon(spawn.x, spawn.y, weapon);
 		}
@@ -60,13 +63,13 @@ namespace zombie {
 
 	void ZombieGame::handleGameEvent(const GameEvent& gameEvent) {
 		if (const UnitDie* unitDie = dynamic_cast<const UnitDie*>(&gameEvent)) {
-			Position spawn = map_.generateSpawnPosition(engine_.getMainUnitPostion(), innerSpawnRadius_, outerSpawnRadius_);
+			Position spawn = generatePosition(engine_.getMainUnitPostion(), innerSpawnRadius_, outerSpawnRadius_);
 			engine_.addAi(spawn.x, spawn.y, 0.3f, Weapon(35,0.5f,1,10000), true);
 		}
 	}
 
 	void ZombieGame::handleRemoval(bool& remove, MovingObject* mOb) {
-		bool outside = (mOb->getPosition() - map_.getMapCentre()).LengthSquared() > outerSpawnRadius_ * outerSpawnRadius_;
+		bool outside = mOb->getPosition().LengthSquared() > outerSpawnRadius_ * outerSpawnRadius_;
 		remove = outside;
 	}
 

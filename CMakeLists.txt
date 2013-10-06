@@ -49,8 +49,6 @@ SET(SOURCES_ZOMBIE
 	src/inputkeyboard.h
 	src/linefeature.h
 	src/main.cpp
-	src/map.cpp
-	src/map.h
 	src/mapdraw.cpp
 	src/mapdraw.h
 	src/movingobject.h

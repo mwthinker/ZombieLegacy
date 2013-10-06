@@ -1,11 +1,10 @@
 #include "treedraw.h"
-#include "map.h"
 
 #include <SDL_opengl.h>
 
 namespace zombie {
 
-	TreeDraw::TreeDraw(const Map& map) : map_(map) {
+	TreeDraw::TreeDraw() {
 		tree_ = treeSprite;
 	}
 
