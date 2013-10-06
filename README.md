@@ -3,19 +3,27 @@ Zombie
 A project aiming to produce a simple 2D-shooter zombie game.
 
 <b> About </b>
-The project is using CMake to generate the environment specific development tools. E.g.
-Visual Studio solutions (windows) and makefile (Unix). See more at http://www.cmake.org/
+The project is using CMake to generate the environment specific development 
+tools. E.g. Visual Studio solutions (windows) and makefile (Unix). See more 
+at http://www.cmake.org/
 
-The zombie project has library dependencies to SDL2 (http://www.libsdl.org/), SDL2_image, SDL2_mixer, OpenGL.
-It also uses the Box2D library (http://box2d.org/) but that is embedded in the project, it is under the 
-open source license "License.txt" found in the Box2D directory. There is also two other project embedded in
-the zombie project, i.e. MwLibrary and MwExtra. The former is basically a C++ wrapper around SDL2 and the latter 
+The zombie project has library dependencies to SDL2 (http://www.libsdl.org/), 
+SDL2_image, SDL2_mixer, SDL2_ttf and OpenGL. It also uses the Box2D library 
+(http://box2d.org/) but that is embedded in the project, it is under the 
+open source license "License.txt" found in the Box2D directory. To read 
+XML files the TinyXML2 (http://www.grinninglizard.com/tinyxml2/) library are 
+used and the source is imbedded in the zombie project. TinyXML2 is under 
+the ZLIB license.
+
+There is also two other project embedded in the zombie project, i.e. MwLibrary 
+and MwExtra. The former is basically a C++ wrapper around SDL2 and the latter 
 auxiliary classes intended to make a coders life easier.
 
 Building
 ======
-CMake must be installed with at least version 2.8. Create a directory named "build" in the project directory.
-Make sure all dependencies and a native compiler are installed. The dependencies must also be recognized by CMAKE.
+CMake must be installed with at least version 2.8. Create a directory named 
+"build" in the project directory. Make sure all dependencies and a native 
+compiler are installed. The dependencies must also be recognized by CMAKE.
 
 <b> Unix </b>
 Open a terminal inside the "build" directory and run:
