@@ -6,6 +6,7 @@
 #include <mw/window.h>
 #include <mw/sprite.h>
 
+#include <tinyxml2.h>
 #include <SDL_opengl.h>
 
 #include <iostream>
@@ -14,7 +15,7 @@ namespace zombie {
 
 	class ZombieWindow : public mw::Window {
 	public:
-		ZombieWindow() : mw::Window(500, 500, true, "Zombie","images/icon.bmp"), zombieGame_(500,500) {
+		ZombieWindow(int width, int height, tinyxml2::XMLHandle xml) : mw::Window(width, height, true, "Zombie","images/icon.bmp"), zombieGame_(500,500), xml_(xml) {
 			reshapeWindowsOpenGL();
 		}
 
@@ -108,7 +109,8 @@ namespace zombie {
 			glLoadIdentity();
 		}
 
-		ZombieGame zombieGame_;	
+		ZombieGame zombieGame_;
+		tinyxml2::XMLHandle xml_;
 	};
 
 } // Namespace zombie.
