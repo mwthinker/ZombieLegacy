@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zombie>
 	<settings>
+		<width>600</width>
+		<height>600</height>
 		<unitlevel>20</unitlevel>
 		<zoomlevel>3</zoomlevel>	
 	</settings>
