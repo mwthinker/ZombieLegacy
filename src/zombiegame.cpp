@@ -9,6 +9,10 @@
 
 namespace zombie {
 
+	void loadMap(tinyxml2::XMLHandle xml) {
+
+	}
+
 	// Returns a random postion between the defined outer and inner circle centered in position.
 	Position generatePosition(Position position, float innerRadius, float outerRadius) {
 		return position + (innerRadius + (outerRadius - innerRadius) * random()) * Position(std::cosf(random()*2.f*3.14f), std::sinf(random()*2.f*3.14f));
@@ -16,7 +20,7 @@ namespace zombie {
 
 	const Position ORIGO(0,0);
 
-	ZombieGame::ZombieGame(int width, int height) : engine_(width, height) {
+	ZombieGame::ZombieGame(int width, int height, tinyxml2::XMLHandle xml) : engine_(width, height) {
 		// Set windows size.
 		updateSize(width,height);
 		

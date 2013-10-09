@@ -5,6 +5,7 @@
 #include "device.h"
 
 #include <SDL.h>
+#include <tinyxml2.h>
 
 namespace zombie {
 
@@ -14,7 +15,7 @@ namespace zombie {
 	// e.g. what happens when a unit dies.
 	class ZombieGame {
 	public:
-		ZombieGame(int width = 500, int height = 500);
+		ZombieGame(int width, int height, tinyxml2::XMLHandle xml);
 		~ZombieGame();
 
 		// Starts the game.
