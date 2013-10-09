@@ -27,8 +27,14 @@ int main (int argc, char** argv) {
 	int width, height;
 	stream >> width >> height;
 	
-    zombie::ZombieWindow game(width, height, handleXml);
-	game.startLoop();
+	// Window size positive? 
+	if (width > 0 && height > 0) {
+		zombie::ZombieWindow game(width, height, handleXml);
+		game.startLoop();
+	} else {
+		// Negative window size in xml file settings.
+		return 1;
+	}
 
     return 0;
 }
