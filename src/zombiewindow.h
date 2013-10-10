@@ -15,7 +15,7 @@ namespace zombie {
 
 	class ZombieWindow : public mw::Window {
 	public:
-		ZombieWindow(int width, int height, tinyxml2::XMLHandle xml) : mw::Window(width, height, true, "Zombie","images/icon.bmp"), zombieGame_(500,500), xml_(xml) {
+		ZombieWindow(int width, int height, tinyxml2::XMLHandle xml) : mw::Window(width, height, true, "Zombie","images/icon.bmp"), zombieGame_(500, 500, xml_), xml_(xml) {
 			reshapeWindowsOpenGL();
 		}
 
