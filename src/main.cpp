@@ -15,6 +15,7 @@ int main (int argc, char** argv) {
 	xmlDoc.LoadFile("zombie.xml");
 	if (xmlDoc.Error()) {
 		// Failed!
+		xmlDoc.PrintError();
 		return 1;
 	}
 	XMLHandle handleXml(xmlDoc.FirstChildElement("zombie"));
