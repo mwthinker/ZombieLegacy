@@ -4,64 +4,58 @@
 		<width>600</width>
 		<height>600</height>
 		<unitlevel>20</unitlevel>
-		<zoomlevel>3</zoomlevel>	
+		<zoomlevel>3</zoomlevel>
 	</settings>
+	<movingObjects>
+		<car>
+			<name>Volvo</name>
+			<animation>images/car.png</animation>
+			<mass>100</mass> <!-- Kg-->
+			<width>1</width> <!-- Meter-->
+			<length>2</length>
+			<life>1000000</life>
+		</car>
+		<unit>
+			<name>Human</name>
+			<mass>100</mass>
+			<radius>1</radius>
+			<life>100</life>
+			<infected>1</infected> <!-- 1=true, 0=false -->
+			<walkingSpeed>1</walkingSpeed> <!-- m/s -->
+			<runningSpeed>1</runningSpeed> <!-- m/s -->
+			<stamina>1</stamina> <!-- seconds -->
+		</unit>
+		<unit>
+			<name>Zombie</name>
+			<mass>100</mass>
+			<radius>1</radius>
+			<life>100</life>
+			<infected>1</infected>
+			<walkingSpeed>1</walkingSpeed>
+			<runningSpeed>2</runningSpeed>
+			<stamina>1</stamina>
+		</unit>
+	</movingObjects>
 	<weapons>
 		<weapon>
-			<id>handgun</id>
-			<animation>handgun.png</animation>
+			<name>Handgun</name>
+			<animation>images/handgun.png</animation>
+			<damage>50</damage>
+			<timeBetweenShots>0.3</timeBetweenShots>
+			<range>10</range>
+			<clipSize>12</clipSize>
+			<shootSound>sound/handgunShoot.wav</shootSound>
+			<reloadSound>sound/handgunReload.wav</reloadSound>
 		</weapon>
 		<weapon>
-			<id>grenade</id>
-			<animation>grenade.png</animation>
+			<name>ZombieFist</name>
+			<animation>images/ZombieFist.png</animation>
+			<damage>10</damage>
+			<timeBetweenShots>0.3</timeBetweenShots>
+			<range>1</range>
+			<clipSize>1000000</clipSize>
+			<shootSound>sound/ZombieFist.wav</shootSound>
+			<reloadSound>sound/ZombieReload.wav</reloadSound>
 		</weapon>
 	</weapons>
-	<maps>
-      <map>
-         <id>basedefense map</id>
-         <map_objects>
-            <map_object>
-               <type>building</type>
-               <geom>POLYGON ((30 10, 10 20, 20 40, 40 40, 30 10))</geom>
-               <physical>true</physical>
-               <animation>true</animation>
-            </map_object>
-            <map_object>
-               <type>road</type>
-               <geom>LINESTRING (130 110, 110 130, 140 140)</geom>
-               <physical>false</physical>
-               <animation>true</animation>
-            </map_object>
-            <map_object>
-               <type>bush</type>
-               <geom>CIRCLE (2,2,1)</geom>
-               <physical>true</physical>
-               <animation>tree.png</animation>
-            </map_object>
-            <map_object>
-               <type>maplimit</type>
-               <geom>CIRCLE (0,0,500)</geom>
-               <physical>true</physical>
-               <animation>false</animation>
-            </map_object>
-         </map_objects>
-         <map_units>
-            <map_unit>
-               <type>human</type>
-               <spawn>POINT (0 0)</spawn>
-               <direction>0</direction>
-            </map_unit>
-            <map_unit>
-               <type>survivor</type>
-               <spawn>POINT (-5 -5)</spawn>
-               <direction>0</direction>
-            </map_unit>
-            <map_unit>
-               <type>zombie</type>
-               <spawn>POINT (-25 -25)</spawn>
-               <direction>0</direction>
-            </map_unit>
-         </map_units>
-      </map>
-   </maps>
 </zombie>
