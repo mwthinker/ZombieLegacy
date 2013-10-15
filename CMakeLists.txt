@@ -25,10 +25,12 @@ SET(SOURCES_ZOMBIE
 	src/blood.h
 	src/building.h
 	src/buildingdraw.h
+	src/buildingproperties.h
 	src/bullet.h
 	src/car.h
 	src/caranimation.cpp
 	src/caranimation.h
+	src/carproperties.h
 	src/device.h
 	src/drawweaponobject.cpp
 	src/drawweaponobject.h
@@ -46,6 +48,7 @@ SET(SOURCES_ZOMBIE
 	src/input.h
 	src/inputkeyboard.h
 	src/linefeature.h
+	src/load.h
 	src/main.cpp
 	src/mapdraw.cpp
 	src/mapdraw.h
@@ -74,7 +77,9 @@ SET(SOURCES_ZOMBIE
 	src/typedefs.h
 	src/unit.cpp
 	src/unit.h
+	src/unitproperties.h
 	src/weapon.h
+	src/weaponproperties.h
 	src/weaponobject.h
 	src/zombieanimation.cpp
 	src/zombieanimation.h

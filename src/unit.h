@@ -19,7 +19,9 @@ namespace zombie {
 
 	class Unit : public MovingObject {
 	public:
-		enum UnitEvent {SHOOT,RELOADING,DIE,WALK,STANDSTILL,RUN};
+		enum UnitEvent {
+			SHOOT, RELOADING, DIE, WALK, STANDSTILL, RUN
+		};
 
 		Unit(float x, float y, float angle, const Weapon& weapon, bool infected);
 		virtual ~Unit();
@@ -27,7 +29,7 @@ namespace zombie {
 		// Simulates the physics at time (time) one time step (timeStep) ahead.
 		// Based on the input given.
 		void updatePhysics(float time, float timeStep, Input input) override;
-		
+
 		State getState() const;
 
 		// Return the view distance.
@@ -50,7 +52,7 @@ namespace zombie {
 		bool isInsideSmalViewDistance(Position position) const;
 
 		// Return the angle for the current 
-		float getDirection() const;	
+		float getDirection() const;
 
 		float healthPoints() const;
 		void updateHealthPoint(float deltaLife);
@@ -70,11 +72,11 @@ namespace zombie {
 		}
 
 		Position getPosition() const override {
-			return Position(body_->GetPosition().x,body_->GetPosition().y);
+			return Position(body_->GetPosition().x, body_->GetPosition().y);
 		}
 
 		float getRadius() const {
-			b2Fixture* f = body_->GetFixtureList();             
+			b2Fixture* f = body_->GetFixtureList();
 			b2CircleShape* circle = (b2CircleShape*) f->GetShape();
 			return circle->m_radius;
 		}
