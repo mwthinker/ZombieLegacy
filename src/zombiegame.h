@@ -3,6 +3,10 @@
 
 #include "zombieengine.h"
 #include "device.h"
+#include "buildingproperties.h"
+#include "weaponproperties.h"
+#include "unitproperties.h"
+#include "carproperties.h"
 
 #include <SDL.h>
 #include <tinyxml2.h>
@@ -10,29 +14,6 @@
 #include <map>
 
 namespace zombie {
-
-	class UnitProperties {
-	public:
-		float mass_;
-		float radius_;
-		float life_;
-		float walkingSpeed_;
-		float runningSpeed_;
-		float stamina_;
-		bool infected_;
-	};
-
-	class WeaponProperties {
-	public:
-		float mass_;
-		std::string animation_;
-		float damage_;
-		float timeBetweenShots_;
-		float range_;
-		int clipSize_;
-		std::string shoot_sound_;
-		std::string reload_sound_;
-	};
 
 	// Responsible of loading map, units and initiate all
 	// game related things and to start the game engine.
