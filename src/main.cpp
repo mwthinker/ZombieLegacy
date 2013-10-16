@@ -23,7 +23,7 @@ int main (int argc, char** argv) {
 	std::stringstream stream;
 	stream << element->GetText() << " ";
 	element = handleXml.FirstChildElement("settings").FirstChildElement("height").ToElement();
-	stream << element->GetText() << " ";	
+	stream << element->GetText() << " ";
 
 	int width, height;
 	stream >> width >> height;

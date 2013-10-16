@@ -28,6 +28,12 @@ namespace zombie {
 		}
 	}
 
+	template <>
+	BuildingProperties convertFromText<BuildingProperties>(const char* txt) {
+		BuildingProperties properties_;
+		return properties_;
+	}
+
 } // Namespace zombie.
 
 #endif // LOAD_H

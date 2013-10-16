@@ -8,6 +8,9 @@
 #include "unitproperties.h"
 #include "carproperties.h"
 
+#include <mw/texture.h>
+#include <mw/sprite.h>
+
 #include <SDL.h>
 #include <tinyxml2.h>
 
@@ -45,8 +48,8 @@ namespace zombie {
 		//Handle to first node <zombie>.
 		bool load(tinyxml2::XMLHandle xml);
 		
-		//Handle to first node <maps>.
-		void loadMap(tinyxml2::XMLHandle xml);
+		//Handle to first relevant map (node = <map>) to be loaded.
+		void loadMap(std::string map);
 		
 		//Handle to first node <weapons>.
 		void loadWeapons(tinyxml2::XMLHandle xml);
@@ -59,11 +62,19 @@ namespace zombie {
 				
 		float innerSpawnRadius_;
 		float outerSpawnRadius_;
+		int unitLevel_;
+		int zoomlevel_;
 
 		ZombieEngine engine_;
 		DevicePtr keyboard1_, keyboard2_;
+
 		std::map<std::string, WeaponProperties> weapons_;
 		std::map<std::string, UnitProperties> units_;
+		std::map<std::string, CarProperties> cars_;
+		std::vector<BuildingProperties> buildings_;
+
+		std::map<std::string, mw::TexturePtr> textures_;
+		std::map<std::string, mw::Sprite> sprites_;
 	};
 
 } // Namespace zombie_;

@@ -37,7 +37,10 @@ namespace zombie {
 		engine_.addEventListener(std::bind(&ZombieGame::handleGameEvent, this, std::placeholders::_1));
 
 		load(xml);
-
+		
+		// Load map.
+		loadMap("Base Defense Map");
+		
 		// Add cars.
 		for (int i = 0; i < 10; ++i) {
 			Position spawn = generatePosition(ORIGO, 0, 50);
@@ -113,36 +116,78 @@ namespace zombie {
 	}
 
 	// Must load weapons before. Else the no weapons will be placed.
-	void ZombieGame::loadMap(tinyxml2::XMLHandle xml) {
+	void ZombieGame::loadMap(std::string map) {
+		// Load map file.
+		tinyxml2::XMLDocument mapXml;
+		mapXml.LoadFile("maps.xml");
+		if (mapXml.Error()) {
+			// Failed!
+			mapXml.PrintError();
+			std::exit(1);
+		}
+
+		tinyxml2::XMLHandle mapHandle(mapXml);
+		mapHandle = mapHandle.FirstChildElement("zombie").FirstChildElement("maps").FirstChildElement("map");
+		while (mapHandle.ToNode() != nullptr) {
+			tinyxml2::XMLHandle tmp = mapHandle.FirstChildElement("name");
+			std::string name = tmp.ToElement()->GetText();
+			
+			// Found map?
+			if (name == map) {				
+				tinyxml2::XMLHandle mapObHandler = mapHandle.FirstChildElement("mapObjects").FirstChildElement("mapObject");
+				// Iterate through all mapObjects.
+				while (mapObHandler.ToElement() != nullptr) {
+					tinyxml2::XMLElement* tmp2 = mapObHandler.FirstChildElement("type").ToElement();
+					std::string type = tmp2->GetText();
+
+					if (type == "building") {
+						tmp2 = tmp2->NextSiblingElement("geom");
+						BuildingProperties properties = convertFromText<BuildingProperties>(tmp2->GetText());
+						buildings_.push_back(properties);
+					} else {
+						throw mw::Exception("No such mapObject: " + type + "\n");
+					}
+
+					// Next mapObject.
+					mapObHandler = mapObHandler.NextSibling();
+				}
+				break;
+			}
+
+			// Next map.
+			mapHandle = mapHandle.NextSiblingElement();
+		}
 	}
 	
 	void ZombieGame::loadWeapons(tinyxml2::XMLHandle xml) {
 		// Find all weapons.
 		tinyxml2::XMLElement* element = xml.FirstChildElement("weapon").ToElement();
 		while (element != nullptr) {
+			WeaponProperties properties;
 			tinyxml2::XMLElement* tmp = element->FirstChildElement("name")->ToElement();
-			std::string name = tmp->GetText();
+			properties.name_ = tmp->GetText();
 			
 			tmp = tmp->NextSiblingElement("animation");
-			std::string animation = tmp->GetText();
+			properties.animation_ = tmp->GetText();
 
 			tmp = tmp->NextSiblingElement("damage");
-			float damage = convertFromText<float>(tmp->GetText());
+			properties.damage_ = convertFromText<float>(tmp->GetText());
 			
 			tmp = tmp->NextSiblingElement("timeBetweenShots");
-			float timeBetweenShots = convertFromText<float>(tmp->GetText());
+			properties.timeBetweenShots_ = convertFromText<float>(tmp->GetText());
 			
 			tmp = tmp->NextSiblingElement("range");
-			float range = convertFromText<float>(tmp->GetText());
+			properties.range_ = convertFromText<float>(tmp->GetText());
 			
 			tmp = tmp->NextSiblingElement("clipSize");
-			int clipSize = convertFromText<int>(tmp->GetText());
+			properties.clipSize_ = convertFromText<int>(tmp->GetText());
 
 			tmp = tmp->NextSiblingElement("shootSound");
-			std::string shootSound = tmp->GetText();
+			properties.shootSound_ = tmp->GetText();
 
 			tmp = tmp->NextSiblingElement("reloadSound");
-			std::string reloadSound = tmp->GetText();
+			properties.reloadSound_ = tmp->GetText();
+			weapons_[properties.name_] = properties;
 
 			element = element->NextSiblingElement();
 		}
@@ -170,23 +215,25 @@ namespace zombie {
 		// Find all cars.
 		tinyxml2::XMLElement* element = xml.FirstChildElement("car").ToElement();
 		while (element != nullptr) {
+			CarProperties properties;
 			tinyxml2::XMLElement* tmp = element->FirstChildElement("name")->ToElement();
-			std::string name = tmp->GetText();
+			properties.name_ = tmp->GetText();
 			
 			tmp = tmp->NextSiblingElement("animation");
-			std::string animation = tmp->GetText();
+			properties.animation_ = tmp->GetText();
 
 			tmp = tmp->NextSiblingElement("mass");
-			float mass = convertFromText<float>(tmp->GetText());
+			properties.mass_ = convertFromText<float>(tmp->GetText());
 			
 			tmp = tmp->NextSiblingElement("width");
-			float width = convertFromText<float>(tmp->GetText());
+			properties.width_ = convertFromText<float>(tmp->GetText());
 			
 			tmp = tmp->NextSiblingElement("length");
-			float length = convertFromText<float>(tmp->GetText());
+			properties.length_ = convertFromText<float>(tmp->GetText());
 			
 			tmp = tmp->NextSiblingElement("life");
-			float life = convertFromText<float>(tmp->GetText());
+			properties.life_ = convertFromText<float>(tmp->GetText());
+			cars_[properties.name_] = properties;
 
 			element = element->NextSiblingElement("car");
 		}
@@ -194,29 +241,31 @@ namespace zombie {
 		// Find all units.
 		element = xml.FirstChildElement("unit").ToElement();
 		while (element != nullptr) {
+			UnitProperties properties;
 			tinyxml2::XMLElement* tmp = element->FirstChildElement("name")->ToElement();
-			std::string name = tmp->GetText();
+			properties.name_ = tmp->GetText();
 
 			tmp = tmp->NextSiblingElement("mass");
-			float mass = convertFromText<float>(tmp->GetText());
+			properties.mass_ = convertFromText<float>(tmp->GetText());
 			
 			tmp = tmp->NextSiblingElement("radius");
-			float radius = convertFromText<float>(tmp->GetText());
+			properties.radius_ = convertFromText<float>(tmp->GetText());
 			
 			tmp = tmp->NextSiblingElement("life");
-			float life = convertFromText<float>(tmp->GetText());
+			properties.life_ = convertFromText<float>(tmp->GetText());
 			
 			tmp = tmp->NextSiblingElement("infected");
-			bool infected = convertFromText<bool>(tmp->GetText());
+			properties.infected_ = convertFromText<bool>(tmp->GetText());
 			
 			tmp = tmp->NextSiblingElement("walkingSpeed");
-			float walkingSpeed = convertFromText<float>(tmp->GetText());
+			properties.walkingSpeed_ = convertFromText<float>(tmp->GetText());
 
 			tmp = tmp->NextSiblingElement("runningSpeed");
-			float runningSpeed = convertFromText<float>(tmp->GetText());
+			properties.runningSpeed_ = convertFromText<float>(tmp->GetText());
 
 			tmp = tmp->NextSiblingElement("stamina");
-			float stamina = convertFromText<float>(tmp->GetText());
+			properties.stamina_ = convertFromText<float>(tmp->GetText());
+			units_[properties.name_] = properties;
 
 			element = element->NextSiblingElement("unit");
 		}
