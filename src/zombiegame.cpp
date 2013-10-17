@@ -59,11 +59,9 @@ namespace zombie {
 			engine_.addAi(spawn.x, spawn.y, 0.f, Weapon(35,0.5,8,120), false);
 		}
 
-		// Add weapons.
-		for (int i = 0; i < 10; ++i) {
-			Position spawn = generatePosition(ORIGO, 0, 50);
-			Weapon weapon;
-			engine_.addWeapon(spawn.x, spawn.y, weapon);
+		for (BuildingProperties& p : buildings_) {
+			p.points_.pop_back(); // Last point same as first point!
+			engine_.addBuilding(p.points_);
 		}
 	}
 
