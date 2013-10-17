@@ -117,7 +117,7 @@ namespace zombie {
 	void ZombieGame::loadMap(std::string map) {
 		// Load map file.
 		tinyxml2::XMLDocument mapXml;
-		mapXml.LoadFile("maps.xml");
+		mapXml.LoadFile("map.xml");
 		if (mapXml.Error()) {
 			// Failed!
 			mapXml.PrintError();
@@ -125,7 +125,7 @@ namespace zombie {
 		}
 
 		tinyxml2::XMLHandle mapHandle(mapXml);
-		mapHandle = mapHandle.FirstChildElement("zombie").FirstChildElement("maps").FirstChildElement("map");
+		mapHandle = mapHandle.FirstChildElement("map");
 		while (mapHandle.ToNode() != nullptr) {
 			tinyxml2::XMLHandle tmp = mapHandle.FirstChildElement("name");
 			std::string name = tmp.ToElement()->GetText();
@@ -142,6 +142,8 @@ namespace zombie {
 						tmp2 = tmp2->NextSiblingElement("geom");
 						BuildingProperties properties = convertFromText<BuildingProperties>(tmp2->GetText());
 						buildings_.push_back(properties);
+					} else if (type == "spawningPoint") {
+						// Todo!
 					} else {
 						throw mw::Exception("No such mapObject: " + type + "\n");
 					}

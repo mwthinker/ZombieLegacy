@@ -2,7 +2,7 @@
 <map>
    <name>Base Defense Map</name>
    <mapObjects>
-	  <mapObject>
+   <mapObject>
          <type>spawningPoint</type>
          <geom>POINT (10,10)</geom>
          <physical>false</physical>
@@ -10,14 +10,14 @@
       </mapObject>
       <mapObject>
          <type>building</type>
-         <geom>POLYGON ((30 -80,40 -80,40 -90,30 -90,30 -80))</geom>
+         <geom>POLYGON ((5 5, 0 5, 0 0, 5 0, 5 5))</geom>
          <height>2.8</height>
          <physical>true</physical>
          <animation>true</animation>
       </mapObject>
       <mapObject>
          <type>building</type>
-         <geom>POLYGON ((20 -30,30 -30,30 -40,20 -40,20 -30))</geom>
+         <geom>POLYGON ((25 25, 20 25, 20 20, 25 20, 25 25))</geom>
          <height>2.3</height>
          <physical>true</physical>
          <animation>true</animation>
