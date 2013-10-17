@@ -49,7 +49,7 @@ namespace zombie {
 		//Handle to first node <zombie>.
 		bool load(tinyxml2::XMLHandle xml);
 		
-		//Handle to first relevant map (node = <map>) to be loaded.
+		//Handle to map (node = <map>) to be loaded.
 		void loadMap(std::string map);
 		
 		//Handle to first node <weapons>.
