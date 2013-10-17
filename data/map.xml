@@ -3,7 +3,7 @@
    <name>Base Defense Map</name>
    <mapObjects>
    <mapObject>
-         <type>spawningPoint</type>
+         <type>humanSpawningPoint</type>
          <geom>POINT (10,10)</geom>
          <physical>false</physical>
          <animation>false</animation>
