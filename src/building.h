@@ -29,7 +29,7 @@ namespace zombie {
 				unsigned int size = corners.size();
 
 				// Create polygon.
-				b2Vec2 vertices[b2_maxPolygonVertices];		
+				b2Vec2 vertices[b2_maxPolygonVertices];
 				unsigned int count = 0;
 				// Save global vertex points to local shape coordinates.
 				for (; count < size && count < b2_maxPolygonVertices; ++count) {

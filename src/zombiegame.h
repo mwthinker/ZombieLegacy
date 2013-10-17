@@ -10,6 +10,7 @@
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
+#include <mw/sound.h>
 
 #include <SDL.h>
 #include <tinyxml2.h>
@@ -75,6 +76,7 @@ namespace zombie {
 
 		std::map<std::string, mw::TexturePtr> textures_;
 		std::map<std::string, mw::Sprite> sprites_;
+		std::map<std::string, mw::Sound> sounds_;
 	};
 
 } // Namespace zombie_;
