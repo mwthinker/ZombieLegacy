@@ -19,6 +19,7 @@ SET(SOURCES_ZOMBIE
 	src/aibehavior.h
 	src/aiplayer.cpp
 	src/aiplayer.h
+	src/animation.h
 	src/auxiliary.cpp
 	src/auxiliary.h
 	src/blood.cpp
