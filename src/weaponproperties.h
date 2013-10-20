@@ -9,7 +9,7 @@ namespace zombie {
 	public:
 		std::string name_;
 		float mass_;
-		std::string animation_;
+		std::string image_;
 		float damage_;
 		float timeBetweenShots_;
 		float range_;

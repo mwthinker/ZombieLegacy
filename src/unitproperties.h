@@ -1,6 +1,8 @@
 #ifndef UNITPROPERTIES_H
 #define UNITPROPERTIES_H
 
+#include "animation.h"
+
 #include <string>
 
 namespace zombie {
@@ -15,6 +17,7 @@ namespace zombie {
 		float runningSpeed_;
 		float stamina_;
 		bool infected_;
+		Animation animation_;
 	};
 
 } // Namespace zombie.

@@ -9,7 +9,7 @@
 	<movingObjects>
 		<car>
 			<name>Volvo</name>
-			<animation>images/car.png</animation>
+			<image>images/car.png</image>
 			<mass>100</mass> <!-- Kg-->
 			<width>1</width> <!-- Meter-->
 			<length>2</length>
@@ -17,6 +17,17 @@
 		</car>
 		<unit>
 			<name>Human</name>
+			<animation>
+				<scale>0.0078125</scale> <!-- 1/128 -->
+				<image>images/human/human1.png</image>
+				<time>0.18</time>
+				<image>images/human/human2.png</image>
+				<time>0.18</time>
+				<image>images/human/human1.png</image>
+				<time>0.18</time>
+				<image>images/human/human3.png</image>
+				<time>0.18</time>
+			</animation>
 			<mass>100</mass>
 			<radius>1</radius>
 			<life>100</life>
@@ -27,6 +38,21 @@
 		</unit>
 		<unit>
 			<name>Zombie</name>
+			<animation>
+				<scale>0.0078125</scale> <!-- 1/128 -->
+				<image>images/zombie/zombie1.png</image>
+				<time>0.18</time>
+				<image>images/zombie/zombie2.png</image>
+				<time>0.18</time>
+				<image>images/zombie/zombie3.png</image>
+				<time>0.18</time>
+				<image>images/zombie/zombie4.png</image>
+				<time>0.18</time>
+				<image>images/zombie/zombie5.png</image>
+				<time>0.18</time>
+				<image>images/zombie/zombie6.png</image>
+				<time>0.18</time>
+			</animation>
 			<mass>100</mass>
 			<radius>1</radius>
 			<life>100</life>
@@ -39,7 +65,7 @@
 	<weapons>
 		<weapon>
 			<name>Handgun</name>
-			<animation>images/handgun.png</animation>
+			<image>images/handgun.png</image>
 			<damage>50</damage>
 			<timeBetweenShots>0.3</timeBetweenShots>
 			<range>10</range>
@@ -49,7 +75,7 @@
 		</weapon>
 		<weapon>
 			<name>ZombieFist</name>
-			<animation>images/ZombieFist.png</animation>
+			<image>images/ZombieFist.png</image>
 			<damage>10</damage>
 			<timeBetweenShots>0.3</timeBetweenShots>
 			<range>1</range>

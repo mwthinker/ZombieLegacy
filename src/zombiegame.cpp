@@ -42,18 +42,21 @@ namespace zombie {
 		loadMap("Base Defense Map");
 		
 		// Add cars.
+		CarProperties cP = cars_["volvo"];
 		for (int i = 0; i < 10; ++i) {
 			Position spawn = generatePosition(ORIGO, 0, 50);
 			engine_.addCar(spawn.x, spawn.y);
 		}
 
+		
 		// Add zombies.
-		for (int i = 0; i < 1; ++i) {
+		UnitProperties uP = units_["zombie"];
+		for (int i = 0; i < 10; ++i) {
 			Position spawn = generatePosition(ORIGO, 0, 50);
 			engine_.addAi(spawn.x, spawn.y, 0.3f, Weapon(35,0.5f,1,10000), true);
 		}
 
-		// Add survivors.
+		uP = units_["human"];
 		for (int i = 0; i < 10; ++i) {
 			Position spawn = generatePosition(ORIGO, 0, 50);
 			engine_.addAi(spawn.x, spawn.y, 0.f, Weapon(35,0.5,8,120), false);
@@ -142,7 +145,9 @@ namespace zombie {
 						tmp2 = tmp2->NextSiblingElement("geom");
 						BuildingProperties properties = convertFromText<BuildingProperties>(tmp2->GetText());
 						buildings_.push_back(properties);
-					} else if (type == "spawningPoint") {
+					} else if (type == "humanSpawningPoint") {
+						// Todo!
+					} else if (type == "zombieSpawningPoint") {
 						// Todo!
 					} else {
 						throw mw::Exception("No such mapObject: " + type + "\n");
@@ -158,6 +163,43 @@ namespace zombie {
 			mapHandle = mapHandle.NextSiblingElement();
 		}
 	}
+
+	Animation ZombieGame::loadAnimation(tinyxml2::XMLHandle xml) {
+		tinyxml2::XMLHandle handle = xml.FirstChildElement("scale");
+		if (handle.ToElement() == nullptr) {
+			throw  mw::Exception("");
+		}
+		float scale = convertFromText<float>(handle.ToElement()->GetText());
+		Animation animation(scale);
+		
+		while (handle.NextSiblingElement("image").ToElement() != nullptr) {
+			handle = handle.NextSiblingElement("image");
+			mw::TexturePtr texture = getLoadedTexture(handle.ToElement()->GetText());
+			handle = handle.NextSiblingElement("time");
+			float time = convertFromText<float>(handle.ToElement()->GetText());
+			animation.add(texture, time);
+		}
+
+		return animation;
+	}
+
+	mw::TexturePtr ZombieGame::getLoadedTexture(std::string file) {
+		unsigned int size = textures_.size();
+
+		mw::TexturePtr& texture = textures_[file];
+		// Image not found?
+		if (textures_.size() > size) {
+			texture = mw::TexturePtr(new mw::Texture(file));
+			
+			// Image not valid?
+			if (!texture->isValid()) {
+				// Return null pointer.
+				texture = mw::TexturePtr();
+			}
+		}
+
+		return texture;
+	}
 	
 	void ZombieGame::loadWeapons(tinyxml2::XMLHandle xml) {
 		// Find all weapons.
@@ -167,8 +209,8 @@ namespace zombie {
 			tinyxml2::XMLElement* tmp = element->FirstChildElement("name")->ToElement();
 			properties.name_ = tmp->GetText();
 			
-			tmp = tmp->NextSiblingElement("animation");
-			properties.animation_ = tmp->GetText();
+			tmp = tmp->NextSiblingElement("image");
+			properties.image_ = tmp->GetText();
 
 			tmp = tmp->NextSiblingElement("damage");
 			properties.damage_ = convertFromText<float>(tmp->GetText());
@@ -207,7 +249,7 @@ namespace zombie {
 			element = element->NextSiblingElement("zoomlevel");
 			int zoomlevel = convertFromText<int>(element->GetText());
 		} catch (mw::Exception&) {
-			throw mw::Exception("failed to load settings in xml file");
+			throw mw::Exception("Failed to load settings in xml file");
 		}
 	}
 
@@ -219,8 +261,8 @@ namespace zombie {
 			tinyxml2::XMLElement* tmp = element->FirstChildElement("name")->ToElement();
 			properties.name_ = tmp->GetText();
 			
-			tmp = tmp->NextSiblingElement("animation");
-			properties.animation_ = tmp->GetText();
+			tmp = tmp->NextSiblingElement("image");
+			properties.image_ = tmp->GetText();
 
 			tmp = tmp->NextSiblingElement("mass");
 			properties.mass_ = convertFromText<float>(tmp->GetText());
@@ -244,6 +286,9 @@ namespace zombie {
 			UnitProperties properties;
 			tinyxml2::XMLElement* tmp = element->FirstChildElement("name")->ToElement();
 			properties.name_ = tmp->GetText();
+
+			tmp = tmp->NextSiblingElement("animation");
+			properties.animation_ = loadAnimation(tmp);
 
 			tmp = tmp->NextSiblingElement("mass");
 			properties.mass_ = convertFromText<float>(tmp->GetText());

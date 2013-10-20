@@ -9,10 +9,10 @@ namespace zombie {
 	public:
 		std::string name_;
 		float mass_;
-		std::string animation_;
 		float life_;		
 		float width_;
 		float length_;
+		std::string image_;
 	};
 
 } // Namespace zombie.
