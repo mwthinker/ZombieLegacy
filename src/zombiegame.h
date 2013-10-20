@@ -7,6 +7,7 @@
 #include "weaponproperties.h"
 #include "unitproperties.h"
 #include "carproperties.h"
+#include "animation.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
@@ -46,20 +47,28 @@ namespace zombie {
 		void handleGameEvent(const GameEvent& gameEvent);
 		void handleRemoval(bool& remove, MovingObject* mOb);
 
-		//Handle to first node <zombie>.
+		// Handle to first node <zombie>.
 		bool load(tinyxml2::XMLHandle xml);
 		
-		//Handle to map (node = <map>) to be loaded.
+		// Handle to map (node = <map>) to be loaded.
 		void loadMap(std::string map);
 		
-		//Handle to first node <weapons>.
+		// Handle to first node <weapons>.
 		void loadWeapons(tinyxml2::XMLHandle xml);
 		
-		//Handle to first node <settings>.
+		// Handle to first node <settings>.
 		void loadSettings(tinyxml2::XMLHandle xml);
 		
-		//Handle to first node <movingObjects>.
+		// Handle to first node <movingObjects>.
 		void loadMovingUnits(tinyxml2::XMLHandle xml);
+
+		// Handle to node <animation>.
+		Animation loadAnimation(tinyxml2::XMLHandle animation);
+
+		// Get the loaded texture, if the loaded texture not exist in memory,
+		// the image (file) is loaded to memory. If the loading fails a nullptr
+		// is returned.
+		mw::TexturePtr getLoadedTexture(std::string file);
 				
 		float innerSpawnRadius_;
 		float outerSpawnRadius_;
@@ -75,7 +84,6 @@ namespace zombie {
 		std::vector<BuildingProperties> buildings_;
 
 		std::map<std::string, mw::TexturePtr> textures_;
-		std::map<std::string, mw::Sprite> sprites_;
 		std::map<std::string, mw::Sound> sounds_;
 	};
 

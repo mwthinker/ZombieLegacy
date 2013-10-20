@@ -11,6 +11,10 @@ namespace zombie {
 	// Uses sprites to create a animation.
 	class Animation {
 	public:
+		Animation() {
+			scale_ = 1.f;
+		}
+
 		// All frames are drawn in scaled (scale) pixelsize.
 		Animation(float scale) {
 			index_ = 0;
