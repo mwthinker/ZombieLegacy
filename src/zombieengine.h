@@ -39,7 +39,7 @@ namespace zombie {
 		const Unit* unit_;
 	};
 
-	// Responsible of all creatan and deallocation of game objects 
+	// Responsible of all creation and deallocation of game objects 
 	// and manage there physical and graphical representation.
 	class ZombieEngine : public b2ContactListener {
 	public:
@@ -61,13 +61,13 @@ namespace zombie {
 		void updateSize(int width, int height);
 
 		// Add a human player to the game.
-		void addHuman(DevicePtr device, float x, float y, float angle, const Weapon& weapon);
+		void addHuman(DevicePtr device, float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon);
 
 		// Add a ai player to the game.
-		void addAi(float x, float y, float angle, const Weapon& weapon, bool infected);
+		void addAi(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
 
 		// Add a car to the game.
-		void addCar(float x, float y);
+		void addCar(float x, float y, float angle, float mass, float life, float width, float length);
 
 		void addBuilding(const std::vector<Position>& corners);
 
@@ -82,9 +82,9 @@ namespace zombie {
 
 	private:
 		// Creates a unit and add &doShotDamage to receive bullets fired.
-		Unit* createUnit(float x, float y, float angle, const Weapon& weapon, bool infected);
+		Unit* createUnit(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
 
-		Car* createCar(float x, float y);
+		Car* createCar(float x, float y, float angle, float mass, float life, float width, float length);
 
 		// Updates the game time by (msDeltaTime).
 		void updatePhysics(float timeStep);

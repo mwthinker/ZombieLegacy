@@ -16,9 +16,7 @@ namespace zombie {
 	// Returns a random postion between the defined outer and inner circle centered in position.
 	Position generatePosition(Position position, float innerRadius, float outerRadius) {
 		return position + (innerRadius + (outerRadius - innerRadius) * random()) * Position(std::cosf(random()*2.f*3.14f), std::sinf(random()*2.f*3.14f));
-	}
-
-	const Position ORIGO(0,0);
+	}	
 
 	ZombieGame::ZombieGame(int width, int height, tinyxml2::XMLHandle xml) : engine_(width, height) {
 		// Set windows size.
@@ -30,40 +28,41 @@ namespace zombie {
 		engine_.addGrassGround(-50, 50, -50, 50);
 
 		innerSpawnRadius_ = 10.f;
-		outerSpawnRadius_ = 40.f;
+		outerSpawnRadius_ = 40.f;		
 		
-		Position position = generatePosition(ORIGO, 0, 50);
-		engine_.addHuman(keyboard1_,position.x, position.y, 0.3f, Weapon(55,0.2f,8,12));
-		engine_.addEventListener(std::bind(&ZombieGame::handleGameEvent, this, std::placeholders::_1));
+		//engine_.addEventListener(std::bind(&ZombieGame::handleGameEvent, this, std::placeholders::_1));
 
 		load(xml);
 		
 		// Load map.
 		loadMap("Base Defense Map");
+
+		CarProperties volvoP = cars_["Volvo"];
+		UnitProperties humanP = units_["Human"];
+		UnitProperties zombieP = units_["Zombie"];
 		
-		// Add cars.
-		CarProperties cP = cars_["volvo"];
+		Position position = generatePosition(ORIGO, 0, 50);
+		engine_.addHuman(keyboard1_, position.x, position.y, 0.3f, humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, Weapon(55, 0.2f, 8, 12));
+
+		// Add cars.		
 		for (int i = 0; i < 10; ++i) {
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addCar(spawn.x, spawn.y);
+			engine_.addCar(spawn.x, spawn.y, 0.f, volvoP.mass_, volvoP.life_, volvoP.width_, volvoP.length_);
 		}
-
 		
 		// Add zombies.
-		UnitProperties uP = units_["zombie"];
 		for (int i = 0; i < 10; ++i) {
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addAi(spawn.x, spawn.y, 0.3f, Weapon(35,0.5f,1,10000), true);
+			engine_.addAi(spawn.x, spawn.y, 0.3f, zombieP.mass_, zombieP.radius_, zombieP.life_, zombieP.walkingSpeed_, zombieP.runningSpeed_, true, Weapon(35, 0.5f, 1, 10000));
 		}
-
-		uP = units_["human"];
+		
 		for (int i = 0; i < 10; ++i) {
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addAi(spawn.x, spawn.y, 0.f, Weapon(35,0.5,8,120), false);
+			engine_.addAi(spawn.x, spawn.y, 0.3f, humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, false, Weapon(35, 0.5, 8, 120));
 		}
 
 		for (BuildingProperties& p : buildings_) {
-			p.points_.pop_back(); // Last point same as first point!
+			p.points_.pop_back(); // Last point same as first point! Due to difference in XML and Box2D.
 			engine_.addBuilding(p.points_);
 		}
 	}
@@ -74,7 +73,7 @@ namespace zombie {
 	void ZombieGame::handleGameEvent(const GameEvent& gameEvent) {
 		if (const UnitDie* unitDie = dynamic_cast<const UnitDie*>(&gameEvent)) {
 			Position spawn = generatePosition(engine_.getMainUnitPostion(), innerSpawnRadius_, outerSpawnRadius_);
-			engine_.addAi(spawn.x, spawn.y, 0.3f, Weapon(35,0.5f,1,10000), true);
+			//engine_.addAi(spawn.x, spawn.y, 0.3f, Weapon(35,0.5f,1,10000), true);
 		}
 	}
 

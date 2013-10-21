@@ -2,8 +2,6 @@
 #include "auxiliary.h"
 #include "movingobject.h"
 
-#include <mw/mathvector.h>
-
 #include <list>
 
 namespace zombie {
@@ -11,7 +9,7 @@ namespace zombie {
 	ZombieBehavior::ZombieBehavior() {
 		findNewTargetTime_ = random() * 3;
 		timeToUpdateAngleDirection_ = random() * 1;
-		targetAngle_ = random() * mw::PI * 2;
+		targetAngle_ = random() * PI * 2;
 		idTarget_ = 0;
 	}
 
@@ -57,7 +55,7 @@ namespace zombie {
 					input.shoot_ = true;
 				}
 			} else {
-				targetAngle_ += (random()-0.5)*2 * mw::PI * 2 * 0.1;
+				targetAngle_ += (random()-0.5)*2 * PI * 2 * 0.1;
 				forward_ = random() > 0.25;
 			}
 		}			

@@ -10,7 +10,7 @@
 
 namespace zombie {
 
-	Unit::Unit(float x, float y, float angle, const Weapon& weapon, bool infected) : weapon_(weapon) {
+	Unit::Unit(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) : weapon_(weapon) {
 		isInfected_ = infected;
 
 		// Properties
@@ -19,8 +19,8 @@ namespace zombie {
 		smallViewDistance_ = 2;
 
 		// Health
-		healthPoints_ = 100.0f;
-		isDead_ = false;	
+		healthPoints_ = life;
+		isDead_ = false;
 
 		timeLeftToRun_ = 5.f;
 		
@@ -29,6 +29,7 @@ namespace zombie {
 		bodyDef.type = b2_dynamicBody;
 		bodyDef.position.Set(x, y);
 		bodyDef.angle = angle;
+
 		body_ = getWorld()->CreateBody(&bodyDef);
 		body_->SetUserData(this);
 
@@ -53,11 +54,11 @@ namespace zombie {
 		{
 			b2CircleShape circle;
 			circle.m_p.Set(0, 0);
-			circle.m_radius = 0.4f;
+			circle.m_radius = radius;
 
 			b2FixtureDef fixtureDef;
 			fixtureDef.shape = &circle;
-			fixtureDef.density = 1.0f;
+			fixtureDef.density = mass / (PI * radius * radius);
 			fixtureDef.friction = 0.0f;
 		
 			// Add Body fixture.
