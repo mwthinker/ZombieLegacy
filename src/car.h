@@ -22,10 +22,9 @@ namespace zombie {
 
 	class Car : public MovingObject {
 	public:
-		Car(float x, float y, float angle = 0.0) {
-			length_ = 2.0f;
-			width_ = 1.0f;
-			float mass = 100.0f;
+		Car(float x, float y, float angle, float mass, float life, float width, float length) {
+			length_ = length;
+			width_ = width;
 
 			currentTime_ = 0.0f;
 			steeringAngle_ = 0.0f;
@@ -44,11 +43,11 @@ namespace zombie {
 			// Body properties.
 			{
 				b2PolygonShape dynamicBox;
-				dynamicBox.SetAsBox(length_, width_);
+				dynamicBox.SetAsBox(0.5f*length_, 0.5f*width_); // Expected parameters is half the side.
 
 				b2FixtureDef fixtureDef;
 				fixtureDef.shape = &dynamicBox;
-				fixtureDef.density = 1.0f;
+				fixtureDef.density = mass / (length_ * width_);
 				fixtureDef.friction = 0.3f;
 				b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
 				fixture->SetUserData(this);

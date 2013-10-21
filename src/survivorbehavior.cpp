@@ -10,7 +10,7 @@ namespace zombie {
 	SurvivorBehavior::SurvivorBehavior() {
 		findNewTargetTime_ = random() * 3;
 		timeToUpdateAngleDirection_ = random() * 1;
-		targetAngle_ = random() * mw::PI * 2;
+		targetAngle_ = random() * PI * 2;
 		forward_ = true;
 		backward_ = false;
 		target_ = nullptr;

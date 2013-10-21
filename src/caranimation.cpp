@@ -26,14 +26,12 @@ namespace zombie {
 			State state = car->state();
 
 			glColor3d(1,1,1);
-			glTranslated(state.position_.x,state.position_.y,0);
-			glRotated(state.angle_*180/3.14,0,0,1);
+			glTranslated(state.position_.x, state.position_.y, 0);
+			glRotated(state.angle_ * 180 / PI,0,0,1);
 			glRotated(270,0,0,1);
-			double width = 1;
-			double length = 2;
+			double width = 1; // Hardcoded! Ugly! Fix!
+			double length = 2; // Hardcoded! Ugly! Fix!
 			glScaled(width,length,1);
-
-			glScaled(2,2,1);
 
 			carSprite_.draw();
 

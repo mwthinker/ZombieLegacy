@@ -48,7 +48,7 @@ namespace zombie {
 			glPushMatrix();
 			glTranslated(unit->getPosition().x,unit->getPosition().y,0);
 			glScaled(unit->getRadius()*0.9,unit->getRadius()*0.9,1);
-			glRotated(unit->getState().angle_*180/mw::PI,0,0,1);
+			glRotated(unit->getState().angle_*180/PI,0,0,1);
 			double d = sprites_[index_].getTexture()->getWidth();
 			glScaled(d/128.0,d/128.0,1);
 			sprites_[index_].draw();

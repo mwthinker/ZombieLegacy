@@ -23,7 +23,7 @@ namespace zombie {
 			SHOOT, RELOADING, DIE, WALK, STANDSTILL, RUN
 		};
 
-		Unit(float x, float y, float angle, const Weapon& weapon, bool infected);
+		Unit(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
 		virtual ~Unit();
 
 		// Simulates the physics at time (time) one time step (timeStep) ahead.
@@ -94,6 +94,8 @@ namespace zombie {
 		float viewDistance_;
 		float viewAngle_;
 		float smallViewDistance_;
+		float walkingSpeed_;
+		float runningSpeed_;
 
 		// Health
 		float healthPoints_;
