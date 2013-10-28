@@ -5,8 +5,11 @@
 
 #include <vector>
 #include <utility>
+#include <tuple>
 
 namespace zombie {
+
+	typedef std::tuple<std::string, float, float> TupleImageScaleTime;
 		
 	// Uses sprites to create a animation.
 	class Animation {

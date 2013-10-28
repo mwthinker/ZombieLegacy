@@ -7,13 +7,12 @@
 #include "weaponproperties.h"
 #include "unitproperties.h"
 #include "carproperties.h"
-#include "animation.h"
+#include "settings.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
 #include <mw/sound.h>
 
-#include <SDL.h>
 #include <tinyxml2.h>
 
 #include <map>
@@ -52,18 +51,6 @@ namespace zombie {
 		
 		// Handle to map (node = <map>) to be loaded.
 		void loadMap(std::string map);
-		
-		// Handle to first node <weapons>.
-		void loadWeapons(tinyxml2::XMLHandle xml);
-		
-		// Handle to first node <settings>.
-		void loadSettings(tinyxml2::XMLHandle xml);
-		
-		// Handle to first node <movingObjects>.
-		void loadMovingUnits(tinyxml2::XMLHandle xml);
-
-		// Handle to node <animation>.
-		Animation loadAnimation(tinyxml2::XMLHandle animation);
 
 		// Get the loaded texture, if the loaded texture not exist in memory,
 		// the image (file) is loaded to memory. If the loading fails a nullptr
@@ -78,6 +65,7 @@ namespace zombie {
 		ZombieEngine engine_;
 		DevicePtr keyboard1_, keyboard2_;
 
+		Settings settings_;
 		std::map<std::string, WeaponProperties> weapons_;
 		std::map<std::string, UnitProperties> units_;
 		std::map<std::string, CarProperties> cars_;
