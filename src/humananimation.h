@@ -3,6 +3,7 @@
 
 #include "task.h"
 #include "unit.h"
+#include "animation.h"
 
 #include <vector>
 #include <mw/sprite.h>
@@ -12,7 +13,7 @@ namespace zombie {
 
 	class HumanAnimation : public Task {
 	public:
-		HumanAnimation(Unit* unit);
+		HumanAnimation(Unit* unit, const Animation& animation);
 		~HumanAnimation();
 		
 		void unitEventHandler(Unit::UnitEvent unitEvent);
@@ -23,12 +24,7 @@ namespace zombie {
 		mw::signals::Connection connection_;
 		int humanId_;
 
-		double timeNewFrame_;
-		int index_;
-		std::vector<mw::Sprite> sprites_;
-
-		double lastTime_;
-		Color color_;
+		Animation animation_;
 	};
 
 } // Namespace zombie.

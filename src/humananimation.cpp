@@ -7,19 +7,9 @@
 
 namespace zombie {
 
-	HumanAnimation::HumanAnimation(Unit* unit) {
+	HumanAnimation::HumanAnimation(Unit* unit, const Animation& animation) : animation_(animation) {
 		connection_ = unit->addEventHandler(std::bind(&HumanAnimation::unitEventHandler,this,std::placeholders::_1));
 		humanId_ = unit->getId();
-
-		timeNewFrame_ = 0.0;
-		index_ = 0;
-		lastTime_ = 0.0;
-		color_ = Color();
-
-		sprites_.push_back(human1Sprite);
-		sprites_.push_back(human2Sprite);
-		sprites_.push_back(human1Sprite);
-		sprites_.push_back(human3Sprite);
 	}
 
 	HumanAnimation::~HumanAnimation() {
@@ -33,30 +23,15 @@ namespace zombie {
 		// Object alive and active?
 		if (ob != nullptr && ob->getBody()->IsActive()) {
 			const Unit* unit = static_cast<const Unit*>(ob);
-			lastTime_ = time;
-
-			// Time is much larger?
-			if (time > timeNewFrame_ + 1) {
-				// In order for frames to sync to current time.
-				timeNewFrame_ = 0.18 + time;
-			}
-
-			if (time > timeNewFrame_) {
-				index_ = (1 + index_) % sprites_.size();
-				timeNewFrame_ += 0.18;
-			}
-
+			
 			Position p = unit->getPosition();
 
 			// Draw body
-			color_.glColor3d();
 			glPushMatrix();
 			glTranslated(p.x,p.y,0);
 			glScaled(unit->getRadius()*0.9,unit->getRadius()*0.9,1);
 			glRotated(unit->getState().angle_*180/PI,0,0,1);
-			mw::TexturePtr texture = sprites_[index_].getTexture();
-			glScaled(texture->getWidth()/128.0,texture->getHeight()/128.0,1);
-			sprites_[index_].draw();
+			animation_.draw(time);
 			glPopMatrix();
 			return true;
 		}
@@ -83,8 +58,7 @@ namespace zombie {
 		case Unit::UnitEvent::DIE:
 			break;
 		case Unit::UnitEvent::STANDSTILL:
-			index_ = 0;
-			timeNewFrame_ = lastTime_ + 0.18;
+			animation_.restart();
 			break;
 		case Unit::UnitEvent::WALK:
 			// Fall through!

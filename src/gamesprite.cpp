@@ -16,17 +16,6 @@ namespace zombie {
 	const mw::Sprite roadSprite("images/roadtile2.jpg");
 	const mw::Sprite treeSprite("images/zombie/objects/tree.png");
 
-	const mw::Sprite zombie1Sprite("images/zombie/zombie1.png");
-	const mw::Sprite zombie2Sprite("images/zombie/zombie2.png");
-	const mw::Sprite zombie3Sprite("images/zombie/zombie3.png");
-	const mw::Sprite zombie4Sprite("images/zombie/zombie4.png");
-	const mw::Sprite zombie5Sprite("images/zombie/zombie5.png");
-	const mw::Sprite zombie6Sprite("images/zombie/zombie6.png");
-
-	const mw::Sprite human1Sprite("images/human/human1.png");
-	const mw::Sprite human2Sprite("images/human/human2.png");
-	const mw::Sprite human3Sprite("images/human/human3.png");
-
 	const mw::Sprite bloodSprite("images/blood.png");
 	const mw::Sprite carSprite("images/car.png");
 

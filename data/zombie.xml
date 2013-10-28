@@ -5,6 +5,7 @@
 		<height>600</height>
 		<unitlevel>20</unitlevel>
 		<zoomlevel>3</zoomlevel>
+		<map>map.xml</map>
 	</settings>
 	<movingObjects>
 		<car>

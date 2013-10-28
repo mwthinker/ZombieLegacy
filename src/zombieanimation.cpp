@@ -5,19 +5,8 @@
 
 namespace zombie {
 
-	ZombieAnimation::ZombieAnimation(Unit* unit) : idUnit_(unit->getId()) {
+	ZombieAnimation::ZombieAnimation(Unit* unit, const Animation& animation) : idUnit_(unit->getId()), animation_(animation) {
 		connection_ = unit->addEventHandler(std::bind(&ZombieAnimation::unitEventHandler,this,std::placeholders::_1));
-
-		timeNewFrame_ = 0.0;
-		color_ = Color();
-
-		sprites_.push_back(zombie1Sprite);
-		sprites_.push_back(zombie2Sprite);
-		sprites_.push_back(zombie3Sprite);
-		sprites_.push_back(zombie4Sprite);
-		sprites_.push_back(zombie5Sprite);
-		sprites_.push_back(zombie6Sprite);
-		index_ = (int) (random() * sprites_.size());
 	}
 
 	ZombieAnimation::~ZombieAnimation() {
@@ -29,29 +18,14 @@ namespace zombie {
 
 		if (ob != nullptr) {
 			const Unit* unit = static_cast<const Unit*>(ob);
-
-			// Time is much larger?
-			if (time > timeNewFrame_ + 1) {
-				// In order for frames to sync to current time.
-				timeNewFrame_ = 0.18 + time;
-			}
-
-			if (time > timeNewFrame_) {
-				index_ = (1 + index_) % sprites_.size();
-				timeNewFrame_ += 0.18;
-			}
-
 			Position p = unit->getPosition();
 
-			// Draw body.
-			color_.glColor3d();
+			// Draw body.			
 			glPushMatrix();
 			glTranslated(unit->getPosition().x,unit->getPosition().y,0);
 			glScaled(unit->getRadius()*0.9,unit->getRadius()*0.9,1);
 			glRotated(unit->getState().angle_*180/PI,0,0,1);
-			double d = sprites_[index_].getTexture()->getWidth();
-			glScaled(d/128.0,d/128.0,1);
-			sprites_[index_].draw();
+			animation_.draw(time);
 			glPopMatrix();
 			return true;
 		} else {
