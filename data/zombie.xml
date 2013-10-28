@@ -17,7 +17,7 @@
 		</car>
 		<unit>
 			<name>Human</name>
-			<animation>
+			<animation type="list">
 				<scale>0.0078125</scale> <!-- 1/128 -->
 				<image>images/human/human1.png</image>
 				<time>0.18</time>
@@ -38,7 +38,7 @@
 		</unit>
 		<unit>
 			<name>Zombie</name>
-			<animation>
+			<animation type="list">
 				<scale>0.0078125</scale> <!-- 1/128 -->
 				<image>images/zombie/zombie1.png</image>
 				<time>0.18</time>

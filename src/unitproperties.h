@@ -17,7 +17,7 @@ namespace zombie {
 		float runningSpeed_;
 		float stamina_;
 		bool infected_;
-		Animation animation_;
+		std::vector<TupleImageScaleTime> animation_;
 	};
 
 } // Namespace zombie.

@@ -49,6 +49,7 @@ SET(SOURCES_ZOMBIE
 	src/input.h
 	src/inputkeyboard.h
 	src/linefeature.h
+	src/load.cpp
 	src/load.h
 	src/main.cpp
 	src/mapdraw.cpp
@@ -62,6 +63,7 @@ SET(SOURCES_ZOMBIE
 	src/player.h
 	src/roaddraw.cpp
 	src/roaddraw.h
+	src/settings.h
 	src/shot.cpp
 	src/shot.h
 	src/sky.h

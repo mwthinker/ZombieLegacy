@@ -1,8 +1,16 @@
 #ifndef LOAD_H
 #define LOAD_H
 
-#include <mw/exception.h>
+#include "typedefs.h"
+#include "buildingproperties.h"
+#include "carproperties.h"
+#include "weaponproperties.h"
+#include "unitproperties.h"
+#include "settings.h"
 
+#include <tinyxml2.h>
+
+#include <stdexcept>
 #include <cmath>
 #include <sstream>
 
@@ -16,64 +24,37 @@ namespace zombie {
 	template <class Output>
 	Output convertFromText(const char* txt) {
 		if (txt == nullptr) {
-			throw mw::Exception("convertFromText failed");
+			throw std::runtime_error("convertFromText, input null");
 		}
+
 		std::stringstream stream(txt);
 		Output output;
 		// Extract formatted input succeeds?
 		if (stream >> output) {
 			return output;
 		} else {
-			throw mw::Exception("convertFromText failed");
+			throw std::runtime_error("convertFromText, extract formatted failed");
 		}
 	}
 
-	std::stringstream& operator>>(std::stringstream& stream, Point& point) {
-		stream >> point.x;
-		stream >> point.y;
-		return stream;
-	}
-
-	// Takes c-string as input and returns the corresponding buildingProperties.
-	// Throws mw::Exception if the input is null or if the conversion
-	// fails.
-	// E.g. BuildingProperties p = convertFromText<BuildingProperties>("POLYGON ((1.2 2,41.2 0.123))");
-	// Gives BuildingProperties: p.points_={Point(1.2,2),Point(41.2,0.123)}; which is vector with the two points.
+	// Returns the input txt. If the c-string is empty a exception is thrown.
 	template <>
-	BuildingProperties convertFromText<BuildingProperties>(const char* txt) {
-		std::stringstream stream(txt);
-		std::string word;
-		
-		if (stream >> word) {
-			if (word == "POLYGON") {
-				BuildingProperties properties;
-				std::string line = stream.str();
-				int index = line.find("((");
-				int index2 = line.rfind("))");
-				
-				// New line is the string between "((" and "))".
-				line = line.substr(index + 2, index2 - index - 2);
-				
-				// Replace all ',' (comma) with whitespace.
-				for (char& chr : line) {
-					if (chr == ',') {
-						chr = ' ';
-					}
-				}
-				Point point;
-				stream.str(line);
-				while (stream >> point) {
-					properties.points_.push_back(point);
-				}
-				return properties;
-			} else {
-				throw mw::Exception("convertFromText failed, unknown geometry: " + word);
-			}
-		} else {
-			throw mw::Exception("convertFromText failed");
-		}
-		throw mw::Exception("convertFromText failed: BuildingProperties");
-	}
+	const char* convertFromText<const char*>(const char* txt);
+
+	// Returns the settings loaded from the <settings> in xml.
+	Settings loadSettings(tinyxml2::XMLHandle settingsTag);
+
+	// Returns all weapons loaded from the <weapons> in xml.
+	std::vector<WeaponProperties> loadWeapons(tinyxml2::XMLHandle weaponsTag);
+
+	// Returns all buildings loaded from the <mapObjects> in xml.
+	std::vector<BuildingProperties> loadBuildings(tinyxml2::XMLHandle buildingTag);
+
+	// Returns all buildings loaded from the <movingUnits> in xml.
+	std::vector<UnitProperties> loadUnits(tinyxml2::XMLHandle movingUnitsTag);
+
+	// Returns all cars loaded from the <movingUnits> in xml.
+	std::vector<CarProperties> loadCars(tinyxml2::XMLHandle movingUnitsTag);
 
 } // Namespace zombie.
 

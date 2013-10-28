@@ -3,13 +3,12 @@
 
 #include "typedefs.h"
 
-#include <string>
-
 namespace zombie {
 
 	class BuildingProperties {
 	public:
 		std::vector<Point> points_;
+		float height_;
 	};
 
 } // Namespace zombie.
