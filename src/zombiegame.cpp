@@ -34,32 +34,43 @@ namespace zombie {
 		//engine_.addEventListener(std::bind(&ZombieGame::handleGameEvent, this, std::placeholders::_1));
 
 		load(xml);
-		
-		// Load map.
-		loadMap("Base Defense Map");
 
 		CarProperties volvoP = cars_["Volvo"];
 		UnitProperties humanP = units_["Human"];
 		UnitProperties zombieP = units_["Zombie"];
 		
-		Position position = generatePosition(ORIGO, 0, 50);
-		engine_.addHuman(keyboard1_, position.x, position.y, 0.3f, humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, Weapon(55, 0.2f, 8, 12));
+		Animation animation;
+		for (auto tuple : humanP.animation_) {
+			animation.add(getLoadedTexture(std::get<0>(tuple)), std::get<2>(tuple));
+			animation.setScale(std::get<1>(tuple));
+		}
 
+		Position position = generatePosition(ORIGO, 0, 50);
+		engine_.addHuman(keyboard1_, position.x, position.y, 0.3f, humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, Weapon(55, 0.2f, 8, 12), animation);
+				
 		// Add cars.		
 		for (int i = 0; i < 10; ++i) {
+			Animation animation;
+			animation.add(getLoadedTexture(volvoP.image_));
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addCar(spawn.x, spawn.y, 0.f, volvoP.mass_, volvoP.life_, volvoP.width_, volvoP.length_);
+			engine_.addCar(spawn.x, spawn.y, 0.f, volvoP.mass_, volvoP.life_, volvoP.width_, volvoP.length_, animation);
 		}
 		
 		// Add zombies.
 		for (int i = 0; i < 10; ++i) {
+			Animation animation;
+			for (auto tuple : zombieP.animation_) {
+				animation.add(getLoadedTexture(std::get<0>(tuple)), std::get<2>(tuple));
+				animation.setScale(std::get<1>(tuple));
+			}
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addAi(spawn.x, spawn.y, 0.3f, zombieP.mass_, zombieP.radius_, zombieP.life_, zombieP.walkingSpeed_, zombieP.runningSpeed_, true, Weapon(35, 0.5f, 1, 10000));
+			engine_.addAi(spawn.x, spawn.y, 0.3f, zombieP.mass_, zombieP.radius_, zombieP.life_, zombieP.walkingSpeed_, zombieP.runningSpeed_, true, Weapon(35, 0.5f, 1, 10000), animation);
 		}
 		
-		for (int i = 0; i < 10; ++i) {
+		// Add survivors.
+		for (int i = 0; i < 0; ++i) {
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addAi(spawn.x, spawn.y, 0.3f, humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, false, Weapon(35, 0.5, 8, 120));
+			engine_.addAi(spawn.x, spawn.y, 0.3f, humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, false, Weapon(35, 0.5, 8, 120), animation);
 		}
 
 		for (BuildingProperties& p : buildings_) {
@@ -120,6 +131,8 @@ namespace zombie {
 			for (const CarProperties& p : cars) {
 				cars_[p.name_] = p;
 			}
+			// Load map.
+			loadMap(settings_.mapFile_);
 			
 			return true;
 		} catch (mw::Exception&) {
@@ -127,7 +140,6 @@ namespace zombie {
 		}
 	}
 
-	// Must load weapons before. Else the no weapons will be placed.
 	void ZombieGame::loadMap(std::string map) {
 		try {
 			// Load map file.

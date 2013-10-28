@@ -37,7 +37,7 @@ namespace zombie {
 		}
 	}
 
-	// Returns the input txt. If the c-string is empty a exception is thrown.
+	// Returns the input txt. If the c-string is empty a runtime exception is thrown.
 	template <>
 	const char* convertFromText<const char*>(const char* txt);
 

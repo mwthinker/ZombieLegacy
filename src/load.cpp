@@ -66,7 +66,6 @@ namespace zombie {
 				std::string image = handle.ToElement()->GetText();
 				handle = handle.NextSiblingElement("time");
 				float time = convertFromText<float>(handle.ToElement()->GetText());
-				float scale;
 				animation.push_back(TupleImageScaleTime(image, scale, time));
 			}
 
@@ -157,6 +156,7 @@ namespace zombie {
 		settings.height_ = convertFromText<int>(toText(settingsTag.FirstChildElement("height")));
 		settings.unitLevel_ = convertFromText<int>(toText(settingsTag.FirstChildElement("unitlevel")));
 		settings.zoomLevel_ = convertFromText<int>(toText(settingsTag.FirstChildElement("zoomlevel")));
+		settings.mapFile_ = convertFromText<const char*>(toText(settingsTag.FirstChildElement("map")));
 		return settings;
 	}
 

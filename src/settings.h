@@ -1,6 +1,8 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include <string>
+
 namespace zombie {
 
 	class Settings {
@@ -9,6 +11,7 @@ namespace zombie {
 		int height_;
 		int unitLevel_;
 		int zoomLevel_;
+		std::string mapFile_;
 	};
 
 } // Namespace zombie.

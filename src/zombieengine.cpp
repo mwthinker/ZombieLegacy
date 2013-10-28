@@ -24,6 +24,7 @@
 #include "humananimation.h"
 #include "humanplayer.h"
 #include "shot.h"
+#include "animation.h"
 
 #include <Box2D/Box2D.h>
 #include <SDL.h>
@@ -270,30 +271,30 @@ namespace zombie {
 		glPopMatrix();
 	}
 
-	void ZombieEngine::addHuman(DevicePtr device, float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon) {
+	void ZombieEngine::addHuman(DevicePtr device, float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, const Animation& animation) {
 		Unit* human = createUnit(x, y, angle, mass, radius, life, walkingSpeed, runningSpeed, false, weapon);
 		viewPosition_ = human->getPosition();
 		players_.push_back(new HumanPlayer(device, human));
 		taskManager_->add(new HumanStatus(human, HumanStatus::ONE), GraphicLevel::INTERFACE_LEVEL);
-		taskManager_->add(new HumanAnimation(human), GraphicLevel::UNIT_LEVEL);
+		taskManager_->add(new HumanAnimation(human, animation), GraphicLevel::UNIT_LEVEL);
 	}
 
-	void ZombieEngine::addAi(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) {
+	void ZombieEngine::addAi(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, const Animation& animation) {
 		Unit* unit = createUnit(x, y, angle, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
 		if (infected) {
 			AiBehaviorPtr b = std::make_shared<ZombieBehavior>();
-			taskManager_->add(new ZombieAnimation(unit), GraphicLevel::UNIT_LEVEL);
+			taskManager_->add(new ZombieAnimation(unit, animation), GraphicLevel::UNIT_LEVEL);
 			AiPlayer* aiPlayer(new AiPlayer(b, unit));
 			players_.push_back(aiPlayer);
 		} else {
 			AiBehaviorPtr b = std::make_shared<SurvivorBehavior>();
-			taskManager_->add(new HumanAnimation(unit), GraphicLevel::UNIT_LEVEL);
+			taskManager_->add(new HumanAnimation(unit, animation), GraphicLevel::UNIT_LEVEL);
 			AiPlayer* aiPlayer(new AiPlayer(b, unit));
 			players_.push_back(aiPlayer);
 		}
 	}
 
-	void ZombieEngine::addCar(float x, float y, float angle, float mass, float life, float width, float length) {
+	void ZombieEngine::addCar(float x, float y, float angle, float mass, float life, float width, float length, const Animation& animation) {
 		Car* car = createCar(x, y, angle, mass, life, width, length);
 		taskManager_->add(new CarAnimation(car), GraphicLevel::UNIT_LEVEL);
 	}

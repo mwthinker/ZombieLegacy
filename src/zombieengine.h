@@ -24,6 +24,7 @@ namespace zombie {
 	class MovingObject;
 	class Player;
 	class Bullet;
+	class Animation;
 
 	class GameEvent {
 	public:
@@ -61,13 +62,13 @@ namespace zombie {
 		void updateSize(int width, int height);
 
 		// Add a human player to the game.
-		void addHuman(DevicePtr device, float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon);
+		void addHuman(DevicePtr device, float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, const Animation& animation);
 
 		// Add a ai player to the game.
-		void addAi(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
+		void addAi(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, const Animation& animation);
 
 		// Add a car to the game.
-		void addCar(float x, float y, float angle, float mass, float life, float width, float length);
+		void addCar(float x, float y, float angle, float mass, float life, float width, float length, const Animation& animation);
 
 		void addBuilding(const std::vector<Position>& corners);
 

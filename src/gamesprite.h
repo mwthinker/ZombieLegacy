@@ -7,20 +7,10 @@
 namespace zombie {
 
 	extern const mw::TexturePtr grassTexture;
+	
 	extern const mw::Sprite grassSprite;
 	extern const mw::Sprite roadSprite;
 	extern const mw::Sprite treeSprite;
-		
-	extern const mw::Sprite zombie1Sprite;
-	extern const mw::Sprite zombie2Sprite;
-	extern const mw::Sprite zombie3Sprite;
-	extern const mw::Sprite zombie4Sprite;
-	extern const mw::Sprite zombie5Sprite;
-	extern const mw::Sprite zombie6Sprite;
-
-	extern const mw::Sprite human1Sprite;
-	extern const mw::Sprite human2Sprite;
-	extern const mw::Sprite human3Sprite;
 
 	extern const mw::Sprite bloodSprite;
 	extern const mw::Sprite carSprite;
