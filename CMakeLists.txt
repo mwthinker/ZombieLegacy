@@ -107,14 +107,6 @@ ADD_SUBDIRECTORY(MwExtra)
 ADD_SUBDIRECTORY(Box2D)
 ADD_SUBDIRECTORY(TinyXML2)
 
-IF (MSVC)
-	# Copy dll files to VS build directories.
-	FILE(COPY dll/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/debug)
-	FILE(COPY dll/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/release)
-	FILE(COPY dll/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/MinSizeRel)
-	FILE(COPY dll/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/RelWithDebInfo)
-ENDIF ()
-
 FILE(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
 
 INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS} ${SDL2_MIXER_INCLUDE_DIRS} 
@@ -142,5 +134,5 @@ IF (Boost_FOUND)
 			COMMAND "\$(TargetDir)/\$(TargetName).exe" --result_code=no --report_level=no
 			COMMENT "Auto run Test after build"
 		)
-	ENDIF ()
-ENDIF ()
+	ENDIF (MSVC)
+ENDIF (Boost_FOUND)
