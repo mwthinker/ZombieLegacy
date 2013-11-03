@@ -22,6 +22,9 @@ namespace zombie {
 		// Update all internal states based on the input.
 		virtual void updatePhysics(float time, float timeStep, Input input) = 0;
 
+		// Return true if the collision is damaging.
+		virtual bool collision(float impulse) = 0;
+
 		// Returns the current weapon.
 		virtual Weapon getWeapon() const = 0;
 

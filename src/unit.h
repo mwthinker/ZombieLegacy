@@ -24,11 +24,13 @@ namespace zombie {
 		};
 
 		Unit(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
-		virtual ~Unit();
+		~Unit();
 
 		// Simulates the physics at time (time) one time step (timeStep) ahead.
 		// Based on the input given.
 		void updatePhysics(float time, float timeStep, Input input) override;
+
+		bool collision(float impulse) override;
 
 		State getState() const;
 

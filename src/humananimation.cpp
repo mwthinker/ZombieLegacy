@@ -19,7 +19,7 @@ namespace zombie {
 	// private
 	bool HumanAnimation::update(double time) {
 		const Object* ob = Object::getObject(humanId_);
-		
+
 		// Object alive and active?
 		if (ob != nullptr && ob->getBody()->IsActive()) {
 			const Unit* unit = static_cast<const Unit*>(ob);

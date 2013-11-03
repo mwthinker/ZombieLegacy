@@ -128,8 +128,6 @@ namespace zombie {
 		Object::worldHash = &worldHash_;
 
 		world_->SetContactListener(this);
-		
-		taskManager_ = new TaskManager();
 
 		started_ = false;
 		time_ = 0.0f;
@@ -139,7 +137,7 @@ namespace zombie {
 		timeStep_ = 0.017f; // Fix time step for physics update.
 		accumulator_ = 0.0f; // Time accumulator.
 
-		taskManager_->add(new SurvivalTimer(), GraphicLevel::INTERFACE_LEVEL);
+		taskManager_.add(new SurvivalTimer(), GraphicLevel::INTERFACE_LEVEL);
 	}
 
 	ZombieEngine::~ZombieEngine() {
@@ -155,9 +153,6 @@ namespace zombie {
 
 		// When all game objects are removed then remove world.
 		delete world_;
-
-		// Remove all tasks depending on gameobjects.
-		delete taskManager_;
 	}
 
 	void ZombieEngine::start() {
@@ -248,9 +243,9 @@ namespace zombie {
 	void ZombieEngine::draw(float deltaTime) {
 		// Game is started?
 		if (started_) {
-			taskManager_->update(deltaTime);
+			taskManager_.update(deltaTime);
 		} else {
-			taskManager_->update(0.0);
+			taskManager_.update(0.0);
 		}
 	}
 
@@ -261,20 +256,20 @@ namespace zombie {
 		}
 		human_ = createUnit(x, y, angle, mass, radius, life, walkingSpeed, runningSpeed, false, weapon);
 		players_.push_back(new HumanPlayer(device, human_));
-		taskManager_->add(new HumanStatus(human_, HumanStatus::ONE), GraphicLevel::INTERFACE_LEVEL);
-		taskManager_->add(new HumanAnimation(human_, animation), GraphicLevel::UNIT_LEVEL);
+		taskManager_.add(new HumanStatus(human_, HumanStatus::ONE), GraphicLevel::INTERFACE_LEVEL);
+		taskManager_.add(new HumanAnimation(human_, animation), GraphicLevel::UNIT_LEVEL);
 	}
 
 	void ZombieEngine::addAi(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, const Animation& animation) {
 		Unit* unit = createUnit(x, y, angle, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
 		if (infected) {
 			AiBehaviorPtr b = std::make_shared<ZombieBehavior>();
-			taskManager_->add(new ZombieAnimation(unit, animation), GraphicLevel::UNIT_LEVEL);
+			taskManager_.add(new ZombieAnimation(unit, animation), GraphicLevel::UNIT_LEVEL);
 			AiPlayer* aiPlayer(new AiPlayer(b, unit));
 			players_.push_back(aiPlayer);
 		} else {
 			AiBehaviorPtr b = std::make_shared<SurvivorBehavior>();
-			taskManager_->add(new HumanAnimation(unit, animation), GraphicLevel::UNIT_LEVEL);
+			taskManager_.add(new HumanAnimation(unit, animation), GraphicLevel::UNIT_LEVEL);
 			AiPlayer* aiPlayer(new AiPlayer(b, unit));
 			players_.push_back(aiPlayer);
 		}
@@ -282,22 +277,22 @@ namespace zombie {
 
 	void ZombieEngine::addCar(float x, float y, float angle, float mass, float life, float width, float length, const Animation& animation) {
 		Car* car = createCar(x, y, angle, mass, life, width, length);
-		taskManager_->add(new CarAnimation(car), GraphicLevel::UNIT_LEVEL);
+		taskManager_.add(new CarAnimation(car), GraphicLevel::UNIT_LEVEL);
 	}
 
 	void ZombieEngine::addBuilding(const std::vector<Position>& corners) {
 		Building* building = new Building(corners);
-		taskManager_->add(new BuildingDraw(building), GraphicLevel::BUILDING_LEVEL);
+		taskManager_.add(new BuildingDraw(building), GraphicLevel::BUILDING_LEVEL);
 	}
 
 	void ZombieEngine::addWeapon(float x, float y, const Weapon& weapon) {
 		WeaponObject* wOb = new WeaponObject(x, y, weapon);
 		worldHash_[wOb->getId()] = wOb;
-		taskManager_->add(new DrawWeaponObject(wOb), GraphicLevel::TREE_LEVEL);
+		taskManager_.add(new DrawWeaponObject(wOb), GraphicLevel::TREE_LEVEL);
 	}
 
 	void ZombieEngine::addGrassGround(float minX, float maxX, float minY, float maxY) {
-		taskManager_->add(new MapDraw(minX, maxX, minY, maxY), GraphicLevel::GROUND_LEVEL);
+		taskManager_.add(new MapDraw(minX, maxX, minY, maxY), GraphicLevel::GROUND_LEVEL);
 	}
 
 	Unit* ZombieEngine::createUnit(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) {
@@ -394,10 +389,10 @@ namespace zombie {
 					endP = target->getPosition();
 					// Target killed?
 					if (target->isDead()) {
-						taskManager_->add(new Blood(endP.x, endP.y, time_), GraphicLevel::BLOOD_LEVEL);
-						taskManager_->add(new BloodStain(endP.x, endP.y, time_), GraphicLevel::BLOOD_LEVEL);
+						taskManager_.add(new Blood(endP.x, endP.y, time_), GraphicLevel::BLOOD_LEVEL);
+						taskManager_.add(new BloodStain(endP.x, endP.y, time_), GraphicLevel::BLOOD_LEVEL);
 					} else {
-						taskManager_->add(new BloodSplash(endP.x, endP.y, time_), GraphicLevel::BLOOD_LEVEL);
+						taskManager_.add(new BloodSplash(endP.x, endP.y, time_), GraphicLevel::BLOOD_LEVEL);
 					}
 				}
 			}
@@ -405,7 +400,7 @@ namespace zombie {
 			//std::cout << endP.x << " " << endP.y << std::endl;
 		}
 
-		taskManager_->add(new Shot(shooter->getPosition(), endP, time_), GraphicLevel::SHOT_LEVEL);
+		taskManager_.add(new Shot(shooter->getPosition(), endP, time_), GraphicLevel::SHOT_LEVEL);
 	}
 
 	void ZombieEngine::BeginContact(b2Contact* contact) {
@@ -424,41 +419,35 @@ namespace zombie {
 		}
 	}
 
+	namespace {
+
+		void unitCollision(TaskManager& taskManager, float time, Object* ob, const b2ContactImpulse* impulse) {
+			if (MovingObject* mOv = dynamic_cast<Car*>(ob)) {
+				bool cEvent = mOv->collision(std::abs(impulse->normalImpulses[0]));
+				if (cEvent) {
+					if (dynamic_cast<Car*>(ob)) {
+						mw::Sound tmp = crash;
+						tmp.play();
+					} else if (Unit* unit = dynamic_cast<Unit*>(ob)) {
+						Position p = unit->getPosition();
+						if (unit->isDead()) {
+							taskManager.add(new Blood(p.x, p.y, time), GraphicLevel::BLOOD_LEVEL);
+							taskManager.add(new BloodStain(p.x, p.y, time), GraphicLevel::BLOOD_LEVEL);
+						} else {
+							taskManager.add(new BloodSplash(p.x, p.y, time), GraphicLevel::BLOOD_LEVEL);
+						}
+					}
+				}
+			}
+		}
+
+	}
+
 	void ZombieEngine::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
-		if (std::abs(impulse->normalImpulses[0]) > 1.8f) {
-			Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
-			Object* ob2 = static_cast<Object*>(contact->GetFixtureB()->GetUserData());
-			if (dynamic_cast<Car*>(ob1) || dynamic_cast<Car*>(ob2)) {
-				mw::Sound tmp = crash;
-				tmp.play();
-			}
-		}
-
-		if (std::abs(impulse->normalImpulses[0]) > 0.8f) {
-			Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
-			if (Unit* unit = dynamic_cast<Unit*>(ob1)) {
-				unit->updateHealthPoint(-101.0);
-				Position p = unit->getPosition();
-				if (unit->isDead()) {
-					taskManager_->add(new Blood(p.x, p.y, time_), GraphicLevel::BLOOD_LEVEL);
-					taskManager_->add(new BloodStain(p.x, p.y, time_), GraphicLevel::BLOOD_LEVEL);
-				} else {
-					taskManager_->add(new BloodSplash(p.x, p.y, time_), GraphicLevel::BLOOD_LEVEL);
-				}
-			}
-
-			Object* ob2 = static_cast<Object*>(contact->GetFixtureB()->GetUserData());
-			if (Unit* unit = dynamic_cast<Unit*>(ob2)) {
-				unit->updateHealthPoint(-101.0);
-				Position p = unit->getPosition();
-				if (unit->isDead()) {
-					taskManager_->add(new Blood(p.x, p.y, time_), GraphicLevel::BLOOD_LEVEL);
-					taskManager_->add(new BloodStain(p.x, p.y, time_), GraphicLevel::BLOOD_LEVEL);
-				} else {
-					taskManager_->add(new BloodSplash(p.x, p.y, time_), GraphicLevel::BLOOD_LEVEL);
-				}
-			}
-		}
+		Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
+		unitCollision(taskManager_, time_, ob1, impulse);
+		Object* ob2 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
+		unitCollision(taskManager_, time_, ob2, impulse);
 	}
 
 } // Namespace zombie.

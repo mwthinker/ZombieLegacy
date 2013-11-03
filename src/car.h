@@ -100,6 +100,10 @@ namespace zombie {
 			}
 		}
 
+		bool collision(float impulse) override {
+			return false;
+		}
+
 		void applyFriction(float frictionForwardFrontWheel, float frictionForwardBackWheel,
 			float frictionLateralFrontWheel, float frictionLateralBackWheel) {
 			// Back wheel lateral friction.
