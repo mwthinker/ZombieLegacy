@@ -28,12 +28,12 @@ compiler are installed. The dependencies must also be recognized by CMAKE.
 <b> Unix </b>
 Open a terminal inside the "build" directory and run:
 
-$ cmake ..
-$ make
+<p>$ cmake ..</p>
+<p>$ make</p>
 
 The first to generate the makefile and the second to compile the zombie project.
 
-$ ./zombie
+<p>$ ./zombie</p>
 
 to run the executable.
 

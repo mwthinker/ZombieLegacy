@@ -25,26 +25,13 @@ namespace zombie {
 	class Player;
 	class Bullet;
 	class Animation;
-
-	class GameEvent {
-	public:
-		virtual ~GameEvent() {
-		}
-	};
-
-	class UnitDie : public GameEvent {
-	public:
-		UnitDie(Unit* unit) : unit_(unit) {
-		}
-
-		const Unit* unit_;
-	};
+	class GameInterface;
 
 	// Responsible of all creation and deallocation of game objects 
 	// and manage there physical and graphical representation.
 	class ZombieEngine : public b2ContactListener {
 	public:
-		ZombieEngine(int width = 500, int height = 500);
+		ZombieEngine(GameInterface* gameInterface);
 		~ZombieEngine();
 
 		// Starts the game.
@@ -57,12 +44,10 @@ namespace zombie {
 		// Makes the game reacting on an event (windowEvent).
 		void eventUpdate(const SDL_Event& windowEvent);
 
-		void zoom(double scale);
-
-		void updateSize(int width, int height);
+		void draw(float deltaTime);
 
 		// Add a human player to the game.
-		void addHuman(DevicePtr device, float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, const Animation& animation);
+		void setHuman(DevicePtr device, float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, const Animation& animation);
 
 		// Add a ai player to the game.
 		void addAi(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, const Animation& animation);
@@ -76,10 +61,9 @@ namespace zombie {
 
 		void addGrassGround(float minX, float maxX, float minY, float maxY);
 
-		Position getMainUnitPostion();
-
-		mw::signals::Connection addEventListener(mw::Signal<const GameEvent&>::Callback callback);
-		mw::signals::Connection addRemoveListener(mw::Signal<bool&, const MovingObject*>::Callback callback);
+		inline float getTime() const {
+			return time_;
+		}
 
 	private:
 		// Creates a unit and add &doShotDamage to receive bullets fired.
@@ -106,6 +90,7 @@ namespace zombie {
 		bool started_; // The game is started.
 		float time_; // Local game time.
 		
+		Unit* human_;
 		std::list<Player*> players_; // All units.
 		std::list<Car*> cars_; // All cars.
 		TaskManager* taskManager_;
@@ -113,17 +98,13 @@ namespace zombie {
 		int unitLevel_; // Specifies the wanted number of zombies on the map.
 		double scale_;
 
-		// The view is centered in.
-		Position viewPosition_;
-
 		// Fix timestep.
 		float timeStep_;
 		float accumulator_;
 
 		b2World* world_;
 		WorldHash worldHash_;
-		mw::Signal<const GameEvent&> gameEventListener_;
-		mw::Signal<bool&, const MovingObject*> removeListener_;
+		GameInterface* gameInterface_;
 	};
 
 } // Namespace zombie.
