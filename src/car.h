@@ -191,6 +191,7 @@ namespace zombie {
 		mw::signals::Connection addActionHandler(mw::Signal<Car*>::Callback callback) {
 			return actionSignal_.connect(callback);
 		}
+
 	private:
 		mw::Signal<Car*> actionSignal_;
 

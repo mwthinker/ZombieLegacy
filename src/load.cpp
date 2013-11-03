@@ -39,6 +39,7 @@ namespace zombie {
 			while (stream >> point) {
 				points.push_back(point);
 			}
+			points.pop_back();
 			return points;
 		}
 

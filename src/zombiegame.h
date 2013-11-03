@@ -8,13 +8,13 @@
 #include "unitproperties.h"
 #include "carproperties.h"
 #include "settings.h"
+#include "gameinterface.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
 #include <mw/sound.h>
 
 #include <tinyxml2.h>
-
 #include <map>
 
 namespace zombie {
@@ -23,7 +23,7 @@ namespace zombie {
 	// game related things and to start the game engine.
 	// It also handle all game events triggered by the game engine,
 	// e.g. what happens when a unit dies.
-	class ZombieGame {
+	class ZombieGame : public b2ContactListener, public GameInterface {
 	public:
 		ZombieGame(int width, int height, tinyxml2::XMLHandle xml);
 		~ZombieGame();
@@ -43,8 +43,7 @@ namespace zombie {
 		void updateSize(int width, int height);
 
 	private:
-		void handleGameEvent(const GameEvent& gameEvent);
-		void handleRemoval(bool& remove, MovingObject* mOb);
+		void humanPosition(float x, float y) override;
 
 		// Handle to first node <zombie>.
 		bool load(tinyxml2::XMLHandle xml);
@@ -61,6 +60,8 @@ namespace zombie {
 		float outerSpawnRadius_;
 		int unitLevel_;
 		int zoomlevel_;
+		Position viewPosition_;
+		double scale_;
 
 		ZombieEngine engine_;
 		DevicePtr keyboard1_, keyboard2_;

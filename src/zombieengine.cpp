@@ -25,10 +25,9 @@
 #include "humanplayer.h"
 #include "shot.h"
 #include "animation.h"
+#include "gameinterface.h"
 
 #include <Box2D/Box2D.h>
-#include <SDL.h>
-#include <SDL_opengl.h>
 
 #include <memory>
 #include <vector>
@@ -118,20 +117,19 @@ namespace zombie {
 		}
 	}
 
-	ZombieEngine::ZombieEngine(int width, int height) {
+	ZombieEngine::ZombieEngine(GameInterface* gameInterface) {
+		gameInterface_ = gameInterface;
+		human_ = nullptr;
+
 		// Create a world with no "gravity".
-		world_ = new b2World(b2Vec2(0,0));
+		world_ = new b2World(b2Vec2(0, 0));
 		Object::world = world_;
 		worldHash_[0] = nullptr;
 		Object::worldHash = &worldHash_;
 
 		world_->SetContactListener(this);
-
-		// Set windows size.
-		updateSize(width,height);
+		
 		taskManager_ = new TaskManager();
-
-		scale_ = 1.0;
 
 		started_ = false;
 		time_ = 0.0f;
@@ -180,7 +178,7 @@ namespace zombie {
 			}
 
 			// Update all players.
-			for (Player* player: players_) {
+			for (Player* player : players_) {
 				Object* ob = worldHash_[player->getId()];
 				if (ob != nullptr) {
 					MovingObject* mOb = static_cast<MovingObject*>(ob);
@@ -194,27 +192,30 @@ namespace zombie {
 
 			// Move the time ahead.
 			time_ += timeStep;
+
+			if (human_ != nullptr) {
+				Position p = human_->getPosition();
+				gameInterface_->humanPosition(p.x, p.y);
+			}
 		}
-	}
-
-	mw::signals::Connection ZombieEngine::addEventListener(mw::Signal<const GameEvent&>::Callback callback) {
-		return gameEventListener_.connect(callback);
-	}
-
-	mw::signals::Connection ZombieEngine::addRemoveListener(mw::Signal<bool&, const MovingObject*>::Callback callback) {
-		return removeListener_.connect(callback);
 	}
 
 	void ZombieEngine::spawnAndCleanUpUnits() {
 		// Delete all units outside the perimiter, and all the dead units.
-		MovingObject* temp = nullptr;
 		players_.remove_if([&](Player* player) {
 			Object*& ob = worldHash_[player->getId()];
 			if (ob != nullptr) {
 				const MovingObject* mOb = static_cast<const MovingObject*>(ob);
-				bool dead = mOb->isDead();
+				Position p = mOb->getPosition();
+				if (mOb->isDead() || gameInterface_->isUnitOutside(p.x, p.y, mOb->isInfected())) {
+					// Human died?
+					if (human_ != nullptr && human_->getId() == mOb->getId()) {
+						gameInterface_->humanDies();
+						human_ = nullptr;
+					} else { // A ai died!
+						gameInterface_->unitDie(p.x, p.y, mOb->isInfected());
+					}
 
-				if (dead) {
 					delete player;
 					delete ob;
 					// Hash to null.
@@ -242,41 +243,26 @@ namespace zombie {
 			accumulator_ -= timeStep_;
 			updatePhysics(timeStep_);
 		}
+	}
 
-		// Draw map centered around first human player.
-		glPushMatrix();
-
-		const MovingObject* frontOb = static_cast<const MovingObject*>(worldHash_[players_.front()->getId()]);
-
-		if (frontOb != nullptr) {
-			viewPosition_ += deltaTime * (frontOb->getPosition() - viewPosition_);
-		}
-
-		glTranslated(0.5, 0.5, 0);
-		glScaled(1.0/50,1.0/50,1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
-
-		drawCircle(0,0,0.5,20,false);
-		glScaled(scale_,scale_,1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
-		drawCircle(0,0,0.5,20,false);
-
-		glTranslated(-viewPosition_.x, -viewPosition_.y, 0.0);
-
+	void ZombieEngine::draw(float deltaTime) {
 		// Game is started?
 		if (started_) {
 			taskManager_->update(deltaTime);
 		} else {
 			taskManager_->update(0.0);
 		}
-
-		glPopMatrix();
 	}
 
-	void ZombieEngine::addHuman(DevicePtr device, float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, const Animation& animation) {
-		Unit* human = createUnit(x, y, angle, mass, radius, life, walkingSpeed, runningSpeed, false, weapon);
-		viewPosition_ = human->getPosition();
-		players_.push_back(new HumanPlayer(device, human));
-		taskManager_->add(new HumanStatus(human, HumanStatus::ONE), GraphicLevel::INTERFACE_LEVEL);
-		taskManager_->add(new HumanAnimation(human, animation), GraphicLevel::UNIT_LEVEL);
+	void ZombieEngine::setHuman(DevicePtr device, float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, const Animation& animation) {
+		if (human_ != nullptr) {
+			worldHash_[human_->getId()] = nullptr;
+			delete human_;
+		}
+		human_ = createUnit(x, y, angle, mass, radius, life, walkingSpeed, runningSpeed, false, weapon);
+		players_.push_back(new HumanPlayer(device, human_));
+		taskManager_->add(new HumanStatus(human_, HumanStatus::ONE), GraphicLevel::INTERFACE_LEVEL);
+		taskManager_->add(new HumanAnimation(human_, animation), GraphicLevel::UNIT_LEVEL);
 	}
 
 	void ZombieEngine::addAi(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, const Animation& animation) {
@@ -311,51 +297,34 @@ namespace zombie {
 	}
 
 	void ZombieEngine::addGrassGround(float minX, float maxX, float minY, float maxY) {
-		taskManager_->add(new MapDraw(minX,maxX,minY,maxY), GraphicLevel::GROUND_LEVEL);
-	}
-
-	Position ZombieEngine::getMainUnitPostion() {
-		const MovingObject* frontOb = static_cast<const MovingObject*>(worldHash_[players_.front()->getId()]);
-		if (frontOb != nullptr) {
-			return frontOb->getPosition();
-		}
-		return Position();
+		taskManager_->add(new MapDraw(minX, maxX, minY, maxY), GraphicLevel::GROUND_LEVEL);
 	}
 
 	Unit* ZombieEngine::createUnit(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) {
 		Unit* unit = new Unit(x, y, angle, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
-		unit->addShootHandler(std::bind(&ZombieEngine::doShotDamage,this,std::placeholders::_1,std::placeholders::_2));
-		unit->addActionHandler(std::bind(&ZombieEngine::doAction,this,std::placeholders::_1));
+		unit->addShootHandler(std::bind(&ZombieEngine::doShotDamage, this, std::placeholders::_1, std::placeholders::_2));
+		unit->addActionHandler(std::bind(&ZombieEngine::doAction, this, std::placeholders::_1));
 		worldHash_[unit->getId()] = unit;
 		return unit;
 	}
 
 	Car* ZombieEngine::createCar(float x, float y, float angle, float mass, float life, float width, float length) {
 		Car* car = new Car(x, y, angle, mass, life, width, length);
-		car->addActionHandler(std::bind(&ZombieEngine::carDoAction,this,std::placeholders::_1));
+		car->addActionHandler(std::bind(&ZombieEngine::carDoAction, this, std::placeholders::_1));
 		worldHash_[car->getId()] = car;
 		cars_.push_back(car);
 		return car;
 	}
 
-	void ZombieEngine::zoom(double scale) {
-		scale_ *= scale;
-	}
-
-	void ZombieEngine::updateSize(int width, int height) {
-		Task::width = width;
-		Task::height = height;
-	}
-
 	void ZombieEngine::doAction(Unit* unit) {
 		float angle = unit->getState().angle_;
-		b2Vec2 dir(std::cos(angle),std::sin(angle));
+		b2Vec2 dir(std::cos(angle), std::sin(angle));
 
 		// Return the closest object, physical or not.
-		ClosestRayCastCallback callback( [](b2Fixture* fixture) {
+		ClosestRayCastCallback callback([](b2Fixture* fixture) {
 			return !fixture->IsSensor() && fixture->GetBody()->GetUserData() != nullptr || fixture->IsSensor() && fixture->GetUserData() != nullptr;
 		});
-		world_->RayCast(&callback,unit->getPosition(),unit->getPosition() + dir);
+		world_->RayCast(&callback, unit->getPosition(), unit->getPosition() + dir);
 		b2Fixture* fixture = callback.getFixture();
 
 		// Is there an object near by?
@@ -387,7 +356,7 @@ namespace zombie {
 
 	void ZombieEngine::carDoAction(Car* car) {
 		Unit* driver = static_cast<Unit*>(worldHash_[car->getDriverId()]);
-		
+
 		// The driver gets out of the car.
 		std::find_if(players_.begin(), players_.end(), [driver, car](Player* player) {
 			if (car->getId() == player->getId()) {
@@ -395,7 +364,7 @@ namespace zombie {
 				car->setDriver(0);
 				b2Body* body = driver->getBody();
 				body->SetActive(true);
-				body->SetTransform(car->getPosition(),body->GetAngle());
+				body->SetTransform(car->getPosition(), body->GetAngle());
 				return true;
 			}
 			return false;
@@ -403,7 +372,7 @@ namespace zombie {
 	}
 
 	void ZombieEngine::doShotDamage(Unit* shooter, const Bullet& bullet) {
-		b2Vec2 dir(std::cos(bullet.direction_),std::sin(bullet.direction_));
+		b2Vec2 dir(std::cos(bullet.direction_), std::sin(bullet.direction_));
 		b2Vec2 endP = shooter->getPosition() + bullet.range_ * dir;
 
 		// Return the closest physcal object.
@@ -411,7 +380,7 @@ namespace zombie {
 			return !fixture->IsSensor();
 		});
 
-		world_->RayCast(&callback,shooter->getPosition(),endP);
+		world_->RayCast(&callback, shooter->getPosition(), endP);
 		b2Fixture* fixture = callback.getFixture();
 
 		// Did bullet hit something?
@@ -436,7 +405,7 @@ namespace zombie {
 			//std::cout << endP.x << " " << endP.y << std::endl;
 		}
 
-		taskManager_->add(new Shot(shooter->getPosition(),endP,time_), GraphicLevel::SHOT_LEVEL);
+		taskManager_->add(new Shot(shooter->getPosition(), endP, time_), GraphicLevel::SHOT_LEVEL);
 	}
 
 	void ZombieEngine::BeginContact(b2Contact* contact) {
@@ -471,10 +440,10 @@ namespace zombie {
 				unit->updateHealthPoint(-101.0);
 				Position p = unit->getPosition();
 				if (unit->isDead()) {
-					taskManager_->add(new Blood(p.x,p.y,time_), GraphicLevel::BLOOD_LEVEL);
-					taskManager_->add(new BloodStain(p.x,p.y,time_), GraphicLevel::BLOOD_LEVEL);
+					taskManager_->add(new Blood(p.x, p.y, time_), GraphicLevel::BLOOD_LEVEL);
+					taskManager_->add(new BloodStain(p.x, p.y, time_), GraphicLevel::BLOOD_LEVEL);
 				} else {
-					taskManager_->add(new BloodSplash(p.x,p.y,time_), GraphicLevel::BLOOD_LEVEL);
+					taskManager_->add(new BloodSplash(p.x, p.y, time_), GraphicLevel::BLOOD_LEVEL);
 				}
 			}
 
@@ -483,10 +452,10 @@ namespace zombie {
 				unit->updateHealthPoint(-101.0);
 				Position p = unit->getPosition();
 				if (unit->isDead()) {
-					taskManager_->add(new Blood(p.x,p.y,time_), GraphicLevel::BLOOD_LEVEL);
-					taskManager_->add(new BloodStain(p.x,p.y,time_), GraphicLevel::BLOOD_LEVEL);
+					taskManager_->add(new Blood(p.x, p.y, time_), GraphicLevel::BLOOD_LEVEL);
+					taskManager_->add(new BloodStain(p.x, p.y, time_), GraphicLevel::BLOOD_LEVEL);
 				} else {
-					taskManager_->add(new BloodSplash(p.x,p.y,time_), GraphicLevel::BLOOD_LEVEL);
+					taskManager_->add(new BloodSplash(p.x, p.y, time_), GraphicLevel::BLOOD_LEVEL);
 				}
 			}
 		}

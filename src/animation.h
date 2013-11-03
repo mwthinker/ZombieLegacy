@@ -59,6 +59,7 @@ namespace zombie {
 
 				glPushMatrix();
 				glScalef(scale_, scale_, scale_);
+				glColor3d(1, 1, 1);
 				sprites_[index_].first.draw();
 				glPopMatrix();
 			}
