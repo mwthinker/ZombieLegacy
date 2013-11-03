@@ -10,7 +10,7 @@
 namespace zombie {
 
 	typedef std::tuple<std::string, float, float> TupleImageScaleTime;
-		
+
 	// Uses sprites to create a animation.
 	class Animation {
 	public:
@@ -36,7 +36,7 @@ namespace zombie {
 		// Add the frame (sprite) with duration (time).
 		void add(mw::Sprite sprite, float time = 1.f) {
 			sprite.setDrawPixelSize(true);
-			sprites_.push_back(Pair(sprite, time));			
+			sprites_.push_back(Pair(sprite, time));
 		}
 
 		void setScale(float scale) {
@@ -54,7 +54,7 @@ namespace zombie {
 				// New frame?
 				if (time > sprites_[index_].second + lastTime_) {
 					index_ = (1 + index_) % sprites_.size();
-					lastTime_ = time; // Frame updated.					
+					lastTime_ = time; // Frame updated.
 				}
 
 				glPushMatrix();

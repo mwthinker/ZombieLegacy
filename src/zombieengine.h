@@ -5,6 +5,7 @@
 #include "device.h"
 #include "input.h"
 #include "typedefs.h"
+#include "taskmanager.h"
 
 #include <Box2D/Box2D.h>
 #include <SDL.h>
@@ -16,8 +17,7 @@
 
 namespace zombie {
 
-	// Forward declaration.
-	class TaskManager;
+	// Forward declaration.	
 	class Car;
 	class Unit;
 	class Weapon;
@@ -93,7 +93,7 @@ namespace zombie {
 		Unit* human_;
 		std::list<Player*> players_; // All units.
 		std::list<Car*> cars_; // All cars.
-		TaskManager* taskManager_;
+		TaskManager taskManager_;
 
 		int unitLevel_; // Specifies the wanted number of zombies on the map.
 		double scale_;
