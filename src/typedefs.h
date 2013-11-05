@@ -9,7 +9,7 @@
 
 namespace zombie {
 
-	const float PI = 3.14159265f;
+	const float PI = b2_pi;
 
 	const b2Vec2 ORIGO(0, 0);
 

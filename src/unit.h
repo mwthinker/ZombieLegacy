@@ -23,7 +23,7 @@ namespace zombie {
 			SHOOT, RELOADING, DIE, WALK, STANDSTILL, RUN
 		};
 
-		Unit(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
+		Unit(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
 		~Unit();
 
 		// Simulates the physics at time (time) one time step (timeStep) ahead.
@@ -32,7 +32,7 @@ namespace zombie {
 
 		bool collision(float impulse) override;
 
-		State getState() const;
+		State getState() const override;
 
 		// Return the view distance.
 		float getViewDistance() const;

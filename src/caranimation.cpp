@@ -23,7 +23,7 @@ namespace zombie {
 			lastTime_ = time;
 
 			glPushMatrix();
-			State state = car->state();
+			State state = car->getState();
 
 			glColor3d(1,1,1);
 			glTranslated(state.position_.x, state.position_.y, 0);

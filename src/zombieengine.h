@@ -2,6 +2,7 @@
 #define ZOMBIEENGINE_H
 
 #include "object.h"
+#include "state.h"
 #include "device.h"
 #include "input.h"
 #include "typedefs.h"
@@ -47,13 +48,13 @@ namespace zombie {
 		void draw(float deltaTime);
 
 		// Add a human player to the game.
-		void setHuman(DevicePtr device, float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, const Animation& animation);
+		void setHuman(DevicePtr device, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, const Animation& animation);
 
 		// Add a ai player to the game.
-		void addAi(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, const Animation& animation);
+		void addAi(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, const Animation& animation);
 
 		// Add a car to the game.
-		void addCar(float x, float y, float angle, float mass, float life, float width, float length, const Animation& animation);
+		void addCar(const State& state, float mass, float life, float width, float length, const Animation& animation);
 
 		void addBuilding(const std::vector<Position>& corners);
 
@@ -67,9 +68,9 @@ namespace zombie {
 
 	private:
 		// Creates a unit and add &doShotDamage to receive bullets fired.
-		Unit* createUnit(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
+		Unit* createUnit(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
 
-		Car* createCar(float x, float y, float angle, float mass, float life, float width, float length);
+		Car* createCar(const State& state, float mass, float life, float width, float length);
 
 		// Updates the game time by (msDeltaTime).
 		void updatePhysics(float timeStep);
