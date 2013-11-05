@@ -26,6 +26,10 @@
 #include "shot.h"
 #include "animation.h"
 #include "gameinterface.h"
+#include "buildingproperties.h"
+#include "weaponproperties.h"
+#include "unitproperties.h"
+#include "carproperties.h"
 
 #include <Box2D/Box2D.h>
 
@@ -249,19 +253,19 @@ namespace zombie {
 		}
 	}
 
-	void ZombieEngine::setHuman(DevicePtr device, float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, const Animation& animation) {
+	void ZombieEngine::setHuman(DevicePtr device, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, const Animation& animation) {
 		if (human_ != nullptr) {
 			worldHash_[human_->getId()] = nullptr;
 			delete human_;
 		}
-		human_ = createUnit(x, y, angle, mass, radius, life, walkingSpeed, runningSpeed, false, weapon);
+		human_ = createUnit(state, mass, radius, life, walkingSpeed, runningSpeed, false, weapon);
 		players_.push_back(new HumanPlayer(device, human_));
 		taskManager_.add(new HumanStatus(human_, HumanStatus::ONE), GraphicLevel::INTERFACE_LEVEL);
 		taskManager_.add(new HumanAnimation(human_, animation), GraphicLevel::UNIT_LEVEL);
 	}
 
-	void ZombieEngine::addAi(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, const Animation& animation) {
-		Unit* unit = createUnit(x, y, angle, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
+	void ZombieEngine::addAi(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, const Animation& animation) {
+		Unit* unit = createUnit(state, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
 		if (infected) {
 			AiBehaviorPtr b = std::make_shared<ZombieBehavior>();
 			taskManager_.add(new ZombieAnimation(unit, animation), GraphicLevel::UNIT_LEVEL);
@@ -275,8 +279,8 @@ namespace zombie {
 		}
 	}
 
-	void ZombieEngine::addCar(float x, float y, float angle, float mass, float life, float width, float length, const Animation& animation) {
-		Car* car = createCar(x, y, angle, mass, life, width, length);
+	void ZombieEngine::addCar(const State& state, float mass, float life, float width, float length, const Animation& animation) {
+		Car* car = createCar(state, mass, life, width, length);
 		taskManager_.add(new CarAnimation(car), GraphicLevel::UNIT_LEVEL);
 	}
 
@@ -295,16 +299,16 @@ namespace zombie {
 		taskManager_.add(new MapDraw(minX, maxX, minY, maxY), GraphicLevel::GROUND_LEVEL);
 	}
 
-	Unit* ZombieEngine::createUnit(float x, float y, float angle, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) {
-		Unit* unit = new Unit(x, y, angle, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
+	Unit* ZombieEngine::createUnit(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) {
+		Unit* unit = new Unit(state, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
 		unit->addShootHandler(std::bind(&ZombieEngine::doShotDamage, this, std::placeholders::_1, std::placeholders::_2));
 		unit->addActionHandler(std::bind(&ZombieEngine::doAction, this, std::placeholders::_1));
 		worldHash_[unit->getId()] = unit;
 		return unit;
 	}
 
-	Car* ZombieEngine::createCar(float x, float y, float angle, float mass, float life, float width, float length) {
-		Car* car = new Car(x, y, angle, mass, life, width, length);
+	Car* ZombieEngine::createCar(const State& state, float mass, float life, float width, float length) {
+		Car* car = new Car(state, mass, life, width, length);
 		car->addActionHandler(std::bind(&ZombieEngine::carDoAction, this, std::placeholders::_1));
 		worldHash_[car->getId()] = car;
 		cars_.push_back(car);

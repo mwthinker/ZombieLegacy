@@ -20,9 +20,11 @@ namespace zombie {
 		CAREVENT_BRAKE
 	};
 
+	// Defines the property of a car. The car has 4 wheels but is simulated as having 
+	// one front wheel and one backwheel in order to simlify the math.
 	class Car : public MovingObject {
 	public:
-		Car(float x, float y, float angle, float mass, float life, float width, float length) {
+		Car(const State& state, float mass, float life, float width, float length) {
 			length_ = length;
 			width_ = width;
 
@@ -35,8 +37,8 @@ namespace zombie {
 			// Box2d properties.
 			b2BodyDef bodyDef;
 			bodyDef.type = b2_dynamicBody;
-			bodyDef.position.Set(x, y);
-			bodyDef.angle = angle;
+			bodyDef.position.Set(state.position_.x, state.position_.y);
+			bodyDef.angle = state.angle_;
 			body_ = getWorld()->CreateBody(&bodyDef);
 			body_->SetUserData(this);
 			
@@ -130,7 +132,7 @@ namespace zombie {
 			body_->ApplyAngularImpulse(impulse);
 		}
 
-		State state() const {
+		State getState() const override {
 			State state;
 			state.position_ = body_->GetPosition();
 			state.angle_ = body_->GetAngle();

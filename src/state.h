@@ -6,7 +6,14 @@
 namespace zombie {
 
 	class State {
-	public:	
+	public:
+		State() : position_(0, 0), velocity_(0, 0), angle_(0), anglularVelocity_(0) {
+		}
+
+		State(const Position& position, const Velocity& velocity, float angle_) :
+			position_(position), velocity_(velocity), angle_(angle_), anglularVelocity_(0) {
+		}
+
 		Position position_;
 		Velocity velocity_;
 		float angle_;

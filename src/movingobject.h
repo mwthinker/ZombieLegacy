@@ -5,6 +5,7 @@
 #include "input.h"
 #include "weapon.h"
 #include "typedefs.h"
+#include "state.h"
 
 #include <list>
 #include <algorithm>
@@ -30,6 +31,9 @@ namespace zombie {
 
 		// Return the objects forward direction in radians.
 		virtual float getDirection() const = 0;
+
+		// Return the current state.
+		virtual State getState() const = 0;
 
 		// Returns true if the object is infected.
 		virtual bool isInfected() const = 0;
