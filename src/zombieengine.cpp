@@ -136,8 +136,6 @@ namespace zombie {
 		started_ = false;
 		time_ = 0.0f;
 
-		unitLevel_ = 20;
-
 		timeStep_ = 0.017f; // Fix time step for physics update.
 		accumulator_ = 0.0f; // Time accumulator.
 
@@ -146,12 +144,8 @@ namespace zombie {
 
 	ZombieEngine::~ZombieEngine() {
 		// Remove all game objects.
-		std::vector<Object*> objects;
 		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
 			Object* ob = static_cast<Object*>(b->GetUserData());
-			objects.push_back(ob);
-		}
-		for (Object* ob : objects) {
 			delete ob;
 		}
 

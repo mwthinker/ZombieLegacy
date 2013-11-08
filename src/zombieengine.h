@@ -42,9 +42,6 @@ namespace zombie {
 		// from the previous call to this funtion.
 		void update(float deltaTime);
 
-		// Makes the game reacting on an event (windowEvent).
-		void eventUpdate(const SDL_Event& windowEvent);
-
 		void draw(float deltaTime);
 
 		// Add a human player to the game.
@@ -95,9 +92,6 @@ namespace zombie {
 		std::list<Player*> players_; // All units.
 		std::list<Car*> cars_; // All cars.
 		TaskManager taskManager_;
-
-		int unitLevel_; // Specifies the wanted number of zombies on the map.
-		double scale_;
 
 		// Fix timestep.
 		float timeStep_;
