@@ -4,9 +4,7 @@
 #include "auxiliary.h"
 
 #include <Box2D/Box2D.h>
-
 #include <cmath>
-#include <memory>
 
 namespace zombie {
 
@@ -15,7 +13,7 @@ namespace zombie {
 
 		// Properties
 		viewDistance_ = 10.f;
-		viewAngle_ = 120/180.0*b2_pi;
+		viewAngle_ = 120.f/180.f * PI;
 		smallViewDistance_ = 2;
 
 		// Health

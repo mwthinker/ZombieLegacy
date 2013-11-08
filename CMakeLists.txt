@@ -56,6 +56,7 @@ SET(SOURCES_ZOMBIE
 	src/mapdraw.cpp
 	src/mapdraw.h
 	src/movingobject.h
+	src/movingunitlistener.h
 	src/object.cpp
 	src/object.h
 	src/order.cpp

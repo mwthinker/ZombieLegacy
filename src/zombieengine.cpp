@@ -203,10 +203,10 @@ namespace zombie {
 				if (mOb->isDead() || gameInterface_->isUnitOutside(p.x, p.y, mOb->isInfected())) {
 					// Human died?
 					if (human_ != nullptr && human_->getId() == mOb->getId()) {
-						gameInterface_->humanDies();
+						gameInterface_->humanDied();
 						human_ = nullptr;
 					} else { // A ai died!
-						gameInterface_->unitDie(p.x, p.y, mOb->isInfected());
+						gameInterface_->unitDied(p.x, p.y, mOb->isInfected());
 					}
 
 					delete player;

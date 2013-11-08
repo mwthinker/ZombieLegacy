@@ -24,7 +24,7 @@ namespace zombie {
 	// game related things and to start the game engine.
 	// It also handle all game events triggered by the game engine,
 	// e.g. what happens when a unit dies.
-	class ZombieGame : public b2ContactListener, public GameInterface {
+	class ZombieGame : public GameInterface {
 	public:
 		ZombieGame(int width, int height, tinyxml2::XMLHandle xml);
 		~ZombieGame();
