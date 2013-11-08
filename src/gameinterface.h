@@ -5,13 +5,16 @@ namespace zombie {
 
 	class GameInterface {
 	public:
+		// The current position of the human.
 		virtual void humanPosition(float x, float y) {
 		}
 
-		virtual void humanDies() {
+		// The human just died.
+		virtual void humanDied() {
 		}
 
-		virtual void unitDie(float x, float y, bool infected) {
+		// A unit just died.
+		virtual void unitDied(float x, float y, bool infected) {
 		}
 
 		// Unit is removed if the function returns true.
