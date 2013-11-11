@@ -25,12 +25,10 @@ namespace zombie {
 
 		Unit(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
 		~Unit();
-
-		// Simulates the physics at time (time) one time step (timeStep) ahead.
-		// Based on the input given.
+		
 		void updatePhysics(float time, float timeStep, Input input) override;
-
-		bool collision(float impulse) override;
+				
+		void collision(float impulse) override;
 
 		State getState() const override;
 
@@ -74,7 +72,7 @@ namespace zombie {
 		}
 
 		Position getPosition() const override {
-			return Position(body_->GetPosition().x, body_->GetPosition().y);
+			return body_->GetPosition();
 		}
 
 		float getRadius() const {

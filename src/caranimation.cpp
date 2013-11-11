@@ -7,7 +7,7 @@
 
 namespace zombie {
 
-	CarAnimation::CarAnimation(Car* car) : idCarObject_(car->getId()) {
+	CarAnimation::CarAnimation(Car* car) : car_(car) {
 		carSprite_ = carSprite;
 	}
 
@@ -15,31 +15,17 @@ namespace zombie {
 	}
 
 	// private
-	bool CarAnimation::update(double time) {
-		const Object* ob = Object::getObject(idCarObject_);
-		if (ob != nullptr) {
-			const Car* car = static_cast<const Car*>(ob);
+	void CarAnimation::draw(float time, float timeStep, float accumulator) {
+		State state = car_->getState();
 
-			lastTime_ = time;
-
-			glPushMatrix();
-			State state = car->getState();
-
-			glColor3d(1,1,1);
-			glTranslated(state.position_.x, state.position_.y, 0);
-			glRotated(state.angle_ * 180 / PI,0,0,1);
-			glRotated(270,0,0,1);
-			double width = 1; // Hardcoded! Ugly! Fix!
-			double length = 2; // Hardcoded! Ugly! Fix!
-			glScaled(width,length,1);
-
-			carSprite_.draw();
-
-			glPopMatrix();
-			return true;
-		}
-
-		return false;
+		glPushMatrix();
+		glColor3d(1,1,1);
+		glTranslated(state.position_.x, state.position_.y, 0);
+		glRotated(state.angle_ * 180 / PI,0,0,1);
+		glRotated(270,0,0,1);
+		glScaled(car_->getWidth(), car_->getLength(), 1);
+		carSprite_.draw();
+		glPopMatrix();
 	}
 
 } // Namespace zombie.

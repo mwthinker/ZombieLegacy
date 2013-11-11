@@ -75,7 +75,7 @@ namespace zombie {
 		// Returns a vector of all units visible by the unit (unit).
 		std::vector<Unit*> calculateUnitsInView(Unit* unit);
 
-		void doAction(Unit* unit);
+		void unitDoAction(Unit* unit);
 		void carDoAction(Car* unit);
 		void doShotDamage(Unit* shooter, const Bullet& properties);
 
@@ -89,8 +89,7 @@ namespace zombie {
 		float time_; // Local game time.
 		
 		Unit* human_;
-		std::list<Player*> players_; // All units.
-		std::list<Car*> cars_; // All cars.
+		std::list<GameEntity*> entities_; // All units.
 		TaskManager taskManager_;
 
 		// Fix timestep.
@@ -98,7 +97,6 @@ namespace zombie {
 		float accumulator_;
 
 		b2World* world_;
-		WorldHash worldHash_;
 		GameInterface* gameInterface_;
 	};
 

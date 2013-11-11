@@ -6,16 +6,17 @@
 
 namespace zombie {
 
-	class Object;
-	typedef std::unordered_map<int, Object*> WorldHash;
+	class GameEntity;
 
 	// Represent a object inside the "zombie world".
 	class Object {
 	public:
 		friend class ZombieEngine;
+		friend class GameEntity;
 
 		inline Object() {
 			id_ = ++lastId;
+			gameEntity_ = nullptr;
 		}
 
 		virtual ~Object() {
@@ -31,23 +32,15 @@ namespace zombie {
 			return world;
 		}
 
-		static const Object* getObject(int id) {
-			unsigned int size = worldHash->size();
-			
-			Object*& object = (*worldHash)[id];
-
-			if (worldHash->size() > size) {
-				object = nullptr;
-			}
-
-			return object;
+		GameEntity* getGameEntity() const {
+			return gameEntity_;
 		}
 
 	private:
 		int id_;
+		GameEntity* gameEntity_;
 		static int lastId;
 		static b2World* world;
-		static WorldHash* worldHash;
 	};
 
 } // Namespace zombie.

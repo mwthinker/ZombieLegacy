@@ -2,13 +2,14 @@
 #include "typedefs.h"
 #include "input.h"
 #include "zombiebehavior.h"
+#include "unit.h"
 
 namespace zombie {
 
-	AiPlayer::AiPlayer(AiBehaviorPtr behavior, const Unit* mOb) : Player(mOb), behavior_(behavior) {
+	AiPlayer::AiPlayer(AiBehaviorPtr behavior, Unit* unit) : Player(unit), behavior_(behavior), unit_(unit) {
 	}	
 
-	AiPlayer::AiPlayer(const Unit* mOb) : Player(mOb), behavior_(AiBehaviorPtr(new ZombieBehavior())) {
+	AiPlayer::AiPlayer(const Unit* unit) : Player(unit), behavior_(AiBehaviorPtr(new ZombieBehavior())) {
 	}
 
 	Input AiPlayer::currentInput() {
@@ -16,11 +17,7 @@ namespace zombie {
 	}
 
 	void AiPlayer::calculateInput(double time) {
-		const Object* ob = Object::getObject(getId());
-		if (ob != nullptr) {
-			const Unit* unit = static_cast<const Unit*>(ob);
-			input_ = behavior_->calculateInput(unit, time);
-		}
+		input_ = behavior_->calculateInput(unit_, time);
 	}
 
 } // Namespace zombie.

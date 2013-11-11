@@ -65,7 +65,7 @@ namespace zombie {
 		}
 	}
 
-	Unit::~Unit() {		
+	Unit::~Unit() {
 		getWorld()->DestroyBody(body_);
 	}
 
@@ -135,8 +135,7 @@ namespace zombie {
 		}
 	}
 
-	bool Unit::collision(float impulse) {
-		return false;
+	void Unit::collision(float impulse) {
 	}
 
 	State Unit::getState() const {

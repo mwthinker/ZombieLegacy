@@ -10,8 +10,6 @@
 
 namespace zombie {
 
-	class MovingObject;
-
 	class ZombieBehavior : public AiBehavior {
 	public:
 		ZombieBehavior();
@@ -19,12 +17,10 @@ namespace zombie {
 
 		Input calculateInput(const Unit* unit, double time) override;
 
-		void unitEventHandler(Unit::UnitEvent unitEvent);
 	private:
 		MovingObject* findUninfectedTarget(Position position, const std::list<MovingObject*>& units) const;
 
 		double findNewTargetTime_;
-		int idTarget_;
 
 		double timeToUpdateAngleDirection_;
 		double targetAngle_;
