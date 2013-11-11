@@ -18,11 +18,12 @@ namespace zombie {
 
 	bool HumanStatus::update(double time) {
 		draw(time-lastTime_);
-
-		return Object::getObject(unitId_) != nullptr;
+		return true;
+		//return Object::getObject(unitId_) != nullptr;
 	}
 
 	void HumanStatus::draw(double timestep) {
+		/*
 		const Unit* unit = static_cast<const Unit*>(Object::getObject(unitId_));
 		if (unit != nullptr) {
 			Position p = unit->getPosition();
@@ -66,6 +67,7 @@ namespace zombie {
 			glMatrixMode(GL_MODELVIEW);
 			glPopMatrix();
 		}
+		*/
 	}
 
 } // Namespace zombie.

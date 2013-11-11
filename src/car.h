@@ -5,6 +5,7 @@
 #include "input.h"
 #include "state.h"
 #include "unit.h"
+#include "gameentity.h"
 
 #include <mw/signal.h>
 
@@ -13,6 +14,8 @@
 #include <cmath>
 
 namespace zombie {
+
+	class Unit;
 
 	enum CarEvent {
 		CAREVENT_EXPLODE,
@@ -32,7 +35,7 @@ namespace zombie {
 			steeringAngle_ = 0.0f;
 			wheelDelta_ = 0.4f;
 
-			idDriver_ = 0;
+			unit_ = nullptr;
 			
 			// Box2d properties.
 			b2BodyDef bodyDef;
@@ -58,18 +61,24 @@ namespace zombie {
 
 		~Car() {
 			getWorld()->DestroyBody(body_);
+			// Remove the unit.
+			if (unit_ != nullptr) {
+				GameEntity* entity = unit_->getGameEntity();
+				delete entity->object_;
+				delete entity->player_;
+				delete entity->graphic_;
+				entity->graphic_ = nullptr;
+				entity->player_ = nullptr;
+				entity->object_ = nullptr;
+			}
 		}
 		
-		int getDriverId() const{
-			return idDriver_;
+		Unit* getDriver() const{
+			return unit_;
 		}
 
 		void setDriver(Unit* unit) {
-			if (unit == nullptr) {
-				idDriver_ = 0;
-			} else {
-				idDriver_ = unit->getId();
-			}
+			unit_ = unit;
 		}
 
 		void updatePhysics(float time, float timeStep, Input input) override {
@@ -102,8 +111,7 @@ namespace zombie {
 			}
 		}
 
-		bool collision(float impulse) override {
-			return false;
+		void collision(float impulse) override {
 		}
 
 		void applyFriction(float frictionForwardFrontWheel, float frictionForwardBackWheel,
@@ -153,11 +161,11 @@ namespace zombie {
 			return body_->GetWorldVector(b2Vec2(std::cos(steeringAngle_),std::sin(steeringAngle_)));
 		}
 		
-		double width() const {
+		double getWidth() const {
 			return width_;
 		}
 
-		double length() const {
+		double getLength() const {
 			return length_;
 		}
 
@@ -183,7 +191,7 @@ namespace zombie {
 
 		bool isInfected() const override {
 			// When no driver the car is seen as infected and therefore ignored by the zombies.
- 			return Object::getObject(idDriver_) == nullptr;
+ 			return unit_ == nullptr;
 		}
 
 		float getViewDistance() const override {
@@ -204,7 +212,7 @@ namespace zombie {
 		b2Body* body_;
 		float steeringAngle_;
 
-		int idDriver_;
+		Unit* unit_;
 		float length_, width_;
 		State state_;
 		float currentTime_;

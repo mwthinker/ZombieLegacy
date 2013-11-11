@@ -18,13 +18,18 @@ namespace zombie {
 		friend class ZombieEngine;
 
 		virtual ~MovingObject() {
+			// Remove this object from all other object that sees this object.
+			for (MovingObject* ob : seenByOthers_) {
+				ob->objectsSeen_.remove(this);
+			}
 		}
 
-		// Update all internal states based on the input.
+		// Simulates the physics at time (time) one time step (timeStep) ahead.
+		// Based on the input given.
 		virtual void updatePhysics(float time, float timeStep, Input input) = 0;
 
-		// Return true if the collision is damaging.
-		virtual bool collision(float impulse) = 0;
+		// Simulates a collision with the force defined in impulse.
+		virtual void collision(float impulse) = 0;
 
 		// Returns the current weapon.
 		virtual Weapon getWeapon() const = 0;
@@ -55,19 +60,22 @@ namespace zombie {
 		// Returns a reference to the current list of viewable moving objects.
 		// The objects are only guaranteed to exist in the current game time.
 		const std::list<MovingObject*>& getVisibleObjects() const {
-			return visibleObjects_;
+			return objectsSeen_;
 		}
 
 	private:
-		void addVisibleObject(MovingObject* object) {
-			visibleObjects_.push_back(object);
+		void addSeenObject(MovingObject* object) {
+			objectsSeen_.push_back(object);
+			object->seenByOthers_.push_back(this);
 		}
 
-		void removeVisibleObject(MovingObject* object) {
-			visibleObjects_.erase(std::find(visibleObjects_.begin(), visibleObjects_.end(), object));
+		void removeSeenObject(MovingObject* object) {
+			objectsSeen_.erase(std::find(objectsSeen_.begin(), objectsSeen_.end(), object));
+			object->seenByOthers_.erase(std::find(object->seenByOthers_.begin(), object->seenByOthers_.end(), this));
 		}
 
-		std::list<MovingObject*> visibleObjects_;
+		std::list<MovingObject*> objectsSeen_;
+		std::list<MovingObject*> seenByOthers_;
 	};
 
 } // Namespace zombie.

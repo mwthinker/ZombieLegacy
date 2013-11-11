@@ -11,7 +11,7 @@ namespace zombie {
 
 	class AiPlayer : public Player {
 	public:
-		AiPlayer(AiBehaviorPtr behavior, const Unit* mOb);
+		AiPlayer(AiBehaviorPtr behavior, Unit* mOb);
 
 		AiPlayer(const Unit* mOb);
 
@@ -21,6 +21,7 @@ namespace zombie {
 
 		Input input_;
 		AiBehaviorPtr behavior_;
+		Unit* unit_;
 	};
 
 } // Namespace zombie.

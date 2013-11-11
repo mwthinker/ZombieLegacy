@@ -1,7 +1,7 @@
 #ifndef CARANIMATION_H
 #define CARANIMATION_H
 
-#include "task.h"
+#include "graphicentity.h"
 
 #include <mw/sprite.h>
 
@@ -9,17 +9,16 @@ namespace zombie {
 
 	class Car;
 
-	class CarAnimation : public Task {
+	class CarAnimation : public GraphicEntity {
 	public:
 		CarAnimation(Car* car);
 		~CarAnimation();
 
-		bool update(double time) override;
+		void draw(float time, float timeStep, float accumulator) override;
 	
-	private:				
-		int idCarObject_;
+	private:
+		Car* car_;
 		mw::Sprite carSprite_;
-		double lastTime_;
 	};
 
 } // Namespace zombie.

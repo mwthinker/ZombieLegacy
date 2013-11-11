@@ -10,7 +10,6 @@ namespace zombie {
 		findNewTargetTime_ = random() * 3;
 		timeToUpdateAngleDirection_ = random() * 1;
 		targetAngle_ = random() * PI * 2;
-		idTarget_ = 0;
 	}
 
 	ZombieBehavior::~ZombieBehavior() {
@@ -18,25 +17,13 @@ namespace zombie {
 
 	Input ZombieBehavior::calculateInput(const Unit* unit, double time) {
 		Input input;
-		
-		const Object* ob = Object::getObject(idTarget_);
-		const MovingObject* target = nullptr;
-		if (ob != nullptr) {
-			target = static_cast<const MovingObject*>(ob);
-		}
 
-		// Target is valid and dead?
-		if (target != nullptr && target ->isDead()) {
-			target = nullptr;
-		}
+		MovingObject* target = nullptr;
 
 		if (time > findNewTargetTime_) {
 			findNewTargetTime_ = random() * 3 + time;
 			
 			target = findUninfectedTarget(unit->getPosition(), unit->getVisibleObjects());
-			if (target != nullptr) {
-				idTarget_ = target->getId();
-			}
 		}
 
 		if (time > timeToUpdateAngleDirection_) {
@@ -89,11 +76,8 @@ namespace zombie {
 					distant = tmp;
 				}
 			}
-		}		
+		}
 		return target;
-	}
-
-	void ZombieBehavior::unitEventHandler(Unit::UnitEvent unitEvent) {
 	}
 
 } // Namespace zombie.
