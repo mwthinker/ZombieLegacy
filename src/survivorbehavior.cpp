@@ -1,6 +1,4 @@
 #include "survivorbehavior.h"
-#include "aibehavior.h"
-#include "order.h"
 #include "typedefs.h"
 #include "unit.h"
 #include "auxiliary.h"

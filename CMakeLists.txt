@@ -49,26 +49,18 @@ SET(SOURCES_ZOMBIE
 	src/humanstatus.h
 	src/input.h
 	src/inputkeyboard.h
-	src/linefeature.h
 	src/load.cpp
 	src/load.h
 	src/main.cpp
 	src/mapdraw.cpp
 	src/mapdraw.h
 	src/movingobject.h
-	src/movingunitlistener.h
 	src/object.cpp
 	src/object.h
-	src/order.cpp
-	src/order.h
-	src/pathfinder.h
 	src/player.h
-	src/roaddraw.cpp
-	src/roaddraw.h
 	src/settings.h
 	src/shot.cpp
 	src/shot.h
-	src/sky.h
 	src/state.h
 	src/survivaltimer.h
 	src/survivorbehavior.cpp
@@ -77,8 +69,6 @@ SET(SOURCES_ZOMBIE
 	src/task.h
 	src/taskmanager.cpp
 	src/taskmanager.h
-	src/treedraw.cpp
-	src/treedraw.h
 	src/typedefs.h
 	src/unit.cpp
 	src/unit.h
