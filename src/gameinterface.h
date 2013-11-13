@@ -21,6 +21,15 @@ namespace zombie {
 		virtual bool isUnitOutside(float x, float y, bool infected) {
 			return false;
 		}
+
+		virtual void unitCollision() {
+		}
+
+		virtual void carCollision() {
+		}
+
+		virtual void shotFired(const Bullet& bullet) {
+		}
 	};
 
 } // Namespace zombie.

@@ -6,11 +6,10 @@
 #include "device.h"
 #include "input.h"
 #include "typedefs.h"
-#include "taskmanager.h"
 
+#include <mw/signal.h>
 #include <Box2D/Box2D.h>
 #include <SDL.h>
-#include <mw/signal.h>
 
 #include <memory>
 #include <vector>
@@ -25,11 +24,10 @@ namespace zombie {
 	class MovingObject;
 	class Player;
 	class Bullet;
-	class Animation;
 	class GameInterface;
 
 	// Responsible of all creation and deallocation of game objects 
-	// and manage there physical and graphical representation.
+	// and simulationg the game mechanics.
 	class ZombieEngine : public b2ContactListener {
 	public:
 		ZombieEngine(GameInterface* gameInterface);
@@ -45,22 +43,24 @@ namespace zombie {
 		void draw(float deltaTime);
 
 		// Add a human player to the game.
-		void setHuman(DevicePtr device, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, const Animation& animation);
+		void setHuman(DevicePtr device, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon);
 
 		// Add a ai player to the game.
-		void addAi(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, const Animation& animation);
+		void addAi(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
 
 		// Add a car to the game.
-		void addCar(const State& state, float mass, float life, float width, float length, const Animation& animation);
+		void addCar(const State& state, float mass, float life, float width, float length);
 
 		void addBuilding(const std::vector<Position>& corners);
 
 		void addWeapon(float x, float y, const Weapon& weapon);
 
-		void addGrassGround(float minX, float maxX, float minY, float maxY);
-
 		inline float getTime() const {
 			return time_;
+		}
+
+		inline bool isStarted() const {
+			return started_;
 		}
 
 	private:
@@ -89,8 +89,7 @@ namespace zombie {
 		float time_; // Local game time.
 		
 		Unit* human_;
-		std::list<GameEntity*> entities_; // All units.
-		TaskManager taskManager_;
+		std::list<Player*> players_;
 
 		// Fix timestep.
 		float timeStep_;

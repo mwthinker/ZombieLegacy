@@ -29,7 +29,7 @@ namespace zombie {
 
 		scale_ = 1.0;
 
-		engine_.addGrassGround(-50, 50, -50, 50);
+		//engine_.addGrassGround(-50, 50, -50, 50);
 
 		innerSpawnRadius_ = 10.f;
 		outerSpawnRadius_ = 40.f;
@@ -48,7 +48,7 @@ namespace zombie {
 		}
 
 		Position position = generatePosition(ORIGO, 0, 50);
-		engine_.setHuman(keyboard1_, State(position,ORIGO, 0), humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, Weapon(55, 0.2f, 8, 12), animation);
+		engine_.setHuman(keyboard1_, State(position,ORIGO, 0), humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, Weapon(55, 0.2f, 8, 12));
 		viewPosition_ = position;
 
 		// Add cars.		
@@ -56,7 +56,7 @@ namespace zombie {
 			Animation animation;
 			animation.add(getLoadedTexture(volvoP.image_));
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addCar(State(spawn, ORIGO, 0), volvoP.mass_, volvoP.life_, volvoP.width_, volvoP.length_, animation);
+			engine_.addCar(State(spawn, ORIGO, 0), volvoP.mass_, volvoP.life_, volvoP.width_, volvoP.length_);
 		}
 
 		// Add zombies.
@@ -67,13 +67,13 @@ namespace zombie {
 				animation.setScale(std::get<1>(tuple));
 			}
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addAi(State(spawn, ORIGO, 0), zombieP.mass_, zombieP.radius_, zombieP.life_, zombieP.walkingSpeed_, zombieP.runningSpeed_, true, Weapon(35, 0.5f, 1, 10000), animation);
+			engine_.addAi(State(spawn, ORIGO, 0), zombieP.mass_, zombieP.radius_, zombieP.life_, zombieP.walkingSpeed_, zombieP.runningSpeed_, true, Weapon(35, 0.5f, 1, 10000));
 		}
 
 		// Add survivors.
 		for (int i = 0; i < 0; ++i) {
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addAi(State(spawn, ORIGO, 0), humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, false, Weapon(35, 0.5, 8, 120), animation);
+			engine_.addAi(State(spawn, ORIGO, 0), humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, false, Weapon(35, 0.5, 8, 120));
 		}
 
 		for (BuildingProperties& p : buildings_) {
@@ -99,7 +99,13 @@ namespace zombie {
 		glScaled(1.0 / 50, 1.0 / 50, 1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
 		glScaled(scale_, scale_, 1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
 		glTranslated(-viewPosition_.x, -viewPosition_.y, 0.0);
-		engine_.draw(deltaTime);
+		
+		// Game is started?
+		if (engine_.isStarted()) {
+			taskManager_.update(deltaTime);
+		} else {
+			taskManager_.update(0.0);
+		}
 
 		glPopMatrix();
 	}

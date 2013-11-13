@@ -1,33 +1,17 @@
 #include "zombieengine.h"
+#include "gameinterface.h"
 #include "typedefs.h"
 #include "unit.h"
 #include "building.h"
 #include "bullet.h"
 #include "input.h"
 #include "weaponobject.h"
-#include "mapdraw.h"
-#include "drawweaponobject.h"
-#include "buildingdraw.h"
-#include "humanstatus.h"
 #include "zombiebehavior.h"
 #include "survivorbehavior.h"
-#include "gamesound.h"
-#include "taskmanager.h"
 #include "aiplayer.h"
-#include "survivaltimer.h"
 #include "car.h"
-#include "blood.h"
-#include "caranimation.h"
-#include "unitanimation.h"
 #include "humanplayer.h"
-#include "shot.h"
 #include "animation.h"
-#include "gameinterface.h"
-#include "buildingproperties.h"
-#include "weaponproperties.h"
-#include "unitproperties.h"
-#include "carproperties.h"
-#include "gameentity.h"
 
 #include <Box2D/Box2D.h>
 
@@ -125,7 +109,6 @@ namespace zombie {
 
 		// Create a world with no "gravity".
 		world_ = new b2World(b2Vec2(0, 0));
-		Object::world = world_;
 
 		world_->SetContactListener(this);
 
@@ -134,15 +117,9 @@ namespace zombie {
 
 		timeStep_ = 0.017f; // Fix time step for physics update.
 		accumulator_ = 0.0f; // Time accumulator.
-
-		//taskManager_.add(new SurvivalTimer(), GraphicLevel::INTERFACE_LEVEL);
 	}
 
 	ZombieEngine::~ZombieEngine() {
-		for (GameEntity* entity : entities_) {
-			delete entity;
-		}
-
 		// Remove all game objects.
 		std::vector<Object*> removeObjects_;
 		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
@@ -152,8 +129,11 @@ namespace zombie {
 		}
 
 		for (Object* ob : removeObjects_) {
+			delete ob->player_;
 			delete ob;
 		}
+
+		players_.clear();
 
 		// When all game objects are removed then remove world.
 		delete world_;
@@ -170,8 +150,8 @@ namespace zombie {
 			spawnAndCleanUpUnits();
 
 			// Update all game entities.
-			for (GameEntity* entity : entities_) {
-				entity->updatePhysics(time_, timeStep);
+			for (Player* player : players_) {
+				player->updatePhysics(time_, timeStep);
 			}
 
 			// Update the objects physics interactions.
@@ -189,8 +169,8 @@ namespace zombie {
 
 	void ZombieEngine::spawnAndCleanUpUnits() {
 		// Delete all units outside the perimiter, and all the dead units.
-		entities_.remove_if([&](GameEntity* entity) {
-			const MovingObject* mOb = entity->object_;
+		players_.remove_if([&](Player* player) {
+			MovingObject* mOb = player->getMovingObject();
 			if (mOb != nullptr) {
 				Position p = mOb->getPosition();
 				if (mOb->isDead() || gameInterface_->isUnitOutside(p.x, p.y, mOb->isInfected())) {
@@ -202,13 +182,15 @@ namespace zombie {
 						gameInterface_->unitDied(p.x, p.y, mOb->isInfected());
 					}
 
-					delete entity;
+					delete player;
+					delete mOb;
 
 					// Removes the pointer from the list.
 					return true;
 				}
 			} else {
-				delete entity;
+				delete player;
+				delete mOb;
 			}
 
 			// The pointer is not removed.
@@ -231,73 +213,53 @@ namespace zombie {
 	}
 
 	void ZombieEngine::draw(float deltaTime) {
-		// Game is started?
-		if (started_) {
-			taskManager_.update(deltaTime);
-		} else {
-			taskManager_.update(0.0);
-		}
-
-		for (GameEntity* entity : entities_) {
-			entity->draw(time_, timeStep_, accumulator_);
-		}
+		
 	}
 
-	void ZombieEngine::setHuman(DevicePtr device, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, const Animation& animation) {
+	void ZombieEngine::setHuman(DevicePtr device, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon) {
 		if (human_ != nullptr) {
-			entities_.remove(human_->gameEntity_);
+			players_.remove(human_->getPlayer());
 			delete human_;
 		}
 		human_ = createUnit(state, mass, radius, life, walkingSpeed, runningSpeed, false, weapon);
-		GameEntity* entity = new GameEntity(human_, new UnitAnimation(human_, animation), new HumanPlayer(device, human_));
-		entities_.push_back(entity);
-		taskManager_.add(new HumanStatus(human_, HumanStatus::ONE), GraphicLevel::INTERFACE_LEVEL);
+		Player* player = new HumanPlayer(device, human_);
+		players_.push_back(player);
 	}
 
-	void ZombieEngine::addAi(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, const Animation& animation) {
+	void ZombieEngine::addAi(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) {
 		Unit* unit = createUnit(state, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
 		if (infected) {
-			AiBehaviorPtr b = std::make_shared<ZombieBehavior>();
-			AiPlayer* aiPlayer(new AiPlayer(b, unit));
-			GameEntity* entity = new GameEntity(unit, new UnitAnimation(unit, animation), aiPlayer);
-			entities_.push_back(entity);
+			AiBehaviorPtr behavior = std::make_shared<ZombieBehavior>();
+			Player* player = new AiPlayer(behavior, unit);
+			players_.push_back(player);
 		} else {
-			AiBehaviorPtr b = std::make_shared<SurvivorBehavior>();
-			AiPlayer* aiPlayer(new AiPlayer(b, unit));
-			GameEntity* entity = new GameEntity(unit, new UnitAnimation(unit, animation), aiPlayer);
-			entities_.push_back(entity);
+			AiBehaviorPtr behavior = std::make_shared<SurvivorBehavior>();
+			Player* player = new AiPlayer(behavior, unit);
+			players_.push_back(player);
 		}
 	}
 
-	void ZombieEngine::addCar(const State& state, float mass, float life, float width, float length, const Animation& animation) {
+	void ZombieEngine::addCar(const State& state, float mass, float life, float width, float length) {
 		Car* car = createCar(state, mass, life, width, length);
-		GameEntity* entity = new GameEntity(car, new CarAnimation(car), nullptr);
-		entities_.push_back(entity);
 	}
 
 	void ZombieEngine::addBuilding(const std::vector<Position>& corners) {
-		Building* building = new Building(corners);
-		taskManager_.add(new BuildingDraw(building), GraphicLevel::BUILDING_LEVEL);
+		Building* building = new Building(world_, corners);
 	}
 
 	void ZombieEngine::addWeapon(float x, float y, const Weapon& weapon) {
-		WeaponObject* wOb = new WeaponObject(x, y, weapon);
-		taskManager_.add(new DrawWeaponObject(wOb), GraphicLevel::TREE_LEVEL);
-	}
-
-	void ZombieEngine::addGrassGround(float minX, float maxX, float minY, float maxY) {
-		taskManager_.add(new MapDraw(minX, maxX, minY, maxY), GraphicLevel::GROUND_LEVEL);
+		WeaponObject* wOb = new WeaponObject(world_, x, y, weapon);
 	}
 
 	Unit* ZombieEngine::createUnit(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) {
-		Unit* unit = new Unit(state, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
+		Unit* unit = new Unit(world_, state, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
 		unit->addShootHandler(std::bind(&ZombieEngine::doShotDamage, this, std::placeholders::_1, std::placeholders::_2));
 		unit->addActionHandler(std::bind(&ZombieEngine::unitDoAction, this, std::placeholders::_1));
 		return unit;
 	}
 
 	Car* ZombieEngine::createCar(const State& state, float mass, float life, float width, float length) {
-		Car* car = new Car(state, mass, life, width, length);
+		Car* car = new Car(world_, state, mass, life, width, length);
 		car->addActionHandler(std::bind(&ZombieEngine::carDoAction, this, std::placeholders::_1));
 		return car;
 	}
@@ -320,10 +282,12 @@ namespace zombie {
 			if (Car* car = dynamic_cast<Car*>(ob)) {
 				// Driver seat is empty?
 				if (car->getDriver() == nullptr) {
+					/*
 					// The unit gets into the car.
 					std::swap(car->gameEntity_->player_, unit->gameEntity_->player_);
 					car->setDriver(unit);
 					unit->getBody()->SetActive(false);
+					*/
 				}
 			} else if (WeaponObject* wOb = dynamic_cast<WeaponObject*>(ob)) {
 				// Change the weapon.
@@ -335,13 +299,14 @@ namespace zombie {
 
 	void ZombieEngine::carDoAction(Car* car) {
 		Unit* driver = car->getDriver();
-
+		/*
 		// The driver gets out of the car.
 		std::swap(car->gameEntity_->player_, driver->gameEntity_->player_);
 		car->setDriver(nullptr);
 		b2Body* driverBody = driver->getBody();
 		driverBody->SetActive(true);
 		driverBody->SetTransform(car->getPosition(), car->getDirection());
+		*/
 	}
 
 	void ZombieEngine::doShotDamage(Unit* shooter, const Bullet& bullet) {
@@ -364,19 +329,10 @@ namespace zombie {
 				// Target alive?
 				if (!target->isDead()) {
 					target->updateHealthPoint(-bullet.damage_);
-					endP = target->getPosition();
-					// Target killed?
-					if (target->isDead()) {
-						taskManager_.add(new Blood(endP.x, endP.y, time_), GraphicLevel::BLOOD_LEVEL);
-						taskManager_.add(new BloodStain(endP.x, endP.y, time_), GraphicLevel::BLOOD_LEVEL);
-					} else {
-						taskManager_.add(new BloodSplash(endP.x, endP.y, time_), GraphicLevel::BLOOD_LEVEL);
-					}
 				}
 			}
 		}
-		
-		taskManager_.add(new Shot(shooter->getPosition(), endP, time_), GraphicLevel::SHOT_LEVEL);
+		gameInterface_->shotFired(bullet);
 	}
 
 	void ZombieEngine::BeginContact(b2Contact* contact) {
@@ -397,20 +353,13 @@ namespace zombie {
 
 	namespace {
 
-		void unitCollision(TaskManager& taskManager, float time, Object* ob, const b2ContactImpulse* impulse) {
+		void unitCollision(GameInterface* gameInterface, float time, Object* ob, const b2ContactImpulse* impulse) {
 			if (MovingObject* mOv = dynamic_cast<Car*>(ob)) {
 				mOv->collision(std::abs(impulse->normalImpulses[0]));
 				if (dynamic_cast<Car*>(ob)) {
-					mw::Sound tmp = crash;
-					tmp.play();
+					gameInterface->carCollision();
 				} else if (Unit* unit = dynamic_cast<Unit*>(ob)) {
-					Position p = unit->getPosition();
-					if (unit->isDead()) {
-						taskManager.add(new Blood(p.x, p.y, time), GraphicLevel::BLOOD_LEVEL);
-						taskManager.add(new BloodStain(p.x, p.y, time), GraphicLevel::BLOOD_LEVEL);
-					} else {
-						taskManager.add(new BloodSplash(p.x, p.y, time), GraphicLevel::BLOOD_LEVEL);
-					}
+					gameInterface->unitCollision();
 				}
 			}
 		}
@@ -418,9 +367,9 @@ namespace zombie {
 
 	void ZombieEngine::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
 		Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
-		unitCollision(taskManager_, time_, ob1, impulse);
+		unitCollision(gameInterface_, time_, ob1, impulse);
 		Object* ob2 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
-		unitCollision(taskManager_, time_, ob2, impulse);
+		unitCollision(gameInterface_, time_, ob2, impulse);
 	}
 
 } // Namespace zombie.

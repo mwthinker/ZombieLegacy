@@ -1,11 +1,11 @@
+#ifndef TYPEDEFS_H
+#define TYPEDEFS_H
+
 #include <memory>
 #include <vector>
 
 #include <mw/color.h>
 #include <Box2D/Box2D.h>
-
-#ifndef TYPEDEFS_H
-#define TYPEDEFS_H
 
 namespace zombie {
 

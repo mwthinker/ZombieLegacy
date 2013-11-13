@@ -11,15 +11,14 @@ namespace zombie {
 
 	class AiPlayer : public Player {
 	public:
-		AiPlayer(AiBehaviorPtr behavior, Unit* mOb);
+		AiPlayer(AiBehaviorPtr behavior, Unit* unit);
+		AiPlayer(Unit* unit);
 
-		AiPlayer(const Unit* mOb);
+		void updatePhysics(float time, float deltaTime) override;
 
-		Input currentInput() override;
-
-		void calculateInput(double time) override;
-
-		Input input_;
+		MovingObject* getMovingObject() const override;
+		
+	private:
 		AiBehaviorPtr behavior_;
 		Unit* unit_;
 	};

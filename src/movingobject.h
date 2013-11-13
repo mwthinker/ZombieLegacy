@@ -17,6 +17,9 @@ namespace zombie {
 	public:
 		friend class ZombieEngine;
 
+		MovingObject(b2World* world) : Object(world) {
+		}
+
 		virtual ~MovingObject() {
 			// Remove this object from all other object that sees this object.
 			for (MovingObject* ob : seenByOthers_) {
@@ -61,7 +64,7 @@ namespace zombie {
 		// The objects are only guaranteed to exist in the current game time.
 		const std::list<MovingObject*>& getVisibleObjects() const {
 			return objectsSeen_;
-		}
+		}		
 
 	private:
 		void addSeenObject(MovingObject* object) {

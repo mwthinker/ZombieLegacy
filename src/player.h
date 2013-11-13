@@ -8,25 +8,12 @@ namespace zombie {
 
 	class Player {
 	public:
-		friend class ZombieEngine;
-
-		inline Player(const MovingObject* mOb) : id_(mOb->getId()) {
-		}
-
 		virtual ~Player() {
 		}
 
-		virtual void calculateInput(double time) {
-		}
+		virtual void updatePhysics(float time, float deltaTime) = 0;
 
-		virtual Input currentInput() = 0;
-
-		inline int getId() const {
-			return id_;
-		}
-		
-	private:
-		int id_;
+		virtual MovingObject* getMovingObject() const = 0;
 	};
 
 } // Namespace zombie.

@@ -11,7 +11,7 @@ namespace zombie {
 
 	class Building : public Object {
 	public:
-		Building(const std::vector<Position>& corners) : corners_(corners) {
+		Building(b2World* world, const std::vector<Position>& corners) : Object(world), corners_(corners) {
 			init();
 
 			// Create body.

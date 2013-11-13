@@ -1,20 +1,18 @@
 #ifndef CARANIMATION_H
 #define CARANIMATION_H
 
-#include "graphicentity.h"
-
 #include <mw/sprite.h>
 
 namespace zombie {
 
 	class Car;
 
-	class CarAnimation : public GraphicEntity {
+	class CarAnimation {
 	public:
 		CarAnimation(Car* car);
 		~CarAnimation();
 
-		void draw(float time, float timeStep, float accumulator) override;
+		void draw(float time, float timeStep, float accumulator);
 	
 	private:
 		Car* car_;
