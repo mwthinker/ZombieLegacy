@@ -2,21 +2,17 @@
 #define OBJECT_H
 
 #include <Box2D/Dynamics/b2Body.h>
-#include <unordered_map>
 
 namespace zombie {
 
-	class GameEntity;
+	class Player;
 
 	// Represent a object inside the "zombie world".
 	class Object {
 	public:
 		friend class ZombieEngine;
-		friend class GameEntity;
 
-		inline Object() {
-			id_ = ++lastId;
-			gameEntity_ = nullptr;
+		inline Object(b2World* world) : id_(++lastId), player_(nullptr), world_(world) {
 		}
 
 		virtual ~Object() {
@@ -28,19 +24,19 @@ namespace zombie {
 			return id_;
 		}
 
-		static b2World* getWorld() {
-			return world;
+		inline b2World* getWorld() {
+			return world_;
 		}
 
-		GameEntity* getGameEntity() const {
-			return gameEntity_;
+		Player* getPlayer() const {
+			return player_;
 		}
 
 	private:
 		int id_;
-		GameEntity* gameEntity_;
+		Player* player_;
+		b2World* world_;
 		static int lastId;
-		static b2World* world;
 	};
 
 } // Namespace zombie.

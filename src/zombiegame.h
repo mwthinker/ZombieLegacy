@@ -9,6 +9,7 @@
 #include "carproperties.h"
 #include "settings.h"
 #include "gameinterface.h"
+#include "taskmanager.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
@@ -23,7 +24,8 @@ namespace zombie {
 	// Responsible of loading map, units and initiate all
 	// game related things and to start the game engine.
 	// It also handle all game events triggered by the game engine,
-	// e.g. what happens when a unit dies.
+	// e.g. what happens when a unit dies. All graphics and sound is
+	// started here.
 	class ZombieGame : public GameInterface {
 	public:
 		ZombieGame(int width, int height, tinyxml2::XMLHandle xml);
@@ -41,7 +43,7 @@ namespace zombie {
 
 		void zoom(double scale);
 
-		void updateSize(int width, int height);
+		void updateSize(int width, int height);		
 
 	private:
 		void humanPosition(float x, float y) override;
@@ -75,6 +77,8 @@ namespace zombie {
 
 		std::map<std::string, mw::TexturePtr> textures_;
 		std::map<std::string, mw::Sound> sounds_;
+
+		TaskManager taskManager_;
 	};
 
 } // Namespace zombie_;

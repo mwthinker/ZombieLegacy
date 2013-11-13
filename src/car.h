@@ -5,7 +5,6 @@
 #include "input.h"
 #include "state.h"
 #include "unit.h"
-#include "gameentity.h"
 
 #include <mw/signal.h>
 
@@ -27,7 +26,7 @@ namespace zombie {
 	// one front wheel and one backwheel in order to simlify the math.
 	class Car : public MovingObject {
 	public:
-		Car(const State& state, float mass, float life, float width, float length) {
+		Car(b2World* world, const State& state, float mass, float life, float width, float length) : MovingObject(world) {
 			length_ = length;
 			width_ = width;
 
@@ -61,16 +60,6 @@ namespace zombie {
 
 		~Car() {
 			getWorld()->DestroyBody(body_);
-			// Remove the unit.
-			if (unit_ != nullptr) {
-				GameEntity* entity = unit_->getGameEntity();
-				delete entity->object_;
-				delete entity->player_;
-				delete entity->graphic_;
-				entity->graphic_ = nullptr;
-				entity->player_ = nullptr;
-				entity->object_ = nullptr;
-			}
 		}
 		
 		Unit* getDriver() const{

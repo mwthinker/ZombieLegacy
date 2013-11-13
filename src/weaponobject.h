@@ -11,7 +11,7 @@ namespace zombie {
 
 	class WeaponObject : public Object {
 	public:
-		WeaponObject(float x, float y, const Weapon& weapon) {
+		WeaponObject(b2World* world, float x, float y, const Weapon& weapon) : Object(world) {
 			radius_ = 0.5;
 			
 			// Box2d properties.

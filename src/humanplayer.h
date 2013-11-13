@@ -3,23 +3,26 @@
 
 #include "player.h"
 #include "device.h"
+#include "unit.h"
 
 namespace zombie {
 
 	class HumanPlayer : public Player {
 	public:
-		HumanPlayer(DevicePtr device, const MovingObject* mOb) : Player(mOb), device_(device) {
+		HumanPlayer(DevicePtr device, Unit* unit) : device_(device), unit_(unit) {
 		}
 
-		void calculateInput(double time) override {
+		void updatePhysics(float time, float deltaTime) override {
+			unit_->updatePhysics(time, deltaTime, device_->currentInput());
 		}
 
-		Input currentInput() override {
-			return device_->currentInput();
+		MovingObject* getMovingObject() const override {
+			return unit_;
 		}
 
 	private:
 		DevicePtr device_;
+		Unit* unit_;
 	};
 
 } // Namespace zombie.

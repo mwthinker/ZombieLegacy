@@ -8,7 +8,7 @@
 
 namespace zombie {
 
-	Unit::Unit(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) : weapon_(weapon) {
+	Unit::Unit(b2World* world, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) : MovingObject(world), weapon_(weapon) {
 		isInfected_ = infected;
 
 		// Properties

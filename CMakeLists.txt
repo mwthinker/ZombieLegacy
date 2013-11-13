@@ -35,7 +35,6 @@ SET(SOURCES_ZOMBIE
 	src/device.h
 	src/drawweaponobject.cpp
 	src/drawweaponobject.h
-	src/gameentity.h
 	src/gamefont.cpp
 	src/gamefont.h
 	src/gameinterface.h
@@ -43,7 +42,6 @@ SET(SOURCES_ZOMBIE
 	src/gamesound.h
 	src/gamesprite.cpp
 	src/gamesprite.h
-	src/graphicentity.h
 	src/humanplayer.h
 	src/humanstatus.cpp
 	src/humanstatus.h

@@ -1,20 +1,17 @@
 #ifndef UNITANIMAITON_H
 #define UNITANIMAITON_H
 
-#include "GraphicEntity.h"
 #include "animation.h"
 #include "unit.h"
 
 namespace zombie {
 
-	class Unit;
-
-	class UnitAnimation : public GraphicEntity {
+	class UnitAnimation {
 	public:
 		UnitAnimation(Unit* unit, const Animation& animation);
 		~UnitAnimation();
 	
-		void draw(float time, float timeStep, float accumulator) override;
+		void draw(float time, float timeStep, float accumulator);
 		void eventHandler(Unit::UnitEvent unitEvent);
 
 	private:

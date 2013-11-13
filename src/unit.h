@@ -23,7 +23,7 @@ namespace zombie {
 			SHOOT, RELOADING, DIE, WALK, STANDSTILL, RUN
 		};
 
-		Unit(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
+		Unit(b2World* world, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
 		~Unit();
 		
 		void updatePhysics(float time, float timeStep, Input input) override;
