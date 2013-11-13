@@ -119,7 +119,7 @@ namespace zombie {
 				bullet.range_ = weapon_.range();
 				bullet.postion_ = getPosition();
 				bullet.damage_ = weapon_.damage();
-				shootSignal_(this,bullet);			
+				shootSignal_(this,bullet);
 				eventSignal_(UnitEvent::SHOOT);
 			}
 
