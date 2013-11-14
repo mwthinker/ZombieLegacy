@@ -9,14 +9,15 @@
 #include "task.h"
 #include "car.h"
 
-// Graphic
+// Graphic.
 #include "mapdraw.h"
 #include "buildingdraw.h"
+#include "unitanimation.h"
 
-// External
+// External.
 #include <mw/exception.h>
 
-// Stl
+// Stl.
 #include <cmath>
 #include <sstream>
 
@@ -71,10 +72,19 @@ namespace zombie {
 		}
 
 		Position position = generatePosition(ORIGO, 0, 50);
-		engine_.setHuman(keyboard1_, State(position, ORIGO, 0), humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, Weapon(55, 0.2f, 8, 12));
+		State state(position, ORIGO, 0);
+		
+		UnitAnimation* unitAnimation = new UnitAnimation(state, humanP.radius_, animation);
+		taskManager_.add(unitAnimation, GraphicLevel::UNIT_LEVEL);
+		auto callback = std::bind(&UnitAnimation::updateData, unitAnimation, std::placeholders::_1, std::placeholders::_2);
+		
+		engine_.setHuman(keyboard1_, state,
+			humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, 
+			humanP.runningSpeed_, Weapon(55, 0.2f, 8, 12), callback);
+		
 		viewPosition_ = position;
 
-		// Add cars.		
+		// Add cars.
 		for (int i = 0; i < 10; ++i) {
 			Animation animation;
 			animation.add(getLoadedTexture(volvoP.image_));
@@ -82,7 +92,8 @@ namespace zombie {
 			//sprite.setDrawPixelSize(true);
 			Position spawn = generatePosition(ORIGO, 0, 50);
 			auto callback = std::bind(drawCar, sprite, std::placeholders::_1, std::placeholders::_2);
-			engine_.addCar(State(spawn, ORIGO, 0), volvoP.mass_, volvoP.life_, volvoP.width_, volvoP.length_, callback);
+			//engine_.addCar(State(spawn, ORIGO, 0), volvoP.mass_, volvoP.life_, 
+			//	volvoP.width_, volvoP.length_, callback);
 		}
 
 		// Add zombies.
@@ -93,13 +104,17 @@ namespace zombie {
 				animation.setScale(std::get<1>(tuple));
 			}
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addAi(State(spawn, ORIGO, 0), zombieP.mass_, zombieP.radius_, zombieP.life_, zombieP.walkingSpeed_, zombieP.runningSpeed_, true, Weapon(35, 0.5f, 1, 10000));
+			engine_.addAi(State(spawn, ORIGO, 0), zombieP.mass_, zombieP.radius_, 
+				zombieP.life_, zombieP.walkingSpeed_, zombieP.
+				runningSpeed_, true, Weapon(35, 0.5f, 1, 10000));
 		}
 
 		// Add survivors.
 		for (int i = 0; i < 0; ++i) {
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addAi(State(spawn, ORIGO, 0), humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, false, Weapon(35, 0.5, 8, 120));
+			engine_.addAi(State(spawn, ORIGO, 0), humanP.mass_, humanP.radius_, 
+				humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, 
+				false, Weapon(35, 0.5, 8, 120));
 		}
 
 		for (BuildingProperties& p : buildings_) {
@@ -123,9 +138,9 @@ namespace zombie {
 		glPushMatrix();
 
 		glTranslated(0.5, 0.5, 0);
-		glScaled(1.0 / 50, 1.0 / 50, 1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
-		glScaled(scale_, scale_, 1); // Is to fit the box drawn where x=[0,1] and y=[0,1].
-		glTranslated(-viewPosition_.x, -viewPosition_.y, 0.0);
+		glScale2f(1.f / 50); // Is to fit the box drawn where x=[0,1] and y=[0,1].
+		glScale2f(scale_); // Is to fit the box drawn where x=[0,1] and y=[0,1].
+		glTranslate2f(-viewPosition_);
 		
 		// Game is started?
 		if (engine_.isStarted()) {
@@ -134,8 +149,6 @@ namespace zombie {
 			taskManager_.update(0.0);
 		}
 
-		engine_.callUpdateHandlers();
-
 		glPopMatrix();
 	}
 
@@ -143,7 +156,7 @@ namespace zombie {
 		viewPosition_ += 0.1f* (Position(x, y) - viewPosition_);
 	}
 
-	void ZombieGame::zoom(double scale) {
+	void ZombieGame::zoom(float scale) {
 		scale_ *= scale;
 	}
 

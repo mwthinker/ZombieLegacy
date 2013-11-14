@@ -22,14 +22,13 @@ namespace zombie {
 		return a < 0 ? -1 : 1;
 	}
 
-	/*
-	// May not working?
-	static bool isPointBetweenParallelLines(mw::MathVector linePosition, double angleDir, double lineWidth, mw::MathVector point) {
-		mw::MathVector line = mw::MathVector(std::cos(angleDir),std::sin(angleDir));
-		mw::MathVector dl = mw::MathVector(std::cos(mw::PI*0.5+angleDir),std::sin(mw::PI*0.5+angleDir))*lineWidth*0.5; // Turn 90 deg counter clockwise.
-		return 0 == (intSign((line + dl).cross(linePosition-point).z_) - intSign((line + dl).cross(linePosition-point).z_));
+	inline void glTranslate2f(b2Vec2 vec) {
+		glTranslatef(vec.x, vec.y, 0.0);
 	}
-	*/
+		
+	inline void glScale2f(float scale) {
+		glScalef(scale, scale, 1.f);
+	}
 
 	// Returns a random number. The output is uniformly distributed on the interval [a, b).
 	float random();

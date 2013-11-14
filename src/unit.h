@@ -20,7 +20,7 @@ namespace zombie {
 	class Unit : public MovingObject {
 	public:
 		enum UnitEvent {
-			SHOOT, RELOADING, DIE, WALK, STANDSTILL, RUN
+			SHOOT, RELOADING, DIE, WALK, STANDSTILL, RUN, ACTION, REMOVED
 		};
 
 		Unit(b2World* world, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
@@ -80,18 +80,18 @@ namespace zombie {
 			b2CircleShape* circle = (b2CircleShape*) f->GetShape();
 			return circle->m_radius;
 		}
-
-		mw::signals::Connection addUpdateHandler(mw::Signal<Unit*, float>::Callback);
-		mw::signals::Connection addActionHandler(mw::Signal<Unit*>::Callback);
-		mw::signals::Connection addEventHandler(mw::Signal<UnitEvent>::Callback);
-		mw::signals::Connection addShootHandler(mw::Signal<Unit*, Bullet>::Callback);
+		
+		mw::signals::Connection addEventHandler(mw::Signal<Unit*, UnitEvent>::Callback);
 
 		b2Body* getBody() const override {
 			return body_;
 		}
 
 		void callUpdateHandler(float time) override {
-			updateHandlers_(this, time);
+		}
+
+		const Bullet& getLastBullet() const {
+			return bullet_;
 		}
 
 	private:
@@ -108,13 +108,11 @@ namespace zombie {
 
 		Weapon weapon_;
 		bool isInfected_;
+		Bullet bullet_;
 
 		float timeLeftToRun_;
-
-		mw::Signal<Unit*, float> updateHandlers_;
-		mw::Signal<Unit*> actionSignal_;
-		mw::Signal<Unit*, Bullet> shootSignal_;
-		mw::Signal<UnitEvent> eventSignal_;
+		
+		mw::Signal<Unit*, UnitEvent> eventSignal_;
 
 		b2Body* body_;
 		Input lastInput_;

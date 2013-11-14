@@ -66,6 +66,7 @@ namespace zombie {
 	}
 
 	Unit::~Unit() {
+		eventSignal_(this, REMOVED);
 		getWorld()->DestroyBody(body_);
 	}
 
@@ -79,7 +80,7 @@ namespace zombie {
 				if (input.forward_ && input.run_) {
 					timeLeftToRun_ -= timeStep;
 					move *= 2;
-					eventSignal_(UnitEvent::RUN);
+					eventSignal_(this, UnitEvent::RUN);
 				} else if (timeLeftToRun_ < 5) {
 					timeLeftToRun_ += timeStep;
 				}
@@ -90,14 +91,14 @@ namespace zombie {
 			// Move forward or backwards.
 			if (input.forward_ && !input.backward_) {
 				body_->ApplyForceToCenter(b2Vec2(move.x,move.y));				
-				eventSignal_(UnitEvent::WALK);
+				eventSignal_(this, UnitEvent::WALK);
 			} else if (!input.forward_ && input.backward_) {
 				body_->ApplyForceToCenter(-b2Vec2(move.x,move.y));
-				eventSignal_(UnitEvent::WALK);
+				eventSignal_(this, UnitEvent::WALK);
 			} else {
 				// In order to make the unit stop when not moving.
 				body_->ApplyForceToCenter(-body_->GetLinearVelocity());
-				eventSignal_(UnitEvent::STANDSTILL);
+				eventSignal_(this, UnitEvent::STANDSTILL);
 			}
 			
 			// Add friction.
@@ -113,24 +114,22 @@ namespace zombie {
 			}
 
 			// Want to shoot? And weapon is ready?
-			if (input.shoot_  && weapon_.shoot(time)) {
-				Bullet bullet;
-				bullet.direction_ = angle;
-				bullet.range_ = weapon_.range();
-				bullet.postion_ = getPosition();
-				bullet.damage_ = weapon_.damage();
-				shootSignal_(this,bullet);
-				eventSignal_(UnitEvent::SHOOT);
+			if (input.shoot_ && weapon_.shoot(time)) {
+				bullet_.direction_ = angle;
+				bullet_.range_ = weapon_.range();
+				bullet_.postion_ = getPosition();
+				bullet_.damage_ = weapon_.damage();
+				eventSignal_(this, UnitEvent::SHOOT);
 			}
 
 			// Want to reload? And weapon is ready?
 			if (input.reload_ && weapon_.reload()) {
 				input.reload_ = true;
-				eventSignal_(UnitEvent::RELOADING);
+				eventSignal_(this, UnitEvent::RELOADING);
 			}
 
 			if (input.action_) {
-				actionSignal_(this);
+				eventSignal_(this, UnitEvent::ACTION);
 			}
 		}
 	}
@@ -180,20 +179,8 @@ namespace zombie {
 		return body_->GetAngle();
 	}
 
-	mw::signals::Connection Unit::addUpdateHandler(mw::Signal<Unit*, float>::Callback callback) {
-		return updateHandlers_.connect(callback);
-	}
-
-	mw::signals::Connection Unit::addActionHandler(mw::Signal<Unit*>::Callback callback) {
-		return actionSignal_.connect(callback);
-	}
-
-	mw::signals::Connection Unit::addEventHandler(mw::Signal<UnitEvent>::Callback callback) {
+	mw::signals::Connection Unit::addEventHandler(mw::Signal<Unit*, UnitEvent>::Callback callback) {
 		return eventSignal_.connect(callback);
-	}
-
-	mw::signals::Connection Unit::addShootHandler(mw::Signal<Unit*, Bullet>::Callback callback) {
-		return shootSignal_.connect(callback);
 	}
 
 	float Unit::healthPoints() const {

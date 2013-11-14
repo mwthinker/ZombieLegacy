@@ -9,7 +9,7 @@ namespace zombie {
 	class Shot : public Task {
 	public:
 		Shot(Position start, Position end, float startTime);
-		bool update(double time) override;
+		bool update(float time) override;
 	
 	private:
 		float startTime_;
