@@ -8,10 +8,10 @@
 #include "weaponobject.h"
 #include "zombiebehavior.h"
 #include "survivorbehavior.h"
-#include "aiplayer.h"
 #include "car.h"
 #include "humanplayer.h"
-#include "animation.h"
+#include "emptyplayer.h"
+#include "aiplayer.h"
 
 #include <Box2D/Box2D.h>
 
@@ -124,16 +124,14 @@ namespace zombie {
 		std::vector<Object*> removeObjects_;
 		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
 			Object* ob = static_cast<Object*>(b->GetUserData());
-			// Can't remove in the loop beacause the iterator will be set in a undefined state.
+			// Can't remove in the loop because the iterator will be set in a undefined state.
 			removeObjects_.push_back(ob);
 		}
 
 		for (Object* ob : removeObjects_) {
-			delete ob->player_;
+			delete ob->getPlayer();
 			delete ob;
 		}
-
-		players_.clear();
 
 		// When all game objects are removed then remove world.
 		delete world_;
@@ -212,22 +210,20 @@ namespace zombie {
 		}
 	}
 
-	void ZombieEngine::draw(float deltaTime) {
-		
-	}
-
-	void ZombieEngine::setHuman(DevicePtr device, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon) {
+	void ZombieEngine::setHuman(DevicePtr device, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, std::function<void(Unit*, float)> callback) {
 		if (human_ != nullptr) {
 			players_.remove(human_->getPlayer());
 			delete human_;
 		}
 		human_ = createUnit(state, mass, radius, life, walkingSpeed, runningSpeed, false, weapon);
+		human_->addUpdateHandler(callback);
 		Player* player = new HumanPlayer(device, human_);
 		players_.push_back(player);
 	}
 
-	void ZombieEngine::addAi(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) {
+	void ZombieEngine::addAi(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, std::function<void(Unit*, float)> callback) {
 		Unit* unit = createUnit(state, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
+		unit->addUpdateHandler(callback);
 		if (infected) {
 			AiBehaviorPtr behavior = std::make_shared<ZombieBehavior>();
 			Player* player = new AiPlayer(behavior, unit);
@@ -239,8 +235,11 @@ namespace zombie {
 		}
 	}
 
-	void ZombieEngine::addCar(const State& state, float mass, float life, float width, float length) {
+	void ZombieEngine::addCar(const State& state, float mass, float life, float width, float length, std::function<void(Car*, float)> callback) {
 		Car* car = createCar(state, mass, life, width, length);
+		Player* player = new EmptyPlayer(car);
+		players_.push_back(player);
+		car->addUpdateHandler(callback);
 	}
 
 	void ZombieEngine::addBuilding(const std::vector<Position>& corners) {
@@ -249,6 +248,13 @@ namespace zombie {
 
 	void ZombieEngine::addWeapon(float x, float y, const Weapon& weapon) {
 		WeaponObject* wOb = new WeaponObject(world_, x, y, weapon);
+	}
+
+	void ZombieEngine::callUpdateHandlers() {
+		// Update all update handlers.
+		for (Player* player : players_) {
+			player->getMovingObject()->callUpdateHandler(accumulator_);
+		}
 	}
 
 	Unit* ZombieEngine::createUnit(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) {

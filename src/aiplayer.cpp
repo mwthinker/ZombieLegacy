@@ -6,10 +6,10 @@
 
 namespace zombie {
 
-	AiPlayer::AiPlayer(AiBehaviorPtr behavior, Unit* unit) : behavior_(behavior), unit_(unit) {
+	AiPlayer::AiPlayer(AiBehaviorPtr behavior, Unit* unit) : Player(unit), behavior_(behavior), unit_(unit) {
 	}	
 
-	AiPlayer::AiPlayer(Unit* unit) : behavior_(AiBehaviorPtr(new ZombieBehavior())), unit_(unit) {
+	AiPlayer::AiPlayer(Unit* unit) : Player(unit), behavior_(AiBehaviorPtr(new ZombieBehavior())), unit_(unit) {
 	}
 
 	void AiPlayer::updatePhysics(float time, float deltaTime) {

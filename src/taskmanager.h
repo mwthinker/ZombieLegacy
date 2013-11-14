@@ -6,7 +6,6 @@
 namespace zombie {
 
 	class Task;
-	class GraphicTask;
 
 	enum GraphicLevel {
 		GROUND_LEVEL,
@@ -16,7 +15,6 @@ namespace zombie {
 		BLOOD_LEVEL,
 		WEAPON_LEVEL,
 		SHOT_LEVEL,
-		UNIT_LEVEL,
 		HEAVEN_LEVEL,
 		INTERFACE_LEVEL
 	};
@@ -33,7 +31,7 @@ namespace zombie {
 		// Updates each task in ascending order. Tasks may been removed
 		// from memory after the execution of this function.
 		void update(double deltaTime);
-	
+		
 		// Remove all tasks from internal list and from memory.
 		void clear();
 	

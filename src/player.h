@@ -1,13 +1,18 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "object.h"
 #include "input.h"
 #include "movingobject.h"
 
 namespace zombie {
-
+	
 	class Player {
 	public:
+		Player(Object* object) {
+			object->player_ = this;
+		}
+
 		virtual ~Player() {
 		}
 

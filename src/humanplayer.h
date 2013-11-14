@@ -9,7 +9,7 @@ namespace zombie {
 
 	class HumanPlayer : public Player {
 	public:
-		HumanPlayer(DevicePtr device, Unit* unit) : device_(device), unit_(unit) {
+		HumanPlayer(DevicePtr device, Unit* unit) : Player(unit), device_(device), unit_(unit) {
 		}
 
 		void updatePhysics(float time, float deltaTime) override {

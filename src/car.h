@@ -195,8 +195,17 @@ namespace zombie {
 			return actionSignal_.connect(callback);
 		}
 
+		mw::signals::Connection addUpdateHandler(mw::Signal<Car*, float>::Callback callback) {
+			return updateHandlers_.connect(callback);
+		}
+
+		void callUpdateHandler(float time) override {
+			updateHandlers_(this, time);
+		}
+
 	private:
 		mw::Signal<Car*> actionSignal_;
+		mw::Signal<Car*, float> updateHandlers_;
 
 		b2Body* body_;
 		float steeringAngle_;

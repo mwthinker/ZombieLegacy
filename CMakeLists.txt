@@ -29,12 +29,11 @@ SET(SOURCES_ZOMBIE
 	src/buildingproperties.h
 	src/bullet.h
 	src/car.h
-	src/caranimation.cpp
-	src/caranimation.h
 	src/carproperties.h
 	src/device.h
 	src/drawweaponobject.cpp
 	src/drawweaponobject.h
+	src/emptyplayer.h
 	src/gamefont.cpp
 	src/gamefont.h
 	src/gameinterface.h
