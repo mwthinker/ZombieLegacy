@@ -7,13 +7,36 @@
 #include "load.h"
 #include "settings.h"
 #include "task.h"
+#include "car.h"
 
+// Graphic
+#include "mapdraw.h"
+#include "buildingdraw.h"
+
+// External
 #include <mw/exception.h>
 
+// Stl
 #include <cmath>
 #include <sstream>
 
 namespace zombie {
+
+	namespace {
+
+		void drawCar(mw::Sprite& sprite, Car* car, float time) {
+			State state = car->getState();
+			
+			glPushMatrix();
+			glColor3d(1, 1, 1);
+			glTranslated(state.position_.x, state.position_.y, 0);
+			glRotated(state.angle_ * 180 / PI, 0, 0, 1);
+			glRotated(270, 0, 0, 1);
+			glScaled(car->getWidth(), car->getLength(), 1);
+			sprite.draw();
+			glPopMatrix();
+		}
+	}
 
 	// Returns a random postion between the defined outer and inner circle centered in position.
 	Position generatePosition(Position position, float innerRadius, float outerRadius) {
@@ -28,8 +51,8 @@ namespace zombie {
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
 
 		scale_ = 1.0;
-
-		//engine_.addGrassGround(-50, 50, -50, 50);
+		
+		taskManager_.add(new MapDraw(-50, 50, -50, 50), GraphicLevel::GROUND_LEVEL);
 
 		innerSpawnRadius_ = 10.f;
 		outerSpawnRadius_ = 40.f;
@@ -48,15 +71,18 @@ namespace zombie {
 		}
 
 		Position position = generatePosition(ORIGO, 0, 50);
-		engine_.setHuman(keyboard1_, State(position,ORIGO, 0), humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, Weapon(55, 0.2f, 8, 12));
+		engine_.setHuman(keyboard1_, State(position, ORIGO, 0), humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, Weapon(55, 0.2f, 8, 12));
 		viewPosition_ = position;
 
 		// Add cars.		
 		for (int i = 0; i < 10; ++i) {
 			Animation animation;
 			animation.add(getLoadedTexture(volvoP.image_));
+			mw::Sprite sprite = getLoadedTexture(volvoP.image_);
+			//sprite.setDrawPixelSize(true);
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addCar(State(spawn, ORIGO, 0), volvoP.mass_, volvoP.life_, volvoP.width_, volvoP.length_);
+			auto callback = std::bind(drawCar, sprite, std::placeholders::_1, std::placeholders::_2);
+			engine_.addCar(State(spawn, ORIGO, 0), volvoP.mass_, volvoP.life_, volvoP.width_, volvoP.length_, callback);
 		}
 
 		// Add zombies.
@@ -78,6 +104,7 @@ namespace zombie {
 
 		for (BuildingProperties& p : buildings_) {
 			engine_.addBuilding(p.points_);
+			taskManager_.add(new BuildingDraw(p.points_), GraphicLevel::BUILDING_LEVEL);
 		}
 	}
 
@@ -106,6 +133,8 @@ namespace zombie {
 		} else {
 			taskManager_.update(0.0);
 		}
+
+		engine_.callUpdateHandlers();
 
 		glPopMatrix();
 	}

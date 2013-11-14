@@ -10,7 +10,7 @@ namespace zombie {
 	// Represent a object inside the "zombie world".
 	class Object {
 	public:
-		friend class ZombieEngine;
+		friend class Player;
 
 		inline Object(b2World* world) : id_(++lastId), player_(nullptr), world_(world) {
 		}

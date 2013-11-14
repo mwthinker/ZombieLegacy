@@ -40,21 +40,24 @@ namespace zombie {
 		// from the previous call to this funtion.
 		void update(float deltaTime);
 
-		void draw(float deltaTime);
-
 		// Add a human player to the game.
-		void setHuman(DevicePtr device, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon);
+		void setHuman(DevicePtr device, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, std::function<void(Unit*, float)> callback = [](Unit*, float) {
+		});
 
 		// Add a ai player to the game.
-		void addAi(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
+		void addAi(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, std::function<void(Unit*, float)> callback = [](Unit*, float) {
+		});
 
 		// Add a car to the game.
-		void addCar(const State& state, float mass, float life, float width, float length);
+		void addCar(const State& state, float mass, float life, float width, float length, std::function<void(Car*, float)> callback = [](Car*, float) {
+		});
 
+		// Add a building to the game.
 		void addBuilding(const std::vector<Position>& corners);
 
 		void addWeapon(float x, float y, const Weapon& weapon);
 
+		// Get the current game time.
 		inline float getTime() const {
 			return time_;
 		}
@@ -62,6 +65,8 @@ namespace zombie {
 		inline bool isStarted() const {
 			return started_;
 		}
+
+		void callUpdateHandlers();
 
 	private:
 		// Creates a unit and add &doShotDamage to receive bullets fired.
@@ -83,7 +88,7 @@ namespace zombie {
 		void EndContact (b2Contact* contact) override;
 		void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override;
 
-		void spawnAndCleanUpUnits(); // Spawns new zombies.
+		void spawnAndCleanUpUnits(); // Spawns new units.
 
 		bool started_; // The game is started.
 		float time_; // Local game time.

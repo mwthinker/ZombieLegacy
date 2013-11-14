@@ -180,6 +180,10 @@ namespace zombie {
 		return body_->GetAngle();
 	}
 
+	mw::signals::Connection Unit::addUpdateHandler(mw::Signal<Unit*, float>::Callback callback) {
+		return updateHandlers_.connect(callback);
+	}
+
 	mw::signals::Connection Unit::addActionHandler(mw::Signal<Unit*>::Callback callback) {
 		return actionSignal_.connect(callback);
 	}

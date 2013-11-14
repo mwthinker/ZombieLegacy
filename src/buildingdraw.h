@@ -2,30 +2,31 @@
 #define BUILDINGDRAW_H
 
 #include "task.h"
-#include "building.h"
+#include "typedefs.h"
 
 #include <SDL_opengl.h>
+
+#include <vector>
 
 namespace zombie {
 
 	class BuildingDraw : public Task {
 	public:
-		BuildingDraw(Building* building) : building_(building) {
+		BuildingDraw(const std::vector<Position>& corners) : corners_(corners) {
 		}
 
 		bool update(double time) override {
 			glColor3d(0.9,0.7,0.7);
-			auto corners = building_->getCorners();
 			glBegin(GL_QUADS);
-			for (unsigned int i = 0; i < 4 && i < corners.size(); ++i) {
-				glVertex2d(corners[i].x, corners[i].y);
+			for (unsigned int i = 0; i < 4 && i < corners_.size(); ++i) {
+				glVertex2d(corners_[i].x, corners_[i].y);
 			}
 			glEnd();
 			return true;
 		}
 
 	private:
-		Building* building_;
+		std::vector<Position> corners_;
 	};
 
 } // Namespace zombie.

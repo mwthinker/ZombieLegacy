@@ -81,12 +81,17 @@ namespace zombie {
 			return circle->m_radius;
 		}
 
+		mw::signals::Connection addUpdateHandler(mw::Signal<Unit*, float>::Callback);
 		mw::signals::Connection addActionHandler(mw::Signal<Unit*>::Callback);
 		mw::signals::Connection addEventHandler(mw::Signal<UnitEvent>::Callback);
 		mw::signals::Connection addShootHandler(mw::Signal<Unit*, Bullet>::Callback);
 
 		b2Body* getBody() const override {
 			return body_;
+		}
+
+		void callUpdateHandler(float time) override {
+			updateHandlers_(this, time);
 		}
 
 	private:
@@ -106,6 +111,7 @@ namespace zombie {
 
 		float timeLeftToRun_;
 
+		mw::Signal<Unit*, float> updateHandlers_;
 		mw::Signal<Unit*> actionSignal_;
 		mw::Signal<Unit*, Bullet> shootSignal_;
 		mw::Signal<UnitEvent> eventSignal_;
