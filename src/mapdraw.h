@@ -10,7 +10,7 @@ namespace zombie {
 	class MapDraw : public Task {
 	public:
 		MapDraw(float minX, float maxX, float minY, float maxY);
-		bool update(double time) override;
+		bool update(float time) override;
 
 	private:
 		void draw();

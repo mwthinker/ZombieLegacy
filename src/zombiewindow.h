@@ -69,10 +69,10 @@ namespace zombie {
 					quit();
 					break;
 				case SDLK_PAGEUP:
-					zombieGame_.zoom(1.1);
+					zombieGame_.zoom(1.1f);
 					break;
 				case SDLK_PAGEDOWN:
-					zombieGame_.zoom(1/1.1);
+					zombieGame_.zoom(1/1.1f);
 					break;
 				case SDLK_RETURN:
 					zombieGame_.startGame();

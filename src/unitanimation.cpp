@@ -5,25 +5,29 @@
 
 namespace zombie {
 
-	UnitAnimation::UnitAnimation(Unit* unit, const Animation& animation) : animation_(animation) {
-		unit_ = unit;
-		unit_->addEventHandler(std::bind(&UnitAnimation::eventHandler, this, std::placeholders::_1));
+	UnitAnimation::UnitAnimation(State state, float radius, const Animation& animation) : animation_(animation) {
+		remove_ = false;
+		state_ = state;
+		radius_ = radius;
+	}	
+
+	void UnitAnimation::updateData(Unit* unit, Unit::UnitEvent unitEvent) {
+		state_ = unit->getState();
+		radius_ = unit->getRadius();
+
+		eventHandler(unitEvent);
 	}
 
-	UnitAnimation::~UnitAnimation() {
-	}
-
-	// private
-	void UnitAnimation::draw(float time, float timeStep, float accumulator) {
-		Position p = unit_->getPosition();
-
+	bool UnitAnimation::update(float time) {
 		// Draw body
 		glPushMatrix();
-		glTranslated(p.x, p.y, 0);
-		glScaled(unit_->getRadius()*0.9, unit_->getRadius()*0.9, 1);
-		glRotated(unit_->getState().angle_ * 180 / PI, 0, 0, 1);
+		glTranslate2f(state_.position_);
+		glScale2f(radius_);
+		glRotated(state_.angle_ * 180 / PI, 0, 0, 1);
 		animation_.draw(time);
 		glPopMatrix();
+
+		return !remove_;
 	}
 
 	void UnitAnimation::eventHandler(Unit::UnitEvent unitEvent) {
@@ -33,6 +37,9 @@ namespace zombie {
 				break;
 			case Unit::STANDSTILL:
 				animation_.restart();
+				break;
+			case Unit::REMOVED:
+				remove_ = true;
 				break;
 			default:
 				break;

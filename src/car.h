@@ -14,18 +14,17 @@
 
 namespace zombie {
 
-	class Unit;
-
-	enum CarEvent {
-		CAREVENT_EXPLODE,
-		CAREVENT_ACCELERATE,
-		CAREVENT_BRAKE
-	};
+	class Unit;	
 
 	// Defines the property of a car. The car has 4 wheels but is simulated as having 
 	// one front wheel and one backwheel in order to simlify the math.
 	class Car : public MovingObject {
 	public:
+		enum CarEvent {
+			ACTION,
+			REMOVED
+		};
+
 		Car(b2World* world, const State& state, float mass, float life, float width, float length) : MovingObject(world) {
 			length_ = length;
 			width_ = width;
@@ -59,6 +58,7 @@ namespace zombie {
 		}
 
 		~Car() {
+			eventSignal_(this, REMOVED);
 			getWorld()->DestroyBody(body_);
 		}
 		
@@ -91,12 +91,12 @@ namespace zombie {
 				steering = -1.0f;
 			}
 
-			steeringAngle_ = 0.3f*steering;
+			steeringAngle_ = 0.3f * steering;
 
 			applyFriction(2.0f,2.0f,100.0f,100.0f);
 
 			if (input.action_) {
-				actionSignal_(this);
+				eventSignal_(this, ACTION);
 			}
 		}
 
@@ -191,21 +191,16 @@ namespace zombie {
 			return false;
 		}
 
-		mw::signals::Connection addActionHandler(mw::Signal<Car*>::Callback callback) {
-			return actionSignal_.connect(callback);
-		}
-
-		mw::signals::Connection addUpdateHandler(mw::Signal<Car*, float>::Callback callback) {
-			return updateHandlers_.connect(callback);
+		mw::signals::Connection addEventHandler(mw::Signal<Car*, CarEvent>::Callback callback) {
+			return eventSignal_.connect(callback);
 		}
 
 		void callUpdateHandler(float time) override {
-			updateHandlers_(this, time);
+			//updateHandlers_(this, time);
 		}
 
 	private:
-		mw::Signal<Car*> actionSignal_;
-		mw::Signal<Car*, float> updateHandlers_;
+		mw::Signal<Car*, CarEvent> eventSignal_;
 
 		b2Body* body_;
 		float steeringAngle_;

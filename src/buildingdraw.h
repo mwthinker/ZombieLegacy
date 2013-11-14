@@ -15,7 +15,7 @@ namespace zombie {
 		BuildingDraw(const std::vector<Position>& corners) : corners_(corners) {
 		}
 
-		bool update(double time) override {
+		bool update(float time) override {
 			glColor3d(0.9,0.7,0.7);
 			glBegin(GL_QUADS);
 			for (unsigned int i = 0; i < 4 && i < corners_.size(); ++i) {

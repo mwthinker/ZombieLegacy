@@ -14,6 +14,7 @@ namespace zombie {
 		BUILDING_LEVEL,
 		BLOOD_LEVEL,
 		WEAPON_LEVEL,
+		UNIT_LEVEL,
 		SHOT_LEVEL,
 		HEAVEN_LEVEL,
 		INTERFACE_LEVEL
@@ -30,7 +31,7 @@ namespace zombie {
 
 		// Updates each task in ascending order. Tasks may been removed
 		// from memory after the execution of this function.
-		void update(double deltaTime);
+		void update(float deltaTime);
 		
 		// Remove all tasks from internal list and from memory.
 		void clear();
@@ -39,7 +40,7 @@ namespace zombie {
 		typedef std::pair<Task*, GraphicLevel> Pair;
 		std::list<Pair> tasks_;
 
-		double time_;
+		float time_;
 	};
 
 } // Namespace zombie.

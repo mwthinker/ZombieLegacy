@@ -6,7 +6,7 @@
 namespace zombie {
 
 	TaskManager::TaskManager() {
-		time_ = 0.0;
+		time_ = 0.f;
 	}
 
 	TaskManager::~TaskManager() {
@@ -16,20 +16,20 @@ namespace zombie {
 	void TaskManager::add(Task* task, GraphicLevel level) {
 		Pair pair(task, level);
 		auto it = tasks_.begin();
-		for (;it != tasks_.end(); ++it) {
+		for (; it != tasks_.end(); ++it) {
 			if (it->second > level) {
 				break;
 			}
 		}
-		tasks_.insert(it,pair);
+		tasks_.insert(it, pair);
 	}
 
-	void TaskManager::update(double deltaTime) {
+	void TaskManager::update(float deltaTime) {
 		// For each Task, call execute
 		time_ += deltaTime;
 
 		// Update all tasks in order and remove all which returns false.
-		tasks_.remove_if([&] (const Pair& pair) {
+		tasks_.remove_if([&](const Pair& pair) {
 			// Is active?
 			if (pair.first->update(time_)) {
 				return false;

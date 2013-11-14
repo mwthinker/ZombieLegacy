@@ -15,7 +15,7 @@ namespace zombie {
 
 		HumanStatus(Unit* unit, PlayerNumber player);
 
-		bool update(double time) override;
+		bool update(float time) override;
 
 	private:
 		void draw(double timestep);

@@ -13,7 +13,7 @@ namespace zombie {
 		maxY_ = maxY;
 	}
 
-	bool MapDraw::update(double time) {
+	bool MapDraw::update(float time) {
 		glColor3d(0.6,0.6,0.6);
 		grassTexture->bind();
 		

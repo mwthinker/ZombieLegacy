@@ -165,6 +165,29 @@ namespace zombie {
 		}
 	}
 
+	void ZombieEngine::unitEventHandler(Unit* unit, Unit::UnitEvent unitEvent) {
+		switch (unitEvent) {
+			case Unit::ACTION:
+				doAction(unit);
+				break;
+			case Unit::SHOOT:
+				doShotDamage(unit, unit->getLastBullet());
+				break;
+			default:
+				break;
+		}
+	}
+
+	void ZombieEngine::carEventHandler(Car* car, Car::CarEvent carEvent) {
+		switch (carEvent) {
+			case Car::ACTION:
+				doAction(car);
+				break;
+			default:
+				break;
+		}
+	}
+
 	void ZombieEngine::spawnAndCleanUpUnits() {
 		// Delete all units outside the perimiter, and all the dead units.
 		players_.remove_if([&](Player* player) {
@@ -208,38 +231,45 @@ namespace zombie {
 			accumulator_ -= timeStep_;
 			updatePhysics(timeStep_);
 		}
+
+		for (Player* player : players_) {
+			player->getMovingObject()->callUpdateHandler(accumulator_);
+		}
 	}
 
-	void ZombieEngine::setHuman(DevicePtr device, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, std::function<void(Unit*, float)> callback) {
+	mw::signals::Connection ZombieEngine::setHuman(DevicePtr device, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, std::function<void(Unit*, Unit::UnitEvent)> callback) {
 		if (human_ != nullptr) {
 			players_.remove(human_->getPlayer());
 			delete human_;
 		}
 		human_ = createUnit(state, mass, radius, life, walkingSpeed, runningSpeed, false, weapon);
-		human_->addUpdateHandler(callback);
+		mw::signals::Connection connection = human_->addEventHandler(callback);
 		Player* player = new HumanPlayer(device, human_);
 		players_.push_back(player);
+		return connection;
 	}
 
-	void ZombieEngine::addAi(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, std::function<void(Unit*, float)> callback) {
+	mw::signals::Connection ZombieEngine::addAi(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, std::function<void(Unit*, Unit::UnitEvent)> callback) {
 		Unit* unit = createUnit(state, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
-		unit->addUpdateHandler(callback);
+		mw::signals::Connection connection = unit->addEventHandler(callback);
 		if (infected) {
-			AiBehaviorPtr behavior = std::make_shared<ZombieBehavior>();
+			AiBehaviorPtr behavior(new ZombieBehavior);
 			Player* player = new AiPlayer(behavior, unit);
 			players_.push_back(player);
 		} else {
-			AiBehaviorPtr behavior = std::make_shared<SurvivorBehavior>();
+			AiBehaviorPtr behavior(new SurvivorBehavior);
 			Player* player = new AiPlayer(behavior, unit);
 			players_.push_back(player);
 		}
+		return connection;
 	}
 
-	void ZombieEngine::addCar(const State& state, float mass, float life, float width, float length, std::function<void(Car*, float)> callback) {
+	mw::signals::Connection ZombieEngine::addCar(const State& state, float mass, float life, float width, float length, std::function<void(Car*, Car::CarEvent)> callback) {
 		Car* car = createCar(state, mass, life, width, length);
 		Player* player = new EmptyPlayer(car);
 		players_.push_back(player);
-		car->addUpdateHandler(callback);
+		mw::signals::Connection connection = car->addEventHandler(callback);
+		return connection;
 	}
 
 	void ZombieEngine::addBuilding(const std::vector<Position>& corners) {
@@ -250,27 +280,19 @@ namespace zombie {
 		WeaponObject* wOb = new WeaponObject(world_, x, y, weapon);
 	}
 
-	void ZombieEngine::callUpdateHandlers() {
-		// Update all update handlers.
-		for (Player* player : players_) {
-			player->getMovingObject()->callUpdateHandler(accumulator_);
-		}
-	}
-
 	Unit* ZombieEngine::createUnit(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) {
 		Unit* unit = new Unit(world_, state, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
-		unit->addShootHandler(std::bind(&ZombieEngine::doShotDamage, this, std::placeholders::_1, std::placeholders::_2));
-		unit->addActionHandler(std::bind(&ZombieEngine::unitDoAction, this, std::placeholders::_1));
+		unit->addEventHandler(std::bind(&ZombieEngine::unitEventHandler, this, std::placeholders::_1, std::placeholders::_2));
 		return unit;
 	}
 
 	Car* ZombieEngine::createCar(const State& state, float mass, float life, float width, float length) {
 		Car* car = new Car(world_, state, mass, life, width, length);
-		car->addActionHandler(std::bind(&ZombieEngine::carDoAction, this, std::placeholders::_1));
+		car->addEventHandler(std::bind(&ZombieEngine::carEventHandler, this, std::placeholders::_1, std::placeholders::_2));
 		return car;
 	}
 
-	void ZombieEngine::unitDoAction(Unit* unit) {
+	void ZombieEngine::doAction(Unit* unit) {
 		float angle = unit->getState().angle_;
 		b2Vec2 dir(std::cos(angle), std::sin(angle));
 
@@ -303,7 +325,7 @@ namespace zombie {
 		}
 	}
 
-	void ZombieEngine::carDoAction(Car* car) {
+	void ZombieEngine::doAction(Car* car) {
 		Unit* driver = car->getDriver();
 		/*
 		// The driver gets out of the car.
@@ -362,9 +384,10 @@ namespace zombie {
 		void unitCollision(GameInterface* gameInterface, float time, Object* ob, const b2ContactImpulse* impulse) {
 			if (MovingObject* mOv = dynamic_cast<Car*>(ob)) {
 				mOv->collision(std::abs(impulse->normalImpulses[0]));
+				// Is a car?
 				if (dynamic_cast<Car*>(ob)) {
 					gameInterface->carCollision();
-				} else if (Unit* unit = dynamic_cast<Unit*>(ob)) {
+				} else if (Unit* unit = dynamic_cast<Unit*>(ob)) { // Is a unit?
 					gameInterface->unitCollision();
 				}
 			}

@@ -1,22 +1,30 @@
 #ifndef UNITANIMAITON_H
 #define UNITANIMAITON_H
 
+#include "task.h"
 #include "animation.h"
 #include "unit.h"
 
 namespace zombie {
 
-	class UnitAnimation {
+	class UnitAnimation : public Task {
 	public:
-		UnitAnimation(Unit* unit, const Animation& animation);
-		~UnitAnimation();
-	
-		void draw(float time, float timeStep, float accumulator);
-		void eventHandler(Unit::UnitEvent unitEvent);
+		UnitAnimation(State state, float radius, const Animation& animation);
+		
+		// Updates the data describing the unit.
+		void updateData(Unit* unit, Unit::UnitEvent unitEvent);
+
+		// Draws the unit.
+		bool update(float time) override;
 
 	private:
-		Unit* unit_;
+		void eventHandler(Unit::UnitEvent unitEvent);
+
+		State state_;
+		float radius_;
+
 		Animation animation_;
+		bool remove_;
 	};
 
 } // Namespace zombie.

@@ -41,9 +41,9 @@ namespace zombie {
 		// Makes the game reacting on an event (windowEvent).
 		void eventUpdate(const SDL_Event& windowEvent);
 
-		void zoom(double scale);
+		void zoom(float scale);
 
-		void updateSize(int width, int height);		
+		void updateSize(int width, int height);
 
 	private:
 		void humanPosition(float x, float y) override;
@@ -64,7 +64,7 @@ namespace zombie {
 		int unitLevel_;
 		int zoomlevel_;
 		Position viewPosition_;
-		double scale_;
+		float scale_;
 
 		ZombieEngine engine_;
 		DevicePtr keyboard1_, keyboard2_;
