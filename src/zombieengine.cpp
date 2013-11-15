@@ -371,6 +371,7 @@ namespace zombie {
 		}
 	}
 
+	// Is called when the contact has get out of view or is destroyed.
 	void ZombieEngine::EndContact(b2Contact* contact) {
 		MovingObject* object;
 		MovingObject* looker;
