@@ -22,10 +22,6 @@ namespace zombie {
 		}
 
 		virtual ~MovingObject() {
-			// Remove this object from all other object that sees this object.
-			for (MovingObject* ob : seenByOthers_) {
-				ob->objectsSeen_.remove(this);
-			}
 		}
 
 		// Simulates the physics at time (time) one time step (timeStep) ahead.
@@ -72,16 +68,13 @@ namespace zombie {
 	private:
 		void addSeenObject(MovingObject* object) {
 			objectsSeen_.push_back(object);
-			object->seenByOthers_.push_back(this);
 		}
 
 		void removeSeenObject(MovingObject* object) {
 			objectsSeen_.erase(std::find(objectsSeen_.begin(), objectsSeen_.end(), object));
-			object->seenByOthers_.erase(std::find(object->seenByOthers_.begin(), object->seenByOthers_.end(), this));
 		}
 
 		std::list<MovingObject*> objectsSeen_;
-		std::list<MovingObject*> seenByOthers_;
 	};
 
 } // Namespace zombie.
