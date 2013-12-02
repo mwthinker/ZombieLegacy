@@ -13,11 +13,20 @@ namespace zombie {
 		}
 
 		void updatePhysics(float time, float deltaTime) override {
-			car_->updatePhysics(time, deltaTime, Input());
+			Unit* unit = car_->getDriver();
+			if (unit != nullptr) {
+				//unit->getPlayer()->
+			} else {
+				car_->updatePhysics(time, deltaTime, Input());
+			}
 		}
 
 		MovingObject* getMovingObject() const override {
 			return car_;
+		}
+
+		virtual GetInputPtr get() const {
+			return nullptr;
 		}
 
 	private:

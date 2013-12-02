@@ -13,7 +13,8 @@ namespace zombie {
 	}
 
 	void AiPlayer::updatePhysics(float time, float deltaTime) {
-		unit_->updatePhysics(time, deltaTime, behavior_->calculateInput(unit_, time));
+		behavior_->calculateInput(unit_, time);
+		unit_->updatePhysics(time, deltaTime, behavior_->getInput());
 	}
 
 	MovingObject* AiPlayer::getMovingObject() const {

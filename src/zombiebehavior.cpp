@@ -15,7 +15,7 @@ namespace zombie {
 	ZombieBehavior::~ZombieBehavior() {
 	}
 
-	Input ZombieBehavior::calculateInput(const Unit* unit, double time) {
+	void ZombieBehavior::calculateInput(const Unit* unit, double time) {
 		Input input;
 
 		MovingObject* target = nullptr;
@@ -60,7 +60,7 @@ namespace zombie {
 
 		input.forward_ = forward_;
 
-		return input;
+		input_ = input;
 	}
 
 	MovingObject* ZombieBehavior::findUninfectedTarget(Position position, const std::list<MovingObject*>& units) const {			

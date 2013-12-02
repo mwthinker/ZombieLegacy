@@ -2,6 +2,7 @@
 #define DEVICE_H
 
 #include "input.h"
+#include "getinput.h"
 
 #include <memory>
 
@@ -12,14 +13,12 @@ namespace zombie {
 	class Device;
 	typedef std::shared_ptr<Device> DevicePtr;
 
-	class Device {
+	class Device : public GetInput {
 	public:
 		virtual ~Device() {
 		}
 
 		virtual void eventUpdate(const SDL_Event& windowEvent) = 0;
-
-		virtual Input currentInput() = 0;
 	};
 
 } // Namespace zombie.

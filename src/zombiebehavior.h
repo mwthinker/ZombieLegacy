@@ -15,7 +15,11 @@ namespace zombie {
 		ZombieBehavior();
 		~ZombieBehavior();
 
-		Input calculateInput(const Unit* unit, double time) override;
+		void calculateInput(const Unit* unit, double time) override;
+
+		inline Input getInput() const override {
+			return input_;
+		}
 
 	private:
 		MovingObject* findUninfectedTarget(Position position, const std::list<MovingObject*>& units) const;
@@ -25,6 +29,8 @@ namespace zombie {
 		double timeToUpdateAngleDirection_;
 		double targetAngle_;
 		bool forward_;
+
+		Input input_;
 	};
 
 } // Namespace zombie.

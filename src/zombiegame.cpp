@@ -92,8 +92,8 @@ namespace zombie {
 			//sprite.setDrawPixelSize(true);
 			Position spawn = generatePosition(ORIGO, 0, 50);
 			auto callback = std::bind(drawCar, sprite, std::placeholders::_1, std::placeholders::_2);
-			//engine_.addCar(State(spawn, ORIGO, 0), volvoP.mass_, volvoP.life_, 
-			//	volvoP.width_, volvoP.length_, callback);
+			engine_.addCar(State(spawn, ORIGO, 0), volvoP.mass_, volvoP.life_, 
+				volvoP.width_, volvoP.length_, callback);
 		}
 
 		// Add zombies.
