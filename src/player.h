@@ -4,6 +4,7 @@
 #include "object.h"
 #include "input.h"
 #include "movingobject.h"
+#include "getinput.h"
 
 namespace zombie {
 	
@@ -19,6 +20,8 @@ namespace zombie {
 		virtual void updatePhysics(float time, float deltaTime) = 0;
 
 		virtual MovingObject* getMovingObject() const = 0;
+
+		virtual GetInputPtr get() const = 0;
 	};
 
 } // Namespace zombie.

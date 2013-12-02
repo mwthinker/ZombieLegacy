@@ -17,6 +17,10 @@ namespace zombie {
 		void updatePhysics(float time, float deltaTime) override;
 
 		MovingObject* getMovingObject() const override;
+
+		GetInputPtr get() const override {
+			return behavior_;
+		}
 		
 	private:
 		AiBehaviorPtr behavior_;

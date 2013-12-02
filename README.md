@@ -11,8 +11,8 @@ The zombie project has library dependencies to SDL2 (http://www.libsdl.org/),
 SDL2_image, SDL2_mixer, SDL2_ttf and OpenGL. It also uses the Box2D library 
 (http://box2d.org/) but that is embedded in the project, it is under the 
 open source license "License.txt" found in the Box2D directory. To read 
-XML files the TinyXML2 (http://www.grinninglizard.com/tinyxml2/) library are 
-used and the source is imbedded in the zombie project. TinyXML2 is under 
+XML files, the TinyXML2 (http://www.grinninglizard.com/tinyxml2/) library is 
+used and the source is embedded in the zombie project. TinyXML2 is under 
 the ZLIB license.
 
 There is also two other project embedded in the zombie project, i.e. MwLibrary 

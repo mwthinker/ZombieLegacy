@@ -19,8 +19,12 @@ namespace zombie {
 		SurvivorBehavior();
 		~SurvivorBehavior();
 
-		Input calculateInput(const Unit* unit, double time) override;
+		void calculateInput(const Unit* unit, double time) override;
 		Input activityToInput(Activity a, const Unit* unit, double time);
+
+		inline Input getInput() const override {
+			return input_;
+		}
 
 	private:
 		Unit* findUninfectedTarget(Position position, const std::vector<Unit*>& units) const;
@@ -32,6 +36,7 @@ namespace zombie {
 		double targetAngle_;
 		bool forward_, backward_;
 		std::vector<Subroutines> s_; 
+		Input input_;
 	};
 
 } // Namespace zombie.
