@@ -150,11 +150,11 @@ namespace zombie {
 			return body_->GetWorldVector(b2Vec2(std::cos(steeringAngle_),std::sin(steeringAngle_)));
 		}
 		
-		double getWidth() const {
+		float getWidth() const {
 			return width_;
 		}
 
-		double getLength() const {
+		float getLength() const {
 			return length_;
 		}
 
