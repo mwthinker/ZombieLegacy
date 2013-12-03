@@ -13,6 +13,7 @@
 #include "mapdraw.h"
 #include "buildingdraw.h"
 #include "unitanimation.h"
+#include "caranimation.h"
 
 // External.
 #include <mw/exception.h>
@@ -22,22 +23,6 @@
 #include <sstream>
 
 namespace zombie {
-
-	namespace {
-
-		void drawCar(mw::Sprite& sprite, Car* car, float time) {
-			State state = car->getState();
-			
-			glPushMatrix();
-			glColor3d(1, 1, 1);
-			glTranslated(state.position_.x, state.position_.y, 0);
-			glRotated(state.angle_ * 180 / PI, 0, 0, 1);
-			glRotated(270, 0, 0, 1);
-			glScaled(car->getWidth(), car->getLength(), 1);
-			sprite.draw();
-			glPopMatrix();
-		}
-	}
 
 	// Returns a random postion between the defined outer and inner circle centered in position.
 	Position generatePosition(Position position, float innerRadius, float outerRadius) {
@@ -52,7 +37,7 @@ namespace zombie {
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
 
 		scale_ = 1.0;
-		
+
 		taskManager_.add(new MapDraw(-50, 50, -50, 50), GraphicLevel::GROUND_LEVEL);
 
 		innerSpawnRadius_ = 10.f;
@@ -73,26 +58,27 @@ namespace zombie {
 
 		Position position = generatePosition(ORIGO, 0, 50);
 		State state(position, ORIGO, 0);
-		
+
 		UnitAnimation* unitAnimation = new UnitAnimation(state, humanP.radius_, animation);
 		taskManager_.add(unitAnimation, GraphicLevel::UNIT_LEVEL);
 		auto callback = std::bind(&UnitAnimation::updateData, unitAnimation, std::placeholders::_1, std::placeholders::_2);
-		
+
 		engine_.setHuman(keyboard1_, state,
-			humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_, 
+			humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_,
 			humanP.runningSpeed_, Weapon(55, 0.2f, 8, 12), callback);
-		
+
 		viewPosition_ = position;
 
 		// Add cars.
-		for (int i = 0; i < 10; ++i) {
-			Animation animation;
-			animation.add(getLoadedTexture(volvoP.image_));
-			mw::Sprite sprite = getLoadedTexture(volvoP.image_);
-			//sprite.setDrawPixelSize(true);
+		for (int i = 0; i < 1; ++i) {
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			auto callback = std::bind(drawCar, sprite, std::placeholders::_1, std::placeholders::_2);
-			engine_.addCar(State(spawn, ORIGO, 0), volvoP.mass_, volvoP.life_, 
+			CarAnimation* carAnimation = new CarAnimation(state, volvoP.width_, volvoP.length_, getLoadedTexture(volvoP.image_));
+			
+			taskManager_.add(carAnimation, GraphicLevel::UNIT_LEVEL);
+			
+			auto callback = std::bind(&CarAnimation::updateData, carAnimation, std::placeholders::_1, std::placeholders::_2);
+			
+			engine_.addCar(State(spawn, ORIGO, 0), volvoP.mass_, volvoP.life_,
 				volvoP.width_, volvoP.length_, callback);
 		}
 
@@ -103,17 +89,23 @@ namespace zombie {
 				animation.add(getLoadedTexture(std::get<0>(tuple)), std::get<2>(tuple));
 				animation.setScale(std::get<1>(tuple));
 			}
+
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addAi(State(spawn, ORIGO, 0), zombieP.mass_, zombieP.radius_, 
+			State state(spawn, ORIGO, 0);
+			UnitAnimation* unitAnimation = new UnitAnimation(state, zombieP.radius_, animation);
+			taskManager_.add(unitAnimation, GraphicLevel::UNIT_LEVEL);
+			auto callback = std::bind(&UnitAnimation::updateData, unitAnimation, std::placeholders::_1, std::placeholders::_2);
+
+			engine_.addAi(state, zombieP.mass_, zombieP.radius_,
 				zombieP.life_, zombieP.walkingSpeed_, zombieP.
-				runningSpeed_, true, Weapon(35, 0.5f, 1, 10000));
+				runningSpeed_, true, Weapon(35, 0.5f, 1, 10000), callback);
 		}
 
 		// Add survivors.
 		for (int i = 0; i < 0; ++i) {
 			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addAi(State(spawn, ORIGO, 0), humanP.mass_, humanP.radius_, 
-				humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_, 
+			engine_.addAi(State(spawn, ORIGO, 0), humanP.mass_, humanP.radius_,
+				humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_,
 				false, Weapon(35, 0.5, 8, 120));
 		}
 
@@ -141,7 +133,7 @@ namespace zombie {
 		glScale2f(1.f / 50); // Is to fit the box drawn where x=[0,1] and y=[0,1].
 		glScale2f(scale_); // Is to fit the box drawn where x=[0,1] and y=[0,1].
 		glTranslate2f(-viewPosition_);
-		
+
 		// Game is started?
 		if (engine_.isStarted()) {
 			taskManager_.update(deltaTime);
@@ -153,7 +145,7 @@ namespace zombie {
 	}
 
 	void ZombieGame::humanPosition(float x, float y) {
-		viewPosition_ += 0.1f* (Position(x, y) - viewPosition_);
+		viewPosition_ += 0.1f * (Position(x, y) - viewPosition_);
 	}
 
 	void ZombieGame::zoom(float scale) {
