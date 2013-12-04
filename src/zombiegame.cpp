@@ -70,15 +70,15 @@ namespace zombie {
 		viewPosition_ = position;
 
 		// Add cars.
-		for (int i = 0; i < 1; ++i) {
-			Position spawn = generatePosition(ORIGO, 0, 50);
+		for (int i = 0; i < 10; ++i) {
+			State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
 			CarAnimation* carAnimation = new CarAnimation(state, volvoP.width_, volvoP.length_, getLoadedTexture(volvoP.image_));
 			
 			taskManager_.add(carAnimation, GraphicLevel::UNIT_LEVEL);
 			
 			auto callback = std::bind(&CarAnimation::updateData, carAnimation, std::placeholders::_1, std::placeholders::_2);
 			
-			engine_.addCar(State(spawn, ORIGO, 0), volvoP.mass_, volvoP.life_,
+			engine_.addCar(state, volvoP.mass_, volvoP.life_,
 				volvoP.width_, volvoP.length_, callback);
 		}
 

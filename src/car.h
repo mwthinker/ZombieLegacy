@@ -14,7 +14,7 @@
 
 namespace zombie {
 
-	class Unit;	
+	class Unit;
 
 	// Defines the property of a car. The car has 4 wheels but is simulated as having 
 	// one front wheel and one backwheel in order to simlify the math.
@@ -22,6 +22,7 @@ namespace zombie {
 	public:
 		enum CarEvent {
 			ACTION,
+			MOVED,
 			REMOVED
 		};
 
@@ -34,7 +35,7 @@ namespace zombie {
 			wheelDelta_ = 0.4f;
 
 			unit_ = nullptr;
-			
+
 			// Box2d properties.
 			b2BodyDef bodyDef;
 			bodyDef.type = b2_dynamicBody;
@@ -42,11 +43,11 @@ namespace zombie {
 			bodyDef.angle = state.angle_;
 			body_ = getWorld()->CreateBody(&bodyDef);
 			body_->SetUserData(this);
-			
+
 			// Body properties.
 			{
 				b2PolygonShape dynamicBox;
-				dynamicBox.SetAsBox(0.5f*length_, 0.5f*width_); // Expected parameters is half the side.
+				dynamicBox.SetAsBox(0.5f *length_, 0.5f * width_); // Expected parameters is half the side.
 
 				b2FixtureDef fixtureDef;
 				fixtureDef.shape = &dynamicBox;
@@ -61,8 +62,8 @@ namespace zombie {
 			eventSignal_(this, REMOVED);
 			getWorld()->DestroyBody(body_);
 		}
-		
-		Unit* getDriver() const{
+
+		Unit* getDriver() const {
 			return unit_;
 		}
 
@@ -72,7 +73,7 @@ namespace zombie {
 
 		void updatePhysics(float time, float timeStep, Input input) override {
 			b2Vec2 force = getDirectionVector();
-			
+
 			// Accelate or decelerate
 			float throttle = 0.0f;
 			if (input.forward_ && !input.backward_) {
@@ -80,7 +81,7 @@ namespace zombie {
 			} else if (!input.forward_ && input.backward_) {
 				throttle = -20.0;
 			}
-			body_->ApplyForce(throttle*force,getFrontWheelPosition());
+			body_->ApplyForce(throttle*force, getFrontWheelPosition());
 
 			float steering = 0.0f;
 
@@ -93,7 +94,9 @@ namespace zombie {
 
 			steeringAngle_ = 0.3f * steering;
 
-			applyFriction(2.0f,2.0f,100.0f,100.0f);
+			applyFriction(2.0f, 2.0f, 100.0f, 100.0f);
+
+			eventSignal_(this, MOVED);
 
 			if (input.action_) {
 				eventSignal_(this, ACTION);
@@ -101,28 +104,6 @@ namespace zombie {
 		}
 
 		void collision(float impulse) override {
-		}
-
-		void applyFriction(float frictionForwardFrontWheel, float frictionForwardBackWheel,
-			float frictionLateralFrontWheel, float frictionLateralBackWheel) {
-			// Back wheel lateral friction.
-			b2Vec2 currentRightNormal = body_->GetWorldVector(b2Vec2(0,-1));
-			b2Vec2 force = -frictionLateralBackWheel * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getBackWheelPosition())) * currentRightNormal;
-			body_->ApplyForce(force, getBackWheelPosition());
-
-			// Front wheel lateral friction.
-			currentRightNormal = b2Vec2(-getDirectionVector().y,getDirectionVector().x);
-			force = -frictionLateralFrontWheel * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getFrontWheelPosition())) * currentRightNormal;
-			body_->ApplyForce(force, getFrontWheelPosition());
-			
-			// Back wheel forward friction.
-			force = -frictionForwardBackWheel * b2Dot(getDirectionVector(), body_->GetLinearVelocity()) * getDirectionVector();
-			body_->ApplyForce(force, getBackWheelPosition());
-
-			// Front wheel forward friction.
-			b2Vec2 forward = body_->GetWorldVector(b2Vec2(1,0));
-			force = -frictionForwardFrontWheel * b2Dot(forward, body_->GetLinearVelocity()) * forward;
-			body_->ApplyForce(force, getFrontWheelPosition());
 		}
 
 		void applySpin(float impulse) {
@@ -138,18 +119,6 @@ namespace zombie {
 			return state;
 		}
 
-		b2Vec2 getFrontWheelPosition() const {
-			return body_->GetWorldPoint(b2Vec2(length_ * wheelDelta_,0));
-		}
-
-		b2Vec2 getBackWheelPosition() const {
-			return body_->GetWorldPoint(b2Vec2(-length_ * wheelDelta_,0));
-		}
-		
-		b2Vec2 getDirectionVector() const {
-			return body_->GetWorldVector(b2Vec2(std::cos(steeringAngle_),std::sin(steeringAngle_)));
-		}
-		
 		float getWidth() const {
 			return width_;
 		}
@@ -158,12 +127,12 @@ namespace zombie {
 			return length_;
 		}
 
-		bool isInsideViewArea(Position position) const {
+		bool isInsideViewArea(Position position) const override {
 			return true;
 		}
 
 		Position getPosition() const {
-			return Position(body_->GetPosition().x,body_->GetPosition().y);
+			return Position(body_->GetPosition().x, body_->GetPosition().y);
 		}
 
 		b2Body* getBody() const override {
@@ -180,7 +149,7 @@ namespace zombie {
 
 		bool isInfected() const override {
 			// When no driver the car is seen as infected and therefore ignored by the zombies.
- 			return unit_ == nullptr;
+			return unit_ == nullptr;
 		}
 
 		float getViewDistance() const override {
@@ -200,6 +169,40 @@ namespace zombie {
 		}
 
 	private:
+		void applyFriction(float frictionForwardFrontWheel, float frictionForwardBackWheel,
+			float frictionLateralFrontWheel, float frictionLateralBackWheel) {
+			// Back wheel lateral friction.
+			b2Vec2 currentRightNormal = body_->GetWorldVector(b2Vec2(0, -1));
+			b2Vec2 force = -frictionLateralBackWheel * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getBackWheelPosition())) * currentRightNormal;
+			body_->ApplyForce(force, getBackWheelPosition());
+
+			// Front wheel lateral friction.
+			currentRightNormal = b2Vec2(-getDirectionVector().y, getDirectionVector().x);
+			force = -frictionLateralFrontWheel * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getFrontWheelPosition())) * currentRightNormal;
+			body_->ApplyForce(force, getFrontWheelPosition());
+
+			// Back wheel forward friction.
+			force = -frictionForwardBackWheel * b2Dot(getDirectionVector(), body_->GetLinearVelocity()) * getDirectionVector();
+			body_->ApplyForce(force, getBackWheelPosition());
+
+			// Front wheel forward friction.
+			b2Vec2 forward = body_->GetWorldVector(b2Vec2(1, 0));
+			force = -frictionForwardFrontWheel * b2Dot(forward, body_->GetLinearVelocity()) * forward;
+			body_->ApplyForce(force, getFrontWheelPosition());
+		}
+
+		b2Vec2 getFrontWheelPosition() const {
+			return body_->GetWorldPoint(b2Vec2(length_ * wheelDelta_, 0));
+		}
+
+		b2Vec2 getBackWheelPosition() const {
+			return body_->GetWorldPoint(b2Vec2(-length_ * wheelDelta_, 0));
+		}
+
+		b2Vec2 getDirectionVector() const {
+			return body_->GetWorldVector(b2Vec2(std::cos(steeringAngle_), std::sin(steeringAngle_)));
+		}
+
 		mw::Signal<Car*, CarEvent> eventSignal_;
 
 		b2Body* body_;
