@@ -10,7 +10,7 @@ namespace zombie {
 
 	class CarAnimation : public Task {
 	public:
-		CarAnimation(State state, float width, float length, mw::Sprite sprite);
+		CarAnimation(const State& state, float width, float length, const mw::Sprite& sprite);
 		
 		// Updates the data describing the car.
 		void updateData(Car* car, Car::CarEvent unitEvent);

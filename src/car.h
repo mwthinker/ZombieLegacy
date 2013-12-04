@@ -63,6 +63,9 @@ namespace zombie {
 			getWorld()->DestroyBody(body_);
 		}
 
+		Car(const Car&) = delete;
+		Car& operator=(const Car&) = delete;
+
 		Unit* getDriver() const {
 			return unit_;
 		}
