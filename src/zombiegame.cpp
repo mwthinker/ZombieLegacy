@@ -108,11 +108,11 @@ namespace zombie {
 				humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_,
 				false, Weapon(35, 0.5, 8, 120));
 		}
-
+				
 		for (BuildingProperties& p : buildings_) {
 			engine_.addBuilding(p.points_);
 			taskManager_.add(new BuildingDraw(p.points_), GraphicLevel::BUILDING_LEVEL);
-		}
+		}		
 	}
 
 	ZombieGame::~ZombieGame() {

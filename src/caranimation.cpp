@@ -7,7 +7,7 @@
 
 namespace zombie {
 
-	CarAnimation::CarAnimation(State state, float width, float length, mw::Sprite sprite) : animation_(sprite) {
+	CarAnimation::CarAnimation(const State& state, float width, float length, const mw::Sprite& sprite) : animation_(sprite) {
 		remove_ = false;
 		state_ = state;
 		width_ = width;
@@ -23,7 +23,7 @@ namespace zombie {
 	}
 
 	bool CarAnimation::update(float time) {
-		// Draw body
+		// Draw body.
 		glPushMatrix();
 		glTranslate2f(state_.position_);
 		glScaled(length_, width_, 1);

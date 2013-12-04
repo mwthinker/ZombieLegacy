@@ -129,8 +129,8 @@ namespace zombie {
 		}
 
 		for (Object* ob : removeObjects_) {
-			//delete ob->getPlayer();
-			//delete ob;
+			delete ob->getPlayer();
+			delete ob;
 		}
 
 		// When all game objects are removed then remove world.
