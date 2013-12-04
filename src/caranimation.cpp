@@ -26,7 +26,7 @@ namespace zombie {
 		// Draw body
 		glPushMatrix();
 		glTranslate2f(state_.position_);
-		glScaled(width_, length_, 1);
+		glScaled(length_, width_, 1);
 		glRotated(state_.angle_ * 180 / PI, 0, 0, 1);
 		glRotated(270, 0, 0, 1);
 		animation_.draw();
@@ -37,8 +37,14 @@ namespace zombie {
 
 	void CarAnimation::eventHandler(Car::CarEvent carEvent) {
 		switch (carEvent) {
-			// Todo!
-			default:
+			case Car::ACTION:
+				// Fall through!
+				break;
+			case Car::MOVED:
+				// Fall through!
+				break;
+			case Car::REMOVED:
+				remove_ = true;
 				break;
 		}
 	}
