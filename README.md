@@ -15,9 +15,13 @@ XML files, the TinyXML2 (http://www.grinninglizard.com/tinyxml2/) library is
 used and the source is embedded in the zombie project. TinyXML2 is under 
 the ZLIB license.
 
-There is also two other project embedded in the zombie project, i.e. MwLibrary 
+There is also two other project embedded in the zombie project, MwLibrary2 
 and MwExtra. The former is basically a C++ wrapper around SDL2 and the latter 
 auxiliary classes intended to make a coders life easier.
+
+Open source
+======
+All code in the src folder is under the MIT license (see LICENSE.txt).
 
 Building
 ======

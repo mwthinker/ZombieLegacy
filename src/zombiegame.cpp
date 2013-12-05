@@ -70,7 +70,7 @@ namespace zombie {
 		viewPosition_ = position;
 
 		// Add cars.
-		for (int i = 0; i < 0; ++i) {
+		for (int i = 0; i < 10; ++i) {
 			State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
 			CarAnimation* carAnimation = new CarAnimation(state, volvoP.width_, volvoP.length_, getLoadedTexture(volvoP.image_));
 			
@@ -103,8 +103,13 @@ namespace zombie {
 
 		// Add survivors.
 		for (int i = 0; i < 10; ++i) {
-			Position spawn = generatePosition(ORIGO, 0, 50);
-			engine_.addAi(State(spawn, ORIGO, 0), humanP.mass_, humanP.radius_,
+			State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
+
+			UnitAnimation* unitAnimation = new UnitAnimation(state, humanP.radius_, animation);
+			taskManager_.add(unitAnimation, GraphicLevel::UNIT_LEVEL);
+			auto callback = std::bind(&UnitAnimation::updateData, unitAnimation, std::placeholders::_1, std::placeholders::_2);
+
+			engine_.addAi(state, humanP.mass_, humanP.radius_,
 				humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_,
 				false, Weapon(35, 0.5, 8, 120));
 		}
