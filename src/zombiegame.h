@@ -65,8 +65,13 @@ namespace zombie {
 		int zoomlevel_;
 		Position viewPosition_;
 		float scale_;
-
+		
+		// TaskManager must be defined before ZombieEngine if there 
+		// are tasks that are binded as callbacks in the ZombieEngine.
+		// I.e. the destructor of TaskManager must be called before TaskManager.
+		TaskManager taskManager_;
 		ZombieEngine engine_;
+
 		DevicePtr keyboard1_, keyboard2_;
 
 		Settings settings_;
@@ -77,8 +82,6 @@ namespace zombie {
 
 		std::map<std::string, mw::TexturePtr> textures_;
 		std::map<std::string, mw::Sound> sounds_;
-
-		TaskManager taskManager_;
 	};
 
 } // Namespace zombie_;

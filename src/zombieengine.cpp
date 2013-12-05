@@ -121,19 +121,19 @@ namespace zombie {
 
 	ZombieEngine::~ZombieEngine() {
 		// Remove all game objects.
-		std::vector<Object*> removeObjects_;
+		std::vector<Object*> removeObjects;
 		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
 			Object* ob = static_cast<Object*>(b->GetUserData());
 			// Can't remove in the loop because the iterator will be set in a undefined state.
-			removeObjects_.push_back(ob);
+			removeObjects.push_back(ob);
 		}
-
-		for (Object* ob : removeObjects_) {
+		
+		for (Object* ob : removeObjects) {
 			delete ob->getPlayer();
 			delete ob;
 		}
 
-		// When all game objects are removed then remove world.
+		// All game objects are removed, remove world!
 		delete world_;
 	}
 
@@ -210,8 +210,8 @@ namespace zombie {
 					return true;
 				}
 			} else {
-				delete player;
-				delete mOb;
+				//delete player;
+				//delete mOb;
 			}
 
 			// The pointer is not removed.
