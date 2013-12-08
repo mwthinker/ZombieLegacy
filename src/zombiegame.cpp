@@ -24,14 +24,9 @@
 
 namespace zombie {
 
-	// Returns a random postion between the defined outer and inner circle centered in position.
-	Position generatePosition(Position position, float innerRadius, float outerRadius) {
-		return position + (innerRadius + (outerRadius - innerRadius) * random()) * Position(std::cosf(random()*2.f*3.14f), std::sinf(random()*2.f*3.14f));
-	}
-
-	ZombieGame::ZombieGame(int width, int height, tinyxml2::XMLHandle xml) : engine_(this) {
+	ZombieGame::ZombieGame(const GameData& gameData) : engine_(this), gameData_(gameData) {
 		// Set windows size.
-		updateSize(width, height);
+		updateSize(gameData.getWidth(), gameData.getHeight());
 
 		keyboard1_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT,
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
@@ -43,81 +38,41 @@ namespace zombie {
 		innerSpawnRadius_ = 10.f;
 		outerSpawnRadius_ = 40.f;
 
-		// Load game data and map data.
-		load(xml);
+		gameData_.humanPlayer([&](State state, UnitProperties uP, const Animation& animation) {
+			UnitAnimation* unitAnimation = new UnitAnimation(state, uP.radius_, animation);
+			taskManager_.add(unitAnimation, GraphicLevel::UNIT_LEVEL);
 
-		CarProperties volvoP = cars_["Volvo"];
-		UnitProperties humanP = units_["Human"];
-		UnitProperties zombieP = units_["Zombie"];
+			auto callback = std::bind(&UnitAnimation::updateData, unitAnimation, std::placeholders::_1, std::placeholders::_2);
+			engine_.setHuman(keyboard1_, state,
+				uP.mass_, uP.radius_, uP.life_, uP.walkingSpeed_,
+				uP.runningSpeed_, Weapon(55, 0.2f, 8, 12), callback);
 
-		Animation animation;
-		for (auto tuple : humanP.animation_) {
-			animation.add(getLoadedTexture(std::get<0>(tuple)), std::get<2>(tuple));
-			animation.setScale(std::get<1>(tuple));
-		}
+			viewPosition_ = state.position_;
+		});
 
-		Position position = generatePosition(ORIGO, 0, 50);
-		State state(position, ORIGO, 0);
-
-		UnitAnimation* unitAnimation = new UnitAnimation(state, humanP.radius_, animation);
-		taskManager_.add(unitAnimation, GraphicLevel::UNIT_LEVEL);
-		auto callback = std::bind(&UnitAnimation::updateData, unitAnimation, std::placeholders::_1, std::placeholders::_2);
-
-		engine_.setHuman(keyboard1_, state,
-			humanP.mass_, humanP.radius_, humanP.life_, humanP.walkingSpeed_,
-			humanP.runningSpeed_, Weapon(55, 0.2f, 8, 12), callback);
-
-		viewPosition_ = position;
-
-		// Add cars.
-		for (int i = 0; i < 10; ++i) {
-			State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
-			CarAnimation* carAnimation = new CarAnimation(state, volvoP.width_, volvoP.length_, getLoadedTexture(volvoP.image_));
-			
+		gameData_.iterateCars([&](State state, CarProperties cP, const mw::Sprite& sprite) {
+			CarAnimation* carAnimation = new CarAnimation(state, cP.width_, cP.length_, sprite);
 			taskManager_.add(carAnimation, GraphicLevel::UNIT_LEVEL);
-			
+
 			auto callback = std::bind(&CarAnimation::updateData, carAnimation, std::placeholders::_1, std::placeholders::_2);
-			
-			engine_.addCar(state, volvoP.mass_, volvoP.life_,
-				volvoP.width_, volvoP.length_, callback);
-		}
+			engine_.addCar(state, cP.mass_, cP.life_,
+				cP.width_, cP.length_, callback);
+		});
 
-		// Add zombies.
-		for (int i = 0; i < settings_.unitLevel_; ++i) {
-			Animation animation;
-			for (auto tuple : zombieP.animation_) {
-				animation.add(getLoadedTexture(std::get<0>(tuple)), std::get<2>(tuple));
-				animation.setScale(std::get<1>(tuple));
-			}
-
-			Position spawn = generatePosition(ORIGO, 0, 50);
-			State state(spawn, ORIGO, 0);
-			UnitAnimation* unitAnimation = new UnitAnimation(state, zombieP.radius_, animation);
+		gameData_.iterateUnits([&](State state, UnitProperties uP, const Animation& animation) {
+			UnitAnimation* unitAnimation = new UnitAnimation(state, uP.radius_, animation);
 			taskManager_.add(unitAnimation, GraphicLevel::UNIT_LEVEL);
-			auto callback = std::bind(&UnitAnimation::updateData, unitAnimation, std::placeholders::_1, std::placeholders::_2);
 
-			engine_.addAi(state, zombieP.mass_, zombieP.radius_,
-				zombieP.life_, zombieP.walkingSpeed_, zombieP.
+			auto callback = std::bind(&UnitAnimation::updateData, unitAnimation, std::placeholders::_1, std::placeholders::_2);
+			engine_.addAi(state, uP.mass_, uP.radius_,
+				uP.life_, uP.walkingSpeed_, uP.
 				runningSpeed_, true, Weapon(35, 0.5f, 1, 10000), callback);
-		}
+		});
 
-		// Add survivors.
-		for (int i = 0; i < 10; ++i) {
-			State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
-
-			UnitAnimation* unitAnimation = new UnitAnimation(state, humanP.radius_, animation);
-			taskManager_.add(unitAnimation, GraphicLevel::UNIT_LEVEL);
-			auto callback = std::bind(&UnitAnimation::updateData, unitAnimation, std::placeholders::_1, std::placeholders::_2);
-
-			engine_.addAi(state, humanP.mass_, humanP.radius_,
-				humanP.life_, humanP.walkingSpeed_, humanP.runningSpeed_,
-				false, Weapon(35, 0.5, 8, 120));
-		}
-		
-		for (BuildingProperties& p : buildings_) {
-			engine_.addBuilding(p.points_);
-			taskManager_.add(new BuildingDraw(p.points_), GraphicLevel::BUILDING_LEVEL);
-		}
+		gameData_.iterateBuildings([&](BuildingProperties bP) {
+			engine_.addBuilding(bP.points_);
+			taskManager_.add(new BuildingDraw(bP.points_), GraphicLevel::BUILDING_LEVEL);
+		});
 	}
 
 	ZombieGame::~ZombieGame() {
@@ -165,69 +120,6 @@ namespace zombie {
 	void ZombieGame::eventUpdate(const SDL_Event& windowEvent) {
 		// Update human input.
 		keyboard1_->eventUpdate(windowEvent);
-	}
-
-	bool ZombieGame::load(tinyxml2::XMLHandle xml) {
-		try {
-			settings_ = loadSettings(xml.FirstChildElement("settings"));
-			auto weapons = loadWeapons(xml.FirstChildElement("weapons"));
-			for (const WeaponProperties& p : weapons) {
-				weapons_[p.name_] = p;
-			}
-			auto units = loadUnits(xml.FirstChildElement("movingObjects"));
-			for (const UnitProperties& p : units) {
-				units_[p.name_] = p;
-			}
-			auto cars = loadCars(xml.FirstChildElement("movingObjects"));
-			for (const CarProperties& p : cars) {
-				cars_[p.name_] = p;
-			}
-			// Load map.
-			loadMap(settings_.mapFile_);
-
-			return true;
-		} catch (mw::Exception&) {
-			return false;
-		}
-	}
-
-	void ZombieGame::loadMap(std::string map) {
-		try {
-			// Load map file.
-			tinyxml2::XMLDocument mapXml;
-			mapXml.LoadFile("map.xml");
-			if (mapXml.Error()) {
-				// Failed!
-			}
-
-			tinyxml2::XMLHandle mapHandle(mapXml);
-			mapHandle = mapHandle.FirstChildElement("map");
-
-			auto buildings = loadBuildings(mapHandle.FirstChildElement("mapObjects"));
-			for (const BuildingProperties& p : buildings) {
-				buildings_.push_back(p);
-			}
-		} catch (std::exception&) {
-			std::exit(1);
-		}
-	}
-
-	mw::TexturePtr ZombieGame::getLoadedTexture(std::string file) {
-		unsigned int size = textures_.size();
-
-		mw::TexturePtr& texture = textures_[file];
-		// Image not found?
-		if (textures_.size() > size) {
-			texture = mw::TexturePtr(new mw::Texture(file));
-
-			// Image not valid?
-			if (!texture->isValid()) {
-				// Return null pointer.
-				texture = mw::TexturePtr();
-			}
-		}
-
-		return texture;
 	}
 
 } // Namespace zombie.

@@ -9,8 +9,8 @@
 #include "settings.h"
 
 #include <tinyxml2.h>
+#include <mw/exception.h>
 
-#include <stdexcept>
 #include <cmath>
 #include <sstream>
 
@@ -24,7 +24,7 @@ namespace zombie {
 	template <class Output>
 	Output convertFromText(const char* txt) {
 		if (txt == nullptr) {
-			throw std::runtime_error("convertFromText, input null");
+			throw mw::Exception("convertFromText, input null");
 		}
 
 		std::stringstream stream(txt);
@@ -33,7 +33,7 @@ namespace zombie {
 		if (stream >> output) {
 			return output;
 		} else {
-			throw std::runtime_error("convertFromText, extract formatted failed");
+			throw mw::Exception("convertFromText, extract formatted failed");
 		}
 	}
 

@@ -36,6 +36,8 @@ SET(SOURCES_ZOMBIE
 	src/drawweaponobject.cpp
 	src/drawweaponobject.h
 	src/emptyplayer.h
+	src/gamedata.cpp
+	src/gamedata.h
 	src/gamefont.cpp
 	src/gamefont.h
 	src/gameinterface.h

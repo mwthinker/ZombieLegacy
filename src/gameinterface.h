@@ -4,6 +4,10 @@
 namespace zombie {
 
 	class GameInterface {
+	protected:
+		~GameInterface() {
+		}
+
 	public:
 		// The current position of the human.
 		virtual void humanPosition(float x, float y) {

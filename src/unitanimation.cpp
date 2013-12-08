@@ -9,7 +9,7 @@ namespace zombie {
 		remove_ = false;
 		state_ = state;
 		radius_ = radius;
-	}	
+	}
 
 	void UnitAnimation::updateData(Unit* unit, Unit::UnitEvent unitEvent) {
 		state_ = unit->getState();

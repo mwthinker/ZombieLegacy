@@ -78,7 +78,7 @@ namespace zombie {
 		inline const char* toText(tinyxml2::XMLHandle handle) {
 			tinyxml2::XMLElement* element = handle.ToElement();
 			if (element == nullptr) {
-				throw std::runtime_error("convertFromText failed");
+				throw mw::Exception("convertFromText failed");
 			}
 			return element->GetText();
 		}
@@ -88,7 +88,7 @@ namespace zombie {
 		inline tinyxml2::XMLElement* toElement(tinyxml2::XMLHandle handle) {
 			tinyxml2::XMLElement* element = handle.ToElement();
 			if (element == nullptr) {
-				throw std::runtime_error("convertFromText failed");
+				throw mw::Exception("convertFromText failed");
 			}
 			return element;
 		}
