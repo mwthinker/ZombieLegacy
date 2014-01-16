@@ -4,3 +4,6 @@
 [submodule "MwExtra"]
 	path = MwExtra
 	url = https://github.com/mwthinker/MwExtra.git
+[submodule "SdlGui"]
+	path = SdlGui
+	url = https://github.com/mwthinker/SdlGui.git
