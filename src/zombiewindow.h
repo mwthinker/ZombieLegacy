@@ -3,8 +3,12 @@
 
 #include "zombiegame.h"
 #include "gamedata.h"
+#include "gamefont.h"
 
-#include <mw/window.h>
+#include <gui/borderlayout.h>
+#include <gui/horizontallayout.h>
+#include <gui/button.h>
+#include <gui/frame.h>
 #include <mw/sprite.h>
 #include <SDL_opengl.h>
 
@@ -12,60 +16,42 @@
 
 namespace zombie {
 
-	class ZombieWindow : public mw::Window {
+	class ZombieComponent : public gui::Component {
 	public:
-		ZombieWindow(const GameData& gameData) : mw::Window(gameData.getWidth(), gameData.getHeight(), true, "Zombie", "images/icon.bmp"), zombieGame_(gameData) {
-			reshapeWindowsOpenGL();
+		ZombieComponent(ZombieGame& zombieGame) : zombieGame_(zombieGame) {
+			setGrabFocus(true);
 		}
 
-		~ZombieWindow() {
-		}
+		void draw(Uint32 deltaTime) {
+			gui::Dimension dim = getSize();
 
-	private:
-		void update(Uint32 msDeltaTime) override {
 			// Draw graphic.
 			glPushMatrix();
-			if (getWidth() > getHeight()) {
-				double dist = (getWidth() - getHeight()) * 0.5;
+			if (dim.width_ > dim.height_) {
+				double dist = (dim.width_ - dim.height_) * 0.5;
 				// Keep the view in centre.
 				glTranslated(dist, 0, 0);
 				// Scale correctly, keep proportions.
-				glScaled(getHeight(), getHeight(), 1);
+				glScaled(dim.height_, dim.height_, 1);
 			} else {
-				double dist = (getHeight() - getWidth()) * 0.5;
+				double dist = (dim.height_ - dim.width_) * 0.5;
 				// Keep the view in centre.
 				glTranslated(0, dist, 0);
 				// Scale correctly, keep proportions.
-				glScaled(getWidth(), getWidth(), 1);
+				glScaled(dim.width_, dim.width_, 1);
 			}
-			zombieGame_.update(msDeltaTime / 1000.f);
+			zombieGame_.update(deltaTime / 1000.f);
 
 			glPopMatrix();
 		}
 
-		void eventUpdate(const SDL_Event& windowEvent) override {
-			zombieGame_.eventUpdate(windowEvent);
+		void handleKeyboard(const SDL_Event& keyEvent) override {
+			zombieGame_.eventUpdate(keyEvent);
 
-			switch (windowEvent.type) {
-				case SDL_QUIT:
-					quit();
-					break;
-				case SDL_WINDOWEVENT:
-					switch (windowEvent.window.event) {
-						case SDL_WINDOWEVENT_CLOSE:
-							quit();
-							break;
-						case SDL_WINDOWEVENT_RESIZED:
-							resize(windowEvent.window.data1, windowEvent.window.data2);
-							break;
-						default:
-							break;
-					}
-					break;
+			switch (keyEvent.type) {
 				case SDL_KEYDOWN:
-					switch (windowEvent.key.keysym.sym) {
+					switch (keyEvent.key.keysym.sym) {
 						case SDLK_ESCAPE:
-							quit();
 							break;
 						case SDLK_PAGEUP:
 							zombieGame_.zoom(1.1f);
@@ -89,25 +75,35 @@ namespace zombie {
 			}
 		}
 
-		void resize(int width, int height) {
-			reshapeWindowsOpenGL();
-			zombieGame_.updateSize(width, height);
+	private:
+		ZombieGame& zombieGame_;
+	};
+
+	gui::Button* createButton(std::string str) {
+		gui::Button* button = new gui::Button(str, font15);
+		button->setAutoSizeToFitText(true);
+		return button;
+	}
+
+	class ZombieWindow : public gui::Frame {
+	public:
+		ZombieWindow(const GameData& gameData) : gui::Frame(gameData.getWidth(), gameData.getHeight(), true, "Zombie", "images/icon.bmp"), zombieGame_(gameData) {
+			add(new ZombieComponent(zombieGame_), gui::BorderLayout::CENTER);
+			gui::Panel* panel = new gui::Panel;
+			panel->setPreferredSize(100, 50);
+			add(panel, gui::BorderLayout::SOUTH);
+			panel->add(createButton("Button"));
+			panel->add(createButton("Button"));
+			panel->add(createButton("Button"));
+			panel->add(createButton("Button"));
+
+			setDefaultClosing(true);
 		}
 
-		void reshapeWindowsOpenGL() {
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			int w = getWidth();
-			int h = getHeight();
-
-			glViewport(0, 0, w, h);
-			glOrtho(0, w, 0, h, -1, 1);
-			std::cout << "\nReshapeWindowsOpenGL\n" << std::endl;
-
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
+		~ZombieWindow() {
 		}
-
+	
+	private:
 		ZombieGame zombieGame_;
 	};
 
