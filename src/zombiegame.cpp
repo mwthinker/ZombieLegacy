@@ -25,13 +25,10 @@
 namespace zombie {
 
 	ZombieGame::ZombieGame(const GameData& gameData) : engine_(this), gameData_(gameData) {
-		// Set windows size.
-		updateSize(gameData.getWidth(), gameData.getHeight());
-
 		keyboard1_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT,
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
 
-		scale_ = 1.0;
+		scale_ = 1.f;
 
 		taskManager_.add(new MapDraw(-50, 50, -50, 50), GraphicLevel::GROUND_LEVEL);
 
@@ -83,20 +80,20 @@ namespace zombie {
 		engine_.start();
 	}
 
-	void ZombieGame::update(float deltaTime) {
-		engine_.update(deltaTime);
+	void ZombieGame::draw(Uint32 deltaTime) {
+		engine_.update(deltaTime / 1000.f);
 
 		// Draw map centered around first human player.
 		glPushMatrix();
-
-		glTranslated(0.5, 0.5, 0);
-		glScale2f(1.f / 50); // Is to fit the box drawn where x=[0,1] and y=[0,1].
+		gui::Dimension dim = getSize();
+		glTranslated(dim.width_*0.5f, dim.height_*0.5f, 0);
+		glScale2f(50);
 		glScale2f(scale_); // Is to fit the box drawn where x=[0,1] and y=[0,1].
 		glTranslate2f(-viewPosition_);
 
 		// Game is started?
 		if (engine_.isStarted()) {
-			taskManager_.update(deltaTime);
+			taskManager_.update(deltaTime / 1000.f);
 		} else {
 			taskManager_.update(0.0);
 		}
@@ -110,16 +107,17 @@ namespace zombie {
 
 	void ZombieGame::zoom(float scale) {
 		scale_ *= scale;
-	}
-
-	void ZombieGame::updateSize(int width, int height) {
-		Task::width = width;
-		Task::height = height;
-	}
+	}	
 
 	void ZombieGame::eventUpdate(const SDL_Event& windowEvent) {
 		// Update human input.
 		keyboard1_->eventUpdate(windowEvent);
+	}
+
+	void ZombieGame::validate() {
+		gui::Dimension dim = getSize();
+		Task::width = dim.width_;
+		Task::height = dim.height_;
 	}
 
 } // Namespace zombie.

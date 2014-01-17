@@ -2,7 +2,7 @@
 
 namespace zombie {
 
-	int Task::width = 0;
-	int Task::height = 0;
+	float Task::width = 0;
+	float Task::height = 0;
 	
 } // Namespace zombie.

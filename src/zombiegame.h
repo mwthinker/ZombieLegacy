@@ -11,6 +11,8 @@
 #include <mw/sprite.h>
 #include <mw/sound.h>
 
+#include <gui/component.h>
+
 #include <map>
 
 namespace zombie {
@@ -20,7 +22,7 @@ namespace zombie {
 	// It also handle all game events triggered by the game engine,
 	// e.g. what happens when a unit dies. All graphics and sound is
 	// started here.
-	class ZombieGame : public GameInterface {
+	class ZombieGame : public GameInterface, public gui::Component {
 	public:
 		ZombieGame(const GameData& gameData);
 		~ZombieGame();
@@ -30,14 +32,14 @@ namespace zombie {
 
 		// Draws the graphic and (deltaTime) should be the time past 
 		// from the previous call to this funtion.
-		void update(float deltaTime);
+		void draw(Uint32 deltaTime);
 
 		// Makes the game reacting on an event (windowEvent).
 		void eventUpdate(const SDL_Event& windowEvent);
 
-		void zoom(float scale);
+		void zoom(float scale);		
 
-		void updateSize(int width, int height);
+		void validate() override;
 
 	private:
 		void humanPosition(float x, float y) override;
