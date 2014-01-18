@@ -9,7 +9,6 @@
 #include "survivorbehavior.h"
 #include "car.h"
 #include "humanplayer.h"
-#include "emptyplayer.h"
 #include "aiplayer.h"
 #include "weaponitem.h"
 
@@ -258,17 +257,6 @@ namespace zombie {
 			Player* player = new AiPlayer(behavior, unit);
 			players_.push_back(player);
 		}
-	}
-
-	void ZombieEngine::addCar(Car* car) {
-		Player* player = new EmptyPlayer(car);
-		players_.push_back(player);
-	}
-
-	void ZombieEngine::addBuilding(Building* building) {
-	}
-
-	void ZombieEngine::addWeapon(WeaponItem* weaponItem) {
 	}
 
 	void ZombieEngine::doAction(Unit* unit) {

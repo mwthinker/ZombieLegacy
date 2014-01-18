@@ -49,14 +49,6 @@ namespace zombie {
 		// Add a ai player to the game.
 		void addAi(Unit* unit);
 
-		// Add a car to the game.
-		void addCar(Car* car);
-
-		// Add a building to the game.
-		void addBuilding(Building* building);
-
-		void addWeapon(WeaponItem* weaponItem);
-
 		// Get the current game time.
 		inline float getTime() const {
 			return time_;
