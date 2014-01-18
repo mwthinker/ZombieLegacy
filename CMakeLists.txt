@@ -62,7 +62,6 @@ SET(SOURCES_ZOMBIE
 	src/survivaltimer.h
 	src/survivorbehavior.cpp
 	src/survivorbehavior.h
-	src/task.cpp
 	src/task.h
 	src/taskmanager.cpp
 	src/taskmanager.h

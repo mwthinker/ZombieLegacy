@@ -5,9 +5,6 @@ namespace zombie {
 
 	class Task {
 	public:
-		// The current size of the game windows.
-		static float width, height;
-
 		virtual ~Task() {
 		}
 

@@ -21,8 +21,6 @@ namespace zombie {
 	namespace {
 
 		void handleKeyboard(ZombieGame* zombieGame, const SDL_Event& keyEvent) {
-			zombieGame->eventUpdate(keyEvent);
-
 			switch (keyEvent.type) {
 				case SDL_KEYDOWN:
 					switch (keyEvent.key.keysym.sym) {

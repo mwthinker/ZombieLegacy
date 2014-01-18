@@ -30,6 +30,10 @@ namespace zombie {
 
 		scale_ = 1.f;
 
+		addKeyListener([&](gui::Component* component, const SDL_Event& keyEvent) {
+			keyboard1_->eventUpdate(keyEvent);
+		});
+
 		taskManager_.add(new MapDraw(-50, 50, -50, 50), GraphicLevel::GROUND_LEVEL);
 
 		innerSpawnRadius_ = 10.f;
@@ -94,17 +98,6 @@ namespace zombie {
 
 	void ZombieGame::zoom(float scale) {
 		scale_ *= scale;
-	}	
-
-	void ZombieGame::eventUpdate(const SDL_Event& windowEvent) {
-		// Update human input.
-		keyboard1_->eventUpdate(windowEvent);
-	}
-
-	void ZombieGame::validate() {
-		gui::Dimension dim = getSize();
-		Task::width = dim.width_;
-		Task::height = dim.height_;
 	}
 
 } // Namespace zombie.

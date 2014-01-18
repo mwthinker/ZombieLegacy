@@ -34,12 +34,7 @@ namespace zombie {
 		// from the previous call to this funtion.
 		void draw(Uint32 deltaTime);
 
-		// Makes the game reacting on an event (windowEvent).
-		void eventUpdate(const SDL_Event& windowEvent);
-
-		void zoom(float scale);		
-
-		void validate() override;
+		void zoom(float scale);
 
 	private:
 		void humanPosition(float x, float y) override;
