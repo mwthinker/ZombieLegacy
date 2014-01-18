@@ -2,17 +2,16 @@
 #define BLOOD_H
 
 #include "typedefs.h"
-#include "task.h"
 
 #include <mw/sprite.h>
 
 namespace zombie {
 
-	class Blood : public Task {
+	class Blood {
 	public:
 		Blood(Position position, float currentTime);
 		
-		bool update(float time) override;
+		bool update(float time);
 
 	private:
 		float startTime_;

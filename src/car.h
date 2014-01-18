@@ -167,10 +167,6 @@ namespace zombie {
 			return eventSignal_.connect(callback);
 		}
 
-		void callUpdateHandler(float time) override {
-			//updateHandlers_(this, time);
-		}
-
 	private:
 		void applyFriction(float frictionForwardFrontWheel, float frictionForwardBackWheel,
 			float frictionLateralFrontWheel, float frictionLateralBackWheel) {

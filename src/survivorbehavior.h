@@ -11,16 +11,12 @@ namespace zombie {
 
 	class Unit;
 
-	enum Activity { PANIC, FLEE, FOLLOW, DEFEND, ATTACK };
-	enum Subroutines { TURN_TO_ANGLE, RELOAD };
-
 	class SurvivorBehavior : public AiBehavior {
 	public:
 		SurvivorBehavior();
 		~SurvivorBehavior();
 
 		void calculateInput(const Unit* unit, double time) override;
-		Input activityToInput(Activity a, const Unit* unit, double time);
 
 		inline Input getInput() const override {
 			return input_;
@@ -35,7 +31,6 @@ namespace zombie {
 		double timeToUpdateAngleDirection_;
 		double targetAngle_;
 		bool forward_, backward_;
-		std::vector<Subroutines> s_; 
 		Input input_;
 	};
 

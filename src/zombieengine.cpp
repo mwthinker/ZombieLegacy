@@ -230,11 +230,7 @@ namespace zombie {
 			accumulator_ -= timeStep_;
 			updatePhysics(timeStep_);
 		}
-
-		for (Player* player : players_) {
-			player->getMovingObject()->callUpdateHandler(accumulator_);
-		}
-
+		
 		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
 			Object* ob = static_cast<Object*>(b->GetUserData());
 			ob->draw(deltaTime);

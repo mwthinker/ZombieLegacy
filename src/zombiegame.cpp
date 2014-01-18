@@ -6,14 +6,13 @@
 #include "auxiliary.h"
 #include "load.h"
 #include "settings.h"
-#include "task.h"
 #include "car.h"
 #include "human2d.h"
 #include "zombie2d.h"
 #include "car2d.h"
 #include "weaponitem2d.h"
 #include "building2d.h"
-#include "mapdraw.h"
+#include "map2d.h"
 
 // External.
 #include <mw/exception.h>
@@ -34,7 +33,7 @@ namespace zombie {
 			keyboard1_->eventUpdate(keyEvent);
 		});
 
-		taskManager_.add(new MapDraw(-50, 50, -50, 50), GraphicLevel::GROUND_LEVEL);
+		map2d_ = Map2D(-50, 50, -50, 50);
 
 		innerSpawnRadius_ = 10.f;
 		outerSpawnRadius_ = 40.f;
@@ -83,10 +82,10 @@ namespace zombie {
 
 		// Game is started?
 		if (engine_.isStarted()) {
-			taskManager_.update(deltaTime / 1000.f);
+			map2d_.draw(deltaTime / 1000.f);
 			engine_.update(deltaTime / 1000.f);
 		} else {
-			taskManager_.update(0);
+			map2d_.draw(0);
 			engine_.update(0);
 		}
 

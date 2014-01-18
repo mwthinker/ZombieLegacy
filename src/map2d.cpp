@@ -1,11 +1,14 @@
-#include "mapdraw.h"
+#include "map2d.h"
 #include "gamesprite.h"
 
 #include <SDL_opengl.h>
 
 namespace zombie {
 
-	MapDraw::MapDraw(float minX, float maxX, float minY, float maxY) {
+	Map2D::Map2D() {
+	}
+
+	Map2D::Map2D(float minX, float maxX, float minY, float maxY) {
 		grass_ = grassSprite;
 		minX_ = minX;
 		maxX_ = maxX;
@@ -13,7 +16,7 @@ namespace zombie {
 		maxY_ = maxY;
 	}
 
-	bool MapDraw::update(float time) {
+	void Map2D::draw(float time) {
 		glColor3d(0.6,0.6,0.6);
 		grassTexture->bind();
 		
@@ -36,7 +39,6 @@ namespace zombie {
 		}
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
-		return true;
 	}
 
 } // Namespace zombie.

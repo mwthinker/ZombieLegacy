@@ -5,6 +5,7 @@
 #include <vector>
 
 #include <mw/color.h>
+
 #include <Box2D/Box2D.h>
 
 namespace zombie {

@@ -4,8 +4,8 @@
 #include "zombieengine.h"
 #include "gameinterface.h"
 #include "device.h"
-#include "taskmanager.h"
 #include "gamedata.h"
+#include "map2d.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
@@ -43,15 +43,12 @@ namespace zombie {
 		float outerSpawnRadius_;
 		Position viewPosition_;
 		float scale_;
-
-		// TaskManager must be defined before ZombieEngine if there 
-		// are tasks that are binded as callbacks in the ZombieEngine.
-		// I.e. the destructor of TaskManager must be called before TaskManager.
-		TaskManager taskManager_;
+		
 		ZombieEngine engine_;
 
 		DevicePtr keyboard1_, keyboard2_;
 		GameData gameData_;
+		Map2D map2d_;
 	};
 
 } // Namespace zombie_;

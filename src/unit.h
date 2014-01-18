@@ -90,9 +90,6 @@ namespace zombie {
 			return body_;
 		}
 
-		void callUpdateHandler(float time) override {
-		}
-
 		const Bullet& getLastBullet() const {
 			return bullet_;
 		}

@@ -41,29 +41,21 @@ SET(SOURCES_ZOMBIE
 	src/getinput.h	
 	src/human2d.h
 	src/humanplayer.h
-	src/humanstatus.cpp
-	src/humanstatus.h
 	src/input.h
 	src/inputkeyboard.h
 	src/load.cpp
 	src/load.h
 	src/main.cpp
-	src/mapdraw.cpp
-	src/mapdraw.h
+	src/map2d.cpp
+	src/map2d.h
 	src/movingobject.h
 	src/object.cpp
 	src/object.h
 	src/player.h
 	src/settings.h
-	src/shot.cpp
-	src/shot.h
 	src/state.h
-	src/survivaltimer.h
 	src/survivorbehavior.cpp
 	src/survivorbehavior.h
-	src/task.h
-	src/taskmanager.cpp
-	src/taskmanager.h
 	src/typedefs.h
 	src/unit.cpp
 	src/unit.h
