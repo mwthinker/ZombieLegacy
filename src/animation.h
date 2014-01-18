@@ -15,9 +15,10 @@ namespace zombie {
 	class Animation {
 	public:
 		Animation() {
-			scale_ = 1.f;
+			scale_ = 1;
 			index_ = 0;
 			reset_ = false;
+			time_ = 0;
 		}
 
 		// All frames are drawn in scaled (scale) pixelsize.
@@ -25,6 +26,7 @@ namespace zombie {
 			index_ = 0;
 			scale_ = scale;
 			reset_ = false;
+			time_ = 0;
 		}
 
 		// The animation is reset to the first frame.
@@ -44,17 +46,18 @@ namespace zombie {
 		}
 
 		// Draws the correct frame at the (time) time.
-		void draw(float time) {
+		void draw(float deltaTime) {
+			time_ += deltaTime;
 			if (reset_) {
 				reset_ = false;
-				lastTime_ = time;
+				lastTime_ = time_;
 			}
 
 			if (!sprites_.empty()) {
 				// New frame?
-				if (time > sprites_[index_].second + lastTime_) {
+				if (time_ > sprites_[index_].second + lastTime_) {
 					index_ = (1 + index_) % sprites_.size();
-					lastTime_ = time; // Frame updated.
+					lastTime_ = time_; // Frame updated.
 				}
 
 				glPushMatrix();
@@ -69,6 +72,7 @@ namespace zombie {
 		float scale_;
 		float lastTime_;
 		bool reset_;
+		float time_;
 
 		typedef std::pair<mw::Sprite, float> Pair;
 		std::vector<Pair> sprites_;

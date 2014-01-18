@@ -1,5 +1,5 @@
-#ifndef WEAPONOBJECT_H
-#define WEAPONOBJECT_H
+#ifndef WEAPONITEM_H
+#define WEAPONITEM_H
 
 #include "object.h"
 #include "typedefs.h"
@@ -9,9 +9,9 @@ namespace zombie {
 
 	class Unit;
 
-	class WeaponObject : public Object {
+	class WeaponItem : public Object {
 	public:
-		WeaponObject(b2World* world, float x, float y, const Weapon& weapon) : Object(world) {
+		WeaponItem(b2World* world, float x, float y, const Weapon& weapon) : Object(world) {
 			radius_ = 0.5;
 			
 			// Box2d properties.
@@ -39,7 +39,7 @@ namespace zombie {
 			}
 		}
 
-		~WeaponObject() {
+		~WeaponItem() {
 			getWorld()->DestroyBody(body_);
 		}
 
@@ -67,4 +67,4 @@ namespace zombie {
 
 } // Namespace zombie.
 
-#endif // WEAPONOBJECT_H
+#endif // WEAPONITEM_H

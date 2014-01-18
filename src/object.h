@@ -6,6 +6,11 @@
 namespace zombie {
 
 	class Player;
+	
+	class Graphic {
+	public:
+		
+	};
 
 	// Represent a object inside the "zombie world".
 	class Object {
@@ -30,6 +35,9 @@ namespace zombie {
 
 		Player* getPlayer() const {
 			return player_;
+		}
+
+		virtual void draw(float deltaTime) {
 		}
 
 	private:

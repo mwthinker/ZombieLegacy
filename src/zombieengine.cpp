@@ -5,13 +5,13 @@
 #include "building.h"
 #include "bullet.h"
 #include "input.h"
-#include "weaponobject.h"
 #include "zombiebehavior.h"
 #include "survivorbehavior.h"
 #include "car.h"
 #include "humanplayer.h"
 #include "emptyplayer.h"
 #include "aiplayer.h"
+#include "weaponitem.h"
 
 #include <Box2D/Box2D.h>
 
@@ -235,24 +235,21 @@ namespace zombie {
 		for (Player* player : players_) {
 			player->getMovingObject()->callUpdateHandler(accumulator_);
 		}
-	}
 
-	mw::signals::Connection ZombieEngine::setHuman(DevicePtr device, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, std::function<void(Unit*, Unit::UnitEvent)> callback) {
-		if (human_ != nullptr) {
-			players_.remove(human_->getPlayer());
-			delete human_;
+		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
+			Object* ob = static_cast<Object*>(b->GetUserData());
+			ob->draw(deltaTime);
 		}
-		human_ = createUnit(state, mass, radius, life, walkingSpeed, runningSpeed, false, weapon);
-		mw::signals::Connection connection = human_->addEventHandler(callback);
-		Player* player = new HumanPlayer(device, human_);
-		players_.push_back(player);
-		return connection;
 	}
 
-	mw::signals::Connection ZombieEngine::addAi(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, std::function<void(Unit*, Unit::UnitEvent)> callback) {
-		Unit* unit = createUnit(state, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
-		mw::signals::Connection connection = unit->addEventHandler(callback);
-		if (infected) {
+	void ZombieEngine::setHuman(DevicePtr device, Unit* unit) {
+		human_ = unit;
+		Player* player = new HumanPlayer(device, unit);
+		players_.push_back(player);
+	}
+
+	void ZombieEngine::addAi(Unit* unit) {
+		if (unit->isInfected()) {
 			AiBehaviorPtr behavior(new ZombieBehavior);
 			Player* player = new AiPlayer(behavior, unit);
 			players_.push_back(player);
@@ -261,35 +258,17 @@ namespace zombie {
 			Player* player = new AiPlayer(behavior, unit);
 			players_.push_back(player);
 		}
-		return connection;
 	}
 
-	mw::signals::Connection ZombieEngine::addCar(const State& state, float mass, float life, float width, float length, std::function<void(Car*, Car::CarEvent)> callback) {
-		Car* car = createCar(state, mass, life, width, length);
+	void ZombieEngine::addCar(Car* car) {
 		Player* player = new EmptyPlayer(car);
 		players_.push_back(player);
-		mw::signals::Connection connection = car->addEventHandler(callback);
-		return connection;
 	}
 
-	void ZombieEngine::addBuilding(const std::vector<Position>& corners) {
-		Building* building = new Building(world_, corners);
+	void ZombieEngine::addBuilding(Building* building) {
 	}
 
-	void ZombieEngine::addWeapon(float x, float y, const Weapon& weapon) {
-		WeaponObject* wOb = new WeaponObject(world_, x, y, weapon);
-	}
-
-	Unit* ZombieEngine::createUnit(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) {
-		Unit* unit = new Unit(world_, state, mass, radius, life, walkingSpeed, runningSpeed, infected, weapon);
-		unit->addEventHandler(std::bind(&ZombieEngine::unitEventHandler, this, std::placeholders::_1, std::placeholders::_2));
-		return unit;
-	}
-
-	Car* ZombieEngine::createCar(const State& state, float mass, float life, float width, float length) {
-		Car* car = new Car(world_, state, mass, life, width, length);
-		car->addEventHandler(std::bind(&ZombieEngine::carEventHandler, this, std::placeholders::_1, std::placeholders::_2));
-		return car;
+	void ZombieEngine::addWeapon(WeaponItem* weaponItem) {
 	}
 
 	void ZombieEngine::doAction(Unit* unit) {
@@ -317,10 +296,10 @@ namespace zombie {
 					unit->getBody()->SetActive(false);
 					*/
 				}
-			} else if (WeaponObject* wOb = dynamic_cast<WeaponObject*>(ob)) {
+			} else if (WeaponItem* wItem = dynamic_cast<WeaponItem*>(ob)) {
 				// Change the weapon.
-				unit->setWeapon(wOb->getWeapon());
-				delete wOb;
+				unit->setWeapon(wItem->getWeapon());
+				delete wItem;
 			}
 		}
 	}

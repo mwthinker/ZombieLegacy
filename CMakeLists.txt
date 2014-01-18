@@ -22,16 +22,13 @@ SET(SOURCES_ZOMBIE
 	src/blood.cpp
 	src/blood.h
 	src/building.h
-	src/buildingdraw.h
+	src/building2d.h
 	src/buildingproperties.h
 	src/bullet.h
 	src/car.h
-	src/caranimation.h
-	src/caranimation.cpp
+	src/car2d.h
 	src/carproperties.h
 	src/device.h
-	src/drawweaponobject.cpp
-	src/drawweaponobject.h
 	src/emptyplayer.h
 	src/gamedata.cpp
 	src/gamedata.h
@@ -42,7 +39,8 @@ SET(SOURCES_ZOMBIE
 	src/gamesound.h
 	src/gamesprite.cpp
 	src/gamesprite.h
-	src/getinput.h
+	src/getinput.h	
+	src/human2d.h
 	src/humanplayer.h
 	src/humanstatus.cpp
 	src/humanstatus.h
@@ -71,12 +69,12 @@ SET(SOURCES_ZOMBIE
 	src/typedefs.h
 	src/unit.cpp
 	src/unit.h
-	src/unitanimation.cpp
-	src/unitanimation.h
 	src/unitproperties.h
 	src/weapon.h
+	src/weaponitem.h
+	src/weaponitem2d.h
 	src/weaponproperties.h
-	src/weaponobject.h
+	src/zombie2d.h
 	src/zombiebehavior.cpp
 	src/zombiebehavior.h
 	src/zombieengine.cpp

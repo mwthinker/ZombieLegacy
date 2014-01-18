@@ -25,6 +25,9 @@ namespace zombie {
 	class Player;
 	class Bullet;
 	class GameInterface;
+	class Building;
+	class Unit;
+	class WeaponItem;
 
 	// Responsible of all creation and deallocation of game objects 
 	// and simulationg the game mechanics.
@@ -41,21 +44,18 @@ namespace zombie {
 		void update(float deltaTime);
 
 		// Add a human player to the game.
-		mw::signals::Connection setHuman(DevicePtr device, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, const Weapon& weapon, std::function<void(Unit*, Unit::UnitEvent)> callback = [](Unit*, Unit::UnitEvent) {
-		});
+		void setHuman(DevicePtr device, Unit* unit);
 
 		// Add a ai player to the game.
-		mw::signals::Connection addAi(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon, std::function<void(Unit*, Unit::UnitEvent)> callback = [](Unit*, Unit::UnitEvent) {
-		});
+		void addAi(Unit* unit);
 
 		// Add a car to the game.
-		mw::signals::Connection addCar(const State& state, float mass, float life, float width, float length, std::function<void(Car*, Car::CarEvent)> callback = [](Car*, Car::CarEvent) {
-		});
+		void addCar(Car* car);
 
 		// Add a building to the game.
-		void addBuilding(const std::vector<Position>& corners);
+		void addBuilding(Building* building);
 
-		void addWeapon(float x, float y, const Weapon& weapon);
+		void addWeapon(WeaponItem* weaponItem);
 
 		// Get the current game time.
 		inline float getTime() const {
@@ -66,12 +66,11 @@ namespace zombie {
 			return started_;
 		}
 
+		inline b2World* getWorld() {
+			return world_;
+		}
+
 	private:
-		// Creates a unit and add &doShotDamage to receive bullets fired.
-		Unit* createUnit(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
-
-		Car* createCar(const State& state, float mass, float life, float width, float length);
-
 		// Updates the game time by (msDeltaTime).
 		void updatePhysics(float timeStep);
 

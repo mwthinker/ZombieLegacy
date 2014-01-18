@@ -8,12 +8,12 @@
 #include "settings.h"
 #include "task.h"
 #include "car.h"
-
-// Graphic.
+#include "human2d.h"
+#include "zombie2d.h"
+#include "car2d.h"
+#include "weaponitem2d.h"
+#include "building2d.h"
 #include "mapdraw.h"
-#include "buildingdraw.h"
-#include "unitanimation.h"
-#include "caranimation.h"
 
 // External.
 #include <mw/exception.h>
@@ -34,41 +34,28 @@ namespace zombie {
 
 		innerSpawnRadius_ = 10.f;
 		outerSpawnRadius_ = 40.f;
-
+				
 		gameData_.humanPlayer([&](State state, UnitProperties uP, const Animation& animation) {
-			UnitAnimation* unitAnimation = new UnitAnimation(state, uP.radius_, animation);
-			taskManager_.add(unitAnimation, GraphicLevel::UNIT_LEVEL);
-
-			auto callback = std::bind(&UnitAnimation::updateData, unitAnimation, std::placeholders::_1, std::placeholders::_2);
-			engine_.setHuman(keyboard1_, state,
+			Unit* human = new Human2D(engine_.getWorld(), state,
 				uP.mass_, uP.radius_, uP.life_, uP.walkingSpeed_,
-				uP.runningSpeed_, Weapon(55, 0.2f, 8, 12), callback);
-
-			viewPosition_ = state.position_;
+				uP.runningSpeed_, Weapon(55, 0.2f, 8, 12), animation);
+			engine_.setHuman(keyboard1_, human);
+			viewPosition_ = human->getPosition();
 		});
-
+		
 		gameData_.iterateCars([&](State state, CarProperties cP, const mw::Sprite& sprite) {
-			CarAnimation* carAnimation = new CarAnimation(state, cP.width_, cP.length_, sprite);
-			taskManager_.add(carAnimation, GraphicLevel::UNIT_LEVEL);
-
-			auto callback = std::bind(&CarAnimation::updateData, carAnimation, std::placeholders::_1, std::placeholders::_2);
-			engine_.addCar(state, cP.mass_, cP.life_,
-				cP.width_, cP.length_, callback);
+			engine_.addCar(new Car2D(engine_.getWorld(), state, cP.mass_, cP.life_,
+				cP.width_, cP.length_, sprite));
 		});
 
 		gameData_.iterateUnits([&](State state, UnitProperties uP, const Animation& animation) {
-			UnitAnimation* unitAnimation = new UnitAnimation(state, uP.radius_, animation);
-			taskManager_.add(unitAnimation, GraphicLevel::UNIT_LEVEL);
-
-			auto callback = std::bind(&UnitAnimation::updateData, unitAnimation, std::placeholders::_1, std::placeholders::_2);
-			engine_.addAi(state, uP.mass_, uP.radius_,
+			engine_.addAi(new Zombie2D(engine_.getWorld(), state, uP.mass_, uP.radius_,
 				uP.life_, uP.walkingSpeed_, uP.
-				runningSpeed_, true, Weapon(35, 0.5f, 1, 10000), callback);
+				runningSpeed_, Weapon(35, 0.5f, 1, 10000), animation));
 		});
 
 		gameData_.iterateBuildings([&](BuildingProperties bP) {
-			engine_.addBuilding(bP.points_);
-			taskManager_.add(new BuildingDraw(bP.points_), GraphicLevel::BUILDING_LEVEL);
+			engine_.addBuilding(new Building2D(engine_.getWorld(), bP.points_));
 		});
 	}
 
@@ -81,8 +68,6 @@ namespace zombie {
 	}
 
 	void ZombieGame::draw(Uint32 deltaTime) {
-		engine_.update(deltaTime / 1000.f);
-
 		// Draw map centered around first human player.
 		glPushMatrix();
 		gui::Dimension dim = getSize();
@@ -94,8 +79,10 @@ namespace zombie {
 		// Game is started?
 		if (engine_.isStarted()) {
 			taskManager_.update(deltaTime / 1000.f);
+			engine_.update(deltaTime / 1000.f);
 		} else {
-			taskManager_.update(0.0);
+			taskManager_.update(0);
+			engine_.update(0);
 		}
 
 		glPopMatrix();
