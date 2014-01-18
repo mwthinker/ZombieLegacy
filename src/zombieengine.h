@@ -5,7 +5,6 @@
 #include "state.h"
 #include "device.h"
 #include "input.h"
-#include "typedefs.h"
 #include "car.h"
 #include "unit.h"
 

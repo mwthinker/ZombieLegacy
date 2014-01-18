@@ -1,10 +1,9 @@
-#ifndef MVOINGOBJECT_H
-#define MVOINGOBJECT_H
+#ifndef MOVINGOBJECT_H
+#define MOVINGOBJECT_H
 
 #include "object.h"
 #include "input.h"
 #include "weapon.h"
-#include "typedefs.h"
 #include "state.h"
 
 #include <list>
@@ -77,4 +76,4 @@ namespace zombie {
 
 } // Namespace zombie.
 
-#endif // OBJECT_H
+#endif // MOVINGOBJECT_H

@@ -2,7 +2,6 @@
 #define WEAPONITEM_H
 
 #include "object.h"
-#include "typedefs.h"
 #include "weapon.h"
 
 namespace zombie {

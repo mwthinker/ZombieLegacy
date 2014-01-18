@@ -2,9 +2,7 @@
 #define BUILDING_H
 
 #include "object.h"
-#include "typedefs.h"
 
-#include <Box2D/Box2D.h>
 #include <limits>
 
 namespace zombie {

@@ -1,7 +1,7 @@
 #ifndef BLOOD_H
 #define BLOOD_H
 
-#include "typedefs.h"
+#include "box2ddef.h"
 
 #include <mw/sprite.h>
 

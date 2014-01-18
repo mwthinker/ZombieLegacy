@@ -3,7 +3,7 @@
 
 #include "input.h"
 #include "aibehavior.h"
-#include "typedefs.h"
+#include "box2ddef.h"
 
 #include <vector>
 

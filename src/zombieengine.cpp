@@ -1,6 +1,5 @@
 #include "zombieengine.h"
 #include "gameinterface.h"
-#include "typedefs.h"
 #include "unit.h"
 #include "building.h"
 #include "bullet.h"

@@ -6,11 +6,9 @@
 #include "weapon.h"
 #include "state.h"
 #include "bullet.h"
-#include "typedefs.h"
+#include "box2ddef.h"
 
 #include <mw/signal.h>
-
-#include <Box2D/Box2D.h>
 
 #include <functional>
 #include <list>

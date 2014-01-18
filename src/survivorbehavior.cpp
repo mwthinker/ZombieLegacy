@@ -1,5 +1,4 @@
 #include "survivorbehavior.h"
-#include "typedefs.h"
 #include "unit.h"
 #include "auxiliary.h"
 

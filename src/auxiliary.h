@@ -1,7 +1,9 @@
 #ifndef AUXILIARY_H
 #define AUXILIARY_H
 
-#include "typedefs.h"
+#include "box2ddef.h"
+
+#include <SDL_opengl.h>
 
 #include <cmath>
 

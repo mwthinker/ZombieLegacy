@@ -1,7 +1,7 @@
 #ifndef BUILDINGPROPERTIES_H
 #define BUILDINGPROPERTIES_H
 
-#include "typedefs.h"
+#include "box2ddef.h"
 
 namespace zombie {
 

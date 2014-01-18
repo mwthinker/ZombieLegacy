@@ -1,5 +1,4 @@
 #include "aiplayer.h"
-#include "typedefs.h"
 #include "input.h"
 #include "zombiebehavior.h"
 #include "unit.h"

@@ -8,7 +8,6 @@
 #include "settings.h"
 #include "animation.h"
 #include "auxiliary.h"
-#include "typedefs.h"
 #include "state.h"
 
 #include <mw/sound.h>

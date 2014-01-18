@@ -4,9 +4,15 @@
 #include "input.h"
 #include "getinput.h"
 
+#include <memory>
+
 namespace zombie {
 
 	class Unit;
+
+	// Smart pointers.
+	class AiBehavior;
+	typedef std::shared_ptr<AiBehavior> AiBehaviorPtr;
 
 	class AiBehavior : public GetInput {
 	public:

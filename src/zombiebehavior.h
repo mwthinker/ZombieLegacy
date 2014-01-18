@@ -2,7 +2,6 @@
 #define ZOMBIEBEHAVIOR_H
 
 #include "aibehavior.h"
-#include "typedefs.h"
 #include "input.h"
 #include "unit.h"
 

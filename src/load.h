@@ -1,7 +1,6 @@
 #ifndef LOAD_H
 #define LOAD_H
 
-#include "typedefs.h"
 #include "buildingproperties.h"
 #include "carproperties.h"
 #include "weaponproperties.h"

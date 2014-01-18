@@ -21,6 +21,7 @@ SET(SOURCES_ZOMBIE
 	src/auxiliary.h
 	src/blood.cpp
 	src/blood.h
+	src/box2ddef.h
 	src/building.h
 	src/building2d.h
 	src/buildingproperties.h
@@ -55,7 +56,6 @@ SET(SOURCES_ZOMBIE
 	src/state.h
 	src/survivorbehavior.cpp
 	src/survivorbehavior.h
-	src/typedefs.h
 	src/unit.cpp
 	src/unit.h
 	src/unitproperties.h
