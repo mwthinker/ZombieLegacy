@@ -13,11 +13,11 @@ namespace zombie {
 			float life, float walkingSpeed, float runningSpeed, const Weapon& weapon,
 			const Animation& animation) :
 			Unit(world, state, mass, radius, life, walkingSpeed, runningSpeed, false, weapon), animation_(animation) {
-
+			addEventHandler(std::bind(&Human2D::eventHandler, this, this, std::placeholders::_2));
 		}
 
 		void draw(float time) override {
-			// Draw body
+			// Draw body.
 			glPushMatrix();
 			glTranslate2f(getPosition());
 			glScale2f(getRadius());
@@ -26,7 +26,7 @@ namespace zombie {
 			glPopMatrix();
 		}
 
-		void eventHandler(Unit::UnitEvent unitEvent) {
+		void eventHandler(Unit* unit, Unit::UnitEvent unitEvent) {
 			switch (unitEvent) {
 				case Unit::RUN:
 					// Todo!
