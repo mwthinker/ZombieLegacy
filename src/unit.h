@@ -74,21 +74,13 @@ namespace zombie {
 			weapon_ = weapon;
 		}
 
-		Position getPosition() const override {
-			return body_->GetPosition();
-		}
+		Position getPosition() const override;
 
-		float getRadius() const {
-			b2Fixture* f = body_->GetFixtureList();
-			b2CircleShape* circle = (b2CircleShape*) f->GetShape();
-			return circle->m_radius;
-		}
+		float getRadius() const;
 		
 		mw::signals::Connection addEventHandler(mw::Signal<Unit*, UnitEvent>::Callback);
 
-		b2Body* getBody() const override {
-			return body_;
-		}
+		b2Body* getBody() const override;
 
 		const Bullet& getLastBullet() const {
 			return bullet_;

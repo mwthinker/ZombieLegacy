@@ -49,7 +49,6 @@ SET(SOURCES_ZOMBIE
 	src/map2d.cpp
 	src/map2d.h
 	src/movingobject.h
-	src/object.cpp
 	src/object.h
 	src/player.h
 	src/settings.h

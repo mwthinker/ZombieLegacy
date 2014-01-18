@@ -200,4 +200,18 @@ namespace zombie {
 		return isDead_;
 	}
 
+	Position Unit::getPosition() const {
+		return body_->GetPosition();
+	}
+
+	float Unit::getRadius() const {
+		b2Fixture* f = body_->GetFixtureList();
+		b2CircleShape* circle = (b2CircleShape*) f->GetShape();
+		return circle->m_radius;
+	}
+
+	b2Body* Unit::getBody() const {
+		return body_;
+	}
+
 } // Namespace zombie.

@@ -1,50 +1,44 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include <Box2D/Dynamics/b2Body.h>
+#include <Box2D/Box2D.h>
 
 namespace zombie {
 
 	class Player;
-	
-	class Graphic {
-	public:
-		
-	};
 
 	// Represent a object inside the "zombie world".
 	class Object {
 	public:
 		friend class Player;
 
-		inline Object(b2World* world) : id_(++lastId), player_(nullptr), world_(world) {
+		// Adds the object to the world. The world must point to an object.
+		inline Object(b2World* world) : player_(nullptr), world_(world) {
 		}
 
 		virtual ~Object() {
 		}
 
+		// Return the body for the object. Use with care!
 		virtual b2Body* getBody() const = 0;
 
-		inline int getId() const {
-			return id_;
-		}
-
+		// Return the world for which the objects body is part of. Use with care!
 		inline b2World* getWorld() {
 			return world_;
 		}
 
+		// Return the player for which controls the object. May return null,
+		// i.e. no one is controlling this object.
 		Player* getPlayer() const {
 			return player_;
 		}
 
-		virtual void draw(float deltaTime) {
-		}
+		// Draws the object in world coordinates.
+		virtual void draw(float deltaTime) = 0;
 
 	private:
-		int id_;
 		Player* player_;
 		b2World* world_;
-		static int lastId;
 	};
 
 } // Namespace zombie.

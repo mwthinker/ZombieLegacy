@@ -195,7 +195,7 @@ namespace zombie {
 				Position p = mOb->getPosition();
 				if (mOb->isDead() || gameInterface_->isUnitOutside(p.x, p.y, mOb->isInfected())) {
 					// Human died?
-					if (human_ != nullptr && human_->getId() == mOb->getId()) {
+					if (human_ != nullptr && human_ == mOb) {
 						gameInterface_->humanDied();
 						human_ = nullptr;
 					} else { // A ai died!
