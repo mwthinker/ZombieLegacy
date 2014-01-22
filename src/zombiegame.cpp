@@ -12,7 +12,6 @@
 #include "car2d.h"
 #include "weaponitem2d.h"
 #include "building2d.h"
-#include "map2d.h"
 
 // External.
 #include <mw/exception.h>
@@ -32,9 +31,7 @@ namespace zombie {
 		addKeyListener([&](gui::Component* component, const SDL_Event& keyEvent) {
 			keyboard1_->eventUpdate(keyEvent);
 		});
-
-		map2d_ = Map2D(-50, 50, -50, 50);
-
+		
 		innerSpawnRadius_ = 10.f;
 		outerSpawnRadius_ = 40.f;
 				
@@ -82,10 +79,8 @@ namespace zombie {
 
 		// Game is started?
 		if (engine_.isStarted()) {
-			map2d_.draw(deltaTime / 1000.f);
 			engine_.update(deltaTime / 1000.f);
 		} else {
-			map2d_.draw(0);
 			engine_.update(0);
 		}
 

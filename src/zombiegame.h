@@ -5,7 +5,6 @@
 #include "gameinterface.h"
 #include "device.h"
 #include "gamedata.h"
-#include "map2d.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
@@ -48,7 +47,6 @@ namespace zombie {
 
 		DevicePtr keyboard1_, keyboard2_;
 		GameData gameData_;
-		Map2D map2d_;
 	};
 
 } // Namespace zombie_;
