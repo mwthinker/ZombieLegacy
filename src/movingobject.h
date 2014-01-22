@@ -16,7 +16,6 @@ namespace zombie {
 	// Represent a moving object inside the "zombie world".
 	class MovingObject : public Object {
 	public:
-		friend class ZombieEngine;
 		friend class Player;
 
 		MovingObject(b2World* world) : Object(world), player_(nullptr) {
@@ -26,7 +25,8 @@ namespace zombie {
 			delete player_;
 		}
 
-		void update(float time, float timeStep) override {
+		// Should not be derived by anyone.
+		void update(float time, float timeStep) override final {
 			if (player_ != nullptr) {
 				// Player decides what to do!
 				player_->updatePhysics(time, timeStep);
@@ -80,15 +80,17 @@ namespace zombie {
 			return player_;
 		}
 
-	private:
+		// Should only be called by the game engine.
 		void addSeenObject(MovingObject* object) {
 			objectsSeen_.push_back(object);
 		}
 
+		// Should only be called by the game engine.
 		void removeSeenObject(MovingObject* object) {
 			objectsSeen_.erase(std::find(objectsSeen_.begin(), objectsSeen_.end(), object));
 		}
 
+	private:
 		std::list<MovingObject*> objectsSeen_;
 		Player* player_;
 	};

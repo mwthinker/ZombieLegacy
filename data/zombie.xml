@@ -30,11 +30,11 @@
 				<time>0.18</time>
 			</animation>
 			<mass>1</mass>
-			<radius>0.4</radius>
+			<radius>0.2</radius>
 			<life>100</life>
 			<infected>0</infected> <!-- 1=true, 0=false -->
-			<walkingSpeed>1</walkingSpeed> <!-- m/s -->
-			<runningSpeed>1</runningSpeed> <!-- m/s -->
+			<walkingSpeed>2</walkingSpeed> <!-- m/s -->
+			<runningSpeed>4</runningSpeed> <!-- m/s -->
 			<stamina>1</stamina> <!-- seconds -->
 		</unit>
 		<unit>
@@ -55,11 +55,11 @@
 				<time>0.18</time>
 			</animation>
 			<mass>1</mass>
-			<radius>0.4</radius>
+			<radius>0.2</radius>
 			<life>100</life>
 			<infected>1</infected>
-			<walkingSpeed>1</walkingSpeed>
-			<runningSpeed>2</runningSpeed>
+			<walkingSpeed>2</walkingSpeed>
+			<runningSpeed>4</runningSpeed>
 			<stamina>1</stamina>
 		</unit>
 	</movingObjects>

@@ -58,6 +58,8 @@ namespace zombie {
 			// Engine takes the ownership.
 			new Building2D(engine_.getWorld(), bP.points_);
 		});
+
+		setBackgroundColor(mw::Color(0, 0.3, 0));
 	}
 
 	ZombieGame::~ZombieGame() {
@@ -69,6 +71,8 @@ namespace zombie {
 	}
 
 	void ZombieGame::draw(Uint32 deltaTime) {
+		gui::Component::draw(deltaTime);
+
 		// Draw map centered around first human player.
 		glPushMatrix();
 		gui::Dimension dim = getSize();
