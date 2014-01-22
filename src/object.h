@@ -3,19 +3,19 @@
 
 #include "box2ddef.h"
 
-namespace zombie {
+#include <cassert>
 
-	class Player;
+namespace zombie {
 
 	// Represent a object inside the "zombie world".
 	class Object {
 	public:
-		friend class Player;
-
-		// Adds the object to the world. The world must point to an object.
-		inline Object(b2World* world) : player_(nullptr), world_(world) {
+		// Should add the object to the world. The world must point to an object.
+		inline Object(b2World* world) : world_(world) {
+			assert(world); // Should not be null!
 		}
 
+		// Should remove the object from the world!
 		virtual ~Object() {
 		}
 
@@ -27,17 +27,10 @@ namespace zombie {
 			return world_;
 		}
 
-		// Return the player for which controls the object. May return null,
-		// i.e. no one is controlling this object.
-		Player* getPlayer() const {
-			return player_;
-		}
-
-		// Draws the object in world coordinates.
+		// Draw the object in world coordinates.
 		virtual void draw(float deltaTime) = 0;
 
 	private:
-		Player* player_;
 		b2World* world_;
 	};
 

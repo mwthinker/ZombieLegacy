@@ -15,7 +15,7 @@ namespace zombie {
 	ZombieBehavior::~ZombieBehavior() {
 	}
 
-	void ZombieBehavior::calculateInput(const Unit* unit, double time) {
+	void ZombieBehavior::updatePhysics(float time, float deltaTime) {
 		Input input;
 
 		MovingObject* target = nullptr;
@@ -23,7 +23,7 @@ namespace zombie {
 		if (time > findNewTargetTime_) {
 			findNewTargetTime_ = random() * 3 + time;
 			
-			target = findUninfectedTarget(unit->getPosition(), unit->getVisibleObjects());
+			target = findUninfectedTarget(unit_->getPosition(), unit_->getVisibleObjects());
 		}
 
 		if (time > timeToUpdateAngleDirection_) {
@@ -31,13 +31,13 @@ namespace zombie {
 
 			// Has a target?
 			if (target != nullptr) {
-				Position dir = target->getPosition() - unit->getPosition();
+				Position dir = target->getPosition() - unit_->getPosition();
 				targetAngle_ = std::atan2(dir.y,dir.x);
 				forward_ = true;
 
-				double distSquared = (unit->getPosition() - unit->getPosition()).LengthSquared();
+				double distSquared = (unit_->getPosition() - unit_->getPosition()).LengthSquared();
 				// Target is in range?
-				if (distSquared < unit->getWeapon().range()*unit->getWeapon().range()) {
+				if (distSquared < unit_->getWeapon().range() * unit_->getWeapon().range()) {
 					// Attack!
 					input.shoot_ = true;
 				}
@@ -47,7 +47,7 @@ namespace zombie {
 			}
 		}			
 
-		double diffAngle = calculateDifferenceBetweenAngles(targetAngle_,unit->getDirection());
+		double diffAngle = calculateDifferenceBetweenAngles(targetAngle_, unit_->getDirection());
 
 		// Turn?
 		if (std::abs(diffAngle) > 0.1 ) {

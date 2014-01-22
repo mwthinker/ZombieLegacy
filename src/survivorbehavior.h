@@ -2,7 +2,7 @@
 #define SURVIVORBEHAVIOR_H
 
 #include "input.h"
-#include "aibehavior.h"
+#include "player.h"
 #include "box2ddef.h"
 
 #include <vector>
@@ -11,16 +11,12 @@ namespace zombie {
 
 	class Unit;
 
-	class SurvivorBehavior : public AiBehavior {
+	class SurvivorBehavior : public Player {
 	public:
 		SurvivorBehavior();
 		~SurvivorBehavior();
-
-		void calculateInput(const Unit* unit, double time) override;
-
-		inline Input getInput() const override {
-			return input_;
-		}
+		
+		void updatePhysics(float time, float deltaTime) override;
 
 	private:
 		Unit* findUninfectedTarget(Position position, const std::vector<Unit*>& units) const;

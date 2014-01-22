@@ -1,19 +1,16 @@
 #include "zombieengine.h"
 #include "gameinterface.h"
 #include "unit.h"
+#include "car.h"
 #include "building.h"
+#include "weaponitem.h"
 #include "bullet.h"
 #include "input.h"
 #include "zombiebehavior.h"
 #include "survivorbehavior.h"
-#include "car.h"
 #include "humanplayer.h"
-#include "aiplayer.h"
-#include "weaponitem.h"
+#include "box2ddef.h"
 
-#include <Box2D/Box2D.h>
-
-#include <memory>
 #include <vector>
 #include <string>
 
@@ -127,8 +124,11 @@ namespace zombie {
 		}
 		
 		for (Object* ob : removeObjects) {
-			delete ob->getPlayer();
 			delete ob;
+		}
+
+		for (Player* player : players_) {
+			delete player;
 		}
 
 		// All game objects are removed, remove world!
@@ -244,13 +244,13 @@ namespace zombie {
 
 	void ZombieEngine::addAi(Unit* unit) {
 		if (unit->isInfected()) {
-			AiBehaviorPtr behavior(new ZombieBehavior);
-			Player* player = new AiPlayer(behavior, unit);
-			players_.push_back(player);
+			//AiBehaviorPtr behavior(new ZombieBehavior);
+			//Player* player = new AiPlayer(behavior, unit);
+			//layers_.push_back(player);
 		} else {
-			AiBehaviorPtr behavior(new SurvivorBehavior);
-			Player* player = new AiPlayer(behavior, unit);
-			players_.push_back(player);
+			//AiBehaviorPtr behavior(new SurvivorBehavior);
+			//Player* player = new AiPlayer(behavior, unit);
+			//players_.push_back(player);
 		}
 	}
 

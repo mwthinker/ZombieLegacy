@@ -15,9 +15,6 @@ endif (MSVC)
 
 # Source files.
 SET(SOURCES_ZOMBIE
-	src/aibehavior.h
-	src/aiplayer.cpp
-	src/aiplayer.h
 	src/animation.h
 	src/auxiliary.cpp
 	src/auxiliary.h
@@ -41,7 +38,6 @@ SET(SOURCES_ZOMBIE
 	src/gamesound.h
 	src/gamesprite.cpp
 	src/gamesprite.h
-	src/getinput.h	
 	src/human2d.h
 	src/humanplayer.h
 	src/input.h

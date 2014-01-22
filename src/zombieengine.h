@@ -1,31 +1,25 @@
 #ifndef ZOMBIEENGINE_H
 #define ZOMBIEENGINE_H
 
-#include "object.h"
-#include "state.h"
 #include "device.h"
-#include "input.h"
-#include "car.h"
 #include "unit.h"
+#include "car.h"
+#include "box2ddef.h"
 
 #include <mw/signal.h>
-#include <Box2D/Box2D.h>
-#include <SDL.h>
 
-#include <memory>
 #include <vector>
 #include <string>
 
 namespace zombie {
 
-	// Forward declaration.
+	// Forward declarations.
 	class Weapon;
 	class MovingObject;
 	class Player;
 	class Bullet;
 	class GameInterface;
 	class Building;
-	class Unit;
 	class WeaponItem;
 
 	// Responsible of all creation and deallocation of game objects 
@@ -72,15 +66,15 @@ namespace zombie {
 		void doAction(Car* unit);
 		void doShotDamage(Unit* shooter, const Bullet& properties);
 
-		void BeginContact (b2Contact* contact) override;
-		void EndContact (b2Contact* contact) override;
+		void BeginContact(b2Contact* contact) override;
+		void EndContact(b2Contact* contact) override;
 		void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override;
 
 		void spawnAndCleanUpUnits(); // Spawns new units.
 
 		bool started_; // The game is started.
 		float time_; // Local game time.
-		
+
 		Unit* human_;
 		std::list<Player*> players_;
 

@@ -2,23 +2,24 @@
 #define DEVICE_H
 
 #include "input.h"
-#include "getinput.h"
+
+#include <SDL.h>
 
 #include <memory>
-
-union SDL_Event;
 
 namespace zombie {
 
 	class Device;
 	typedef std::shared_ptr<Device> DevicePtr;
 
-	class Device : public GetInput {
+	class Device {
 	public:
 		virtual ~Device() {
 		}
 
 		virtual void eventUpdate(const SDL_Event& windowEvent) = 0;
+
+		virtual Input getInput() const = 0;
 	};
 
 } // Namespace zombie.
