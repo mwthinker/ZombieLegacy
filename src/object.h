@@ -27,6 +27,9 @@ namespace zombie {
 			return world_;
 		}
 
+		inline virtual void update(float time, float timeStep) {
+		}
+
 		// Draw the object in world coordinates.
 		virtual void draw(float deltaTime) = 0;
 

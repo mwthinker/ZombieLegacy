@@ -70,13 +70,10 @@ namespace zombie {
 		void EndContact(b2Contact* contact) override;
 		void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override;
 
-		void spawnAndCleanUpUnits(); // Spawns new units.
-
 		bool started_; // The game is started.
 		float time_; // Local game time.
 
 		Unit* human_;
-		std::list<Player*> players_;
 
 		// Fix timestep.
 		float timeStep_;

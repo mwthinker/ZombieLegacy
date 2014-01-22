@@ -127,10 +127,6 @@ namespace zombie {
 			delete ob;
 		}
 
-		for (Player* player : players_) {
-			delete player;
-		}
-
 		// All game objects are removed, remove world!
 		delete world_;
 	}
@@ -143,11 +139,10 @@ namespace zombie {
 	void ZombieEngine::updatePhysics(float timeStep) {
 		// Game is started?
 		if (started_) {
-			spawnAndCleanUpUnits();
-
 			// Update all game entities.
-			for (Player* player : players_) {
-				player->updatePhysics(time_, timeStep);
+			for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
+				Object* ob = static_cast<Object*>(b->GetUserData());
+				ob->update(time_, timeStep);
 			}
 
 			// Update the objects physics interactions.
@@ -186,37 +181,6 @@ namespace zombie {
 		}
 	}
 
-	void ZombieEngine::spawnAndCleanUpUnits() {
-		// Delete all units outside the perimiter, and all the dead units.
-		players_.remove_if([&](Player* player) {
-			MovingObject* mOb = player->getMovingObject();
-			if (mOb != nullptr) {
-				Position p = mOb->getPosition();
-				if (mOb->isDead() || gameInterface_->isUnitOutside(p.x, p.y, mOb->isInfected())) {
-					// Human died?
-					if (human_ != nullptr && human_ == mOb) {
-						gameInterface_->humanDied();
-						human_ = nullptr;
-					} else { // A ai died!
-						gameInterface_->unitDied(p.x, p.y, mOb->isInfected());
-					}
-
-					delete player;
-					delete mOb;
-
-					// Removes the pointer from the list.
-					return true;
-				}
-			} else {
-				//delete player;
-				//delete mOb;
-			}
-
-			// The pointer is not removed.
-			return false;
-		});
-	}
-
 	void ZombieEngine::update(float deltaTime) {
 		// DeltaTime to big?
 		if (deltaTime > 0.250) {
@@ -239,18 +203,13 @@ namespace zombie {
 	void ZombieEngine::setHuman(DevicePtr device, Unit* unit) {
 		human_ = unit;
 		Player* player = new HumanPlayer(device, unit);
-		players_.push_back(player);
 	}
 
 	void ZombieEngine::addAi(Unit* unit) {
 		if (unit->isInfected()) {
-			//AiBehaviorPtr behavior(new ZombieBehavior);
-			//Player* player = new AiPlayer(behavior, unit);
-			//layers_.push_back(player);
+			new ZombieBehavior(unit);
 		} else {
-			//AiBehaviorPtr behavior(new SurvivorBehavior);
-			//Player* player = new AiPlayer(behavior, unit);
-			//players_.push_back(player);
+			new SurvivorBehavior(unit);
 		}
 	}
 
@@ -270,15 +229,6 @@ namespace zombie {
 			Object* ob = static_cast<Object*>(fixture->GetUserData());
 
 			if (Car* car = dynamic_cast<Car*>(ob)) {
-				// Driver seat is empty?
-				if (car->getDriver() == nullptr) {
-					/*
-					// The unit gets into the car.
-					std::swap(car->gameEntity_->player_, unit->gameEntity_->player_);
-					car->setDriver(unit);
-					unit->getBody()->SetActive(false);
-					*/
-				}
 			} else if (WeaponItem* wItem = dynamic_cast<WeaponItem*>(ob)) {
 				// Change the weapon.
 				unit->setWeapon(wItem->getWeapon());
@@ -288,15 +238,6 @@ namespace zombie {
 	}
 
 	void ZombieEngine::doAction(Car* car) {
-		Unit* driver = car->getDriver();
-		/*
-		// The driver gets out of the car.
-		std::swap(car->gameEntity_->player_, driver->gameEntity_->player_);
-		car->setDriver(nullptr);
-		b2Body* driverBody = driver->getBody();
-		driverBody->SetActive(true);
-		driverBody->SetTransform(car->getPosition(), car->getDirection());
-		*/
 	}
 
 	void ZombieEngine::doShotDamage(Unit* shooter, const Bullet& bullet) {

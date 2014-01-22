@@ -2,15 +2,15 @@
 #include "unit.h"
 #include "auxiliary.h"
 
+#include <cassert>
+
 namespace zombie {
 
-	SurvivorBehavior::SurvivorBehavior() {
+	SurvivorBehavior::SurvivorBehavior(Unit* unit) : Player(unit) {
 		findNewTargetTime_ = random() * 3;
-		timeToUpdateAngleDirection_ = random() * 1;
-		targetAngle_ = random() * PI * 2;
-		forward_ = true;
-		backward_ = false;
 		target_ = nullptr;
+		unit_ = unit;
+		assert(unit_); // Null not allowed.
 	}
 
 	SurvivorBehavior::~SurvivorBehavior() {
@@ -21,7 +21,8 @@ namespace zombie {
 		// extract information from memory
 		// analyze situation - enviroment and units when neccesarry
 		// make decision on what activity to perform
-	}	
+		unit_->updatePhysics(time, deltaTime, input);
+	}
 
 	Unit* SurvivorBehavior::findUninfectedTarget(Position position, const std::vector<Unit*>& units) const {			
 		Unit* target(nullptr);
@@ -39,6 +40,10 @@ namespace zombie {
 		}
 
 		return target;
+	}
+
+	MovingObject* SurvivorBehavior::getMovingObject() const {
+		return unit_;
 	}
 
 } // Namespace zombie.

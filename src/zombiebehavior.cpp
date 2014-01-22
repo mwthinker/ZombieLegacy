@@ -4,12 +4,16 @@
 
 #include <list>
 
+#include <cassert>
+
 namespace zombie {
 
-	ZombieBehavior::ZombieBehavior() {
+	ZombieBehavior::ZombieBehavior(Unit* unit) : Player(unit) {
 		findNewTargetTime_ = random() * 3;
 		timeToUpdateAngleDirection_ = random() * 1;
 		targetAngle_ = random() * PI * 2;
+		unit_ = unit;
+		assert(unit_); // Null not allowed.
 	}
 
 	ZombieBehavior::~ZombieBehavior() {
@@ -45,7 +49,7 @@ namespace zombie {
 				targetAngle_ += (random()-0.5)*2 * PI * 2 * 0.1;
 				forward_ = random() > 0.25;
 			}
-		}			
+		}
 
 		double diffAngle = calculateDifferenceBetweenAngles(targetAngle_, unit_->getDirection());
 
@@ -59,8 +63,11 @@ namespace zombie {
 		}
 
 		input.forward_ = forward_;
+		unit_->updatePhysics(time, deltaTime, input);
+	}
 
-		input_ = input;
+	MovingObject* ZombieBehavior::getMovingObject() const {
+		return unit_;
 	}
 
 	MovingObject* ZombieBehavior::findUninfectedTarget(Position position, const std::list<MovingObject*>& units) const {			

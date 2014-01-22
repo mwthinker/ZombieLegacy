@@ -5,6 +5,7 @@
 #include "input.h"
 #include "weapon.h"
 #include "state.h"
+#include "player.h"
 
 #include <list>
 #include <vector>
@@ -16,11 +17,23 @@ namespace zombie {
 	class MovingObject : public Object {
 	public:
 		friend class ZombieEngine;
+		friend class Player;
 
-		MovingObject(b2World* world) : Object(world) {
+		MovingObject(b2World* world) : Object(world), player_(nullptr) {
 		}
 
 		virtual ~MovingObject() {
+			delete player_;
+		}
+
+		void update(float time, float timeStep) override {
+			if (player_ != nullptr) {
+				// Player decides what to do!
+				player_->updatePhysics(time, timeStep);
+			} else {
+				// Default input.
+				updatePhysics(time, timeStep, Input());
+			}
 		}
 
 		// Simulates the physics at time (time) one time step (timeStep) ahead.
@@ -60,7 +73,12 @@ namespace zombie {
 		// The objects are only guaranteed to exist in the current game time.
 		const std::list<MovingObject*>& getVisibleObjects() const {
 			return objectsSeen_;
-		}		
+		}
+
+		// Return the corresponding player, may return nullptr.
+		Player* getPlayer() const {
+			return player_;
+		}
 
 	private:
 		void addSeenObject(MovingObject* object) {
@@ -72,6 +90,7 @@ namespace zombie {
 		}
 
 		std::list<MovingObject*> objectsSeen_;
+		Player* player_;
 	};
 
 } // Namespace zombie.

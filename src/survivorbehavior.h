@@ -13,21 +13,19 @@ namespace zombie {
 
 	class SurvivorBehavior : public Player {
 	public:
-		SurvivorBehavior();
+		SurvivorBehavior(Unit* unit);
 		~SurvivorBehavior();
 		
 		void updatePhysics(float time, float deltaTime) override;
+
+		MovingObject* getMovingObject() const override;
 
 	private:
 		Unit* findUninfectedTarget(Position position, const std::vector<Unit*>& units) const;
 
 		double findNewTargetTime_;
 		Unit* target_;
-
-		double timeToUpdateAngleDirection_;
-		double targetAngle_;
-		bool forward_, backward_;
-		Input input_;
+		Unit* unit_;
 	};
 
 } // Namespace zombie.
