@@ -158,6 +158,44 @@ namespace zombie {
 		}
 	}
 
+	void ZombieEngine::update(float deltaTime) {
+		// DeltaTime to big?
+		if (deltaTime > 0.250) {
+			// To avoid spiral of death.
+			deltaTime = 0.250;
+		}
+
+		accumulator_ += deltaTime;
+		while (accumulator_ >= timeStep_) {
+			accumulator_ -= timeStep_;
+			updatePhysics(timeStep_);
+		}
+		
+		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
+			Object* ob = static_cast<Object*>(b->GetUserData());
+			ob->draw(deltaTime);
+		}
+	}
+
+	void ZombieEngine::setHuman(DevicePtr device, Unit* unit) {
+		human_ = unit;
+		Player* player = new HumanPlayer(device, unit);
+		unit->addEventHandler(std::bind(&ZombieEngine::unitEventHandler, this, unit, std::placeholders::_2));
+	}
+
+	void ZombieEngine::addAi(Unit* unit) {
+		if (unit->isInfected()) {
+			new ZombieBehavior(unit);
+		} else {
+			new SurvivorBehavior(unit);
+		}
+		unit->addEventHandler(std::bind(&ZombieEngine::unitEventHandler, this, unit, std::placeholders::_2));
+	}
+
+	void ZombieEngine::add(Car* car) {
+		car->addEventHandler(std::bind(&ZombieEngine::carEventHandler, this, car, std::placeholders::_2));
+	}
+
 	void ZombieEngine::unitEventHandler(Unit* unit, Unit::UnitEvent unitEvent) {
 		switch (unitEvent) {
 			case Unit::ACTION:
@@ -181,38 +219,6 @@ namespace zombie {
 		}
 	}
 
-	void ZombieEngine::update(float deltaTime) {
-		// DeltaTime to big?
-		if (deltaTime > 0.250) {
-			// To avoid spiral of death.
-			deltaTime = 0.250;
-		}
-
-		accumulator_ += deltaTime;
-		while (accumulator_ >= timeStep_) {
-			accumulator_ -= timeStep_;
-			updatePhysics(timeStep_);
-		}
-		
-		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
-			Object* ob = static_cast<Object*>(b->GetUserData());
-			ob->draw(deltaTime);
-		}
-	}
-
-	void ZombieEngine::setHuman(DevicePtr device, Unit* unit) {
-		human_ = unit;
-		Player* player = new HumanPlayer(device, unit);
-	}
-
-	void ZombieEngine::addAi(Unit* unit) {
-		if (unit->isInfected()) {
-			new ZombieBehavior(unit);
-		} else {
-			new SurvivorBehavior(unit);
-		}
-	}
-
 	void ZombieEngine::doAction(Unit* unit) {
 		float angle = unit->getState().angle_;
 		b2Vec2 dir(std::cos(angle), std::sin(angle));
@@ -229,6 +235,11 @@ namespace zombie {
 			Object* ob = static_cast<Object*>(fixture->GetUserData());
 
 			if (Car* car = dynamic_cast<Car*>(ob)) {
+				// Car is empty?
+				if (car->getDriver() == nullptr) {
+					car->setDriver(unit->getPlayer());
+					unit->setGhost(true);
+				}
 			} else if (WeaponItem* wItem = dynamic_cast<WeaponItem*>(ob)) {
 				// Change the weapon.
 				unit->setWeapon(wItem->getWeapon());

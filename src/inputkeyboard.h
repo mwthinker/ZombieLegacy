@@ -61,11 +61,11 @@ namespace zombie {
 			}
 		}
 
-		Input getInput() const override {
+		Input nextInput() override {
 			Input input = input_;
-			//input_.shoot_  = false;
-			//input_.reload_ = false;
-			//input_.action_ = false;
+			input_.shoot_  = false;
+			input_.reload_ = false;
+			input_.action_ = false;
 			return input;
 		}
 

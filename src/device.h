@@ -19,7 +19,7 @@ namespace zombie {
 
 		virtual void eventUpdate(const SDL_Event& windowEvent) = 0;
 
-		virtual Input getInput() const = 0;
+		virtual Input nextInput() = 0;
 	};
 
 } // Namespace zombie.

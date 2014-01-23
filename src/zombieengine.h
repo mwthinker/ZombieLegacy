@@ -42,6 +42,9 @@ namespace zombie {
 		// Add a ai player to the game.
 		void addAi(Unit* unit);
 
+		// Add a empty car to the game.
+		void add(Car* car);
+
 		// Get the current game time.
 		inline float getTime() const {
 			return time_;
@@ -60,7 +63,7 @@ namespace zombie {
 		void updatePhysics(float timeStep);
 
 		void unitEventHandler(Unit* unit, Unit::UnitEvent unitEvent);
-		void carEventHandler(Car* car, Car::CarEvent carEvent);
+		void carEventHandler(Car* car, Car::CarEvent unitEvent);
 
 		void doAction(Unit* unit);
 		void doAction(Car* unit);

@@ -34,8 +34,6 @@ namespace zombie {
 			steeringAngle_ = 0.0f;
 			wheelDelta_ = 0.4f;
 
-			unit_ = nullptr;
-
 			// Box2d properties.
 			b2BodyDef bodyDef;
 			bodyDef.type = b2_dynamicBody;
@@ -66,12 +64,12 @@ namespace zombie {
 		Car(const Car&) = delete;
 		Car& operator=(const Car&) = delete;
 
-		Unit* getDriver() const {
-			return unit_;
+		Player* getDriver() const {
+			return player_;
 		}
 
-		void setDriver(Unit* unit) {
-			unit_ = unit;
+		void setDriver(Player* player) {
+			player_ = player;
 		}
 
 		void updatePhysics(float time, float timeStep, Input input) override {
@@ -152,7 +150,7 @@ namespace zombie {
 
 		bool isInfected() const override {
 			// When no driver the car is seen as infected and therefore ignored by the zombies.
-			return unit_ == nullptr;
+			return player_ == nullptr;
 		}
 
 		float getViewDistance() const override {
@@ -206,8 +204,7 @@ namespace zombie {
 
 		b2Body* body_;
 		float steeringAngle_;
-
-		Unit* unit_;
+		
 		float length_, width_;
 		State state_;
 		float currentTime_;

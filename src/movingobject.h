@@ -90,9 +90,11 @@ namespace zombie {
 			objectsSeen_.erase(std::find(objectsSeen_.begin(), objectsSeen_.end(), object));
 		}
 
+	protected:
+		Player* player_;
+
 	private:
 		std::list<MovingObject*> objectsSeen_;
-		Player* player_;
 	};
 
 } // Namespace zombie.

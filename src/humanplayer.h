@@ -13,7 +13,7 @@ namespace zombie {
 		}
 
 		void updatePhysics(float time, float deltaTime) override {
-			unit_->updatePhysics(time, deltaTime, device_->getInput());
+			unit_->updatePhysics(time, deltaTime, device_->nextInput());
 		}
 
 		MovingObject* getMovingObject() const override {
