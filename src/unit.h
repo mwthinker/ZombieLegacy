@@ -78,10 +78,6 @@ namespace zombie {
 		
 		mw::signals::Connection addEventHandler(mw::Signal<Unit*, UnitEvent>::Callback);
 
-		void setGhost(bool ghost);
-
-		bool isGhost() const;
-
 		b2Body* getBody() const override;
 
 		const Bullet& getLastBullet() const {

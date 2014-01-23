@@ -90,6 +90,14 @@ namespace zombie {
 			objectsSeen_.erase(std::find(objectsSeen_.begin(), objectsSeen_.end(), object));
 		}
 
+		void setActive(bool active) {
+			getBody()->SetActive(active);
+		}
+
+		bool isActive() const {
+			return getBody()->IsActive();
+		}
+
 	protected:
 		Player* player_;
 

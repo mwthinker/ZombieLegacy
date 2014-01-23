@@ -238,7 +238,7 @@ namespace zombie {
 				// Car is empty?
 				if (car->getDriver() == nullptr) {
 					car->setDriver(unit->getPlayer());
-					unit->setGhost(true);
+					unit->setActive(false);
 				}
 			} else if (WeaponItem* wItem = dynamic_cast<WeaponItem*>(ob)) {
 				// Change the weapon.

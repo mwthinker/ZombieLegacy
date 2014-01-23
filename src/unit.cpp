@@ -200,14 +200,6 @@ namespace zombie {
 		return isDead_;
 	}
 
-	void Unit::setGhost(bool ghost) {
-
-	}
-
-	bool Unit::isGhost() const {
-		return false;
-	}
-
 	Position Unit::getPosition() const {
 		return body_->GetPosition();
 	}
