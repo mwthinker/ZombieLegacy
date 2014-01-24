@@ -22,7 +22,7 @@ namespace zombie {
 		}
 
 		Driver* createDriver(Car* car) const override {
-			return new Driver(device_, car);
+			return new Driver(device_, car, unit_);
 		}
 
 	private:

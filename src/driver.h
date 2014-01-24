@@ -10,11 +10,12 @@ namespace zombie {
 
 	class Driver : public Player {
 	public:
-		Driver(DevicePtr device, Car* car) : Player(car), device_(device), car_(car) {
+		Driver(DevicePtr device, Car* car, Unit* unit) : Player(car), device_(device), car_(car), unit_(unit) {
 		}
 
 		void updatePhysics(float time, float deltaTime) override {
 			car_->updatePhysics(time, deltaTime, device_->nextInput());
+			unit_->getBody()->SetTransform(car_->getPosition(), 0);
 		}
 
 		MovingObject* getMovingObject() const override {
@@ -24,6 +25,7 @@ namespace zombie {
 	private:
 		DevicePtr device_;
 		Car* car_;
+		Unit* unit_;
 	};
 
 } // Namespace zombie.

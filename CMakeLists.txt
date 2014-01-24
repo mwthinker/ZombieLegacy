@@ -25,6 +25,7 @@ SET(SOURCES_ZOMBIE
 	src/building2d.h
 	src/buildingproperties.h
 	src/bullet.h
+	src/car.cpp
 	src/car.h
 	src/car2d.h
 	src/carproperties.h
