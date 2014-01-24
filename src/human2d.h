@@ -17,13 +17,15 @@ namespace zombie {
 		}
 
 		void draw(float time) override {
-			// Draw body.
-			glPushMatrix();
-			glTranslate2f(getPosition());
-			glScale2f(getRadius());
-			glRotated(getDirection() * 180 / PI, 0, 0, 1);
-			animation_.draw(time);
-			glPopMatrix();
+			if (isActive()) {
+				// Draw body.
+				glPushMatrix();
+				glTranslate2f(getPosition());
+				glScale2f(getRadius());
+				glRotated(getDirection() * 180 / PI, 0, 0, 1);
+				animation_.draw(time);
+				glPopMatrix();
+			}
 		}
 
 		void eventHandler(Unit* unit, Unit::UnitEvent unitEvent) {
