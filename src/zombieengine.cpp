@@ -9,6 +9,7 @@
 #include "zombiebehavior.h"
 #include "survivorbehavior.h"
 #include "humanplayer.h"
+#include "driver.h"
 #include "box2ddef.h"
 
 #include <vector>
@@ -237,8 +238,12 @@ namespace zombie {
 			if (Car* car = dynamic_cast<Car*>(ob)) {
 				// Car is empty?
 				if (car->getDriver() == nullptr) {
-					car->setDriver(unit->getPlayer());
-					unit->setActive(false);
+					Driver* driver = unit->getPlayer()->createDriver(car);
+					// The player is able to drive?
+					if (driver != nullptr) {
+						car->setDriver(driver);
+						unit->setActive(false);
+					}
 				}
 			} else if (WeaponItem* wItem = dynamic_cast<WeaponItem*>(ob)) {
 				// Change the weapon.

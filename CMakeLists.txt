@@ -29,6 +29,7 @@ SET(SOURCES_ZOMBIE
 	src/car2d.h
 	src/carproperties.h
 	src/device.h
+	src/driver.h
 	src/gamedata.cpp
 	src/gamedata.h
 	src/gamefont.cpp

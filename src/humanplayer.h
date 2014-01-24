@@ -4,6 +4,7 @@
 #include "player.h"
 #include "device.h"
 #include "unit.h"
+#include "driver.h"
 
 namespace zombie {
 
@@ -18,6 +19,10 @@ namespace zombie {
 
 		MovingObject* getMovingObject() const override {
 			return unit_;
+		}
+
+		Driver* createDriver(Car* car) const override {
+			return new Driver(device_, car);
 		}
 
 	private:
