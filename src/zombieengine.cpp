@@ -156,7 +156,22 @@ namespace zombie {
 				Position p = human_->getPosition();
 				gameInterface_->humanPosition(p.x, p.y);
 			}
+
+			removeGarbage();
 		}
+	}
+
+	void ZombieEngine::removeGarbage() {
+		// Remove all players in a safe way. I.e. No risk of removing a player in current use.
+		for (Player* player : garbagePlayers_) {
+			delete player;
+		}
+		garbagePlayers_.clear();
+		// Remove all units in a safe way. I.e. No risk of removing a unit in current use.
+		for (Object* object : garbageObjects_) {
+			delete object;
+		}
+		garbageObjects_.clear();
 	}
 
 	void ZombieEngine::update(float deltaTime) {
@@ -254,6 +269,10 @@ namespace zombie {
 	}
 
 	void ZombieEngine::doAction(Car* car) {
+		Driver* driver = car->getDriver();
+		driver->getUnit()->setActive(true);
+		garbagePlayers_.push_back(driver);
+		car->setDriver(nullptr);
 	}
 
 	void ZombieEngine::doShotDamage(Unit* shooter, const Bullet& bullet) {

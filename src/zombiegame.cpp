@@ -45,7 +45,8 @@ namespace zombie {
 		
 		gameData_.iterateCars([&](State state, CarProperties cP, const mw::Sprite& sprite) {
 			// Engine takes the ownership.
-			new Car2D(engine_.getWorld(), state, cP.mass_, cP.life_, cP.width_, cP.length_, sprite);
+			engine_.add(new Car2D(engine_.getWorld(), state, cP.mass_, cP.life_,
+				cP.width_, cP.length_, sprite));
 		});
 
 		gameData_.iterateUnits([&](State state, UnitProperties uP, const Animation& animation) {

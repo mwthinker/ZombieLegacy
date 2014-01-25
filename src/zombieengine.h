@@ -23,7 +23,7 @@ namespace zombie {
 	class WeaponItem;
 
 	// Responsible of all creation and deallocation of game objects 
-	// and simulationg the game mechanics.
+	// and simulating the game mechanics.
 	class ZombieEngine : public b2ContactListener {
 	public:
 		ZombieEngine(GameInterface* gameInterface);
@@ -50,17 +50,36 @@ namespace zombie {
 			return time_;
 		}
 
+		// Return whether the game is started or not.
 		inline bool isStarted() const {
 			return started_;
 		}
-
+		
+		// Returns the current world. Use with care!
 		inline b2World* getWorld() {
 			return world_;
+		}
+
+		// Removes the object from memory in a safe way.
+		// Not removed immediately. The removal is performed 
+		// in the end of every physics update.
+		void remove(Object* ob) {
+			garbageObjects_.push_back(ob);
+		}
+
+		// Removes the player from memory in a safe way.
+		// Not removed immediately. The removal is performed 
+		// in the end of every physics update.
+		void remove(Player* player) {
+			garbagePlayers_.push_back(player);
 		}
 
 	private:
 		// Updates the game time by (msDeltaTime).
 		void updatePhysics(float timeStep);
+
+		// Removes units and players in safe way. I.e. No risk of either is in current use.
+		void removeGarbage();
 
 		void unitEventHandler(Unit* unit, Unit::UnitEvent unitEvent);
 		void carEventHandler(Car* car, Car::CarEvent unitEvent);
@@ -84,6 +103,13 @@ namespace zombie {
 
 		b2World* world_;
 		GameInterface* gameInterface_;
+		
+		// Is cleared, and called every update to physics, in a safe way.
+		// All players are assumed to be on the heap and is deallocated.
+		std::vector<Player*> garbagePlayers_;
+		
+		// Same as the abowe but for objects.
+		std::vector<Object*> garbageObjects_;
 	};
 
 } // Namespace zombie.

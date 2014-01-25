@@ -22,6 +22,10 @@ namespace zombie {
 			return car_;
 		}
 
+		Unit* getUnit() const {
+			return unit_;
+		}
+
 	private:
 		DevicePtr device_;
 		Car* car_;
