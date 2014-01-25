@@ -318,26 +318,18 @@ namespace zombie {
 		}
 	}
 
-	namespace {
-
-		void unitCollision(GameInterface* gameInterface, float time, Object* ob, const b2ContactImpulse* impulse) {
-			if (MovingObject* mOv = dynamic_cast<Car*>(ob)) {
-				mOv->collision(std::abs(impulse->normalImpulses[0]));
-				// Is a car?
-				if (dynamic_cast<Car*>(ob)) {
-					gameInterface->carCollision();
-				} else if (Unit* unit = dynamic_cast<Unit*>(ob)) { // Is a unit?
-					gameInterface->unitCollision();
-				}
-			}
-		}
-	}
-
 	void ZombieEngine::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
 		Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
-		unitCollision(gameInterface_, time_, ob1, impulse);
-		Object* ob2 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
-		unitCollision(gameInterface_, time_, ob2, impulse);
+		Object* ob2 = static_cast<Object*>(contact->GetFixtureB()->GetUserData());
+		float maxImpulse = 0;
+		for (int32 i = 0; i < impulse->count; ++i) {
+			maxImpulse = b2Max(maxImpulse, impulse->normalImpulses[i]);
+		}
+
+		if (maxImpulse > 10) { // 1 kg * 10 m/s * 1 s = 10 Ns
+			ob1->collisionWith(ob2, maxImpulse);
+			ob2->collisionWith(ob1, maxImpulse);
+		}
 	}
 
 } // Namespace zombie.

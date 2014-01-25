@@ -15,6 +15,10 @@
 
 namespace zombie {
 
+	class Car;
+	class Driver;
+	class Building;
+
 	class Unit : public MovingObject {
 	public:
 		enum UnitEvent {
@@ -83,6 +87,16 @@ namespace zombie {
 		const Bullet& getLastBullet() const {
 			return bullet_;
 		}
+
+		void collisionWith(Object* ob, float impulse) override {
+			ob->collisionWith(this, impulse);
+		}
+
+		void collisionWith(Unit*, float impulse) override;
+
+		void collisionWith(Car*, float impulse) override;
+
+		void collisionWith(Building*, float impulse) override;
 
 	private:
 		// Properties

@@ -66,6 +66,10 @@ namespace zombie {
 			return body_;
 		}
 
+		void collisionWith(Object* ob, float impulse) override {
+			ob->collisionWith(this, impulse);
+		}
+
 	protected:
 		void init() {
 			body_ = nullptr;

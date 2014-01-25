@@ -7,6 +7,10 @@
 
 namespace zombie {
 
+	class Car;
+	class Unit;
+	class Building;
+
 	// Represent a object inside the "zombie world".
 	class Object {
 	public:
@@ -32,6 +36,16 @@ namespace zombie {
 
 		// Draw the object in world coordinates.
 		virtual void draw(float deltaTime) = 0;
+
+		// Implements a double dispatch. Must be overridden and
+		// inside the function call ob->collisionWith(this).
+		virtual void collisionWith(Object* ob, float impulse) = 0;
+		
+		virtual void collisionWith(Unit*, float impulse);
+
+		virtual void collisionWith(Car*, float impulse);
+
+		virtual void collisionWith(Building*, float impulse);
 
 	private:
 		b2World* world_;

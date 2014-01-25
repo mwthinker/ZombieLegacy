@@ -4,6 +4,8 @@
 #include "state.h"
 #include "unit.h"
 #include "driver.h"
+#include "unit.h"
+#include "building.h"
 
 #include <cmath>
 
@@ -117,6 +119,15 @@ namespace zombie {
 		b2Vec2 forward = body_->GetWorldVector(b2Vec2(1, 0));
 		force = -frictionForwardFrontWheel * b2Dot(forward, body_->GetLinearVelocity()) * forward;
 		body_->ApplyForce(force, getFrontWheelPosition());
+	}
+
+	void Car::collisionWith(Unit* unit, float impulse) {
+	}
+
+	void Car::collisionWith(Car* car, float impulse) {
+	}
+
+	void Car::collisionWith(Building* building, float impulses) {
 	}
 
 } // Namespace zombie.

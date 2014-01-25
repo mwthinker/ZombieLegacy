@@ -2,6 +2,8 @@
 #include "input.h"
 #include "weapon.h"
 #include "auxiliary.h"
+#include "car.h"
+#include "building.h"
 
 #include <Box2D/Box2D.h>
 #include <cmath>
@@ -13,7 +15,7 @@ namespace zombie {
 
 		// Properties
 		viewDistance_ = 10.f;
-		viewAngle_ = 120.f/180.f * PI;
+		viewAngle_ = 120.f / 180.f * PI;
 		smallViewDistance_ = 2;
 
 		// Health
@@ -21,7 +23,7 @@ namespace zombie {
 		isDead_ = false;
 
 		timeLeftToRun_ = 5.f;
-		
+
 		// Box2d properties.
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_dynamicBody;
@@ -42,7 +44,7 @@ namespace zombie {
 			fixtureDef.density = 0.0f;
 			fixtureDef.friction = 0.0f;
 			fixtureDef.isSensor = true;
-		
+
 			// Add Body fixture.
 			b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
 			fixture->SetUserData(nullptr);
@@ -58,7 +60,7 @@ namespace zombie {
 			fixtureDef.shape = &circle;
 			fixtureDef.density = mass / (PI * radius * radius);
 			fixtureDef.friction = 0.0f;
-		
+
 			// Add Body fixture.
 			b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
 			fixture->SetUserData(this);
@@ -73,7 +75,7 @@ namespace zombie {
 	void Unit::updatePhysics(float time, float timeStep, Input input) {
 		if (!isDead()) {
 			float angle = getDirection();
-			Force move = Vec3(std::cos(angle),std::sin(angle));
+			Force move = Vec3(std::cos(angle), std::sin(angle));
 
 			// Time left to run?
 			if (timeLeftToRun_ >= 0) {
@@ -90,22 +92,22 @@ namespace zombie {
 
 			// Move forward or backwards.
 			if (input.forward_ && !input.backward_) {
-				body_->ApplyForceToCenter(b2Vec2(move.x,move.y));				
+				body_->ApplyForceToCenter(b2Vec2(move.x, move.y));
 				eventSignal_(this, UnitEvent::WALK);
 			} else if (!input.forward_ && input.backward_) {
-				body_->ApplyForceToCenter(-b2Vec2(move.x,move.y));
+				body_->ApplyForceToCenter(-b2Vec2(move.x, move.y));
 				eventSignal_(this, UnitEvent::WALK);
 			} else {
 				// In order to make the unit stop when not moving.
 				body_->ApplyForceToCenter(-body_->GetLinearVelocity());
 				eventSignal_(this, UnitEvent::STANDSTILL);
 			}
-			
+
 			// Add friction.
 			body_->ApplyForceToCenter(-body_->GetLinearVelocity());
 
 			// Turn left or right.
-			if (input.turnLeft_ && !input.turnRight_) {				
+			if (input.turnLeft_ && !input.turnRight_) {
 				body_->SetAngularVelocity(3.0f);
 			} else if (!input.turnLeft_ && input.turnRight_) {
 				body_->SetAngularVelocity(-3.0f);
@@ -166,14 +168,14 @@ namespace zombie {
 	bool Unit::isInsideViewArea(Position position) const {
 		Position p = position - getPosition();
 		double angle = std::atan2(p.y, p.x);
-		return calculateDifferenceBetweenAngles(angle,body_->GetAngle() + viewAngle() * 0.5) < 0 
-			&& calculateDifferenceBetweenAngles(angle,body_->GetAngle() - viewAngle() * 0.5) > 0
+		return calculateDifferenceBetweenAngles(angle, body_->GetAngle() + viewAngle() * 0.5) < 0
+			&& calculateDifferenceBetweenAngles(angle, body_->GetAngle() - viewAngle() * 0.5) > 0
 			&& p.LengthSquared() < getViewDistance() * getViewDistance() || isInsideSmalViewDistance(position);
 	}
 
 	bool Unit::isInsideSmalViewDistance(Position position) const {
 		return (position - getPosition()).LengthSquared() < smallViewDistance_*smallViewDistance_;
-	}	
+	}
 
 	float Unit::getDirection() const {
 		return body_->GetAngle();
@@ -212,6 +214,15 @@ namespace zombie {
 
 	b2Body* Unit::getBody() const {
 		return body_;
+	}
+
+	void Unit::collisionWith(Unit* unit, float impulse) {
+	}
+
+	void Unit::collisionWith(Car* car, float impulse) {
+	}
+
+	void Unit::collisionWith(Building* building, float impulse) {
 	}
 
 } // Namespace zombie.
