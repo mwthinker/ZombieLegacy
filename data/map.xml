@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map>
    <name>Base Defense Map</name>
-   <mapObjects>
-		<mapObject type="humanSpawningPoint">
+   <objects>
+		<object type="humanSpawningPoint">
 			<geom>POINT (10,10)</geom>
-			<physical>false</physical>
-			<animation>false</animation>
-		</mapObject>
-		<mapObject type="building">
+		</object>
+		<object type="building">
 			<geom>POLYGON ((5 5, 0 5, 0 0, 5 0, 5 5))</geom>
-			<height>2.8</height>
-		</mapObject>
-		<mapObject type="building">
-			<type>building</type>
+		</object>
+		<object type="building">
 			<geom>POLYGON ((25 25, 20 25, 20 20, 25 20, 25 25))</geom>
-			<height>2.3</height>
-		</mapObject>
-	</mapObjects>
+		</object>
+	</objects>
 </map>

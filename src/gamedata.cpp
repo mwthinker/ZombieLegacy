@@ -127,7 +127,7 @@ namespace zombie {
 			tinyxml2::XMLHandle mapHandle(mapXml);
 			mapHandle = mapHandle.FirstChildElement("map");
 
-			auto buildings = loadBuildings(mapHandle.FirstChildElement("mapObjects"));
+			auto buildings = loadBuildings(mapHandle.FirstChildElement("objects"));
 			for (const BuildingProperties& p : buildings) {
 				buildings_.push_back(p);
 			}

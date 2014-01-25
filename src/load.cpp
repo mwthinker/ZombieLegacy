@@ -125,10 +125,10 @@ namespace zombie {
 		return weapons;
 	}
 
-	std::vector<BuildingProperties> loadBuildings(tinyxml2::XMLHandle mapObjectsTag) {
+	std::vector<BuildingProperties> loadBuildings(tinyxml2::XMLHandle objectsTag) {
 		std::vector<BuildingProperties> buildings;
 
-		tinyxml2::XMLElement* element = mapObjectsTag.FirstChildElement("mapObject").ToElement();
+		tinyxml2::XMLElement* element = objectsTag.FirstChildElement("object").ToElement();
 		while (element != nullptr) {
 			if (element->Attribute("type", "building")) {
 				std::string geom = convertFromText<const char*>(toText(element->FirstChildElement("geom")));
@@ -139,13 +139,14 @@ namespace zombie {
 					if (word == "POLYGON") {
 						BuildingProperties properties;
 						properties.points_ = loadPolygon(stream.str());
-						properties.height_ = convertFromText<float>(toText(element->FirstChildElement("height")));
 						buildings.push_back(properties);
 					}
 				}
+			} else if (element->Attribute("POLYGON", "water")) {
+				// Todo!
 			}
 			
-			element = element->NextSiblingElement("mapObject");
+			element = element->NextSiblingElement("object");
 		}
 
 		return buildings;
