@@ -156,8 +156,10 @@ namespace zombie {
 		Settings settings;
 		settings.width_ = convertFromText<int>(toText(settingsTag.FirstChildElement("width")));
 		settings.height_ = convertFromText<int>(toText(settingsTag.FirstChildElement("height")));
-		settings.unitLevel_ = convertFromText<int>(toText(settingsTag.FirstChildElement("unitlevel")));
-		settings.zoomLevel_ = convertFromText<int>(toText(settingsTag.FirstChildElement("zoomlevel")));
+		settings.unitLevel_ = convertFromText<int>(toText(settingsTag.FirstChildElement("unitLevel")));
+		settings.zoomLevel_ = convertFromText<int>(toText(settingsTag.FirstChildElement("zoomLevel")));
+		settings.impulseThreshold_ = convertFromText<float>(toText(settingsTag.FirstChildElement("impulseThreshold")));
+		settings.timeStepMS_ = convertFromText<int>(toText(settingsTag.FirstChildElement("timeStepMS")));
 		settings.mapFile_ = convertFromText<const char*>(toText(settingsTag.FirstChildElement("map")));
 		return settings;
 	}

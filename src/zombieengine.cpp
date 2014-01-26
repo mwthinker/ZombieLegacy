@@ -99,8 +99,9 @@ namespace zombie {
 		}
 	}
 
-	ZombieEngine::ZombieEngine(GameInterface* gameInterface) {
+	ZombieEngine::ZombieEngine(GameInterface* gameInterface, int timeStepMS, float impulseThreshold) {
 		gameInterface_ = gameInterface;
+		impulseThreshold_ = impulseThreshold;
 		human_ = nullptr;
 
 		// Create a world with no "gravity".
@@ -111,7 +112,7 @@ namespace zombie {
 		started_ = false;
 		time_ = 0.0f;
 
-		timeStep_ = 0.017f; // Fix time step for physics update.
+		timeStep_ = timeStepMS / 1000.f; // Fix time step for physics update.
 		accumulator_ = 0.0f; // Time accumulator.
 	}
 
@@ -326,7 +327,7 @@ namespace zombie {
 			maxImpulse = b2Max(maxImpulse, impulse->normalImpulses[i]);
 		}
 
-		if (maxImpulse > 10) { // 1 kg * 10 m/s * 1 s = 10 Ns
+		if (maxImpulse > impulseThreshold_) {
 			ob1->collisionWith(ob2, maxImpulse);
 			ob2->collisionWith(ob1, maxImpulse);
 		}

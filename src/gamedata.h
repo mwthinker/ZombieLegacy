@@ -42,6 +42,14 @@ namespace zombie {
 
 		void iterateBuildings(std::function<void(BuildingProperties)> func);
 
+		inline float getImpulseThreshold() const {
+			return settings_.impulseThreshold_;
+		}
+
+		inline int getTimeStemMS() const {
+			return settings_.timeStepMS_;
+		}
+
 	private:
 		// Handle to first node <zombie>.
 		bool load(tinyxml2::XMLHandle xml);

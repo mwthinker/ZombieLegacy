@@ -3,8 +3,10 @@
 	<settings>
 		<width>600</width>
 		<height>600</height>
-		<unitlevel>20</unitlevel>
-		<zoomlevel>3</zoomlevel>
+		<unitLevel>20</unitLevel>
+		<zoomLevel>3</zoomLevel>
+		<impulseThreshold>10</impulseThreshold>
+		<timeStepMS>17</timeStepMS>
 		<map>map.xml</map>
 	</settings>
 	<movingObjects>

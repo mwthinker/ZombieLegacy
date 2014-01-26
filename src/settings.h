@@ -11,6 +11,8 @@ namespace zombie {
 		int height_;
 		int unitLevel_;
 		int zoomLevel_;
+		float impulseThreshold_;
+		int timeStepMS_;
 		std::string mapFile_;
 	};
 

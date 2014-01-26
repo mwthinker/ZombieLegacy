@@ -22,7 +22,7 @@
 
 namespace zombie {
 
-	ZombieGame::ZombieGame(const GameData& gameData) : engine_(this), gameData_(gameData) {
+	ZombieGame::ZombieGame(const GameData& gameData) : engine_(this, gameData.getTimeStemMS(), gameData.getImpulseThreshold()), gameData_(gameData) {
 		keyboard1_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT,
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
 

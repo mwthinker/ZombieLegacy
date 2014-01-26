@@ -26,7 +26,7 @@ namespace zombie {
 	// and simulating the game mechanics.
 	class ZombieEngine : public b2ContactListener {
 	public:
-		ZombieEngine(GameInterface* gameInterface);
+		ZombieEngine(GameInterface* gameInterface, int timeStepMS, float impulseThreshold);
 		~ZombieEngine();
 
 		// Starts the game.
@@ -110,6 +110,8 @@ namespace zombie {
 		
 		// Same as the abowe but for objects.
 		std::vector<Object*> garbageObjects_;
+
+		float impulseThreshold_;
 	};
 
 } // Namespace zombie.
