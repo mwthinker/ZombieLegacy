@@ -33,6 +33,10 @@ namespace zombie {
 
 		inline virtual void update(float time, float timeStep) {
 		}
+		
+		virtual bool toBeRemoved() const {
+			return false;
+		}
 
 		// Draw the object in world coordinates.
 		virtual void draw(float deltaTime) = 0;

@@ -69,6 +69,11 @@ namespace zombie {
 		// Returns true if object is dead.
 		virtual bool isDead() const = 0;
 
+		// Remove dead objects.
+		virtual bool toBeRemoved() const final {
+			return isDead();
+		}
+
 		// Returns a reference to the current list of viewable moving objects.
 		// The objects are only guaranteed to exist in the current game time.
 		const std::list<MovingObject*>& getVisibleObjects() const {

@@ -124,7 +124,7 @@ namespace zombie {
 			// Can't remove in the loop because the iterator will be set in a undefined state.
 			removeObjects.push_back(ob);
 		}
-		
+
 		for (Object* ob : removeObjects) {
 			delete ob;
 		}
@@ -145,6 +145,9 @@ namespace zombie {
 			for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
 				Object* ob = static_cast<Object*>(b->GetUserData());
 				ob->update(time_, timeStep);
+				if (ob->toBeRemoved()) {
+					remove(ob);
+				}
 			}
 
 			// Update the objects physics interactions.
@@ -153,9 +156,11 @@ namespace zombie {
 			// Move the time ahead.
 			time_ += timeStep;
 
-			if (human_ != nullptr) {
+			if (human_ != nullptr && !human_->toBeRemoved()) {
 				Position p = human_->getPosition();
 				gameInterface_->humanPosition(p.x, p.y);
+			} else {
+				human_ = nullptr;
 			}
 
 			removeGarbage();
@@ -187,7 +192,7 @@ namespace zombie {
 			accumulator_ -= timeStep_;
 			updatePhysics(timeStep_);
 		}
-		
+
 		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
 			Object* ob = static_cast<Object*>(b->GetUserData());
 			ob->draw(deltaTime);

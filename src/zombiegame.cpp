@@ -31,10 +31,10 @@ namespace zombie {
 		addKeyListener([&](gui::Component* component, const SDL_Event& keyEvent) {
 			keyboard1_->eventUpdate(keyEvent);
 		});
-		
+
 		innerSpawnRadius_ = 10.f;
 		outerSpawnRadius_ = 40.f;
-				
+
 		gameData_.humanPlayer([&](State state, UnitProperties uP, const Animation& animation) {
 			Unit* human = new Human2D(engine_.getWorld(), state,
 				uP.mass_, uP.radius_, uP.life_, uP.walkingSpeed_,
@@ -42,7 +42,7 @@ namespace zombie {
 			engine_.setHuman(keyboard1_, human);
 			viewPosition_ = human->getPosition();
 		});
-		
+
 		gameData_.iterateCars([&](State state, CarProperties cP, const mw::Sprite& sprite) {
 			// Engine takes the ownership.
 			engine_.add(new Car2D(engine_.getWorld(), state, cP.mass_, cP.life_,
