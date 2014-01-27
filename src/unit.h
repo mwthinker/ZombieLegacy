@@ -32,8 +32,6 @@ namespace zombie {
 		Unit& operator=(const Unit&) = delete;
 		
 		void updatePhysics(float time, float timeStep, Input input) override;
-				
-		void collision(float impulse) override;
 
 		State getState() const override;
 

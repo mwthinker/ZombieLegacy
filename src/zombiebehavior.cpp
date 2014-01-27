@@ -17,25 +17,30 @@ namespace zombie {
 	}
 
 	ZombieBehavior::~ZombieBehavior() {
+		// Important to remove callback!
+		targetConnection_.disconnect();
 	}
 
 	void ZombieBehavior::updatePhysics(float time, float deltaTime) {
 		Input input;
 
-		MovingObject* target = nullptr;
-
 		if (time > findNewTargetTime_) {
 			findNewTargetTime_ = random() * 3 + time;
 			
-			target = findUninfectedTarget(unit_->getPosition(), unit_->getVisibleObjects());
+			MovingObject* target = findUninfectedTarget(unit_->getPosition(), unit_->getVisibleObjects());
+
+			if (target != nullptr) {
+				targetConnection_ = target->addUpdateHandler(std::bind(&ZombieBehavior::targetUpdate, this, std::placeholders::_1));
+				targetUpdate(target);
+			}
 		}
 
 		if (time > timeToUpdateAngleDirection_) {
 			timeToUpdateAngleDirection_ = random() * 1 + time;
 
 			// Has a target?
-			if (target != nullptr) {
-				Position dir = target->getPosition() - unit_->getPosition();
+			if (targetConnection_.connected()) {
+				Position dir = targetPosition_ - unit_->getPosition();
 				targetAngle_ = std::atan2(dir.y,dir.x);
 				forward_ = true;
 
@@ -86,5 +91,10 @@ namespace zombie {
 		}
 		return target;
 	}
+	
+	void ZombieBehavior::targetUpdate(MovingObject* mOb) {
+		targetPosition_ = mOb->getPosition();
+	}
+
 
 } // Namespace zombie.

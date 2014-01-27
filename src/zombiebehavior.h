@@ -5,11 +5,13 @@
 #include "unit.h"
 #include "player.h"
 
+#include <mw/signal.h>
 #include <list>
 
 namespace zombie {
 
 	class Unit;
+	class MovingObject;
 
 	class ZombieBehavior : public Player {
 	public:
@@ -23,11 +25,17 @@ namespace zombie {
 	private:
 		MovingObject* findUninfectedTarget(Position position, const std::list<MovingObject*>& units) const;
 
-		double findNewTargetTime_;
+		void targetUpdate(MovingObject* mOb);
 
+		double findNewTargetTime_;
 		double timeToUpdateAngleDirection_;
 		double targetAngle_;
 		bool forward_;
+
+		Position targetPosition_;
+
+		mw::signals::Connection targetConnection_;
+
 		Unit* unit_;
 	};
 

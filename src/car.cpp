@@ -75,7 +75,7 @@ namespace zombie {
 			steering = -1.0f;
 		}
 
-		steeringAngle_ = 0.3f * steering;
+		steeringAngle_ = 0.4f * steering;
 
 		applyFriction(2.0f, 2.0f, 100.0f, 100.0f);
 

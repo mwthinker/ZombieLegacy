@@ -135,10 +135,7 @@ namespace zombie {
 			}
 		}
 	}
-
-	void Unit::collision(float impulse) {
-	}
-
+	
 	State Unit::getState() const {
 		State state;
 		state.angle_ = body_->GetAngle();

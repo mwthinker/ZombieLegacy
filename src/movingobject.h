@@ -7,6 +7,8 @@
 #include "state.h"
 #include "player.h"
 
+#include <mw/signal.h>
+
 #include <list>
 #include <vector>
 #include <algorithm>
@@ -34,14 +36,12 @@ namespace zombie {
 				// Default input.
 				updatePhysics(time, timeStep, Input());
 			}
+			updateListener_(this);
 		}
 
 		// Simulates the physics at time (time) one time step (timeStep) ahead.
 		// Based on the input given.
 		virtual void updatePhysics(float time, float timeStep, Input input) = 0;
-
-		// Simulates a collision with the force defined in impulse.
-		virtual void collision(float impulse) = 0;
 
 		// Returns the current weapon.
 		virtual Weapon getWeapon() const = 0;
@@ -98,8 +98,13 @@ namespace zombie {
 			return getBody()->IsActive();
 		}
 
+		mw::signals::Connection addUpdateHandler(mw::Signal<MovingObject*>::Callback callback) {
+			return updateListener_.connect(callback);
+		}
+
 	protected:
 		Player* player_;
+		mw::Signal<MovingObject*> updateListener_;
 
 	private:
 		std::list<MovingObject*> objectsSeen_;

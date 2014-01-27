@@ -35,9 +35,6 @@ namespace zombie {
 
 		void updatePhysics(float time, float timeStep, Input input) override;
 
-		void collision(float impulse) override {
-		}
-
 		void applySpin(float impulse) {
 			body_->ApplyAngularImpulse(impulse);
 		}
@@ -67,7 +64,7 @@ namespace zombie {
 		}
 
 		float getDirection() const override {
-			return steeringAngle_;
+			return state_.angle_;
 		}
 
 		bool isInfected() const override {
