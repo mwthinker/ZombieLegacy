@@ -12,9 +12,11 @@ namespace zombie {
 	class Player {
 	public:
 		Player(MovingObject* mOb);
-
 		virtual ~Player() {
 		}
+
+		Player(const Player&) = delete;
+		Player& operator=(const Player&) = delete;
 
 		virtual void updatePhysics(float time, float deltaTime) = 0;
 

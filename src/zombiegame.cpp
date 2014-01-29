@@ -36,7 +36,7 @@ namespace zombie {
 		outerSpawnRadius_ = 40.f;
 
 		gameData_.humanPlayer([&](State state, UnitProperties uP, const Animation& animation) {
-			Unit* human = new Human2D(engine_.getWorld(), state,
+			Unit* human = new Human2D(state,
 				uP.mass_, uP.radius_, uP.life_, uP.walkingSpeed_,
 				uP.runningSpeed_, Weapon(55, 0.2f, 8, 12), animation);
 			engine_.setHuman(keyboard1_, human);
@@ -45,19 +45,19 @@ namespace zombie {
 
 		gameData_.iterateCars([&](State state, CarProperties cP, const mw::Sprite& sprite) {
 			// Engine takes the ownership.
-			engine_.add(new Car2D(engine_.getWorld(), state, cP.mass_, cP.life_,
+			engine_.add(new Car2D(state, cP.mass_, cP.life_,
 				cP.width_, cP.length_, sprite));
 		});
 
 		gameData_.iterateUnits([&](State state, UnitProperties uP, const Animation& animation) {
-			engine_.addAi(new Zombie2D(engine_.getWorld(), state, uP.mass_, uP.radius_,
+			engine_.add(new Zombie2D(state, uP.mass_, uP.radius_,
 				uP.life_, uP.walkingSpeed_, uP.
 				runningSpeed_, Weapon(35, 0.5f, 1, 10000), animation));
 		});
 
 		gameData_.iterateBuildings([&](BuildingProperties bP) {
 			// Engine takes the ownership.
-			new Building2D(engine_.getWorld(), bP.points_);
+			engine_.add(new Building2D(bP.points_));
 		});
 
 		setBackgroundColor(mw::Color(0, 0.3, 0));

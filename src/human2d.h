@@ -9,10 +9,10 @@ namespace zombie {
 
 	class Human2D : public Unit {
 	public:
-		Human2D(b2World* world, const State& state, float mass, float radius, 
+		Human2D(const State& state, float mass, float radius, 
 			float life, float walkingSpeed, float runningSpeed, const Weapon& weapon,
 			const Animation& animation) :
-			Unit(world, state, mass, radius, life, walkingSpeed, runningSpeed, false, weapon), animation_(animation) {
+			Unit(state, mass, radius, life, walkingSpeed, runningSpeed, false, weapon), animation_(animation) {
 			addEventHandler(std::bind(&Human2D::eventHandler, this, this, std::placeholders::_2));
 		}
 

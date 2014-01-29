@@ -144,6 +144,8 @@ namespace zombie {
 				}
 			} else if (element->Attribute("POLYGON", "water")) {
 				// Todo!
+			} else if (element->Attribute("POLYGON", "tree")) {
+				// Todo!
 			}
 			
 			element = element->NextSiblingElement("object");

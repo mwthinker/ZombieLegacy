@@ -20,7 +20,7 @@ namespace zombie {
 	public:
 		friend class Player;
 
-		MovingObject(b2World* world) : Object(world), player_(nullptr) {
+		MovingObject() : player_(nullptr) {
 		}
 
 		virtual ~MovingObject() {
@@ -92,7 +92,7 @@ namespace zombie {
 
 		// Should only be called by the game engine.
 		void removeSeenObject(MovingObject* object) {
-			objectsSeen_.erase(std::find(objectsSeen_.begin(), objectsSeen_.end(), object));
+			objectsSeen_.remove(object);
 		}
 
 		void setActive(bool active) {

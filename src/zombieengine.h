@@ -40,10 +40,12 @@ namespace zombie {
 		void setHuman(DevicePtr device, Unit* unit);
 
 		// Add a ai player to the game.
-		void addAi(Unit* unit);
+		void add(Unit* unit);
 
 		// Add a empty car to the game.
 		void add(Car* car);
+
+		void add(Building* building);
 
 		// Get the current game time.
 		inline float getTime() const {

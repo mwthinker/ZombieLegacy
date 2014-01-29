@@ -11,7 +11,7 @@ namespace zombie {
 
 	class Building2D : public Building {
 	public:
-		Building2D(b2World* world, const std::vector<Position>& corners) : Building(world, corners) {
+		Building2D(const std::vector<Position>& corners) : Building(corners) {
 		}
 
 		void draw(float time) override {

@@ -84,7 +84,7 @@ namespace zombie {
 			MovingObject* mOb2 = dynamic_cast<MovingObject*>(ob2);
 
 			// Make sure both are moving objects.
-			if (mOb1 && mOb2) {
+			if (mOb1 != nullptr && mOb1 && mOb2) {
 				if (sensorA) {
 					looker = mOb1;
 					target = mOb2;
@@ -170,11 +170,13 @@ namespace zombie {
 	void ZombieEngine::removeGarbage() {
 		// Remove all players in a safe way. I.e. No risk of removing a player in current use.
 		for (Player* player : garbagePlayers_) {
-			delete player;
+			//delete player;
 		}
 		garbagePlayers_.clear();
+
 		// Remove all units in a safe way. I.e. No risk of removing a unit in current use.
 		for (Object* object : garbageObjects_) {
+			object->destroyBody(world_);
 			delete object;
 		}
 		garbageObjects_.clear();
@@ -200,12 +202,14 @@ namespace zombie {
 	}
 
 	void ZombieEngine::setHuman(DevicePtr device, Unit* unit) {
+		unit->createBody(world_);
 		human_ = unit;
 		Player* player = new HumanPlayer(device, unit);
 		unit->addEventHandler(std::bind(&ZombieEngine::unitEventHandler, this, unit, std::placeholders::_2));
 	}
 
-	void ZombieEngine::addAi(Unit* unit) {
+	void ZombieEngine::add(Unit* unit) {
+		unit->createBody(world_);
 		if (unit->isInfected()) {
 			new ZombieBehavior(unit);
 		} else {
@@ -214,7 +218,12 @@ namespace zombie {
 		unit->addEventHandler(std::bind(&ZombieEngine::unitEventHandler, this, unit, std::placeholders::_2));
 	}
 
+	void ZombieEngine::add(Building* building) {
+		building->createBody(world_);
+	}
+
 	void ZombieEngine::add(Car* car) {
+		car->createBody(world_);
 		car->addEventHandler(std::bind(&ZombieEngine::carEventHandler, this, car, std::placeholders::_2));
 	}
 
@@ -269,7 +278,7 @@ namespace zombie {
 			} else if (WeaponItem* wItem = dynamic_cast<WeaponItem*>(ob)) {
 				// Change the weapon.
 				unit->setWeapon(wItem->getWeapon());
-				delete wItem;
+				remove(wItem);
 			}
 		}
 	}

@@ -11,20 +11,27 @@
 
 namespace zombie {
 
-	Car::Car(b2World* world, const State& state, float mass, float life, float width, float length) : MovingObject(world) {
+	Car::Car(const State& state, float mass, float life, float width, float length) {
 		length_ = length;
 		width_ = width;
 
 		currentTime_ = 0.0f;
 		steeringAngle_ = 0.0f;
 		wheelDelta_ = 0.4f;
+		state_ = state;
+		mass_ = mass;
+	}
 
+	Car::~Car() {
+	}
+
+	void Car::createBody(b2World* world) {
 		// Box2d properties.
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_dynamicBody;
-		bodyDef.position.Set(state.position_.x, state.position_.y);
-		bodyDef.angle = state.angle_;
-		body_ = getWorld()->CreateBody(&bodyDef);
+		bodyDef.position = state_.position_;
+		bodyDef.angle = state_.angle_;
+		body_ = world->CreateBody(&bodyDef);
 		body_->SetUserData(this);
 
 		// Body properties.
@@ -34,16 +41,11 @@ namespace zombie {
 
 			b2FixtureDef fixtureDef;
 			fixtureDef.shape = &dynamicBox;
-			fixtureDef.density = mass / (length_ * width_);
+			fixtureDef.density = mass_ / (length_ * width_);
 			fixtureDef.friction = 0.3f;
 			b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
 			fixture->SetUserData(this);
 		}
-	}
-
-	Car::~Car() {
-		eventSignal_(this, REMOVED);
-		getWorld()->DestroyBody(body_);
 	}
 
 	Driver* Car::getDriver() const {
@@ -88,10 +90,10 @@ namespace zombie {
 
 	State Car::getState() const {
 		State state;
-		state.position_ = body_->GetPosition();
 		state.angle_ = body_->GetAngle();
-		state.anglularVelocity_ = body_->GetAngularVelocity();
+		state.position_ = body_->GetPosition();
 		state.velocity_ = body_->GetLinearVelocity();
+		state.anglularVelocity_ = body_->GetAngularVelocity();
 		return state;
 	}
 
@@ -128,6 +130,16 @@ namespace zombie {
 	}
 
 	void Car::collisionWith(Building* building, float impulses) {
+	}
+
+	void Car::destroyBody(b2World* world) {
+		eventSignal_(this, REMOVED);
+		world->DestroyBody(body_);
+		body_ = nullptr;
+	}
+
+	bool Car::isDestroyed() const {
+		return body_ == nullptr;
 	}
 
 } // Namespace zombie.

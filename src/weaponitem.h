@@ -10,14 +10,16 @@ namespace zombie {
 
 	class WeaponItem : public Object {
 	public:
-		WeaponItem(b2World* world, float x, float y, const Weapon& weapon) : Object(world) {
+		WeaponItem(float x, float y, const Weapon& weapon) {
 			radius_ = 0.5;
-			
+		}		
+
+		void createBody(b2World* world) {
 			// Box2d properties.
 			b2BodyDef bodyDef;
-			bodyDef.position.Set(x, y);
+			bodyDef.position.Set(x_, y_);
 			bodyDef.angle = 0.0;
-			body_ = getWorld()->CreateBody(&bodyDef);
+			body_ = world->CreateBody(&bodyDef);
 			body_->SetUserData(this);
 
 			// Add tensor. Should not be a physical object.
@@ -38,10 +40,6 @@ namespace zombie {
 			}
 		}
 
-		~WeaponItem() {
-			getWorld()->DestroyBody(body_);
-		}
-
 		Weapon getWeapon() const  {
 			return weapon;
 		}
@@ -58,9 +56,21 @@ namespace zombie {
 			return body_;
 		}
 
+		void destroyBody(b2World* world) override {
+			world->DestroyBody(body_);
+			body_ = nullptr;
+		}
+
+		bool isDestroyed() const override {
+			return body_ == nullptr;
+		}
+
 	private:
 		Weapon weapon;
 		float radius_;
+		float x_, y_;
+
+
 		b2Body* body_;
 	};
 

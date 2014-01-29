@@ -10,8 +10,9 @@
 
 namespace zombie {
 
-	Unit::Unit(b2World* world, const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) : MovingObject(world), weapon_(weapon) {
+	Unit::Unit(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) : weapon_(weapon) {
 		isInfected_ = infected;
+		state_ = state;
 
 		// Properties
 		viewDistance_ = 10.f;
@@ -24,13 +25,18 @@ namespace zombie {
 
 		timeLeftToRun_ = 5.f;
 
+		radius_ = radius;
+		mass_ = mass;
+	}
+
+	void Unit::createBody(b2World* world) {
 		// Box2d properties.
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_dynamicBody;
-		bodyDef.position.Set(state.position_.x, state.position_.y);
-		bodyDef.angle = state.angle_;
+		bodyDef.position = state_.position_;
+		bodyDef.angle = state_.angle_;
 
-		body_ = getWorld()->CreateBody(&bodyDef);
+		body_ = world->CreateBody(&bodyDef);
 		body_->SetUserData(this);
 
 		// Add tensor to make all objects inside the tenson visible.
@@ -54,11 +60,11 @@ namespace zombie {
 		{
 			b2CircleShape circle;
 			circle.m_p.Set(0, 0);
-			circle.m_radius = radius;
+			circle.m_radius = radius_;
 
 			b2FixtureDef fixtureDef;
 			fixtureDef.shape = &circle;
-			fixtureDef.density = mass / (PI * radius * radius);
+			fixtureDef.density = mass_ / (PI * radius_ * radius_);
 			fixtureDef.friction = 0.0f;
 
 			// Add Body fixture.
@@ -68,8 +74,6 @@ namespace zombie {
 	}
 
 	Unit::~Unit() {
-		eventSignal_(this, REMOVED);
-		getWorld()->DestroyBody(body_);
 	}
 
 	void Unit::updatePhysics(float time, float timeStep, Input input) {
@@ -113,7 +117,7 @@ namespace zombie {
 				body_->SetAngularVelocity(-3.0f);
 			} else {
 				body_->SetAngularVelocity(0.0);
-			}
+			}			
 
 			// Want to shoot? And weapon is ready?
 			if (input.shoot_ && weapon_.shoot(time)) {
@@ -204,9 +208,7 @@ namespace zombie {
 	}
 
 	float Unit::getRadius() const {
-		b2Fixture* f = body_->GetFixtureList();
-		b2CircleShape* circle = (b2CircleShape*) f->GetShape();
-		return circle->m_radius;
+		return radius_;
 	}
 
 	b2Body* Unit::getBody() const {
@@ -220,6 +222,16 @@ namespace zombie {
 	}
 
 	void Unit::collisionWith(Building* building, float impulse) {
+	}
+
+	void Unit::destroyBody(b2World* world) {
+		eventSignal_(this, REMOVED);
+		world->DestroyBody(body_);
+		body_ = nullptr;
+	}
+
+	bool Unit::isDestroyed() const {
+		return body_ == nullptr;
 	}
 
 } // Namespace zombie.

@@ -24,11 +24,13 @@ namespace zombie {
 			REMOVED
 		};
 
-		Car(b2World* world, const State& state, float mass, float life, float width, float length);
+		Car(const State& state, float mass, float life, float width, float length);
 		~Car();
 
 		Car(const Car&) = delete;
 		Car& operator=(const Car&) = delete;
+
+		void createBody(b2World* world) override;
 
 		Driver* getDriver() const;
 		void setDriver(Driver* driver);
@@ -52,7 +54,7 @@ namespace zombie {
 		bool isInsideViewArea(Position position) const override;
 
 		Position getPosition() const {
-			return Position(body_->GetPosition().x, body_->GetPosition().y);
+			return body_->GetPosition();
 		}
 
 		b2Body* getBody() const override {
@@ -64,7 +66,7 @@ namespace zombie {
 		}
 
 		float getDirection() const override {
-			return state_.angle_;
+			return body_->GetAngle();
 		}
 
 		bool isInfected() const override {
@@ -94,6 +96,10 @@ namespace zombie {
 
 		void collisionWith(Building* ob, float impulse) override;
 
+		void destroyBody(b2World* world) override;
+
+		bool isDestroyed() const override;
+
 	private:
 		void applyFriction(float frictionForwardFrontWheel, float frictionForwardBackWheel,
 			float frictionLateralFrontWheel, float frictionLateralBackWheel);
@@ -117,6 +123,7 @@ namespace zombie {
 		
 		float length_, width_;
 		State state_;
+		float mass_;
 		float currentTime_;
 		float wheelDelta_;
 	};

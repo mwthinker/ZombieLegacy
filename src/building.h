@@ -9,41 +9,39 @@ namespace zombie {
 
 	class Building : public Object {
 	public:
-		Building(b2World* world, const std::vector<Position>& corners) : Object(world), corners_(corners) {
+		Building(const std::vector<Position>& corners) : corners_(corners) {
 			init();
+		}
 
+		void createBody(b2World* world) {
 			// Create body.
 			{
 				b2BodyDef bodyDef;
 				bodyDef.fixedRotation = true;
-				bodyDef.position.Set(position_.x,position_.y);
+				bodyDef.position.Set(position_.x, position_.y);
 
-				body_ = getWorld()->CreateBody(&bodyDef);
+				body_ = world->CreateBody(&bodyDef);
 				body_->SetUserData(this);
 			}
 
 			// Create fixture to body.
 			{
-				unsigned int size = corners.size();
+				unsigned int size = corners_.size();
 
 				// Create polygon.
 				b2Vec2 vertices[b2_maxPolygonVertices];
 				unsigned int count = 0;
 				// Save global vertex points to local shape coordinates.
 				for (; count < size && count < b2_maxPolygonVertices; ++count) {
-					vertices[count] = body_->GetLocalPoint(corners[count]);
+					vertices[count] = body_->GetLocalPoint(corners_[count]);
 				}
 
 				b2PolygonShape shape;
 				shape.Set(vertices, count);
 
-				b2Fixture* fixture = body_->CreateFixture(&shape,0.f);
+				b2Fixture* fixture = body_->CreateFixture(&shape, 0.f);
 				fixture->SetUserData(this);
 			}
-		}
-
-		~Building() {
-			getWorld()->DestroyBody(body_);
 		}
 
 		const std::vector<Position>& getCorners() const {
@@ -68,6 +66,15 @@ namespace zombie {
 
 		void collisionWith(Object* ob, float impulse) override {
 			ob->collisionWith(this, impulse);
+		}
+
+		void destroyBody(b2World* world) override {
+			world->DestroyBody(body_);
+			body_ = nullptr;
+		}
+
+		bool isDestroyed() const override {
+			return body_ == nullptr;
 		}
 
 	protected:

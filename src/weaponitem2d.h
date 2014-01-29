@@ -8,7 +8,7 @@ namespace zombie {
 
 	class WeaponItem2D : public WeaponItem {
 	public:
-		WeaponItem2D(b2World* world, float x, float y, const Weapon& weapon) : WeaponItem(world, x, y, weapon) {
+		WeaponItem2D(float x, float y, const Weapon& weapon) : WeaponItem(x, y, weapon) {
 		}
 	};
 
