@@ -30,6 +30,8 @@ namespace zombie {
 			MovingObject* target = findUninfectedTarget(unit_->getPosition(), unit_->getVisibleObjects());
 
 			if (target != nullptr) {
+				// Important to disconnect last connection, else risk of heap error.
+				targetConnection_.disconnect();
 				targetConnection_ = target->addUpdateHandler(std::bind(&ZombieBehavior::targetUpdate, this, std::placeholders::_1));
 				targetUpdate(target);
 			}
@@ -95,6 +97,5 @@ namespace zombie {
 	void ZombieBehavior::targetUpdate(MovingObject* mOb) {
 		targetPosition_ = mOb->getPosition();
 	}
-
 
 } // Namespace zombie.
