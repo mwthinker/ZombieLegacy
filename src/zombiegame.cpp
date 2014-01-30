@@ -32,25 +32,24 @@ namespace zombie {
 			keyboard1_->eventUpdate(keyEvent);
 		});
 
-		innerSpawnRadius_ = 10.f;
-		outerSpawnRadius_ = 40.f;
+		innerSpawnRadius_ = 0.f;
+		outerSpawnRadius_ = 5.f;
 
 		gameData_.humanPlayer([&](State state, UnitProperties uP, const Animation& animation) {
-			Unit* human = new Human2D(state,
-				uP.mass_, uP.radius_, uP.life_, uP.walkingSpeed_,
+			Unit* human = new Human2D(uP.mass_, uP.radius_, uP.life_, uP.walkingSpeed_,
 				uP.runningSpeed_, Weapon(55, 0.2f, 8, 12), animation);
-			engine_.setHuman(keyboard1_, human);
+			engine_.setHuman(keyboard1_, state, human);
 			viewPosition_ = human->getPosition();
 		});
 
 		gameData_.iterateCars([&](State state, CarProperties cP, const mw::Sprite& sprite) {
 			// Engine takes the ownership.
-			engine_.add(new Car2D(state, cP.mass_, cP.life_,
+			engine_.add(state, new Car2D(cP.mass_, cP.life_,
 				cP.width_, cP.length_, sprite));
 		});
 
 		gameData_.iterateUnits([&](State state, UnitProperties uP, const Animation& animation) {
-			engine_.add(new Zombie2D(state, uP.mass_, uP.radius_,
+			engine_.add(state, new Zombie2D(uP.mass_, uP.radius_,
 				uP.life_, uP.walkingSpeed_, uP.
 				runningSpeed_, Weapon(35, 0.5f, 1, 10000), animation));
 		});

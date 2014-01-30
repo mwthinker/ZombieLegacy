@@ -25,10 +25,10 @@ namespace zombie {
 			SHOOT, RELOADING, DIE, WALK, STANDSTILL, RUN, ACTION, REMOVED
 		};
 
-		Unit(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
-		~Unit();
+		Unit(float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
+		virtual ~Unit();
 
-		void createBody(b2World* world) override;
+		void createBody(b2World* world, State state);
 
 		Unit(const Unit&) = delete;
 		Unit& operator=(const Unit&) = delete;
@@ -103,8 +103,6 @@ namespace zombie {
 		bool isDestroyed() const override;
 
 	private:
-		State state_;
-
 		// Properties
 		float viewDistance_;
 		float viewAngle_;

@@ -37,13 +37,13 @@ namespace zombie {
 		void update(float deltaTime);
 
 		// Add a human player to the game.
-		void setHuman(DevicePtr device, Unit* unit);
+		void setHuman(DevicePtr device, State states, Unit* unit);
 
 		// Add a ai player to the game.
-		void add(Unit* unit);
+		void add(State state, Unit* unit);
 
 		// Add a empty car to the game.
-		void add(Car* car);
+		void add(State state, Car* car);
 
 		void add(Building* building);
 

@@ -12,8 +12,8 @@ namespace zombie {
 
 	class Car2D : public Car {
 	public:
-		Car2D(const State& state, float mass, float life, float width, float length, const mw::Sprite& sprite) : 
-			Car(state, mass, life, width, length), animation_(sprite) {
+		Car2D(float mass, float life, float width, float length, const mw::Sprite& sprite) : 
+			Car(mass, life, width, length), animation_(sprite) {
 		}
 
 		// Draws the car.

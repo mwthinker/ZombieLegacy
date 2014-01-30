@@ -11,26 +11,25 @@
 
 namespace zombie {
 
-	Car::Car(const State& state, float mass, float life, float width, float length) {
+	Car::Car(float mass, float life, float width, float length) {
 		length_ = length;
 		width_ = width;
 
 		currentTime_ = 0.0f;
 		steeringAngle_ = 0.0f;
 		wheelDelta_ = 0.4f;
-		state_ = state;
 		mass_ = mass;
 	}
 
 	Car::~Car() {
 	}
 
-	void Car::createBody(b2World* world) {
+	void Car::createBody(b2World* world, State state) {
 		// Box2d properties.
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_dynamicBody;
-		bodyDef.position = state_.position_;
-		bodyDef.angle = state_.angle_;
+		bodyDef.position = state.position_;
+		bodyDef.angle = state.angle_;
 		body_ = world->CreateBody(&bodyDef);
 		body_->SetUserData(this);
 

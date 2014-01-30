@@ -10,9 +10,8 @@
 
 namespace zombie {
 
-	Unit::Unit(const State& state, float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) : weapon_(weapon) {
+	Unit::Unit(float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) : weapon_(weapon) {
 		isInfected_ = infected;
-		state_ = state;
 
 		// Properties
 		viewDistance_ = 10.f;
@@ -29,12 +28,12 @@ namespace zombie {
 		mass_ = mass;
 	}
 
-	void Unit::createBody(b2World* world) {
+	void Unit::createBody(b2World* world, State state) {
 		// Box2d properties.
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_dynamicBody;
-		bodyDef.position = state_.position_;
-		bodyDef.angle = state_.angle_;
+		bodyDef.position = state.position_;
+		bodyDef.angle = state.angle_;
 
 		body_ = world->CreateBody(&bodyDef);
 		body_->SetUserData(this);

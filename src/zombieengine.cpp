@@ -78,19 +78,19 @@ namespace zombie {
 				return false;
 			}
 
-			Object* ob1 = static_cast<Object*>(fixtureA->GetBody()->GetUserData());
-			Object* ob2 = static_cast<Object*>(fixtureB->GetBody()->GetUserData());
-			MovingObject* mOb1 = dynamic_cast<MovingObject*>(ob1);
-			MovingObject* mOb2 = dynamic_cast<MovingObject*>(ob2);
+			Object* obA = static_cast<Object*>(fixtureA->GetBody()->GetUserData());
+			Object* obB = static_cast<Object*>(fixtureB->GetBody()->GetUserData());
+			MovingObject* mObA = dynamic_cast<MovingObject*>(obA);
+			MovingObject* mObB = dynamic_cast<MovingObject*>(obB);
 
 			// Make sure both are moving objects.
-			if (mOb1 != nullptr && mOb1 && mOb2) {
+			if (mObA != nullptr && mObB != nullptr && mObA && mObB) {
 				if (sensorA) {
-					looker = mOb1;
-					target = mOb2;
+					looker = mObA;
+					target = mObB;
 				} else {
-					looker = mOb2;
-					target = mOb1;
+					looker = mObB;
+					target = mObA;
 				}
 				return true;
 			}
@@ -174,7 +174,7 @@ namespace zombie {
 		}
 		garbagePlayers_.clear();
 
-		// Remove all units in a safe way. I.e. No risk of removing a unit in current use.
+		// Remove units in a safe way. I.e. No risk of removing a unit in current use.
 		for (Object* object : garbageObjects_) {
 			object->destroyBody(world_);
 			delete object;
@@ -195,21 +195,22 @@ namespace zombie {
 			updatePhysics(timeStep_);
 		}
 
+		// Draw all objects.
 		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
 			Object* ob = static_cast<Object*>(b->GetUserData());
 			ob->draw(deltaTime);
 		}
 	}
 
-	void ZombieEngine::setHuman(DevicePtr device, Unit* unit) {
-		unit->createBody(world_);
+	void ZombieEngine::setHuman(DevicePtr device, State state, Unit* unit) {
+		unit->createBody(world_, state);
 		human_ = unit;
 		Player* player = new HumanPlayer(device, unit);
 		unit->addEventHandler(std::bind(&ZombieEngine::unitEventHandler, this, unit, std::placeholders::_2));
 	}
 
-	void ZombieEngine::add(Unit* unit) {
-		unit->createBody(world_);
+	void ZombieEngine::add(State state, Unit* unit) {
+		unit->createBody(world_, state);
 		if (unit->isInfected()) {
 			new ZombieBehavior(unit);
 		} else {
@@ -222,8 +223,8 @@ namespace zombie {
 		building->createBody(world_);
 	}
 
-	void ZombieEngine::add(Car* car) {
-		car->createBody(world_);
+	void ZombieEngine::add(State state, Car* car) {
+		car->createBody(world_, state);
 		car->addEventHandler(std::bind(&ZombieEngine::carEventHandler, this, car, std::placeholders::_2));
 	}
 
@@ -251,7 +252,7 @@ namespace zombie {
 	}
 
 	void ZombieEngine::doAction(Unit* unit) {
-		float angle = unit->getState().angle_;
+		float angle = unit->getDirection();
 		b2Vec2 dir(std::cos(angle), std::sin(angle));
 
 		// Return the closest object, physical or not.

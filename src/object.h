@@ -18,9 +18,6 @@ namespace zombie {
 		virtual ~Object() {
 		}
 
-		// Creates a body!
-		virtual void createBody(b2World* world) = 0;
-
 		// Deallocates the body.
 		virtual void destroyBody(b2World* world) = 0;
 

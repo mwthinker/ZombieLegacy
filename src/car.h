@@ -24,13 +24,13 @@ namespace zombie {
 			REMOVED
 		};
 
-		Car(const State& state, float mass, float life, float width, float length);
-		~Car();
+		Car(float mass, float life, float width, float length);
+		virtual ~Car();
 
 		Car(const Car&) = delete;
 		Car& operator=(const Car&) = delete;
 
-		void createBody(b2World* world) override;
+		void createBody(b2World* world, State state);
 
 		Driver* getDriver() const;
 		void setDriver(Driver* driver);
@@ -122,7 +122,6 @@ namespace zombie {
 		float steeringAngle_;
 		
 		float length_, width_;
-		State state_;
 		float mass_;
 		float currentTime_;
 		float wheelDelta_;
