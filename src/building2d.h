@@ -17,7 +17,7 @@ namespace zombie {
 		void draw(float time) override {
 			auto& corners = getCorners();
 			
-			glColor3d(0.9, 0.7, 0.7);
+			glColor3d(0.5, 0.5, 0.5);
 			glBegin(GL_TRIANGLES);
 			for (unsigned int i = 0; i < 3 && i < corners.size(); ++i) {
 				glVertex2d(corners[i].x, corners[i].y);
