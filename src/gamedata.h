@@ -9,6 +9,7 @@
 #include "animation.h"
 #include "auxiliary.h"
 #include "state.h"
+#include "terrain2d.h"
 
 #include <mw/sound.h>
 #include <mw/texture.h>
@@ -50,6 +51,10 @@ namespace zombie {
 			return settings_.timeStepMS_;
 		}
 
+		inline Terrain2D getTerrain2D() const {
+			return terrain2d_;
+		}
+
 	private:
 		// Handle to first node <zombie>.
 		bool load(tinyxml2::XMLHandle xml);
@@ -70,6 +75,9 @@ namespace zombie {
 
 		std::map<std::string, mw::TexturePtr> textures_;
 		std::map<std::string, mw::Sound> sounds_;
+
+		Terrain2D terrain2d_;
+
 	};
 	
 } // Namespace zombie.

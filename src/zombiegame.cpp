@@ -12,6 +12,7 @@
 #include "car2d.h"
 #include "weaponitem2d.h"
 #include "building2d.h"
+#include "terrain2d.h"
 
 // External.
 #include <mw/exception.h>
@@ -60,6 +61,8 @@ namespace zombie {
 		});
 
 		setBackgroundColor(mw::Color(0, 0.3, 0));
+
+		terrain2D_ = gameData.getTerrain2D();
 	}
 
 	ZombieGame::~ZombieGame() {
@@ -83,8 +86,10 @@ namespace zombie {
 
 		// Game is started?
 		if (engine_.isStarted()) {
+			terrain2D_.draw(deltaTime / 1000.f);
 			engine_.update(deltaTime / 1000.f);
 		} else {
+			terrain2D_.draw(deltaTime / 1000.f);
 			engine_.update(0);
 		}
 

@@ -142,16 +142,44 @@ namespace zombie {
 						buildings.push_back(properties);
 					}
 				}
-			} else if (element->Attribute("POLYGON", "water")) {
-				// Todo!
-			} else if (element->Attribute("POLYGON", "tree")) {
-				// Todo!
 			}
-			
+
 			element = element->NextSiblingElement("object");
 		}
 
 		return buildings;
+	}
+
+	Terrain2D loadTerrain(tinyxml2::XMLHandle objectsTag) {
+		Terrain2D terrain;
+
+		tinyxml2::XMLElement* element = objectsTag.FirstChildElement("object").ToElement();
+		while (element != nullptr) {
+			if(element->Attribute("type", "road")) {
+				std::string geom = convertFromText<const char*>(toText(element->FirstChildElement("geom")));
+				std::stringstream stream(geom);
+				std::string word;
+
+				if (stream >> word) {
+					if (word == "POLYGON") {
+						terrain.addRoad(loadPolygon(stream.str()));
+					}
+				}
+			} else if (element->Attribute("type", "roadline")) {
+				std::string geom = convertFromText<const char*>(toText(element->FirstChildElement("geom")));
+				std::stringstream stream(geom);
+				std::string word;
+
+				if (stream >> word) {
+					if (word == "POLYGON") {
+						terrain.addRoadLine(loadPolygon(stream.str()));
+					}
+				}
+			}
+		}
+		
+
+		return terrain;
 	}
 
 	Settings loadSettings(tinyxml2::XMLHandle settingsTag) {

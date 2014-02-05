@@ -6,6 +6,7 @@
 #include "weaponproperties.h"
 #include "unitproperties.h"
 #include "settings.h"
+#include "terrain2d.h"
 
 #include <tinyxml2.h>
 #include <mw/exception.h>
@@ -48,6 +49,9 @@ namespace zombie {
 
 	// Returns all buildings loaded from the <mapObjects> in xml.
 	std::vector<BuildingProperties> loadBuildings(tinyxml2::XMLHandle objectsTag);
+
+	// Returns all terrains loaded from the <mapObjects> in xml.
+	Terrain2D loadTerrain(tinyxml2::XMLHandle objectsTag);
 
 	// Returns all buildings loaded from the <movingUnits> in xml.
 	std::vector<UnitProperties> loadUnits(tinyxml2::XMLHandle movingUnitsTag);

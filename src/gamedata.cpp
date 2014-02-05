@@ -131,6 +131,8 @@ namespace zombie {
 			for (const BuildingProperties& p : buildings) {
 				buildings_.push_back(p);
 			}
+			mapHandle = mapHandle.FirstChildElement("map");
+			terrain2d_ = loadTerrain(mapHandle.FirstChildElement("objects"));
 		} catch (std::exception&) {
 			std::exit(1);
 		}

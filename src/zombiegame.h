@@ -44,6 +44,7 @@ namespace zombie {
 		float scale_;
 		
 		ZombieEngine engine_;
+		Terrain2D terrain2D_;
 
 		DevicePtr keyboard1_, keyboard2_;
 		GameData gameData_;
