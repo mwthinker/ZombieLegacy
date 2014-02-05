@@ -1,12 +1,8 @@
 #ifndef LOAD_H
 #define LOAD_H
 
-#include "buildingproperties.h"
-#include "carproperties.h"
-#include "weaponproperties.h"
-#include "unitproperties.h"
-#include "settings.h"
 #include "terrain2d.h"
+#include "animation.h"
 
 #include <tinyxml2.h>
 #include <mw/exception.h>
@@ -15,6 +11,8 @@
 #include <sstream>
 
 namespace zombie {
+
+	std::stringstream& operator>>(std::stringstream& stream, Point& point);
 
 	// Takes c-string as input and returns the correct conversion.
 	// Throws mw::Exception if the input is null or if the conversion
@@ -41,23 +39,19 @@ namespace zombie {
 	template <>
 	const char* convertFromText<const char*>(const char* txt);
 
-	// Returns the settings loaded from the <settings> in xml.
-	Settings loadSettings(tinyxml2::XMLHandle settingsTag);
+	// Takes a string as input and returns the points.
+	// The string "POLYGON ((x1 y1, x2 y2, ...))" the input should be defined
+	// as ((...). The last point is assumed to be the same as the first, therefore
+	// the last point will not be returned.
+	std::vector<Point> loadPolygon(std::string line);
 
-	// Returns all weapons loaded from the <weapons> in xml.
-	std::vector<WeaponProperties> loadWeapons(tinyxml2::XMLHandle weaponsTag);
+	std::vector<TupleImageScaleTime> loadAnimation(tinyxml2::XMLHandle xml);
 
-	// Returns all buildings loaded from the <mapObjects> in xml.
-	std::vector<BuildingProperties> loadBuildings(tinyxml2::XMLHandle objectsTag);
+	const char* toText(tinyxml2::XMLHandle handle);
 
-	// Returns all terrains loaded from the <mapObjects> in xml.
-	Terrain2D loadTerrain(tinyxml2::XMLHandle objectsTag);
-
-	// Returns all buildings loaded from the <movingUnits> in xml.
-	std::vector<UnitProperties> loadUnits(tinyxml2::XMLHandle movingUnitsTag);
-
-	// Returns all cars loaded from the <movingUnits> in xml.
-	std::vector<CarProperties> loadCars(tinyxml2::XMLHandle movingUnitsTag);
+	// Returns the tag's element. If the element don't exist a runtime exception is thrown.
+	// The return value is never null.
+	tinyxml2::XMLElement* toElement(tinyxml2::XMLHandle handle);
 
 } // Namespace zombie.
 

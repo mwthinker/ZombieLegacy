@@ -1,7 +1,6 @@
 #ifndef GAMEDATA_H
 #define GAMEDATA_H
 
-#include "buildingproperties.h"
 #include "weaponproperties.h"
 #include "unitproperties.h"
 #include "carproperties.h"
@@ -19,6 +18,8 @@
 #include <map>
 
 namespace zombie {
+
+	class Building2D;
 
 	// Returns a random postion between the defined outer and inner circle centered in position.
 	Position generatePosition(Position position, float innerRadius, float outerRadius);
@@ -41,7 +42,7 @@ namespace zombie {
 
 		void iterateCars(std::function<void(State, CarProperties, const mw::Sprite&)> func);
 
-		void iterateBuildings(std::function<void(BuildingProperties)> func);
+		void iterateBuildings(std::function<void(Building2D*)> func);
 
 		inline float getImpulseThreshold() const {
 			return settings_.impulseThreshold_;
@@ -71,7 +72,7 @@ namespace zombie {
 		std::map<std::string, WeaponProperties> weapons_;
 		std::map<std::string, UnitProperties> units_;
 		std::map<std::string, CarProperties> cars_;
-		std::vector<BuildingProperties> buildings_;
+		std::vector<Building2D*> buildings_;
 
 		std::map<std::string, mw::TexturePtr> textures_;
 		std::map<std::string, mw::Sound> sounds_;

@@ -55,9 +55,9 @@ namespace zombie {
 				runningSpeed_, Weapon(35, 0.5f, 1, 10000), animation));
 		});
 
-		gameData_.iterateBuildings([&](BuildingProperties bP) {
+		gameData_.iterateBuildings([&](Building2D* building) {
 			// Engine takes the ownership.
-			engine_.add(new Building2D(bP.points_));
+			engine_.add(building);
 		});
 
 		setBackgroundColor(mw::Color(0, 0.3, 0));
