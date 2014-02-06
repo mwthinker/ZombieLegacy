@@ -53,6 +53,16 @@ namespace zombie {
 							buildings.push_back(new Building2D(loadPolygon(stream.str())));
 						}
 					}
+				} else if (element->Attribute("type", "water")) {
+					std::string geom = convertFromText<const char*>(toText(element->FirstChildElement("geom")));
+					std::stringstream stream(geom);
+					std::string word;
+
+					if (stream >> word) {
+						if (word == "POLYGON") {
+							terrain.addWater(loadPolygon(stream.str()));
+						}
+					}
 				} else if (element->Attribute("type", "road")) {
 					std::string geom = convertFromText<const char*>(toText(element->FirstChildElement("geom")));
 					std::stringstream stream(geom);

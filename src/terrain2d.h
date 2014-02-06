@@ -22,8 +22,11 @@ namespace zombie {
 			roadLines_.push_back(roadline);
 		}
 
+		void addWater(const std::vector<Position>& water) {
+			lakes_.push_back(water);
+		}
+
 		void draw(float time) {
-			
 			glBegin(GL_TRIANGLES);
 
 			glColor3d(0.1, 0.1, 0.1);
@@ -41,15 +44,24 @@ namespace zombie {
 				}
 			}
 
+			glColor3d(0, 0, 0.3);
+			for (const Water& water : lakes_) {
+				for (unsigned int i = 0; i < 3 && i < water.size(); ++i) {
+					glVertex2d(water[i].x, water[i].y);
+				}
+			}
+
 			glEnd();
 		}
 
 	private:
 		typedef std::vector<Position> Road;
 		typedef std::vector<Position> RoadLine;
+		typedef std::vector<Position> Water;
 
 		std::vector<Road> roads_;
 		std::vector<RoadLine> roadLines_;
+		std::vector<Water> lakes_;
 	};
 
 } // Namespace zombie.
