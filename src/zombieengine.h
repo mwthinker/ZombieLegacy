@@ -5,6 +5,7 @@
 #include "unit.h"
 #include "car.h"
 #include "box2ddef.h"
+#include "missile.h"
 
 #include <mw/signal.h>
 

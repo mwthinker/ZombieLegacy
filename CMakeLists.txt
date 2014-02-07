@@ -46,6 +46,7 @@ SET(SOURCES_ZOMBIE
 	src/load.cpp
 	src/load.h
 	src/main.cpp
+	src/missile.h
 	src/movingobject.h
 	src/object.cpp
 	src/object.h

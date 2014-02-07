@@ -65,19 +65,20 @@ namespace zombie {
 		double getShotSound() const {
 			return shotSound_;
 		}
+
 	private:
-		bool reload_;         // Is true when the weapon is reloading.
+		bool reload_;				// Is true when the weapon is reloading.
 
-		float damage_;  // The damage made by the weapon.
+		float damage_;				// The damage made by the weapon.
 		float timeBetweenShots_;
-		float range_;        // The range of the weapon.
+		float range_;				// The range of the weapon.
 
-		int clipSize_;        // The number of bullets for a reload.
-		int bulletsInWeapon_; // The current number of bullets in the weapon.
+		int clipSize_;				// The number of bullets for a reload.
+		int bulletsInWeapon_;		// The current number of bullets in the weapon.
 		float shotSound_;
 
-		float timeElapsed_;  // Used as keeping track of the time.
-		float lastShotTime_;	
+		float timeElapsed_;			// Used as keeping track of the time.
+		float lastShotTime_;
 	};
 
 } // Namespace zombie.
