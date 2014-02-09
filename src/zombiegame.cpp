@@ -29,7 +29,8 @@ namespace zombie {
 
 		scale_ = 1.f;
 
-		addKeyListener([&](gui::Component* component, const SDL_Event& keyEvent) {
+
+		addKeyListener([&](gui::Component& component, const SDL_Event& keyEvent) {
 			keyboard1_->eventUpdate(keyEvent);
 		});
 
