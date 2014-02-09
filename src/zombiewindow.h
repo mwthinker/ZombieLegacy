@@ -50,7 +50,7 @@ namespace zombie {
 			}
 		}
 
-	}
+	} // Anonymous namespace.
 
 	std::shared_ptr<gui::Button> createButton(std::string str) {
 		auto button = std::make_shared<gui::Button>(str, font15);
