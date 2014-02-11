@@ -44,11 +44,15 @@ namespace zombie {
 			viewPosition_ = human->getPosition();
 		});
 
-		gameData_.iterateCars([&](State state, CarProperties cP, const mw::Sprite& sprite) {
-			// Engine takes the ownership.
-			engine_.add(state, new Car2D(cP.mass_, cP.life_,
-				cP.width_, cP.length_, sprite));
-		});
+		const std::map<std::string, Car2D*>& cars = gameData_.getCars();
+		for (int i = 0; i < 10; ++i) {
+			for (auto& pair : cars) {
+				Car2D* car = pair.second;
+				State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
+				// Engine takes the ownership.
+				engine_.add(state, new Car2D(*car));
+			}
+		}
 
 		gameData_.iterateUnits([&](State state, UnitProperties uP, const Animation& animation) {
 			engine_.add(state, new Zombie2D(uP.mass_, uP.radius_,
@@ -90,7 +94,7 @@ namespace zombie {
 			terrain2D_.draw(deltaTime / 1000.f);
 			engine_.update(deltaTime / 1000.f);
 		} else {
-			terrain2D_.draw(deltaTime / 1000.f);
+			terrain2D_.draw(0);
 			engine_.update(0);
 		}
 

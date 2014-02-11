@@ -27,8 +27,8 @@ namespace zombie {
 		Car(float mass, float life, float width, float length);
 		virtual ~Car();
 
-		Car(const Car&) = delete;
-		Car& operator=(const Car&) = delete;
+		Car(const Car& car);
+		Car& operator=(const Car& car);
 
 		void createBody(b2World* world, State state);
 

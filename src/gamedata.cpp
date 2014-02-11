@@ -1,6 +1,7 @@
 #include "gamedata.h"
 #include "load.h"
 #include "building2d.h"
+#include "car2d.h"
 
 #include <mw/sound.h>
 #include <mw/texture.h>
@@ -120,26 +121,7 @@ namespace zombie {
 				element = element->NextSiblingElement("unit");
 			}
 			return units;
-		}
-
-		std::vector<CarProperties> loadCars(tinyxml2::XMLHandle movingUnitsTag) {
-			std::vector<CarProperties> cars;
-			// Find all cars.
-			tinyxml2::XMLElement* element = movingUnitsTag.FirstChildElement("car").ToElement();
-			while (element != nullptr) {
-				CarProperties properties;
-				properties.name_ = convertFromText<const char*>(toText(element->FirstChildElement("name")));
-				properties.image_ = convertFromText<const char*>(toText(element->FirstChildElement("image")));
-				properties.mass_ = convertFromText<float>(toText(element->FirstChildElement("mass")));
-				properties.width_ = convertFromText<float>(toText(element->FirstChildElement("width")));
-				properties.length_ = convertFromText<float>(toText(element->FirstChildElement("length")));
-				properties.life_ = convertFromText<float>(toText(element->FirstChildElement("life")));
-				cars.push_back(properties);
-				element = element->NextSiblingElement("car");
-			}
-
-			return cars;
-		}
+		}		
 
 	}
 
@@ -183,7 +165,7 @@ namespace zombie {
 
 		Animation animation;
 		for (auto tuple : humanP.animation_) {
-			animation.add(getLoadedTexture(std::get<0>(tuple)), std::get<2>(tuple));
+			animation.add(loadTexture(std::get<0>(tuple)), std::get<2>(tuple));
 			animation.setScale(std::get<1>(tuple));
 		}
 
@@ -197,7 +179,7 @@ namespace zombie {
 		for (int i = 0; i < settings_.unitLevel_; ++i) {
 			Animation animation;
 			for (auto tuple : zombieP.animation_) {
-				animation.add(getLoadedTexture(std::get<0>(tuple)), std::get<2>(tuple));
+				animation.add(loadTexture(std::get<0>(tuple)), std::get<2>(tuple));
 				animation.setScale(std::get<1>(tuple));
 			}
 
@@ -206,19 +188,29 @@ namespace zombie {
 		}
 	}
 
-	void GameData::iterateCars(std::function<void(State, CarProperties, const mw::Sprite&)> func) {
-		CarProperties volvoP = cars_["Volvo"];
-
-		// Add cars.
-		for (int i = 0; i < 10; ++i) {
-			State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
-			func(state, volvoP, getLoadedTexture(volvoP.image_));
-		}
-	}
-
 	void GameData::iterateBuildings(std::function<void(Building2D* building)> func) {
 		for (Building2D* p : buildings_) {
 			func(p);
+		}
+	}
+
+	void GameData::loadCars(tinyxml2::XMLHandle movingUnitsTag) {
+		// Find all cars.
+		tinyxml2::XMLElement* element = movingUnitsTag.FirstChildElement("car").ToElement();
+		while (element != nullptr) {
+			std::string name = convertFromText<const char*>(toText(element->FirstChildElement("name")));
+			mw::TexturePtr texture = loadTexture(convertFromText<const char*>(toText(element->FirstChildElement("image"))));
+			if (!texture) {
+				// Exception.
+			}
+			float mass = convertFromText<float>(toText(element->FirstChildElement("mass")));
+			float width = convertFromText<float>(toText(element->FirstChildElement("width")));
+			float length = convertFromText<float>(toText(element->FirstChildElement("length")));
+			float life = convertFromText<float>(toText(element->FirstChildElement("life")));
+
+			cars_[name] = new Car2D(mass, life, width, length, texture);
+
+			element = element->NextSiblingElement("car");
 		}
 	}
 
@@ -233,10 +225,9 @@ namespace zombie {
 			for (const UnitProperties& p : units) {
 				units_[p.name_] = p;
 			}
-			auto cars = loadCars(xml.FirstChildElement("movingObjects"));
-			for (const CarProperties& p : cars) {
-				cars_[p.name_] = p;
-			}
+			
+			loadCars(xml.FirstChildElement("movingObjects"));
+			
 			// Load map.
 			loadMap(settings_.mapFile_);
 
@@ -265,7 +256,7 @@ namespace zombie {
 		}
 	}
 
-	mw::TexturePtr GameData::getLoadedTexture(std::string file) {
+	mw::TexturePtr GameData::loadTexture(std::string file) {
 		unsigned int size = textures_.size();
 
 		mw::TexturePtr& texture = textures_[file];
