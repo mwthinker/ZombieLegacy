@@ -45,8 +45,6 @@ namespace zombie {
 	// the last point will not be returned.
 	std::vector<Point> loadPolygon(std::string line);
 
-	std::vector<TupleImageScaleTime> loadAnimation(tinyxml2::XMLHandle xml);
-
 	const char* toText(tinyxml2::XMLHandle handle);
 
 	// Returns the tag's element. If the element don't exist a runtime exception is thrown.

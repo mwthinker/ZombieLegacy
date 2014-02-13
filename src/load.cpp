@@ -41,25 +41,6 @@ namespace zombie {
 		return points;
 	}
 
-	std::vector<TupleImageScaleTime> loadAnimation(tinyxml2::XMLHandle xml) {
-		tinyxml2::XMLHandle handle = xml.FirstChildElement("scale");
-		if (handle.ToElement() == nullptr) {
-			throw  std::exception();
-		}
-		float scale = convertFromText<float>(handle.ToElement()->GetText());
-		std::vector<TupleImageScaleTime> animation;
-
-		while (handle.NextSiblingElement("image").ToElement() != nullptr) {
-			handle = handle.NextSiblingElement("image");
-			std::string image = handle.ToElement()->GetText();
-			handle = handle.NextSiblingElement("time");
-			float time = convertFromText<float>(handle.ToElement()->GetText());
-			animation.push_back(TupleImageScaleTime(image, scale, time));
-		}
-
-		return move(animation);
-	}
-
 	template <>
 	const char* convertFromText<const char*>(const char* txt) {
 		if (txt == nullptr) {

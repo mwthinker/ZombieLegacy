@@ -38,7 +38,6 @@ SET(SOURCES_ZOMBIE
 	src/gamesound.h
 	src/gamesprite.cpp
 	src/gamesprite.h
-	src/human2d.h
 	src/humanplayer.h
 	src/input.h
 	src/inputkeyboard.h
@@ -59,12 +58,11 @@ SET(SOURCES_ZOMBIE
 	src/survivorbehavior.h
 	src/unit.cpp
 	src/unit.h
-	src/unitproperties.h
+	src/unit2d.h
 	src/weapon.h
 	src/weaponitem.h
 	src/weaponitem2d.h
 	src/weaponproperties.h
-	src/zombie2d.h
 	src/zombiebehavior.cpp
 	src/zombiebehavior.h
 	src/zombieengine.cpp

@@ -2,6 +2,7 @@
 #include "load.h"
 #include "building2d.h"
 #include "car2d.h"
+#include "unit2d.h"
 
 #include <mw/sound.h>
 #include <mw/texture.h>
@@ -100,27 +101,6 @@ namespace zombie {
 			settings.timeStepMS_ = convertFromText<int>(toText(settingsTag.FirstChildElement("timeStepMS")));
 			settings.mapFile_ = convertFromText<const char*>(toText(settingsTag.FirstChildElement("map")));
 			return settings;
-		}
-
-		std::vector<UnitProperties> loadUnits(tinyxml2::XMLHandle movingUnitsTag) {
-			std::vector<UnitProperties> units;
-			// Find all units.
-			tinyxml2::XMLElement* element = movingUnitsTag.FirstChildElement("unit").ToElement();
-			while (element != nullptr) {
-				UnitProperties properties;
-				properties.name_ = convertFromText<const char*>(toText(element->FirstChildElement("name")));
-				properties.mass_ = convertFromText<float>(toText(element->FirstChildElement("mass")));
-				properties.radius_ = convertFromText<float>(toText(element->FirstChildElement("radius")));
-				properties.life_ = convertFromText<float>(toText(element->FirstChildElement("life")));
-				properties.infected_ = convertFromText<bool>(toText(element->FirstChildElement("infected")));
-				properties.walkingSpeed_ = convertFromText<float>(toText(element->FirstChildElement("walkingSpeed")));
-				properties.runningSpeed_ = convertFromText<float>(toText(element->FirstChildElement("runningSpeed")));
-				properties.stamina_ = convertFromText<float>(toText(element->FirstChildElement("stamina")));
-				properties.animation_ = loadAnimation(toElement(element->FirstChildElement("animation")));
-				units.push_back(properties);
-				element = element->NextSiblingElement("unit");
-			}
-			return units;
 		}		
 
 	}
@@ -158,35 +138,7 @@ namespace zombie {
 
 		// Load game data and map data.
 		load(handleXml);
-	}
-	
-	void GameData::humanPlayer(std::function<void(State, UnitProperties, const Animation& animation)> func) {
-		UnitProperties humanP = units_["Human"];
-
-		Animation animation;
-		for (auto tuple : humanP.animation_) {
-			animation.add(loadTexture(std::get<0>(tuple)), std::get<2>(tuple));
-			animation.setScale(std::get<1>(tuple));
-		}
-
-		State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
-		func(state, humanP, animation);
-	}
-
-	void GameData::iterateUnits(std::function<void(State, UnitProperties, const Animation& animation)> func) {
-		UnitProperties zombieP = units_["Zombie"];
-
-		for (int i = 0; i < settings_.unitLevel_; ++i) {
-			Animation animation;
-			for (auto tuple : zombieP.animation_) {
-				animation.add(loadTexture(std::get<0>(tuple)), std::get<2>(tuple));
-				animation.setScale(std::get<1>(tuple));
-			}
-
-			State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
-			func(state, zombieP, animation);
-		}
-	}
+	}	
 
 	void GameData::iterateBuildings(std::function<void(Building2D* building)> func) {
 		for (Building2D* p : buildings_) {
@@ -214,6 +166,44 @@ namespace zombie {
 		}
 	}
 
+	void GameData::loadUnits(tinyxml2::XMLHandle movingUnitsTag) {
+		// Find all units.
+		tinyxml2::XMLElement* element = movingUnitsTag.FirstChildElement("unit").ToElement();
+		while (element != nullptr) {
+			std::string name = convertFromText<const char*>(toText(element->FirstChildElement("name")));
+			float mass = convertFromText<float>(toText(element->FirstChildElement("mass")));
+			float radius = convertFromText<float>(toText(element->FirstChildElement("radius")));
+			float life = convertFromText<float>(toText(element->FirstChildElement("life")));
+			bool infected = convertFromText<bool>(toText(element->FirstChildElement("infected")));
+			float walkingSpeed = convertFromText<float>(toText(element->FirstChildElement("walkingSpeed")));
+			float runningSpeed = convertFromText<float>(toText(element->FirstChildElement("runningSpeed")));
+			float stamina = convertFromText<float>(toText(element->FirstChildElement("stamina")));
+			Animation animation = loadAnimation(toElement(element->FirstChildElement("animation")));
+			units_[name] = new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, Weapon(), animation);
+
+			element = element->NextSiblingElement("unit");
+		}
+	}
+
+	Animation GameData::loadAnimation(tinyxml2::XMLHandle animationTag) {
+		tinyxml2::XMLHandle handle = animationTag.FirstChildElement("scale");
+		if (handle.ToElement() == nullptr) {
+			throw  std::exception();
+		}
+		float scale = convertFromText<float>(handle.ToElement()->GetText());
+		Animation animation(scale);
+
+		while (handle.NextSiblingElement("image").ToElement() != nullptr) {
+			handle = handle.NextSiblingElement("image");
+			std::string image = handle.ToElement()->GetText();
+			handle = handle.NextSiblingElement("time");
+			float time = convertFromText<float>(handle.ToElement()->GetText());
+			animation.add(image, time);
+		}
+
+		return animation;
+	}
+
 	bool GameData::load(tinyxml2::XMLHandle xml) {
 		try {
 			settings_ = loadSettings(xml.FirstChildElement("settings"));
@@ -221,11 +211,8 @@ namespace zombie {
 			for (const WeaponProperties& p : weapons) {
 				weapons_[p.name_] = p;
 			}
-			auto units = loadUnits(xml.FirstChildElement("movingObjects"));
-			for (const UnitProperties& p : units) {
-				units_[p.name_] = p;
-			}
 			
+			loadUnits(xml.FirstChildElement("movingObjects"));
 			loadCars(xml.FirstChildElement("movingObjects"));
 			
 			// Load map.

@@ -28,10 +28,10 @@ namespace zombie {
 		Unit(float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
 		virtual ~Unit();
 
-		void createBody(b2World* world, State state);
+		Unit(const Unit&);;
+		Unit& operator=(const Unit&);
 
-		Unit(const Unit&) = delete;
-		Unit& operator=(const Unit&) = delete;
+		void createBody(b2World* world, State state);
 		
 		void updatePhysics(float time, float timeStep, Input input) override;
 

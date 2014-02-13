@@ -6,9 +6,7 @@
 #include "auxiliary.h"
 #include "load.h"
 #include "settings.h"
-#include "car.h"
-#include "human2d.h"
-#include "zombie2d.h"
+#include "unit2d.h"
 #include "car2d.h"
 #include "weaponitem2d.h"
 #include "building2d.h"
@@ -37,13 +35,22 @@ namespace zombie {
 		innerSpawnRadius_ = 0.f;
 		outerSpawnRadius_ = 5.f;
 
-		gameData_.humanPlayer([&](State state, UnitProperties uP, const Animation& animation) {
-			Unit* human = new Human2D(uP.mass_, uP.radius_, uP.life_, uP.walkingSpeed_,
-				uP.runningSpeed_, Weapon(55, 0.2f, 8, 12), animation);
+		std::map<std::string, Unit2D*> units = gameData_.getUnits();
+		// Add human.
+		{			
+			State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
+			Unit2D* human = new Unit2D(*units["Human"]);
 			engine_.setHuman(keyboard1_, state, human);
 			viewPosition_ = human->getPosition();
-		});
+		}
+		// Add zombies.
+		Unit2D* zombie = new Unit2D(*units["Zombie"]);
+		for (int i = 0; i < 30; ++i) {
+			State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
+			engine_.add(state, new Unit2D(*zombie));
+		}
 
+		// Add cars.
 		const std::map<std::string, Car2D*>& cars = gameData_.getCars();
 		for (int i = 0; i < 10; ++i) {
 			for (auto& pair : cars) {
@@ -53,12 +60,6 @@ namespace zombie {
 				engine_.add(state, new Car2D(*car));
 			}
 		}
-
-		gameData_.iterateUnits([&](State state, UnitProperties uP, const Animation& animation) {
-			engine_.add(state, new Zombie2D(uP.mass_, uP.radius_,
-				uP.life_, uP.walkingSpeed_, uP.
-				runningSpeed_, Weapon(35, 0.5f, 1, 10000), animation));
-		});
 
 		gameData_.iterateBuildings([&](Building2D* building) {
 			// Engine takes the ownership.

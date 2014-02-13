@@ -2,7 +2,6 @@
 #define GAMEDATA_H
 
 #include "weaponproperties.h"
-#include "unitproperties.h"
 #include "settings.h"
 #include "animation.h"
 #include "auxiliary.h"
@@ -20,6 +19,7 @@ namespace zombie {
 
 	class Building2D;
 	class Car2D;
+	class Unit2D;
 
 	// Returns a random postion between the defined outer and inner circle centered in position.
 	Position generatePosition(Position position, float innerRadius, float outerRadius);
@@ -36,9 +36,9 @@ namespace zombie {
 			return settings_.height_;
 		}
 
-		void humanPlayer(std::function<void(State, UnitProperties, const Animation& animation)> func);
-
-		void iterateUnits(std::function<void(State, UnitProperties, const Animation& animation)> func);
+		inline const std::map<std::string, Unit2D*>& getUnits() {
+			return units_;
+		}
 
 		inline const std::map<std::string, Car2D*>& getCars() {
 			return cars_;
@@ -65,7 +65,11 @@ namespace zombie {
 		// Handle to map (node = <map>) to be loaded.
 		void loadMap(std::string map);
 
-		void loadCars(tinyxml2::XMLHandle movingUnitsTag);
+		void loadUnits(tinyxml2::XMLHandle movingUnitsTag);
+
+		void loadCars(tinyxml2::XMLHandle movingCarsTag);
+
+		Animation loadAnimation(tinyxml2::XMLHandle animationTag);
 
 		// Get the loaded texture, if the loaded texture not exist in memory,
 		// the image (file) is loaded to memory. If the loading fails a nullptr
@@ -74,7 +78,7 @@ namespace zombie {
 
 		Settings settings_;
 		std::map<std::string, WeaponProperties> weapons_;
-		std::map<std::string, UnitProperties> units_;
+		std::map<std::string, Unit2D*> units_;
 		std::map<std::string, Car2D*> cars_;
 		std::vector<Building2D*> buildings_;
 

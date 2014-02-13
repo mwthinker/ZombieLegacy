@@ -28,6 +28,44 @@ namespace zombie {
 		mass_ = mass;
 	}
 
+	Unit::Unit(const Unit& unit) {
+		isInfected_ = unit.isInfected_;
+
+		// Properties
+		viewDistance_ = unit.viewAngle_;
+		viewAngle_ = unit.viewAngle_;
+		smallViewDistance_ = unit.smallViewDistance_;
+
+		// Health
+		healthPoints_ = unit.healthPoints_;
+		isDead_ = unit.isDead_;
+
+		timeLeftToRun_ = unit.timeLeftToRun_;
+
+		radius_ = unit.radius_;
+		mass_ = unit.mass_;
+	}
+
+	Unit& Unit::operator=(const Unit& unit) {
+		isInfected_ = unit.isInfected_;
+
+		// Properties
+		viewDistance_ = unit.viewAngle_;
+		viewAngle_ = unit.viewAngle_;
+		smallViewDistance_ = unit.smallViewDistance_;
+
+		// Health
+		healthPoints_ = unit.healthPoints_;
+		isDead_ = unit.isDead_;
+
+		timeLeftToRun_ = unit.timeLeftToRun_;
+
+		radius_ = unit.radius_;
+		mass_ = unit.mass_;
+
+		return *this;
+	}
+
 	void Unit::createBody(b2World* world, State state) {
 		// Box2d properties.
 		b2BodyDef bodyDef;
