@@ -114,12 +114,6 @@ namespace zombie {
 
 		// Load game data and map data.
 		load(handleXml);
-	}	
-
-	void GameData::iterateBuildings(std::function<void(Building2D* building)> func) {
-		for (Building2D* p : buildings_) {
-			func(p);
-		}
 	}
 
 	void GameData::loadCars(tinyxml2::XMLHandle movingUnitsTag) {

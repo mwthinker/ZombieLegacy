@@ -61,14 +61,15 @@ namespace zombie {
 			}
 		}
 
-		gameData_.iterateBuildings([&](Building2D* building) {
+		const auto& buildings = gameData_.getBuildings();
+		for (Building2D* building : buildings) {
 			// Engine takes the ownership.
-			engine_.add(building);
-		});
-
-		setBackgroundColor(mw::Color(0, 0.3, 0));
+			engine_.add(new Building2D(*building));
+		}
 
 		terrain2D_ = gameData.getTerrain2D();
+
+		setBackgroundColor(mw::Color(0, 0.3, 0));
 	}
 
 	ZombieGame::~ZombieGame() {

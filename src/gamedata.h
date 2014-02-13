@@ -46,7 +46,9 @@ namespace zombie {
 			return cars_;
 		}
 
-		void iterateBuildings(std::function<void(Building2D*)> func);
+		const std::vector<Building2D*>& getBuildings() {
+			return buildings_;
+		}
 
 		inline float getImpulseThreshold() const {
 			return settings_.impulseThreshold_;
