@@ -3,6 +3,7 @@
 #include "building2d.h"
 #include "car2d.h"
 #include "unit2d.h"
+#include "weaponitem2d.h"
 
 #include <mw/sound.h>
 #include <mw/texture.h>
@@ -15,32 +16,7 @@
 
 namespace zombie {
 
-	namespace {
-
-		std::vector<WeaponProperties> loadWeapons(tinyxml2::XMLHandle weaponsTag) {
-			std::vector<WeaponProperties> weapons;
-
-			// Find all weapons.
-			tinyxml2::XMLElement* element = weaponsTag.FirstChildElement("weapon").ToElement();
-			while (element != nullptr) {
-				WeaponProperties properties;
-				properties.name_ = convertFromText<const char*>(toText(element->FirstChildElement("name")));
-				properties.image_ = convertFromText<const char*>(toText(element->FirstChildElement("image")));
-				properties.damage_ = convertFromText<float>(toText(element->FirstChildElement("damage")));
-				properties.timeBetweenShots_ = convertFromText<float>(toText(element->FirstChildElement("timeBetweenShots")));
-				properties.range_ = convertFromText<float>(toText(element->FirstChildElement("range")));
-				properties.clipSize_ = convertFromText<int>(toText(element->FirstChildElement("clipSize")));
-				properties.shootSound_ = convertFromText<const char*>(toText(element->FirstChildElement("shootSound")));
-				properties.reloadSound_ = convertFromText<const char*>(toText(element->FirstChildElement("reloadSound")));
-
-				// Add weapon.
-				weapons.push_back(properties);
-
-				element = element->NextSiblingElement("weapon");
-			}
-
-			return weapons;
-		}
+	namespace {		
 
 		void loadMapItems(tinyxml2::XMLHandle objectsTag, std::vector<Building2D*>& buildings, Terrain2D& terrain) {
 			tinyxml2::XMLElement* element = objectsTag.FirstChildElement("object").ToElement();
@@ -185,6 +161,26 @@ namespace zombie {
 		}
 	}
 
+	void GameData::loadWeapons(tinyxml2::XMLHandle weaponsTag) {
+		// Find all weapons.
+		tinyxml2::XMLElement* element = weaponsTag.FirstChildElement("weapon").ToElement();
+		while (element != nullptr) {
+			std::string name = convertFromText<const char*>(toText(element->FirstChildElement("name")));
+			std::string image = convertFromText<const char*>(toText(element->FirstChildElement("image")));
+			float damage = convertFromText<float>(toText(element->FirstChildElement("damage")));
+			float timeBetweenShots = convertFromText<float>(toText(element->FirstChildElement("timeBetweenShots")));
+			float range = convertFromText<float>(toText(element->FirstChildElement("range")));
+			int clipSize = convertFromText<int>(toText(element->FirstChildElement("clipSize")));
+			std::string shootSound = convertFromText<const char*>(toText(element->FirstChildElement("shootSound")));
+			std::string reloadSound = convertFromText<const char*>(toText(element->FirstChildElement("reloadSound")));
+
+			// Add weapon.
+			weapons_[name] = new WeaponItem2D(0, 0, Weapon(damage, timeBetweenShots, range, clipSize));
+
+			element = element->NextSiblingElement("weapon");
+		}
+	}
+
 	Animation GameData::loadAnimation(tinyxml2::XMLHandle animationTag) {
 		tinyxml2::XMLHandle handle = animationTag.FirstChildElement("scale");
 		if (handle.ToElement() == nullptr) {
@@ -207,11 +203,7 @@ namespace zombie {
 	bool GameData::load(tinyxml2::XMLHandle xml) {
 		try {
 			settings_ = loadSettings(xml.FirstChildElement("settings"));
-			auto weapons = loadWeapons(xml.FirstChildElement("weapons"));
-			for (const WeaponProperties& p : weapons) {
-				weapons_[p.name_] = p;
-			}
-			
+			loadWeapons(xml.FirstChildElement("weapons"));
 			loadUnits(xml.FirstChildElement("movingObjects"));
 			loadCars(xml.FirstChildElement("movingObjects"));
 			

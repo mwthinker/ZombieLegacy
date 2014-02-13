@@ -10,17 +10,21 @@ namespace zombie {
 	public:
 		WeaponItem2D(float x, float y, const Weapon& weapon) : WeaponItem(x, y, weapon) {
 		}
-	};
 
-	void draw(float time) {
-		/*
-		const WeaponObject* wOb = static_cast<const WeaponObject*>(ob);
-		Position p = wOb->getPosition();
-		glColor3d(0,0,1);
-		drawCircle(p.x,p.y,wOb->getRadius(),6,true);
-		return true;
-		*/
-	}
+		void draw(float time) override {
+			/*
+			const WeaponObject* wOb = static_cast<const WeaponObject*>(ob);
+			Position p = wOb->getPosition();
+			glColor3d(0,0,1);
+			drawCircle(p.x,p.y,wOb->getRadius(),6,true);
+			return true;
+			*/
+		}
+
+		void collisionWith(Object* ob, float impulse) override {
+			ob->collisionWith(this, impulse);
+		}
+	};
 
 } // Namespace zombie.
 

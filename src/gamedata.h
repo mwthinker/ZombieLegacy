@@ -1,12 +1,13 @@
 #ifndef GAMEDATA_H
 #define GAMEDATA_H
 
-#include "weaponproperties.h"
+#include "weapon.h"
 #include "settings.h"
 #include "animation.h"
 #include "auxiliary.h"
 #include "state.h"
 #include "terrain2d.h"
+#include "weaponitem2d.h"
 
 #include <mw/sound.h>
 #include <mw/texture.h>
@@ -20,6 +21,7 @@ namespace zombie {
 	class Building2D;
 	class Car2D;
 	class Unit2D;
+	class WeaponItem2D;
 
 	// Returns a random postion between the defined outer and inner circle centered in position.
 	Position generatePosition(Position position, float innerRadius, float outerRadius);
@@ -69,6 +71,8 @@ namespace zombie {
 
 		void loadCars(tinyxml2::XMLHandle movingCarsTag);
 
+		void loadWeapons(tinyxml2::XMLHandle weaponsTag);
+
 		Animation loadAnimation(tinyxml2::XMLHandle animationTag);
 
 		// Get the loaded texture, if the loaded texture not exist in memory,
@@ -77,7 +81,7 @@ namespace zombie {
 		mw::TexturePtr loadTexture(std::string file);
 
 		Settings settings_;
-		std::map<std::string, WeaponProperties> weapons_;
+		std::map<std::string, WeaponItem2D*> weapons_;
 		std::map<std::string, Unit2D*> units_;
 		std::map<std::string, Car2D*> cars_;
 		std::vector<Building2D*> buildings_;
