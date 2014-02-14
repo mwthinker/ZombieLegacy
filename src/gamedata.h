@@ -1,10 +1,8 @@
 #ifndef GAMEDATA_H
 #define GAMEDATA_H
 
-#include "weapon.h"
 #include "settings.h"
 #include "animation.h"
-#include "auxiliary.h"
 #include "state.h"
 #include "terrain2d.h"
 #include "weaponitem2d.h"
@@ -22,9 +20,6 @@ namespace zombie {
 	class Car2D;
 	class Unit2D;
 	class WeaponItem2D;
-
-	// Returns a random postion between the defined outer and inner circle centered in position.
-	Position generatePosition(Position position, float innerRadius, float outerRadius);
 
 	class GameData {
 	public:
@@ -60,6 +55,10 @@ namespace zombie {
 
 		inline Terrain2D getTerrain2D() const {
 			return terrain2d_;
+		}
+
+		inline int getUnitLevel() const {
+			return settings_.unitLevel_;
 		}
 
 	private:

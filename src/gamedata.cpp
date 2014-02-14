@@ -16,7 +16,7 @@
 
 namespace zombie {
 
-	namespace {		
+	namespace {
 
 		void loadMapItems(tinyxml2::XMLHandle objectsTag, std::vector<Building2D*>& buildings, Terrain2D& terrain) {
 			tinyxml2::XMLElement* element = objectsTag.FirstChildElement("object").ToElement();
@@ -77,13 +77,8 @@ namespace zombie {
 			settings.timeStepMS_ = convertFromText<int>(toText(settingsTag.FirstChildElement("timeStepMS")));
 			settings.mapFile_ = convertFromText<const char*>(toText(settingsTag.FirstChildElement("map")));
 			return settings;
-		}		
+		}
 
-	}
-
-	// Returns a random postion between the defined outer and inner circle centered in position.
-	Position generatePosition(Position position, float innerRadius, float outerRadius) {
-		return position + (innerRadius + (outerRadius - innerRadius) * random()) * Position(std::cosf(random()*2.f*3.14f), std::sinf(random()*2.f*3.14f));
 	}
 
 	GameData::GameData(std::string dataFile) {
@@ -149,7 +144,8 @@ namespace zombie {
 			float runningSpeed = convertFromText<float>(toText(element->FirstChildElement("runningSpeed")));
 			float stamina = convertFromText<float>(toText(element->FirstChildElement("stamina")));
 			Animation animation = loadAnimation(toElement(element->FirstChildElement("animation")));
-			units_[name] = new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, Weapon(), animation);
+			std::string weaponName = convertFromText<const char*>(toText(element->FirstChildElement("weapon")));
+			units_[name] = new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapons_[weaponName]->getWeapon(), animation);
 
 			element = element->NextSiblingElement("unit");
 		}
@@ -200,7 +196,7 @@ namespace zombie {
 			loadWeapons(xml.FirstChildElement("weapons"));
 			loadUnits(xml.FirstChildElement("movingObjects"));
 			loadCars(xml.FirstChildElement("movingObjects"));
-			
+
 			// Load map.
 			loadMap(settings_.mapFile_);
 
@@ -223,7 +219,7 @@ namespace zombie {
 			mapHandle = mapHandle.FirstChildElement("map");
 
 			loadMapItems(mapHandle.FirstChildElement("objects"), buildings_, terrain2d_);
-			
+
 		} catch (std::exception&) {
 			std::exit(1);
 		}

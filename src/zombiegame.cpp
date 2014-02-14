@@ -21,6 +21,15 @@
 
 namespace zombie {
 
+	namespace {
+
+		// Returns a random postion between the defined outer and inner circle centered in position.
+		Position generatePosition(Position position, float innerRadius, float outerRadius) {
+			return position + (innerRadius + (outerRadius - innerRadius) * random()) * Position(std::cosf(random()*2.f*3.14f), std::sinf(random()*2.f*3.14f));
+		}
+
+	}
+
 	ZombieGame::ZombieGame(const GameData& gameData) : engine_(this, gameData.getTimeStemMS(), gameData.getImpulseThreshold()), gameData_(gameData) {
 		keyboard1_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT,
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
@@ -37,34 +46,39 @@ namespace zombie {
 
 		std::map<std::string, Unit2D*> units = gameData_.getUnits();
 		// Add human.
-		{			
+		{
 			State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
 			Unit2D* human = new Unit2D(*units["Human"]);
 			engine_.setHuman(keyboard1_, state, human);
 			viewPosition_ = human->getPosition();
 		}
 		// Add zombies.
-		Unit2D* zombie = new Unit2D(*units["Zombie"]);
-		for (int i = 0; i < 30; ++i) {
-			State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
-			engine_.add(state, new Unit2D(*zombie));
-		}
-
-		// Add cars.
-		const std::map<std::string, Car2D*>& cars = gameData_.getCars();
-		for (int i = 0; i < 10; ++i) {
-			for (auto& pair : cars) {
-				Car2D* car = pair.second;
+		{
+			Unit2D* zombie = units["Zombie"];
+			for (int i = 0; i < gameData.getUnitLevel(); ++i) {
 				State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
-				// Engine takes the ownership.
-				engine_.add(state, new Car2D(*car));
+				engine_.add(state, new Unit2D(*zombie));
 			}
 		}
-
-		const auto& buildings = gameData_.getBuildings();
-		for (Building2D* building : buildings) {
-			// Engine takes the ownership.
-			engine_.add(new Building2D(*building));
+		// Add cars.
+		{
+			const std::map<std::string, Car2D*>& cars = gameData_.getCars();
+			for (int i = 0; i < 10; ++i) {
+				for (auto& pair : cars) {
+					Car2D* car = pair.second;
+					State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
+					// Engine takes the ownership.
+					engine_.add(state, new Car2D(*car));
+				}
+			}
+		}
+		// Add buildings.
+		{
+			const auto& buildings = gameData_.getBuildings();
+			for (Building2D* building : buildings) {
+				// Engine takes the ownership.
+				engine_.add(new Building2D(*building));
+			}
 		}
 
 		terrain2D_ = gameData.getTerrain2D();
@@ -88,7 +102,7 @@ namespace zombie {
 		gui::Dimension dim = getSize();
 		glTranslated(dim.width_*0.5f, dim.height_*0.5f, 0);
 		glScale2f(50);
-		glScale2f(scale_); // Is to fit the box drawn where x=[0,1] and y=[0,1].
+		glScale2f(scale_);
 		glTranslate2f(-viewPosition_);
 
 		// Game is started?
