@@ -8,14 +8,6 @@
 
 namespace zombie {
 
-	class Explosion2D {
-	public:
-		Explosion2D() {
-		}
-
-	private:
-	};
-
 	class Missile : public Object {
 	public:
 		Missile(float range, float damage, float explosionRadius) {

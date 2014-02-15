@@ -59,11 +59,7 @@ namespace zombie {
 		void destroyBody(b2World* world) override {
 			world->DestroyBody(body_);
 			body_ = nullptr;
-		}
-
-		bool isDestroyed() const override {
-			return body_ == nullptr;
-		}
+		}	
 
 	private:
 		Weapon weapon;

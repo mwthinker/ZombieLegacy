@@ -267,8 +267,4 @@ namespace zombie {
 		body_ = nullptr;
 	}
 
-	bool Unit::isDestroyed() const {
-		return body_ == nullptr;
-	}
-
 } // Namespace zombie.

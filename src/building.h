@@ -73,10 +73,6 @@ namespace zombie {
 			body_ = nullptr;
 		}
 
-		bool isDestroyed() const override {
-			return body_ == nullptr;
-		}
-
 	protected:
 		void init() {
 			body_ = nullptr;

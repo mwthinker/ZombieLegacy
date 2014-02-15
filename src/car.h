@@ -98,8 +98,6 @@ namespace zombie {
 
 		void destroyBody(b2World* world) override;
 
-		bool isDestroyed() const override;
-
 	private:
 		void applyFriction(float frictionForwardFrontWheel, float frictionForwardBackWheel,
 			float frictionLateralFrontWheel, float frictionLateralBackWheel);

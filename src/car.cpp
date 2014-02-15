@@ -159,8 +159,4 @@ namespace zombie {
 		body_ = nullptr;
 	}
 
-	bool Car::isDestroyed() const {
-		return body_ == nullptr;
-	}
-
 } // Namespace zombie.

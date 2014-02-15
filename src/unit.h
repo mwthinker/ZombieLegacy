@@ -100,8 +100,6 @@ namespace zombie {
 
 		void destroyBody(b2World* world) override;
 
-		bool isDestroyed() const override;
-
 	private:
 		// Properties
 		float viewDistance_;
