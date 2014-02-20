@@ -10,10 +10,6 @@
 
 namespace zombie {
 
-	class Unit;
-	class Driver;
-	class Building;
-
 	// Defines the property of a car. The car has 4 wheels but is simulated as having 
 	// one front wheel and one backwheel in order to simlify the math.
 	class Car : public MovingObject {
@@ -85,16 +81,6 @@ namespace zombie {
 		mw::signals::Connection addEventHandler(mw::Signal<Car*, CarEvent>::Callback callback) {
 			return eventSignal_.connect(callback);
 		}
-
-		void collisionWith(Object* ob, float impulse) override {
-			ob->collisionWith(this, impulse);
-		}
-
-		void collisionWith(Unit*, float impulse) override;
-
-		void collisionWith(Car*, float impulse) override;
-
-		void collisionWith(Building* ob, float impulse) override;
 
 		void destroyBody(b2World* world) override;
 

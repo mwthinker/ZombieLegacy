@@ -64,10 +64,6 @@ namespace zombie {
 			return body_;
 		}
 
-		void collisionWith(Object* ob, float impulse) override {
-			ob->collisionWith(this, impulse);
-		}
-
 		void destroyBody(b2World* world) override {
 			world->DestroyBody(body_);
 			body_ = nullptr;

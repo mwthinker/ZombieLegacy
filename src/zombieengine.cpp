@@ -19,6 +19,23 @@ namespace zombie {
 
 	namespace {
 
+		void collision(GameInterface* game, float impulse, Object* ob1, Object* ob2) {
+			if (Car* car1 = dynamic_cast<Car*>(ob1)) {
+				if (Car* car2 = dynamic_cast<Car*>(ob2)) {
+					game->collision(impulse, *car1, *car2);
+				} else if (Unit* unit2 = dynamic_cast<Unit*>(ob2)) {
+					game->collision(impulse, *car1, *unit2);
+				} else if (Building* building = dynamic_cast<Building*>(ob2)) {
+					game->collision(impulse, *car1, *building);
+				}
+			} else if (Unit* unit1 = dynamic_cast<Unit*>(ob1)) {
+				if (nullptr != dynamic_cast<Unit*>(ob2)) {
+					// ob2 is not a unit, this in order to avoid a infinity loop.
+					collision(game, impulse, ob2, ob1);
+				}
+			}
+		}
+
 		class InViewQueryCallback : public b2QueryCallback {
 		public:
 			std::vector<b2Fixture*> foundFixtures;
@@ -158,7 +175,7 @@ namespace zombie {
 
 			if (human_ != nullptr && !human_->toBeRemoved()) {
 				Position p = human_->getPosition();
-				gameInterface_->humanPosition(p.x, p.y);
+				gameInterface_->currentHuman(*human_);
 			} else {
 				human_ = nullptr;
 			}
@@ -332,7 +349,7 @@ namespace zombie {
 		if (getVisibleObject(contact, object, looker)) {
 			looker->removeSeenObject(object);
 		}
-	}
+	}	
 
 	void ZombieEngine::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
 		Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
@@ -343,8 +360,7 @@ namespace zombie {
 		}
 
 		if (maxImpulse > impulseThreshold_) {
-			ob1->collisionWith(ob2, maxImpulse);
-			ob2->collisionWith(ob1, maxImpulse);
+			collision(gameInterface_, maxImpulse, ob1, ob2);
 		}
 	}
 

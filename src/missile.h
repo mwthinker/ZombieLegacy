@@ -23,10 +23,6 @@ namespace zombie {
 		void draw(float time) override {
 		}
 
-		void collisionWith(Object* ob, float impulse) override {
-			ob->collisionWith(this, impulse);
-		}
-
 		bool toBeRemoved() const {
 			return true;
 		}

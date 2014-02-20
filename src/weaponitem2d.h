@@ -21,9 +21,6 @@ namespace zombie {
 			*/
 		}
 
-		void collisionWith(Object* ob, float impulse) override {
-			ob->collisionWith(this, impulse);
-		}
 	};
 
 } // Namespace zombie.

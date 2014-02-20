@@ -43,22 +43,25 @@ namespace zombie {
 		innerSpawnRadius_ = 0.f;
 		outerSpawnRadius_ = 5.f;
 
-		std::map<std::string, Unit2D*> units = gameData_.getUnits();
-		// Add human.
 		{
-			State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
-			Unit2D* human = new Unit2D(*units["Human"]);
-			engine_.setHuman(keyboard1_, state, human);
-			viewPosition_ = human->getPosition();
-		}
-		// Add zombies.
-		{
-			Unit2D* zombie = units["Zombie"];
-			for (int i = 0; i < gameData.getUnitLevel(); ++i) {
+			std::map<std::string, Unit2D*> units = gameData_.getUnits();
+			// Add human.
+			{
 				State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
-				engine_.add(state, new Unit2D(*zombie));
+				Unit2D* human = new Unit2D(*units["Human"]);
+				engine_.setHuman(keyboard1_, state, human);
+				viewPosition_ = human->getPosition();
+			}
+			// Add zombies.
+			{
+				Unit2D* zombie = units["Zombie"];
+				for (int i = 0; i < gameData.getUnitLevel(); ++i) {
+					State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
+					engine_.add(state, new Unit2D(*zombie));
+				}
 			}
 		}
+
 		// Add cars.
 		{
 			const std::map<std::string, Car2D*>& cars = gameData_.getCars();
@@ -66,7 +69,6 @@ namespace zombie {
 				for (auto& pair : cars) {
 					Car2D* car = pair.second;
 					State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
-					// Engine takes the ownership.
 					engine_.add(state, new Car2D(*car));
 				}
 			}
@@ -75,7 +77,6 @@ namespace zombie {
 		{
 			const auto& buildings = gameData_.getBuildings();
 			for (Building2D* building : buildings) {
-				// Engine takes the ownership.
 				engine_.add(new Building2D(*building));
 			}
 		}
@@ -116,8 +117,8 @@ namespace zombie {
 		glPopMatrix();
 	}
 
-	void ZombieGame::humanPosition(float x, float y) {
-		viewPosition_ += 0.1f * (Position(x, y) - viewPosition_);
+	void ZombieGame::currentHuman(Unit& unit) {
+		viewPosition_ += 0.1f * (unit.getPosition() - viewPosition_);
 	}
 
 	void ZombieGame::zoom(float scale) {

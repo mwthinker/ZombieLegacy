@@ -252,15 +252,6 @@ namespace zombie {
 		return body_;
 	}
 
-	void Unit::collisionWith(Unit* unit, float impulse) {
-	}
-
-	void Unit::collisionWith(Car* car, float impulse) {
-	}
-
-	void Unit::collisionWith(Building* building, float impulse) {
-	}
-
 	void Unit::destroyBody(b2World* world) {
 		eventSignal_(this, REMOVED);
 		world->DestroyBody(body_);

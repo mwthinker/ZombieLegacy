@@ -36,7 +36,7 @@ namespace zombie {
 		void zoom(float scale);
 
 	private:
-		void humanPosition(float x, float y) override;
+		void currentHuman(Unit& unit) override;
 
 		float innerSpawnRadius_;
 		float outerSpawnRadius_;

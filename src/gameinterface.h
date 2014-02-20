@@ -1,6 +1,10 @@
 #ifndef GAMEINTERFACE_H
 #define GAMEINTERFACE_H
 
+#include "unit.h"
+#include "car.h"
+#include "building.h"
+
 namespace zombie {
 
 	class GameInterface {
@@ -10,7 +14,7 @@ namespace zombie {
 
 	public:
 		// The current position of the human.
-		virtual void humanPosition(float x, float y) {
+		virtual void currentHuman(Unit& unit) {
 		}
 
 		// The human just died.
@@ -18,6 +22,10 @@ namespace zombie {
 		}
 
 		// A unit just died.
+		virtual void unitDied(Unit& unit) {
+		}
+
+		// A car just died.
 		virtual void unitDied(float x, float y, bool infected) {
 		}
 
@@ -26,10 +34,13 @@ namespace zombie {
 			return false;
 		}
 
-		virtual void unitCollision() {
+		virtual void collision(float impulse, Car& car, Unit& unit) {
 		}
 
-		virtual void carCollision() {
+		virtual void collision(float impulse, Car& car1, Car& car2) {
+		}
+
+		virtual void collision(float impulse, Car& car, Building& building) {
 		}
 
 		virtual void shotFired(const Bullet& bullet) {

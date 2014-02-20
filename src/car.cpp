@@ -144,15 +144,6 @@ namespace zombie {
 		body_->ApplyForce(force, getFrontWheelPosition());
 	}
 
-	void Car::collisionWith(Unit* unit, float impulse) {
-	}
-
-	void Car::collisionWith(Car* car, float impulse) {
-	}
-
-	void Car::collisionWith(Building* building, float impulses) {
-	}
-
 	void Car::destroyBody(b2World* world) {
 		eventSignal_(this, REMOVED);
 		world->DestroyBody(body_);

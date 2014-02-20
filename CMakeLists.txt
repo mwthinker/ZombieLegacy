@@ -39,6 +39,7 @@ SET(SOURCES_ZOMBIE
 	src/gamesound.h
 	src/gamesprite.cpp
 	src/gamesprite.h
+	src/graphic.h
 	src/humanplayer.h
 	src/input.h
 	src/inputkeyboard.h
