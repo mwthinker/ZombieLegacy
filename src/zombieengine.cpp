@@ -187,7 +187,7 @@ namespace zombie {
 	void ZombieEngine::removeGarbage() {
 		// Remove all players in a safe way. I.e. No risk of removing a player in current use.
 		for (Player* player : garbagePlayers_) {
-			//delete player;
+			delete player;
 		}
 		garbagePlayers_.clear();
 

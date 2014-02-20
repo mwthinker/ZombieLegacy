@@ -11,6 +11,7 @@
 #include "weaponitem2d.h"
 #include "building2d.h"
 #include "terrain2d.h"
+#include "blood.h"
 
 // External.
 #include <mw/exception.h>
@@ -109,6 +110,12 @@ namespace zombie {
 		if (engine_.isStarted()) {
 			terrain2D_.draw(deltaTime / 1000.f);
 			engine_.update(deltaTime / 1000.f);
+			for (auto ob : graphicObjects_) {
+				ob->draw(deltaTime / 1000.f);
+			}
+			graphicObjects_.remove_if([](const std::shared_ptr<Graphic>& ob) {
+				return ob->toBeRemoved();
+			});
 		} else {
 			terrain2D_.draw(0);
 			engine_.update(0);
@@ -123,6 +130,14 @@ namespace zombie {
 
 	void ZombieGame::zoom(float scale) {
 		scale_ *= scale;
+	}
+
+	void ZombieGame::unitDied(Unit& unit) {
+		graphicObjects_.push_back(std::make_shared<Blood>(unit.getPosition()));
+	}
+
+	void ZombieGame::humanDied(Unit& unit) {
+		graphicObjects_.push_back(std::make_shared<Blood>(unit.getPosition()));
 	}
 
 } // Namespace zombie.

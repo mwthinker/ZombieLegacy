@@ -2,19 +2,22 @@
 #define BLOOD_H
 
 #include "box2ddef.h"
+#include "graphic.h"
 
 #include <mw/sprite.h>
 
 namespace zombie {
 
-	class Blood {
+	class Blood : public Graphic {
 	public:
-		Blood(Position position, float currentTime);
+		Blood(Position position);
 		
-		bool update(float time);
+		void draw(float deltaTime);
+
+		bool toBeRemoved() const override;
 
 	private:
-		float startTime_;
+		float time_;
 		Position position_;				
 		float duration_;
 

@@ -5,6 +5,7 @@
 #include "gameinterface.h"
 #include "device.h"
 #include "gamedata.h"
+#include "graphic.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
@@ -13,6 +14,8 @@
 #include <gui/component.h>
 
 #include <map>
+#include <memory>
+#include <list>
 
 namespace zombie {
 
@@ -38,6 +41,10 @@ namespace zombie {
 	private:
 		void currentHuman(Unit& unit) override;
 
+		void humanDied(Unit& unit) override;
+
+		void unitDied(Unit& unit) override;
+
 		float innerSpawnRadius_;
 		float outerSpawnRadius_;
 		Position viewPosition_;
@@ -48,6 +55,7 @@ namespace zombie {
 
 		DevicePtr keyboard1_, keyboard2_;
 		GameData gameData_;
+		std::list<std::shared_ptr<Graphic>> graphicObjects_;
 	};
 
 } // Namespace zombie_;

@@ -18,7 +18,7 @@ namespace zombie {
 		}
 
 		// The human just died.
-		virtual void humanDied() {
+		virtual void humanDied(Unit& unit) {
 		}
 
 		// A unit just died.
