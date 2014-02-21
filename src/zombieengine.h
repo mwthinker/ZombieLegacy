@@ -92,6 +92,8 @@ namespace zombie {
 		void doShotDamage(Unit* shooter, const Bullet& properties);
 
 		void BeginContact(b2Contact* contact) override;
+		
+		// Is called when the contact has get out of view or is destroyed.
 		void EndContact(b2Contact* contact) override;
 		void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override;
 

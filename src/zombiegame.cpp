@@ -27,6 +27,18 @@ namespace zombie {
 		// Returns a random postion between the defined outer and inner circle centered in position.
 		Position generatePosition(Position position, float innerRadius, float outerRadius) {
 			return position + (innerRadius + (outerRadius - innerRadius) * random()) * Position(std::cosf(random()*2.f*3.14f), std::sinf(random()*2.f*3.14f));
+		}		
+
+		void removeDeadGraphicObjects(std::list<std::shared_ptr<Graphic>>& list) {
+			list.remove_if([](const std::shared_ptr<Graphic>& ob) {
+				return ob->toBeRemoved();
+			});
+		}
+
+		void drawGraphicList(std::list<std::shared_ptr<Graphic>>& list, float deltaTime) {
+			for (auto ob : list) {
+				ob->draw(deltaTime);
+			}
 		}
 
 	}
@@ -109,13 +121,14 @@ namespace zombie {
 		// Game is started?
 		if (engine_.isStarted()) {
 			terrain2D_.draw(deltaTime / 1000.f);
+			drawGraphicList(graphicGround_, deltaTime / 1000.f);
 			engine_.update(deltaTime / 1000.f);
-			for (auto ob : graphicObjects_) {
-				ob->draw(deltaTime / 1000.f);
-			}
-			graphicObjects_.remove_if([](const std::shared_ptr<Graphic>& ob) {
-				return ob->toBeRemoved();
-			});
+			drawGraphicList(graphicMiddle_, deltaTime / 1000.f);
+			drawGraphicList(graphicHeaven_, deltaTime / 1000.f);
+			
+			removeDeadGraphicObjects(graphicGround_);
+			removeDeadGraphicObjects(graphicMiddle_);
+			removeDeadGraphicObjects(graphicHeaven_);
 		} else {
 			terrain2D_.draw(0);
 			engine_.update(0);
@@ -133,11 +146,20 @@ namespace zombie {
 	}
 
 	void ZombieGame::unitDied(Unit& unit) {
-		graphicObjects_.push_back(std::make_shared<Blood>(unit.getPosition()));
+		graphicGround_.push_back(std::make_shared<Blood>(unit.getPosition()));
 	}
 
 	void ZombieGame::humanDied(Unit& unit) {
-		graphicObjects_.push_back(std::make_shared<Blood>(unit.getPosition()));
+		graphicGround_.push_back(std::make_shared<Blood>(unit.getPosition()));
+	}
+
+	void ZombieGame::collision(float impulse, Car& car, Unit& unit) {
+	}
+
+	void ZombieGame::collision(float impulse, Car& car1, Car& car2) {
+	}
+
+	void ZombieGame::collision(float impulse, Car& car, Building& building) {
 	}
 
 } // Namespace zombie.

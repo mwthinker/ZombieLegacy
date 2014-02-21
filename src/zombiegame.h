@@ -45,6 +45,12 @@ namespace zombie {
 
 		void unitDied(Unit& unit) override;
 
+		void collision(float impulse, Car& car, Unit& unit) override;
+
+		void collision(float impulse, Car& car1, Car& car2) override;
+
+		void collision(float impulse, Car& car, Building& building) override;
+
 		float innerSpawnRadius_;
 		float outerSpawnRadius_;
 		Position viewPosition_;
@@ -55,7 +61,10 @@ namespace zombie {
 
 		DevicePtr keyboard1_, keyboard2_;
 		GameData gameData_;
-		std::list<std::shared_ptr<Graphic>> graphicObjects_;
+
+		std::list<std::shared_ptr<Graphic>> graphicGround_;
+		std::list<std::shared_ptr<Graphic>> graphicMiddle_;
+		std::list<std::shared_ptr<Graphic>> graphicHeaven_;
 	};
 
 } // Namespace zombie_;

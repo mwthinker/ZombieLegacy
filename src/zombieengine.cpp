@@ -328,6 +328,15 @@ namespace zombie {
 				// Target alive?
 				if (!target->isDead()) {
 					target->updateHealthPoint(-bullet.damage_);
+					// Died now?
+					if (target->isDead()) {
+						// Human?
+						if (human_ == target) {
+							gameInterface_->humanDied(*target);
+						} else {
+							gameInterface_->unitDied(*target);
+						}
+					}
 				}
 			}
 		}
@@ -342,7 +351,6 @@ namespace zombie {
 		}
 	}
 
-	// Is called when the contact has get out of view or is destroyed.
 	void ZombieEngine::EndContact(b2Contact* contact) {
 		MovingObject* object;
 		MovingObject* looker;
