@@ -1,12 +1,10 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-PROJECT(Zombie)
-SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
+cmake_minimum_required(VERSION 2.8)
+project(Zombie)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
 if (MSVC)
 	# Exception handler model.
-	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /EHsc -D_SCL_SECURE_NO_WARNINGS")
-	SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHsc")
-	
-	SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIBS:MSVCRT")
+	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /EHsc")
+	SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHsc")	
 
 	ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS -DWIN32)	
 else (MSVC)
@@ -14,7 +12,7 @@ else (MSVC)
 endif (MSVC)
 
 # Source files.
-SET(SOURCES_ZOMBIE
+set(SOURCES_ZOMBIE
 	src/animation.h
 	src/auxiliary.cpp
 	src/auxiliary.h
@@ -74,21 +72,21 @@ SET(SOURCES_ZOMBIE
 )
 # End of source files.
 
-FIND_PACKAGE(OpenGL REQUIRED)
-FIND_PACKAGE(SDL2 REQUIRED)
-FIND_PACKAGE(SDL2_image REQUIRED)
-FIND_PACKAGE(SDL2_mixer REQUIRED)
-FIND_PACKAGE(SDL2_ttf REQUIRED)
+find_package(OpenGL REQUIRED)
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 
-ADD_SUBDIRECTORY(SdlGui)
-ADD_SUBDIRECTORY(MwExtra)
-ADD_SUBDIRECTORY(Box2D)
-ADD_SUBDIRECTORY(TinyXML2)
-ADD_SUBDIRECTORY(Spark)
+add_subdirectory(SdlGui)
+add_subdirectory(MwExtra)
+add_subdirectory(Box2D)
+add_subdirectory(TinyXML2)
+add_subdirectory(Spark)
 
-FILE(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
+file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
 
-INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS}
+include_directories(${SDL2_INCLUDE_DIRS}
 	${SDL2_TTF_INCLUDE_DIRS}
 	${SDL2_MIXER_INCLUDE_DIRS}
 	${SDL2_IMAGE_INCLUDE_DIRS}
@@ -102,33 +100,24 @@ INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS}
 	TinyXML2/src
 )
 
-ADD_EXECUTABLE(Zombie ${SOURCES_ZOMBIE})
+add_executable(Zombie ${SOURCES_ZOMBIE})
 
-IF (WIN32)
-	SET_TARGET_PROPERTIES (Zombie PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")
-ENDIF (WIN32)
+if (MSVC)
+	set_target_properties (Zombie PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")
+	set_target_properties(Zombie PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt")
+endif (MSVC)
 
-TARGET_LINK_LIBRARIES(Zombie Spark Box2D MwExtra MwLibrary2 SdlGui Signal TinyXML2 ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_MIXER_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${OPENGL_LIBRARIES})
-
-# Test project. Uses Boost Test. Unit Test.
-FIND_PACKAGE(Boost 1.54)
-IF (Boost_FOUND)
-	# Source files.
-	SET(SOURCES_TEST
-		src/test.cpp
-	)
-
-	INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-	LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
-	ADD_EXECUTABLE(Test ${SOURCES_TEST})
-	# ENABLE_TESTING()
-	# ADD_TEST(Test Test)
-	IF (MSVC)
-		# Runs the code in build output.
-		ADD_CUSTOM_COMMAND(TARGET Test
-			POST_BUILD
-			COMMAND "\$(TargetDir)/\$(TargetName).exe" --result_code=no --report_level=no
-			COMMENT "Auto run Test after build"
-		)
-	ENDIF (MSVC)
-ENDIF (Boost_FOUND)
+target_link_libraries(Zombie
+	Spark
+	Box2D
+	MwExtra
+	MwLibrary2
+	SdlGui
+	Signal
+	TinyXML2
+	${SDL2_LIBRARIES}
+	${SDL2_TTF_LIBRARIES}
+	${SDL2_MIXER_LIBRARIES}
+	${SDL2_IMAGE_LIBRARIES}
+	${OPENGL_LIBRARIES}
+)
