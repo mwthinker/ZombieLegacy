@@ -1,7 +1,7 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
-#include <mw/sprite.h>
+#include "spritesheet.h"
 
 #include <vector>
 #include <utility>
@@ -19,7 +19,19 @@ namespace zombie {
 		}
 
 		// All frames are drawn in scaled (scale) pixelsize.
-		Animation(float scale) {
+		Animation(const SpriteSheet& spriteSheet, float scale) {
+			spriteSheet_ = spriteSheet;
+			spriteSheet_.setDrawPixelSize(true);
+			index_ = 0;
+			scale_ = scale;
+			reset_ = false;
+			time_ = 0;
+		}
+
+		// All frames are drawn in scaled (scale) pixelsize.
+		Animation(const mw::TexturePtr& texture, int row, int column, float scale) {
+			spriteSheet_ = SpriteSheet(texture, row, column);
+			spriteSheet_.setDrawPixelSize(true);
 			index_ = 0;
 			scale_ = scale;
 			reset_ = false;
@@ -32,10 +44,9 @@ namespace zombie {
 			reset_ = true;
 		}
 
-		// Add the frame (sprite) with duration (time).
-		void add(mw::Sprite sprite, float time = 1.f) {
-			sprite.setDrawPixelSize(true);
-			sprites_.push_back(Pair(sprite, time));
+		// Add a frame and point it to the current sprite sheet.
+		void add(int row, int column, float time = 1.f) {
+			frames_.push_back(Frame(row, column, time));
 		}
 
 		void setScale(float scale) {
@@ -48,31 +59,45 @@ namespace zombie {
 			if (reset_) {
 				reset_ = false;
 				lastTime_ = time_;
-			}
+			}			
 
-			if (!sprites_.empty()) {
+			if (!frames_.empty()) {
 				// New frame?
-				if (time_ > sprites_[index_].second + lastTime_) {
-					index_ = (1 + index_) % sprites_.size();
+				if (time_ > frames_[index_].time_ + lastTime_) {
+					index_ = (1 + index_) % frames_.size();
 					lastTime_ = time_; // Frame updated.
 				}
+
+				Frame& frame = frames_[index_];
 
 				glPushMatrix();
 				glScalef(scale_, scale_, scale_);
 				glColor3d(1, 1, 1);
-				sprites_[index_].first.draw();
+				spriteSheet_.draw(frame.row_, frame.column_);
 				glPopMatrix();
 			}
 		}
 
 	private:
+		struct Frame {
+			Frame() {
+			}
+
+			Frame(int row, int column, float time) : row_(row), column_(column), time_(time) {
+			}
+			
+			int row_;
+			int column_;
+			float time_;
+		};
+
 		float scale_;
 		float lastTime_;
 		bool reset_;
 		float time_;
 
-		typedef std::pair<mw::Sprite, float> Pair;
-		std::vector<Pair> sprites_;
+		SpriteSheet spriteSheet_;
+		std::vector<Frame> frames_;
 		int index_;
 	};
 

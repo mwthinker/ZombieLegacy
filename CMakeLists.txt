@@ -33,8 +33,6 @@ set(SOURCES_ZOMBIE
 	src/gamefont.cpp
 	src/gamefont.h
 	src/gameinterface.h
-	src/gamesound.cpp
-	src/gamesound.h
 	src/gamesprite.cpp
 	src/gamesprite.h
 	src/graphic.h
@@ -54,6 +52,7 @@ set(SOURCES_ZOMBIE
 	src/state.h
 	src/terrain2d.cpp
 	src/terrain2d.h
+	src/spritesheet.h
 	src/survivorbehavior.cpp
 	src/survivorbehavior.h
 	src/unit.cpp
