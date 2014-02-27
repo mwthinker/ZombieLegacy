@@ -19,7 +19,7 @@ namespace zombie {
 			// Create a small circle.
 			assert(body_ == nullptr); // Must be a nullptr.
 			
-			b2Vec2 rayDir(sinf(angle), cosf(angle));
+			b2Vec2 rayDir(sin(angle), cos(angle));
 
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;

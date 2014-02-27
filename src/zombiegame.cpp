@@ -26,7 +26,7 @@ namespace zombie {
 
 		// Returns a random postion between the defined outer and inner circle centered in position.
 		Position generatePosition(Position position, float innerRadius, float outerRadius) {
-			return position + (innerRadius + (outerRadius - innerRadius) * random()) * Position(std::cosf(random()*2.f*3.14f), std::sinf(random()*2.f*3.14f));
+			return position + (innerRadius + (outerRadius - innerRadius) * random()) * Position(std::cos(random()*2.f*3.14f), std::sin(random()*2.f*3.14f));
 		}		
 
 		void removeDeadGraphicObjects(std::list<std::shared_ptr<Graphic>>& list) {
