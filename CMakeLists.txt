@@ -103,7 +103,7 @@ include_directories(${SDL2_INCLUDE_DIRS}
 add_executable(Zombie ${SOURCES_ZOMBIE})
 
 if (MSVC)
-	set_target_properties (Zombie PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")
+	set_target_properties(Zombie PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")
 	set_target_properties(Zombie PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt")
 endif (MSVC)
 
@@ -111,8 +111,8 @@ target_link_libraries(Zombie
 	Spark
 	Box2D
 	MwExtra
-	MwLibrary2
 	SdlGui
+	MwLibrary2
 	Signal
 	TinyXML2
 	${SDL2_LIBRARIES}
