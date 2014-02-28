@@ -44,15 +44,25 @@
 			<name>Human</name>
 			<animation type="list">
 				<spriteSheet>
-					<image>images/human/human1.png</image>
-					<rows>1</rows>
-					<columns>1</columns>
+					<image>images/human.png</image>
+					<rows>2</rows>
+					<columns>2</columns>
 				</spriteSheet>
 				<scale>0.0078125</scale> <!-- 1/128 -->
 				<frame>
 					<time>0.18</time>
+					<row>1</row>
+					<column>0</column>
+				</frame>
+				<frame>
+					<time>0.18</time>
 					<row>0</row>
 					<column>0</column>
+				</frame>
+				<frame>
+					<time>0.18</time>
+					<row>0</row>
+					<column>1</column>
 				</frame>
 			</animation>
 			<mass>1</mass>
@@ -68,15 +78,40 @@
 			<name>Zombie</name>
 			<animation type="list">
 				<spriteSheet>
-					<image>images/zombie/zombie1.png</image>
-					<rows>1</rows>
-					<columns>1</columns>
+					<image>images/zombie.png</image>
+					<rows>3</rows>
+					<columns>2</columns>
 				</spriteSheet>
 				<scale>0.0078125</scale> <!-- 1/128 -->
 				<frame>
 					<time>0.18</time>
 					<row>0</row>
 					<column>0</column>
+				</frame>
+				<frame>
+					<time>0.18</time>
+					<row>0</row>
+					<column>1</column>
+				</frame>
+				<frame>
+					<time>0.18</time>
+					<row>1</row>
+					<column>0</column>
+				</frame>
+				<frame>
+					<time>0.18</time>
+					<row>1</row>
+					<column>1</column>
+				</frame>
+				<frame>
+					<time>0.18</time>
+					<row>2</row>
+					<column>0</column>
+				</frame>
+				<frame>
+					<time>0.18</time>
+					<row>2</row>
+					<column>1</column>
 				</frame>
 			</animation>
 			<mass>1</mass>

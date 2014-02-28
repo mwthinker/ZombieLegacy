@@ -30,15 +30,15 @@ namespace zombie {
 				glEnable(GL_TEXTURE_2D);
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-				float dx = 1.f / rows_;
-				float dy = 1.f / columns_;
-				float x = row * dx;
-				float y = column * dy;
+				float dx = 1.f / columns_;
+				float dy = 1.f / rows_;
+				float x = column * dx;
+				float y = row * dy;
 
 				glPushMatrix();
 
 				if (drawPixelSize_) {
-					glScaled(texture_->getWidth(), texture_->getHeight(), 1);
+					glScaled(texture_->getWidth() * dx, texture_->getHeight() * dy, 1);
 				}
 
 				// Inverts the image. Y-is "up" for the window and x is "right".
