@@ -2,6 +2,7 @@
 #define ANIMATION_H
 
 #include <mw/sprite.h>
+#include <mw/color.h>
 
 #include <vector>
 #include <utility>
@@ -24,8 +25,8 @@ namespace zombie {
 		}
 
 		// Add a frame and point it to the current sprite sheet.
-		void add(const mw::Sprite& sprite, float scale, float time = 1.f) {
-			frames_.push_back(Frame(sprite, scale, time));
+		void add(const mw::Sprite& sprite, float scale, float time = 1.f, mw::Color color = mw::Color()) {
+			frames_.push_back(Frame(sprite, scale, time, color));
 		}
 
 		// Draws the correct frame at the (time) time.
@@ -49,7 +50,7 @@ namespace zombie {
 				//glTranslatef(0.5f, 0.5f, 0);
 				glScalef(frame.sprite_.getWidth(), frame.sprite_.getHeight(), 1);
 				glScalef(frame.scale_, frame.scale_, frame.scale_);
-				glColor3d(1, 1, 1);
+				frame.color_.glColor4d();
 				frame.sprite_.draw();
 				glPopMatrix();
 			}
@@ -60,12 +61,13 @@ namespace zombie {
 			Frame() {
 			}
 
-			Frame(mw::Sprite sprite, float scale, float time) : sprite_(sprite), scale_(scale), time_(time) {
+			Frame(mw::Sprite sprite, float scale, float time, mw::Color color = mw::Color()) : sprite_(sprite), scale_(scale), time_(time), color_(color) {
 			}
 			
 			mw::Sprite sprite_;
 			float time_;
 			float scale_;
+			mw::Color color_;
 		};
 		
 		float lastTime_;

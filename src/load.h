@@ -6,6 +6,7 @@
 
 #include <tinyxml2.h>
 #include <mw/exception.h>
+#include <mw/color.h>
 
 #include <cmath>
 #include <sstream>
@@ -13,6 +14,7 @@
 namespace zombie {
 
 	std::stringstream& operator>>(std::stringstream& stream, Point& point);
+	std::stringstream& operator>>(std::stringstream& stream, mw::Color& color);
 
 	// Takes c-string as input and returns the correct conversion.
 	// Throws mw::Exception if the input is null or if the conversion

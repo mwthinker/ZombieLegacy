@@ -5,6 +5,7 @@
 #include "unit2d.h"
 #include "weaponitem2d.h"
 
+#include <mw/color.h>
 #include <mw/sound.h>
 #include <mw/texture.h>
 #include <mw/exception.h>
@@ -171,20 +172,28 @@ namespace zombie {
 
 	void GameData::loadFrame(tinyxml2::XMLHandle frameTag, Animation& animation) {
 		tinyxml2::XMLHandle handle = frameTag.FirstChildElement("image");
-		mw::Texture texture = loadTexture(convertFromText<std::string>(handle.ToElement()->GetText()));
+		mw::Texture texture = loadTexture(convertFromText<std::string>(toText(handle)));
 		
 		handle = handle.NextSiblingElement("time");
-		float time = convertFromText<float>(handle.ToElement()->GetText());
+		float time = convertFromText<float>(toText(handle));
 		handle = handle.NextSiblingElement("x");
-		float x = convertFromText<float>(handle.ToElement()->GetText());
+		float x = convertFromText<float>(toText(handle));
 		handle = handle.NextSiblingElement("y");
-		float y = convertFromText<float>(handle.ToElement()->GetText());
+		float y = convertFromText<float>(toText(handle));
 		handle = handle.NextSiblingElement("dx");
-		float dx = convertFromText<float>(handle.ToElement()->GetText());
+		float dx = convertFromText<float>(toText(handle));
 		handle = handle.NextSiblingElement("dy");
-		float dy = convertFromText<float>(handle.ToElement()->GetText());
+		float dy = convertFromText<float>(toText(handle));
 		handle = handle.NextSiblingElement("scale");
-		float scale = convertFromText<float>(handle.ToElement()->GetText());
+		float scale = convertFromText<float>(toText(handle));
+		handle = handle.NextSiblingElement("color");
+		mw::Color color;
+		try {
+			color = convertFromText<mw::Color>(toText(handle));
+		} catch (mw::Exception&) {
+			// Color tag probably missing!
+			// Do nothing. Default color white.
+		}
 
 		animation.add(mw::Sprite(texture, x, y, dx, dy), scale, time);
 	}

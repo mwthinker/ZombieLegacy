@@ -13,6 +13,14 @@ namespace zombie {
 		return stream;
 	}
 
+	std::stringstream& operator>>(std::stringstream& stream, mw::Color& color) {
+		stream >> color.red_;
+		stream >> color.green_;
+		stream >> color.blue_;
+		stream >> color.alpha_;
+		return stream;
+	}
+
 	// Takes a string as input and returns the points.
 	// The string "POLYGON ((x1 y1, x2 y2, ...))" the input should be defined
 	// as ((...). The last point is assumed to be the same as the first, therefore
