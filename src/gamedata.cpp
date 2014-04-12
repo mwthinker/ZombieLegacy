@@ -116,10 +116,8 @@ namespace zombie {
 		tinyxml2::XMLElement* element = movingUnitsTag.FirstChildElement("car").ToElement();
 		while (element != nullptr) {
 			std::string name = convertFromText<const char*>(toText(element->FirstChildElement("name")));
-			mw::TexturePtr texture = loadTexture(convertFromText<const char*>(toText(element->FirstChildElement("image"))));
-			if (!texture) {
-				throw mw::Exception("");
-			}
+			mw::Texture texture = loadTexture(convertFromText<const char*>(toText(element->FirstChildElement("image"))));
+			
 			float mass = convertFromText<float>(toText(element->FirstChildElement("mass")));
 			float width = convertFromText<float>(toText(element->FirstChildElement("width")));
 			float length = convertFromText<float>(toText(element->FirstChildElement("length")));
@@ -173,10 +171,8 @@ namespace zombie {
 
 	SpriteSheet GameData::loadSpriteSheet(tinyxml2::XMLHandle spriteSheetTag) {
 		tinyxml2::XMLHandle handle = spriteSheetTag.FirstChildElement("image");
-		mw::TexturePtr texture = loadTexture(convertFromText<const char*>(toText(handle.ToElement())));
-		if (!texture) {
-			throw mw::Exception("");
-		}
+		mw::Texture texture = loadTexture(convertFromText<const char*>(toText(handle.ToElement())));
+		
 		handle = handle.NextSiblingElement("rows");
 		int rows = convertFromText<int>(handle.ToElement()->GetText());
 		handle = handle.NextSiblingElement("columns");
@@ -245,18 +241,17 @@ namespace zombie {
 		}
 	}
 
-	mw::TexturePtr GameData::loadTexture(std::string file) {
+	mw::Texture GameData::loadTexture(std::string file) {
 		unsigned int size = textures_.size();
 
-		mw::TexturePtr& texture = textures_[file];
+		mw::Texture& texture = textures_[file];
 		// Image not found?
 		if (textures_.size() > size) {
-			texture = mw::TexturePtr(new mw::Texture(file));
+			texture = mw::Texture(file);
 
 			// Image not valid?
-			if (!texture->isValid()) {
-				// Return null pointer.
-				texture = mw::TexturePtr();
+			if (!texture.isValid()) {
+				assert(0);
 			}
 		}
 

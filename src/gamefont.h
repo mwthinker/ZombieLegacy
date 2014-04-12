@@ -5,7 +5,7 @@
 
 namespace zombie {
 
-	extern const mw::FontPtr font15;
+	extern const mw::Font font15;
 
 } // Namespace zombie.
 

@@ -2,6 +2,6 @@
 
 namespace zombie {
 
-	const mw::FontPtr font15(new mw::Font("fonts/Ubuntu-B.ttf", 18));
+	const mw::Font font15("fonts/Ubuntu-B.ttf", 18);
 
 } // Namespace zombie.

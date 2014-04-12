@@ -29,7 +29,7 @@ namespace zombie {
 		}
 
 		// All frames are drawn in scaled (scale) pixelsize.
-		Animation(const mw::TexturePtr& texture, int row, int column, float scale) {
+		Animation(const mw::Texture& texture, int row, int column, float scale) {
 			spriteSheet_ = SpriteSheet(texture, row, column);
 			spriteSheet_.setDrawPixelSize(true);
 			index_ = 0;

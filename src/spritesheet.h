@@ -12,9 +12,7 @@ namespace zombie {
 		SpriteSheet() : rows_(0), columns_(0), drawPixelSize_(false) {
 		}
 
-		SpriteSheet(const mw::TexturePtr& texture, int rows, int columns) : texture_(texture), rows_(rows), columns_(columns), drawPixelSize_(false) {
-			// Must be valid texture!
-			assert(texture);
+		SpriteSheet(const mw::Texture& texture, int rows, int columns) : texture_(texture), rows_(rows), columns_(columns), drawPixelSize_(false) {
 		}
 
 		// Draws the choosen image on the spritesheet. The upper left "image" 
@@ -23,8 +21,8 @@ namespace zombie {
 			// Must be inside the sprite sheet.
 			assert(row >= 0 && row < rows_ && column >= 0 && column < columns_);
 			// Valid texture?
-			if (texture_ != 0 && texture_->isValid()) {
-				texture_->bind();
+			if (texture_.isValid()) {
+				texture_.bind();
 
 				glEnable(GL_BLEND);
 				glEnable(GL_TEXTURE_2D);
@@ -38,7 +36,7 @@ namespace zombie {
 				glPushMatrix();
 
 				if (drawPixelSize_) {
-					glScaled(texture_->getWidth() * dx, texture_->getHeight() * dy, 1);
+					glScaled(texture_.getWidth() * dx, texture_.getHeight() * dy, 1);
 				}
 
 				// Inverts the image. Y-is "up" for the window and x is "right".
@@ -74,7 +72,7 @@ namespace zombie {
 			return columns_;
 		}
 
-		const mw::TexturePtr& getTexture() const {
+		const mw::Texture& getTexture() const {
 			return texture_;
 		}
 
@@ -88,7 +86,7 @@ namespace zombie {
 
 	private:
 		int rows_, columns_;
-		mw::TexturePtr texture_;
+		mw::Texture texture_;
 
 		bool drawPixelSize_;
 	};

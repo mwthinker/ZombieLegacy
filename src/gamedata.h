@@ -81,7 +81,7 @@ namespace zombie {
 		// Get the loaded texture, if the loaded texture not exist in memory,
 		// the image (file) is loaded to memory. If the loading fails a nullptr
 		// is returned.
-		mw::TexturePtr loadTexture(std::string file);
+		mw::Texture loadTexture(std::string file);
 
 		Settings settings_;
 		std::map<std::string, WeaponItem2D*> weapons_;
@@ -89,7 +89,7 @@ namespace zombie {
 		std::map<std::string, Car2D*> cars_;
 		std::vector<Building2D*> buildings_;
 
-		std::map<std::string, mw::TexturePtr> textures_;
+		std::map<std::string, mw::Texture> textures_;
 		std::map<std::string, mw::Sound> sounds_;
 
 		Terrain2D terrain2d_;

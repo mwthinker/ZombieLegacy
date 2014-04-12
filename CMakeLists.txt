@@ -81,7 +81,6 @@ add_subdirectory(SdlGui)
 add_subdirectory(MwExtra)
 add_subdirectory(Box2D)
 add_subdirectory(TinyXML2)
-add_subdirectory(Spark)
 
 file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
 
@@ -107,7 +106,6 @@ if (MSVC)
 endif (MSVC)
 
 target_link_libraries(Zombie
-	Spark
 	Box2D
 	MwExtra
 	SdlGui
