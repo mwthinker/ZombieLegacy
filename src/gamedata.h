@@ -74,9 +74,9 @@ namespace zombie {
 
 		void loadWeapons(tinyxml2::XMLHandle weaponsTag);
 
-		SpriteSheet loadSpriteSheet(tinyxml2::XMLHandle spriteSheetTag);
-
 		Animation loadAnimation(tinyxml2::XMLHandle animationTag);
+
+		void loadFrame(tinyxml2::XMLHandle frameTag, Animation& animation);
 
 		// Get the loaded texture, if the loaded texture not exist in memory,
 		// the image (file) is loaded to memory. If the loading fails a nullptr

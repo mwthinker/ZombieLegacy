@@ -43,26 +43,41 @@
 		<unit>
 			<name>Human</name>
 			<animation type="list">
-				<spriteSheet>
+				<frame>
 					<image>images/human.png</image>
-					<rows>2</rows>
-					<columns>2</columns>
-				</spriteSheet>
-				<scale>0.0078125</scale> <!-- 1/128 -->
-				<frame>
 					<time>0.18</time>
-					<row>1</row>
-					<column>0</column>
+					<x>0</x>
+					<y>0</y>
+					<dx>356</dx>
+					<dy>355</dy>
+					<scale>0.0078125</scale> <!-- 1/128 -->
 				</frame>
 				<frame>
+					<image>images/human.png</image>
 					<time>0.18</time>
-					<row>0</row>
-					<column>0</column>
+					<x>0</x>
+					<y>355</y>
+					<dx>356</dx>
+					<dy>355</dy>
+					<scale>0.0078125</scale> <!-- 1/128 -->
 				</frame>
 				<frame>
+					<image>images/human.png</image>
 					<time>0.18</time>
-					<row>0</row>
-					<column>1</column>
+					<x>0</x>
+					<y>0</y>
+					<dx>356</dx>
+					<dy>355</dy>
+					<scale>0.0078125</scale> <!-- 1/128 -->
+				</frame>
+				<frame>
+					<image>images/human.png</image>
+					<time>0.18</time>
+					<x>356</x>
+					<y>355</y>
+					<dx>356</dx>
+					<dy>355</dy>
+					<scale>0.0078125</scale> <!-- 1/128 -->
 				</frame>
 			</animation>
 			<mass>1</mass>
@@ -77,41 +92,59 @@
 		<unit>
 			<name>Zombie</name>
 			<animation type="list">
-				<spriteSheet>
+				<frame>
 					<image>images/zombie.png</image>
-					<rows>3</rows>
-					<columns>2</columns>
-				</spriteSheet>
-				<scale>0.0078125</scale> <!-- 1/128 -->
-				<frame>
-					<time>0.18</time>
-					<row>0</row>
-					<column>0</column>
+					<time>0.18</time>					
+					<x>0</x>
+					<y>1024</y>
+					<dx>512</dx>
+					<dy>512</dy>
+					<scale>0.0078125</scale>
 				</frame>
 				<frame>
-					<time>0.18</time>
-					<row>0</row>
-					<column>1</column>
+					<image>images/zombie.png</image>
+					<time>0.18</time>					
+					<x>512</x>
+					<y>1024</y>
+					<dx>512</dx>
+					<dy>512</dy>
+					<scale>0.0078125</scale>
 				</frame>
 				<frame>
-					<time>0.18</time>
-					<row>1</row>
-					<column>0</column>
+					<image>images/zombie.png</image>
+					<time>0.18</time>					
+					<x>0</x>
+					<y>512</y>
+					<dx>512</dx>
+					<dy>512</dy>
+					<scale>0.0078125</scale>
 				</frame>
 				<frame>
-					<time>0.18</time>
-					<row>1</row>
-					<column>1</column>
+					<image>images/zombie.png</image>
+					<time>0.18</time>					
+					<x>512</x>
+					<y>512</y>
+					<dx>512</dx>
+					<dy>512</dy>
+					<scale>0.0078125</scale>
 				</frame>
 				<frame>
-					<time>0.18</time>
-					<row>2</row>
-					<column>0</column>
+					<image>images/zombie.png</image>
+					<time>0.18</time>					
+					<x>0</x>
+					<y>0</y>
+					<dx>512</dx>
+					<dy>512</dy>
+					<scale>0.0078125</scale>
 				</frame>
 				<frame>
-					<time>0.18</time>
-					<row>2</row>
-					<column>1</column>
+					<image>images/zombie.png</image>
+					<time>0.18</time>					
+					<x>0</x>
+					<y>512</y>
+					<dx>512</dx>
+					<dy>512</dy>
+					<scale>0.0078125</scale>
 				</frame>
 			</animation>
 			<mass>1</mass>

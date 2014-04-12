@@ -52,7 +52,6 @@ set(SOURCES_ZOMBIE
 	src/state.h
 	src/terrain2d.cpp
 	src/terrain2d.h
-	src/spritesheet.h
 	src/survivorbehavior.cpp
 	src/survivorbehavior.h
 	src/unit.cpp

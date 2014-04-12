@@ -169,35 +169,29 @@ namespace zombie {
 		}
 	}
 
-	SpriteSheet GameData::loadSpriteSheet(tinyxml2::XMLHandle spriteSheetTag) {
-		tinyxml2::XMLHandle handle = spriteSheetTag.FirstChildElement("image");
-		mw::Texture texture = loadTexture(convertFromText<const char*>(toText(handle.ToElement())));
+	void GameData::loadFrame(tinyxml2::XMLHandle frameTag, Animation& animation) {
+		tinyxml2::XMLHandle handle = frameTag.FirstChildElement("image");
+		mw::Texture texture = loadTexture(convertFromText<std::string>(handle.ToElement()->GetText()));
 		
-		handle = handle.NextSiblingElement("rows");
-		int rows = convertFromText<int>(handle.ToElement()->GetText());
-		handle = handle.NextSiblingElement("columns");
-		int columns = convertFromText<int>(handle.ToElement()->GetText());
-		return SpriteSheet(texture, rows, columns);
-	}
-
-	void loadFrame(tinyxml2::XMLHandle frameTag, Animation& animation) {
-		tinyxml2::XMLHandle handle = frameTag.FirstChildElement("time");
+		handle = handle.NextSiblingElement("time");
 		float time = convertFromText<float>(handle.ToElement()->GetText());
-		handle = handle.NextSiblingElement("row");
-		int row = convertFromText<int>(handle.ToElement()->GetText());
-		handle = handle.NextSiblingElement("column");
-		int column = convertFromText<int>(handle.ToElement()->GetText());
-		animation.add(row, column, time);
+		handle = handle.NextSiblingElement("x");
+		float x = convertFromText<float>(handle.ToElement()->GetText());
+		handle = handle.NextSiblingElement("y");
+		float y = convertFromText<float>(handle.ToElement()->GetText());
+		handle = handle.NextSiblingElement("dx");
+		float dx = convertFromText<float>(handle.ToElement()->GetText());
+		handle = handle.NextSiblingElement("dy");
+		float dy = convertFromText<float>(handle.ToElement()->GetText());
+		handle = handle.NextSiblingElement("scale");
+		float scale = convertFromText<float>(handle.ToElement()->GetText());
+
+		animation.add(mw::Sprite(texture, x, y, dx, dy), scale, time);
 	}
 
 	Animation GameData::loadAnimation(tinyxml2::XMLHandle animationTag) {
-		tinyxml2::XMLHandle handle = animationTag.FirstChildElement("spriteSheet");
-		SpriteSheet spriteSheet = loadSpriteSheet(handle);
-		handle = handle.NextSiblingElement("scale");
-		float scale = convertFromText<float>(handle.ToElement()->GetText());
-		
-		Animation animation(spriteSheet, scale);
-		handle = handle.NextSiblingElement("frame");
+		tinyxml2::XMLHandle handle = animationTag.FirstChildElement("frame");
+		Animation animation;
 		while (handle.ToElement() != nullptr) {
 			loadFrame(handle, animation);
 			handle = handle.NextSiblingElement("frame");
