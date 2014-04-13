@@ -10,7 +10,7 @@
 
 namespace zombie {
 
-	Unit::Unit(float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon) : weapon_(weapon) {
+	Unit::Unit(float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const WeaponPtr& weapon) : weapon_(weapon) {
 		isInfected_ = infected;
 
 		// Properties
@@ -29,6 +29,7 @@ namespace zombie {
 	}
 
 	Unit::Unit(const Unit& unit) {
+		weapon_ = unit.weapon_->clone();
 		isInfected_ = unit.isInfected_;
 
 		// Properties
@@ -47,6 +48,7 @@ namespace zombie {
 	}
 
 	Unit& Unit::operator=(const Unit& unit) {
+		weapon_ = unit.weapon_->clone();
 		isInfected_ = unit.isInfected_;
 
 		// Properties
@@ -157,16 +159,16 @@ namespace zombie {
 			}			
 
 			// Want to shoot? And weapon is ready?
-			if (input.shoot_ && weapon_.shoot(time)) {
+			if (input.shoot_ && weapon_->shoot(time)) {
 				bullet_.direction_ = angle;
-				bullet_.range_ = weapon_.range();
+				bullet_.range_ = weapon_->range();
 				bullet_.postion_ = getPosition();
-				bullet_.damage_ = weapon_.damage();
+				bullet_.damage_ = weapon_->damage();
 				eventSignal_(this, UnitEvent::SHOOT);
 			}
 
 			// Want to reload? And weapon is ready?
-			if (input.reload_ && weapon_.reload()) {
+			if (input.reload_ && weapon_->reload()) {
 				input.reload_ = true;
 				eventSignal_(this, UnitEvent::RELOADING);
 			}

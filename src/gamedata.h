@@ -84,7 +84,7 @@ namespace zombie {
 		mw::Texture loadTexture(std::string file);
 
 		Settings settings_;
-		std::map<std::string, WeaponItem2D*> weapons_;
+		std::map<std::string, WeaponPtr> weapons_;
 		std::map<std::string, Unit2D*> units_;
 		std::map<std::string, Car2D*> cars_;
 		std::vector<Building2D*> buildings_;

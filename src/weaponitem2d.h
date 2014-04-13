@@ -8,7 +8,7 @@ namespace zombie {
 
 	class WeaponItem2D : public WeaponItem {
 	public:
-		WeaponItem2D(float x, float y, const Weapon& weapon) : WeaponItem(x, y, weapon) {
+		WeaponItem2D(float x, float y, const WeaponPtr& weapon) : WeaponItem(x, y, weapon) {
 		}
 
 		void draw(float time) override {

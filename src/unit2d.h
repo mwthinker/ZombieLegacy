@@ -10,7 +10,7 @@ namespace zombie {
 	class Unit2D : public Unit {
 	public:
 		Unit2D(float mass, float radius, float life, float walkingSpeed,
-			float runningSpeed, bool isInfected, const Weapon& weapon, const Animation& animation) :
+			float runningSpeed, bool isInfected, const WeaponPtr& weapon, const Animation& animation) :
 			Unit(mass, radius, life, walkingSpeed, runningSpeed, isInfected, weapon), animation_(animation) {
 			addEventHandler(std::bind(&Unit2D::eventHandler, this, this, std::placeholders::_2));
 		}
@@ -29,8 +29,9 @@ namespace zombie {
 				// Draw body.
 				glPushMatrix();
 				glTranslate2f(getPosition());
-				glScale2f(getRadius());
+				glScale2f(2 * getRadius());
 				glRotated(getDirection() * 180 / PI, 0, 0, 1);
+				getWeapon()->draw();
 				animation_.draw(time);
 				glPopMatrix();
 			}

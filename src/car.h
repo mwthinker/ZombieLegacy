@@ -57,8 +57,8 @@ namespace zombie {
 			return body_;
 		}
 
-		Weapon getWeapon() const override {
-			return Weapon();
+		WeaponPtr getWeapon() const override {
+			return nullptr;
 		}
 
 		float getDirection() const override {

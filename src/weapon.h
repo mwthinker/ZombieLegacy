@@ -1,7 +1,12 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
+#include <memory>
+
 namespace zombie {
+
+	class Weapon;
+	typedef std::shared_ptr<Weapon> WeaponPtr;
 
 	// Describes a Weapon and is responsible of shooting.
 	class Weapon {
@@ -64,6 +69,16 @@ namespace zombie {
 
 		double getShotSound() const {
 			return shotSound_;
+		}
+
+		virtual void drawSymbol() {
+		}
+
+		virtual void draw() {
+		}
+
+		virtual WeaponPtr clone() const {
+			return std::make_shared<Weapon>(*this);
 		}
 
 	private:

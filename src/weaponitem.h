@@ -10,9 +10,10 @@ namespace zombie {
 
 	class WeaponItem : public Object {
 	public:
-		WeaponItem(float x, float y, const Weapon& weapon) {
+		WeaponItem(float x, float y, const WeaponPtr& weapon) {
 			radius_ = 0.5;
-		}		
+			weapon_ = weapon;
+		}
 
 		void createBody(b2World* world) {
 			// Box2d properties.
@@ -40,8 +41,8 @@ namespace zombie {
 			}
 		}
 
-		Weapon getWeapon() const  {
-			return weapon;
+		const WeaponPtr& getWeapon() const {
+			return weapon_;
 		}
 
 		Position getPosition() const {
@@ -59,10 +60,10 @@ namespace zombie {
 		void destroyBody(b2World* world) override {
 			world->DestroyBody(body_);
 			body_ = nullptr;
-		}	
+		}
 
 	private:
-		Weapon weapon;
+		WeaponPtr weapon_;
 		float radius_;
 		float x_, y_;
 

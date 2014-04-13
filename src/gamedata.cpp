@@ -4,6 +4,7 @@
 #include "car2d.h"
 #include "unit2d.h"
 #include "weaponitem2d.h"
+#include "weapon2d.h"
 
 #include <mw/color.h>
 #include <mw/sound.h>
@@ -144,7 +145,7 @@ namespace zombie {
 			float stamina = convertFromText<float>(toText(element->FirstChildElement("stamina")));
 			Animation animation = loadAnimation(toElement(element->FirstChildElement("animation")));
 			std::string weaponName = convertFromText<const char*>(toText(element->FirstChildElement("weapon")));
-			units_[name] = new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapons_[weaponName]->getWeapon(), animation);
+			units_[name] = new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapons_[weaponName], animation);
 
 			element = element->NextSiblingElement("unit");
 		}
@@ -156,15 +157,18 @@ namespace zombie {
 		while (element != nullptr) {
 			std::string name = convertFromText<const char*>(toText(element->FirstChildElement("name")));
 			std::string image = convertFromText<const char*>(toText(element->FirstChildElement("image")));
+			mw::Texture texture = loadTexture(toText(element->FirstChildElement("image")));
+
 			float damage = convertFromText<float>(toText(element->FirstChildElement("damage")));
 			float timeBetweenShots = convertFromText<float>(toText(element->FirstChildElement("timeBetweenShots")));
 			float range = convertFromText<float>(toText(element->FirstChildElement("range")));
 			int clipSize = convertFromText<int>(toText(element->FirstChildElement("clipSize")));
 			std::string shootSound = convertFromText<const char*>(toText(element->FirstChildElement("shootSound")));
 			std::string reloadSound = convertFromText<const char*>(toText(element->FirstChildElement("reloadSound")));
+			Animation animation = loadAnimation(toElement(element->FirstChildElement("animation")));
 
 			// Add weapon.
-			weapons_[name] = new WeaponItem2D(0, 0, Weapon(damage, timeBetweenShots, range, clipSize));
+			weapons_[name] = std::make_shared<Weapon2D>(damage, timeBetweenShots, range, clipSize, texture, animation);
 
 			element = element->NextSiblingElement("weapon");
 		}
@@ -174,8 +178,16 @@ namespace zombie {
 		tinyxml2::XMLHandle handle = frameTag.FirstChildElement("image");
 		mw::Texture texture = loadTexture(convertFromText<std::string>(toText(handle)));
 		
-		handle = handle.NextSiblingElement("time");
-		float time = convertFromText<float>(toText(handle));
+		float time = 1;
+		tinyxml2::XMLHandle tmp = handle.NextSiblingElement("time");
+		try {
+			time = convertFromText<float>(toText(tmp));
+			handle = tmp;
+		} catch (mw::Exception&) {
+			// Time tag probably missing!
+			// Do nothing. Default time 1.
+		}
+
 		handle = handle.NextSiblingElement("x");
 		float x = convertFromText<float>(toText(handle));
 		handle = handle.NextSiblingElement("y");
@@ -186,6 +198,7 @@ namespace zombie {
 		float dy = convertFromText<float>(toText(handle));
 		handle = handle.NextSiblingElement("scale");
 		float scale = convertFromText<float>(toText(handle));
+		
 		handle = handle.NextSiblingElement("color");
 		mw::Color color;
 		try {
@@ -195,7 +208,7 @@ namespace zombie {
 			// Do nothing. Default color white.
 		}
 
-		animation.add(mw::Sprite(texture, x, y, dx, dy), scale, time);
+		animation.add(mw::Sprite(texture, x, y, dx, dy), scale, time, color);
 	}
 
 	Animation GameData::loadAnimation(tinyxml2::XMLHandle animationTag) {
@@ -254,7 +267,7 @@ namespace zombie {
 
 			// Image not valid?
 			if (!texture.isValid()) {
-				assert(0);
+				//assert(0);
 			}
 		}
 

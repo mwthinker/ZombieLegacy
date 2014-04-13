@@ -29,12 +29,8 @@ namespace zombie {
 
 		std::stringstream stream(txt);
 		Output output;
-		// Extract formatted input succeeds?
-		if (stream >> output) {
-			return output;
-		} else {
-			throw mw::Exception("convertFromText, extract formatted failed");
-		}
+		stream >> output;
+		return output;
 	}
 
 	// Returns the input txt. If the c-string is empty a runtime exception is thrown.

@@ -44,7 +44,7 @@ namespace zombie {
 		virtual void updatePhysics(float time, float timeStep, Input input) = 0;
 
 		// Returns the current weapon.
-		virtual Weapon getWeapon() const = 0;
+		virtual WeaponPtr getWeapon() const = 0;
 
 		// Return the objects forward direction in radians.
 		virtual float getDirection() const = 0;

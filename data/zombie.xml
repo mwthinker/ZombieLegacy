@@ -19,6 +19,17 @@
 			<clipSize>12</clipSize>
 			<shootSound>sound/handgunShoot.wav</shootSound>
 			<reloadSound>sound/handgunReload.wav</reloadSound>
+			<animation>
+				<frame>
+					<image>images/spritesheet.png</image>
+					<x>0</x>
+					<y>768</y>
+					<dx>256</dx>
+					<dy>256</dy>
+					<scale>0.0076923</scale>
+					<color> 0 0 0 </color>
+				</frame>
+			</animation>
 		</weapon>
 		<weapon>
 			<name>ZombieFist</name>
@@ -29,6 +40,17 @@
 			<clipSize>1000000</clipSize>
 			<shootSound>sound/ZombieFist.wav</shootSound>
 			<reloadSound>sound/ZombieReload.wav</reloadSound>
+			<animation>
+				<frame>
+					<image>images/spritesheet.png</image>
+					<x>0</x>
+					<y>512</y>
+					<dx>256</dx>
+					<dy>256</dy>
+					<scale>0.0076923</scale>
+					<color> 1 0 0 </color>
+				</frame>
+			</animation>
 		</weapon>
 	</weapons>
 	<movingObjects>
@@ -42,42 +64,16 @@
 		</car>
 		<unit>
 			<name>Human</name>
-			<animation type="list">
+			<animation>
 				<frame>
-					<image>images/human.png</image>
+					<image>images/spritesheet.png</image>
 					<time>0.18</time>
 					<x>0</x>
 					<y>0</y>
-					<dx>356</dx>
-					<dy>355</dy>
-					<scale>0.0078125</scale> <!-- 1/128 -->
-				</frame>
-				<frame>
-					<image>images/human.png</image>
-					<time>0.18</time>
-					<x>0</x>
-					<y>355</y>
-					<dx>356</dx>
-					<dy>355</dy>
-					<scale>0.0078125</scale> <!-- 1/128 -->
-				</frame>
-				<frame>
-					<image>images/human.png</image>
-					<time>0.18</time>
-					<x>0</x>
-					<y>0</y>
-					<dx>356</dx>
-					<dy>355</dy>
-					<scale>0.0078125</scale> <!-- 1/128 -->
-				</frame>
-				<frame>
-					<image>images/human.png</image>
-					<time>0.18</time>
-					<x>356</x>
-					<y>355</y>
-					<dx>356</dx>
-					<dy>355</dy>
-					<scale>0.0078125</scale> <!-- 1/128 -->
+					<dx>256</dx>
+					<dy>256</dy>
+					<scale>0.0076923</scale>
+					<color> 0 1 0 </color>
 				</frame>
 			</animation>
 			<mass>1</mass>
@@ -91,60 +87,16 @@
 		</unit>
 		<unit>
 			<name>Zombie</name>
-			<animation type="list">
+			<animation>
 				<frame>
-					<image>images/zombie.png</image>
-					<time>0.18</time>					
-					<x>0</x>
-					<y>1024</y>
-					<dx>512</dx>
-					<dy>512</dy>
-					<scale>0.0078125</scale>
-				</frame>
-				<frame>
-					<image>images/zombie.png</image>
-					<time>0.18</time>					
-					<x>512</x>
-					<y>1024</y>
-					<dx>512</dx>
-					<dy>512</dy>
-					<scale>0.0078125</scale>
-				</frame>
-				<frame>
-					<image>images/zombie.png</image>
-					<time>0.18</time>					
-					<x>0</x>
-					<y>512</y>
-					<dx>512</dx>
-					<dy>512</dy>
-					<scale>0.0078125</scale>
-				</frame>
-				<frame>
-					<image>images/zombie.png</image>
-					<time>0.18</time>					
-					<x>512</x>
-					<y>512</y>
-					<dx>512</dx>
-					<dy>512</dy>
-					<scale>0.0078125</scale>
-				</frame>
-				<frame>
-					<image>images/zombie.png</image>
+					<image>images/spritesheet.png</image>
 					<time>0.18</time>					
 					<x>0</x>
 					<y>0</y>
-					<dx>512</dx>
-					<dy>512</dy>
-					<scale>0.0078125</scale>
-				</frame>
-				<frame>
-					<image>images/zombie.png</image>
-					<time>0.18</time>					
-					<x>0</x>
-					<y>512</y>
-					<dx>512</dx>
-					<dy>512</dy>
-					<scale>0.0078125</scale>
+					<dx>256</dx>
+					<dy>256</dy>
+					<scale>0.0076923</scale>
+					<color> 1 0 0 </color>
 				</frame>
 			</animation>
 			<mass>1</mass>

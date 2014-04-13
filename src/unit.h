@@ -25,7 +25,7 @@ namespace zombie {
 			SHOOT, RELOADING, DIE, WALK, STANDSTILL, RUN, ACTION, REMOVED
 		};
 
-		Unit(float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const Weapon& weapon);
+		Unit(float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const WeaponPtr& weapon);
 		virtual ~Unit();
 
 		Unit(const Unit&);;
@@ -68,11 +68,11 @@ namespace zombie {
 			return isInfected_;
 		}
 
-		Weapon getWeapon() const override {
+		WeaponPtr getWeapon() const override {
 			return weapon_;
 		}
 
-		void setWeapon(const Weapon& weapon) {
+		void setWeapon(const WeaponPtr& weapon) {
 			weapon_ = weapon;
 		}
 
@@ -100,12 +100,11 @@ namespace zombie {
 		float radius_;
 		float mass_;
 
-
 		// Health
 		float healthPoints_;
 		bool isDead_;
 
-		Weapon weapon_;
+		WeaponPtr weapon_;
 		bool isInfected_;
 		Bullet bullet_;
 
