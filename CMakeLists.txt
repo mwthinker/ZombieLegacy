@@ -78,7 +78,6 @@ find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
 add_subdirectory(SdlGui)
-add_subdirectory(MwExtra)
 add_subdirectory(Box2D)
 add_subdirectory(TinyXML2)
 
@@ -89,7 +88,6 @@ include_directories(${SDL2_INCLUDE_DIRS}
 	${SDL2_MIXER_INCLUDE_DIRS}
 	${SDL2_IMAGE_INCLUDE_DIRS}
 	${OpenGL_INCLUDE_DIR}
-	MwExtra/src
 	SdlGui/src
 	SdlGui/MwLibrary2/src
 	SdlGui/Signal/src
@@ -107,7 +105,6 @@ endif (MSVC)
 
 target_link_libraries(Zombie
 	Box2D
-	MwExtra
 	SdlGui
 	MwLibrary2
 	Signal
