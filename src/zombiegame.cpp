@@ -4,7 +4,6 @@
 #include "movingobject.h"
 #include "building.h"
 #include "auxiliary.h"
-#include "load.h"
 #include "settings.h"
 #include "unit2d.h"
 #include "car2d.h"

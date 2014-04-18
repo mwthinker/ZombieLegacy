@@ -39,8 +39,6 @@ set(SOURCES_ZOMBIE
 	src/humanplayer.h
 	src/input.h
 	src/inputkeyboard.h
-	src/load.cpp
-	src/load.h
 	src/main.cpp
 	src/missile.h
 	src/movingobject.h
