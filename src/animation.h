@@ -25,8 +25,8 @@ namespace zombie {
 		}
 
 		// Add a frame and point it to the current sprite sheet.
-		void add(const mw::Sprite& sprite, float scale, float time = 1.f, mw::Color color = mw::Color()) {
-			frames_.push_back(Frame(sprite, scale, time, color));
+		void add(const mw::Sprite& sprite, float bodyWidth, float time = 1.f) {
+			frames_.push_back(Frame(sprite, bodyWidth, time));
 		}
 
 		// Draws the correct frame at the (time) time.
@@ -47,10 +47,7 @@ namespace zombie {
 				Frame& frame = frames_[index_];
 
 				glPushMatrix();
-				//glTranslatef(0.5f, 0.5f, 0);
-				glScalef(frame.sprite_.getWidth(), frame.sprite_.getHeight(), 1);
-				glScalef(frame.scale_, frame.scale_, frame.scale_);
-				frame.color_.glColor4d();
+				glScalef(frame.sprite_.getWidth() / frame.bodyWidth_, frame.sprite_.getHeight() / frame.bodyWidth_, 1);
 				frame.sprite_.draw();
 				glPopMatrix();
 			}
@@ -61,13 +58,12 @@ namespace zombie {
 			Frame() {
 			}
 
-			Frame(mw::Sprite sprite, float scale, float time, mw::Color color = mw::Color()) : sprite_(sprite), scale_(scale), time_(time), color_(color) {
+			Frame(mw::Sprite sprite, float bodyWidth, float time) : sprite_(sprite), bodyWidth_(bodyWidth), time_(time) {
 			}
 			
 			mw::Sprite sprite_;
 			float time_;
-			float scale_;
-			mw::Color color_;
+			float bodyWidth_;
 		};
 		
 		float lastTime_;

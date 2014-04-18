@@ -22,12 +22,11 @@
 			<animation>
 				<frame>
 					<image>images/spritesheet.png</image>
-					<x>0</x>
-					<y>768</y>
+					<x>256</x>
+					<y>512</y>
 					<dx>256</dx>
 					<dy>256</dy>
-					<scale>0.0076923</scale>
-					<color> 0 0 0 </color>
+					<bodyWidth>130</bodyWidth>
 				</frame>
 			</animation>
 		</weapon>
@@ -43,12 +42,11 @@
 			<animation>
 				<frame>
 					<image>images/spritesheet.png</image>
-					<x>0</x>
-					<y>512</y>
+					<x>256</x>
+					<y>768</y>
 					<dx>256</dx>
 					<dy>256</dy>
-					<scale>0.0076923</scale>
-					<color> 1 0 0 </color>
+					<bodyWidth>130</bodyWidth>
 				</frame>
 			</animation>
 		</weapon>
@@ -72,8 +70,7 @@
 					<y>0</y>
 					<dx>256</dx>
 					<dy>256</dy>
-					<scale>0.0076923</scale>
-					<color> 0 1 0 </color>
+					<bodyWidth>130</bodyWidth>
 				</frame>
 			</animation>
 			<mass>1</mass>
@@ -92,11 +89,10 @@
 					<image>images/spritesheet.png</image>
 					<time>0.18</time>					
 					<x>0</x>
-					<y>0</y>
+					<y>512</y>
 					<dx>256</dx>
 					<dy>256</dy>
-					<scale>0.0076923</scale>
-					<color> 1 0 0 </color>
+					<bodyWidth>130</bodyWidth>
 				</frame>
 			</animation>
 			<mass>1</mass>

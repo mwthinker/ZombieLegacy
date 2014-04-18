@@ -26,14 +26,6 @@ namespace zombie {
 			return stream;
 		}
 
-		std::stringstream& operator>>(std::stringstream& stream, mw::Color& color) {
-			stream >> color.red_;
-			stream >> color.green_;
-			stream >> color.blue_;
-			stream >> color.alpha_;
-			return stream;
-		}
-
 		// Takes c-string as input and returns the correct conversion.
 		// Throws mw::Exception if the input is null or if the conversion
 		// fails.
@@ -286,19 +278,10 @@ namespace zombie {
 		float dx = convertFromText<float>(toText(handle));
 		handle = handle.NextSiblingElement("dy");
 		float dy = convertFromText<float>(toText(handle));
-		handle = handle.NextSiblingElement("scale");
-		float scale = convertFromText<float>(toText(handle));
-		
-		handle = handle.NextSiblingElement("color");
-		mw::Color color;
-		try {
-			color = convertFromText<mw::Color>(toText(handle));
-		} catch (mw::Exception&) {
-			// Color tag probably missing!
-			// Do nothing. Default color white.
-		}
+		handle = handle.NextSiblingElement("bodyWidth");
+		float bodyWidth = convertFromText<float>(toText(handle));
 
-		animation.add(mw::Sprite(texture, x, y, dx, dy), scale, time, color);
+		animation.add(mw::Sprite(texture, x, y, dx, dy), bodyWidth, time);
 	}
 
 	Animation GameData::loadAnimation(tinyxml2::XMLHandle animationTag) {
