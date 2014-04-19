@@ -3,8 +3,7 @@
 
 #include "car.h"
 #include "auxiliary.h"
-
-#include <mw/sprite.h>
+#include "animation.h"
 
 #include <SDL_opengl.h>
 
@@ -12,8 +11,8 @@ namespace zombie {
 
 	class Car2D : public Car {
 	public:
-		Car2D(float mass, float life, float width, float length, const mw::Sprite& sprite) : 
-			Car(mass, life, width, length), animation_(sprite) {
+		Car2D(float mass, float life, float width, float length, const Animation& animation) :
+			Car(mass, life, width, length), animation_(animation) {
 		}
 
 		// Draws the car.
@@ -24,14 +23,14 @@ namespace zombie {
 			glPushMatrix();
 			glTranslate2f(state.position_);
 			glRotated(state.angle_ * 180 / PI, 0, 0, 1);
-			glScaled(getLength(), getWidth(), 1);
 			glRotated(270, 0, 0, 1);
-			animation_.draw();
+			glScaled(getWidth(), getWidth(), 1);
+			animation_.draw(time);
 			glPopMatrix();
 		}
 
 	private:
-		mw::Sprite animation_;
+		Animation animation_;
 	};
 	
 } // Namespace zombie.

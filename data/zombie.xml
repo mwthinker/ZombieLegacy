@@ -54,7 +54,16 @@
 	<movingObjects>
 		<car>
 			<name>Volvo</name>
-			<image>images/car.png</image>
+			<animation>
+				<frame>
+					<image>images/spritesheet.png</image>
+					<x>0</x>
+					<y>768</y>
+					<dx>256</dx>
+					<dy>256</dy>
+					<bodyWidth>104</bodyWidth>
+				</frame>
+			</animation>
 			<mass>10</mass> <!-- Kg-->
 			<width>1</width> <!-- Meter-->
 			<length>2</length>
@@ -70,7 +79,7 @@
 					<y>0</y>
 					<dx>256</dx>
 					<dy>256</dy>
-					<bodyWidth>130</bodyWidth>
+					<bodyWidth>208</bodyWidth>
 				</frame>
 			</animation>
 			<mass>1</mass>

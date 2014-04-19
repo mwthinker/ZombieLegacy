@@ -7,7 +7,7 @@
 #include <vector>
 #include <utility>
 
-namespace zombie {	
+namespace zombie {
 
 	// Uses sprites to create a animation.
 	class Animation {

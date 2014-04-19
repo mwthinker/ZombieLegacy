@@ -200,14 +200,14 @@ namespace zombie {
 		tinyxml2::XMLElement* element = movingUnitsTag.FirstChildElement("car").ToElement();
 		while (element != nullptr) {
 			std::string name = convertFromText<const char*>(toText(element->FirstChildElement("name")));
-			mw::Texture texture = loadTexture(convertFromText<const char*>(toText(element->FirstChildElement("image"))));
+			Animation animation = loadAnimation(toElement(element->FirstChildElement("animation")));
 			
 			float mass = convertFromText<float>(toText(element->FirstChildElement("mass")));
 			float width = convertFromText<float>(toText(element->FirstChildElement("width")));
 			float length = convertFromText<float>(toText(element->FirstChildElement("length")));
 			float life = convertFromText<float>(toText(element->FirstChildElement("life")));
 
-			cars_[name] = new Car2D(mass, life, width, length, texture);
+			cars_[name] = new Car2D(mass, life, width, length, animation);
 
 			element = element->NextSiblingElement("car");
 		}

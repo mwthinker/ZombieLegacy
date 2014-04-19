@@ -11,18 +11,18 @@ namespace zombie {
 	class Blood : public Graphic {
 	public:
 		Blood(Position position);
-		
+
 		void draw(float deltaTime);
 
 		bool toBeRemoved() const override;
 
 	private:
 		float time_;
-		Position position_;				
+		Position position_;
 		float duration_;
 
 		mw::Sprite blood_;
-	};	
+	};
 
 } // Namespace zombie.
 

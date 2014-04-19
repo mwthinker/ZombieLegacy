@@ -33,8 +33,6 @@ set(SOURCES_ZOMBIE
 	src/gamefont.cpp
 	src/gamefont.h
 	src/gameinterface.h
-	src/gamesprite.cpp
-	src/gamesprite.h
 	src/graphic.h
 	src/humanplayer.h
 	src/input.h
