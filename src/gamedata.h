@@ -9,6 +9,7 @@
 
 #include <mw/sound.h>
 #include <mw/texture.h>
+#include <mw/font.h>
 #include <tinyxml2.h>
 
 #include <functional>
@@ -61,6 +62,10 @@ namespace zombie {
 			return settings_.unitLevel_;
 		}
 
+		inline mw::Font getDefaultFont(int size) {
+			return loadFont(settings_.defaultFont_, size);
+		}
+
 	private:
 		// Handle to first node <zombie>.
 		bool load(tinyxml2::XMLHandle xml);
@@ -82,6 +87,7 @@ namespace zombie {
 		// the image (file) is loaded to memory. If the loading fails a nullptr
 		// is returned.
 		mw::Texture loadTexture(std::string file);
+		mw::Font loadFont(std::string file, unsigned int size);
 
 		Settings settings_;
 		std::map<std::string, WeaponPtr> weapons_;
@@ -91,6 +97,7 @@ namespace zombie {
 
 		std::map<std::string, mw::Texture> textures_;
 		std::map<std::string, mw::Sound> sounds_;
+		std::map<std::string, mw::Font> fonts_;
 
 		Terrain2D terrain2d_;
 	};

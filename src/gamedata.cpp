@@ -153,6 +153,7 @@ namespace zombie {
 
 		Settings loadSettings(tinyxml2::XMLHandle settingsTag) {
 			Settings settings;
+			settings.defaultFont_ = convertFromText<std::string>(toText(settingsTag.FirstChildElement("font")));
 			settings.width_ = convertFromText<int>(toText(settingsTag.FirstChildElement("width")));
 			settings.height_ = convertFromText<int>(toText(settingsTag.FirstChildElement("height")));
 			settings.unitLevel_ = convertFromText<int>(toText(settingsTag.FirstChildElement("unitLevel")));
@@ -173,23 +174,7 @@ namespace zombie {
 			// Failed!
 			xmlDoc.PrintError();
 		}
-		tinyxml2::XMLHandle handleXml(xmlDoc.FirstChildElement("zombie"));
-		tinyxml2::XMLElement* element = handleXml.FirstChildElement("settings").FirstChildElement("width").ToElement();
-		std::stringstream stream;
-		stream << element->GetText() << " ";
-		element = handleXml.FirstChildElement("settings").FirstChildElement("height").ToElement();
-		stream << element->GetText() << " ";
-
-		int width, height;
-		stream >> width >> height;
-
-		if (width < 0) {
-			width = 400;
-		}
-
-		if (height < 0) {
-			height = 400;
-		}
+		tinyxml2::XMLHandle handleXml(xmlDoc.FirstChildElement("zombie"));		
 
 		// Load game data and map data.
 		load(handleXml);
@@ -345,6 +330,21 @@ namespace zombie {
 		}
 
 		return texture;
+	}
+
+	mw::Font GameData::loadFont(std::string file, unsigned int fontSize) {
+		unsigned int size = fonts_.size();		
+
+		std::string key = file;
+		key += fontSize;
+
+		mw::Font& font = fonts_[key];
+		// Font not found?
+		if (fonts_.size() > size) {
+			font = mw::Font(file, fontSize);
+		}
+
+		return font;
 	}
 
 } // Namespace zombie.

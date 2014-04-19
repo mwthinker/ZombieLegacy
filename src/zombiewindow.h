@@ -3,7 +3,6 @@
 
 #include "zombiegame.h"
 #include "gamedata.h"
-#include "gamefont.h"
 
 #include <mw/sprite.h>
 
@@ -52,15 +51,15 @@ namespace zombie {
 
 	} // Anonymous namespace.
 
-	std::shared_ptr<gui::Button> createButton(std::string str) {
-		auto button = std::make_shared<gui::Button>(str, font15);
+	std::shared_ptr<gui::Button> createButton(std::string str, const mw::Font& font) {
+		auto button = std::make_shared<gui::Button>(str, font);
 		button->setAutoSizeToFitText(true);
 		return button;
 	}
 
 	class ZombieWindow : public gui::Frame {
 	public:
-		ZombieWindow(const GameData& gameData) : gui::Frame(gameData.getWidth(), gameData.getHeight(), true, "Zombie", "images/icon.bmp") {
+		ZombieWindow(GameData& gameData) : gui::Frame(gameData.getWidth(), gameData.getHeight(), true, "Zombie", "images/icon.bmp") {
 			zombieGame_ = std::make_shared<ZombieGame>(gameData);
 			// Always react on key events!
 			zombieGame_->setGrabFocus(true);
@@ -68,10 +67,12 @@ namespace zombie {
 			auto panel = std::make_shared<gui::Panel>();
 			panel->setPreferredSize(100, 50);
 			add(panel, gui::BorderLayout::SOUTH);
-			panel->add(createButton("Button"));
-			panel->add(createButton("Button"));
-			panel->add(createButton("Button"));
-			panel->add(createButton("Button"));
+			mw::Font font = gameData.getDefaultFont(15);
+
+			panel->add(createButton("Button", font));
+			panel->add(createButton("Button", font));
+			panel->add(createButton("Button", font));
+			panel->add(createButton("Button", font));
 
 			setDefaultClosing(true);
 

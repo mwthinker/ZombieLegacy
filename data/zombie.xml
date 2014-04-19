@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zombie>
 	<settings>
+		<font>fonts/Ubuntu-B.ttf</font>
 		<width>600</width>
 		<height>600</height>
 		<unitLevel>20</unitLevel>
 		<zoomLevel>3</zoomLevel>
 		<impulseThreshold>10</impulseThreshold>
 		<timeStepMS>17</timeStepMS>
-		<map>map.xml</map>
+		<map>map.xml</map>		
 	</settings>
 	<weapons>
 		<weapon>

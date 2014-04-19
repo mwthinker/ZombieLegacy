@@ -14,6 +14,7 @@ namespace zombie {
 		float impulseThreshold_;
 		int timeStepMS_;
 		std::string mapFile_;
+		std::string defaultFont_;
 	};
 
 } // Namespace zombie.
