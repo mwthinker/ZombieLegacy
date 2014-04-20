@@ -62,6 +62,7 @@ set(SOURCES_ZOMBIE
 	src/zombiegame.cpp
 	src/zombiegame.h
 	src/zombiewindow.h
+	src/zombiewindow.cpp
 )
 # End of source files.
 
