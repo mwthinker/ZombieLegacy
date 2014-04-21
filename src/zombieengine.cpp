@@ -325,6 +325,7 @@ namespace zombie {
 			Object* ob = static_cast<Object*>(fixture->GetUserData());
 
 			if (Unit* target = dynamic_cast<Unit*>(ob)) {
+				gameInterface_->shotHit(bullet, *target);
 				// Target alive?
 				if (!target->isDead()) {
 					target->updateHealthPoint(-bullet.damage_);
@@ -338,9 +339,10 @@ namespace zombie {
 						}
 					}
 				}
+			} else {
+				gameInterface_->shotMissed(bullet);
 			}
 		}
-		gameInterface_->shotFired(bullet);
 	}
 
 	void ZombieEngine::BeginContact(b2Contact* contact) {
