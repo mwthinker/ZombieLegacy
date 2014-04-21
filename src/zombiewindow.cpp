@@ -47,7 +47,7 @@ namespace zombie {
 			return button;
 		}
 
-	} // Anonymous namespace.	
+	} // Anonymous namespace.
 
 	ZombieWindow::ZombieWindow(GameData& gameData) : gui::Frame(gameData.getWidth(), gameData.getHeight(), true, "Zombie", "images/icon.bmp") {
 		zombieGame_ = std::make_shared<ZombieGame>(gameData);

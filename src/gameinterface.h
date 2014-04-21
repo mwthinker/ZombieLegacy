@@ -25,10 +25,6 @@ namespace zombie {
 		virtual void unitDied(Unit& unit) {
 		}
 
-		// A car just died.
-		virtual void unitDied(float x, float y, bool infected) {
-		}
-
 		// Unit is removed if the function returns true.
 		virtual bool isUnitOutside(float x, float y, bool infected) {
 			return false;
@@ -43,7 +39,10 @@ namespace zombie {
 		virtual void collision(float impulse, Car& car, Building& building) {
 		}
 
-		virtual void shotFired(const Bullet& bullet) {
+		virtual void shotMissed(const Bullet& bullet) {
+		}
+
+		virtual void shotHit(const Bullet& bullet, Unit& unit) {
 		}
 	};
 

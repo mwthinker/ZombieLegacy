@@ -28,7 +28,7 @@ namespace zombie {
 		Unit(float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const WeaponPtr& weapon);
 		virtual ~Unit();
 
-		Unit(const Unit&);;
+		Unit(const Unit&);
 		Unit& operator=(const Unit&);
 
 		void createBody(b2World* world, State state);
