@@ -74,6 +74,7 @@ namespace zombie {
         auto panel = std::make_shared<gui::Panel>();
         add(panel, gui::BorderLayout::CENTER);
         panel->setLayout(std::make_shared<gui::VerticalLayout>());
+		panel->setBackground(mw::Sprite("images/menu.jpg"));
         mw::Font font = gameData_.getDefaultFont(20);
 
         auto play = createButton("Play", font);
