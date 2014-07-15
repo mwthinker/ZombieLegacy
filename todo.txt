@@ -1,1 +1,147 @@
-Things to do!
+•	Köras på flera plattformar, som Mac/Windows/Linux samt Android och iPhone.
+•	Krävs låga prestandakrav av enheten för att köras optimalt.
+•	Enkel grafik men med känsla. Ljud och grafik ska vara stämningsfull.
+•	Snabbt att starta nytt spel. Intuitivt spelkoncept och gränssnitt.
+•	Multispelarsupport med samma regler som i en-spelarläge. Via internet eller på samma dator. Med enkelt gränssnitt.
+•	Stöd för att köra med speldosa.
+•	Möjlighet att enkelt ändra regler och skapa egna banor.
+•	Man kan inte vinna spelet. Bara överleva. Men det finns highscorelista
+
+Single player:
+Målet är att överleva så många dagar som möjligt. En dag är ca 1 minut. 
+Det finns en liten text i interfacet som säger ”Day 9” t ex.
+Huvudgubben kan hitta vapen och ammunition.
+
+Överlevare går omkring slumpmässigt.
+Många är panikslagna och springer omkring och skriker.
+
+Spel version 1 ***********************************
+Grunder. Single player.
+Fler och fler zombies kommer ju längre tiden går.
+
+Kartan: 
+Begränsas av vattenområde.
+Går man i vattnet dör människor, zombies döljs.
+Man startar på slumpvald spawningpoint i staden. 
+
+Gränssnitt:
+Huvudmeny som tetris. (Play, Custom game, Highscore, Exit)
+In-game-view: 
+Life-bar. Ammo-bar, Days survived-bar i list i nedre delen av fönstret.
+
+"enheter"
+det finns zombies, huvudgubbe. Alla har hitpoints. Se nedan respektive beskrivning.
+
+"byggnader"
+byggnader kan inte förstöras.
+Man kan inte gå in i byggnader.
+
+"huvudgubben":
+Rörelse styrs med med piltangenter eller A/S/D/W motsvarande.
+Hålla inne skift-knappen för att sprinta. Tar energi som är uppladdningsbar som BF.
+Vid sidan om rörelsetangenterna finns andra funktioner: 
+inledningsvis bara Skjutaknapp, reloadknapp.
+Gubbens hastighet framåt 
+Gubben kan också backa (vapnet pekar fortfarande framåt då) med lägre hastighet
+Gubben kan snurra på sig på stället med lämplig hastighet.
+Gubben kan också rotera medan den går.
+vision:Vision en viss % av skärmen rakt fram i en vinkel av g grader.
+hitpoints h.
+
+
+
+
+
+
+Spel visioner***********************************
+Mer grunder + vapen + zombies.
+
+"zombies"
+Har 3 modes. (eller kanske steglöst?): 1-planlöst vandrande, 2-intresserad och 3-jakt.
+1: Går omkring ”planlöst” med låg hastighet.
+2. Om den hör gunfire eller andra zombies som har hittat människor grymta blir den ”intresserad” och går i ungefär den riktningen ljuden kommer ifrån i ett antal sekunder
+3. Om den själv sett en människa går den snabbt i dess riktning och grymtar.
+
+Vision en 0.25 av skärmen rakt fram i en vinkel av 120 grader. Kan INTE se bakom hörn!
+Lukt en liten cirkel runt zombien. Lukt av människa triggar ”level 2” medan syn triggar level 3.
+
+hitpoints 25-50. alla variabler ska varieras för att få olika zombiepersonligheter.
+attackerar automatiskt vid närkontakt.
+
+”vapen”
+vapen se separat dokument.
+
+"gränssnitt"
+ panel med hitpoints, aktuellt vapen och hur mycket ammo som finns i vapnet. inledningsvis har man oändligt med magasin.
+
+”grafik”
+Bilder på gubben med olika vapen.
+Bilder på zombies.
+Animationer för eldgivning.
+Animation för träff. I kött/mark.
+Animation för död zombie/gubbe.
+
+”ljud”
+ljud för alla vapen
+ljud för zombie – upptäckt
+ljud för zombie – död
+
+
+Spel version 0.3***********************************
+Introduktion av survivors och smittoförfarandet.
+
+
+
+
+När en zombie / flera zombies dödar en survivior så stannar de och feastar på hans flesh… Det blir som att de vaktar honom. Om man då dödar alla de zombiesarna kan man plundra survivorns lik. Han kan ha mat och amonution. Det leder ju också till att om survivorn hinner bli zoombie så kommer man när man dödar den zombien kunna ta amonutionen eller maten.
+
+
+Main character
+
+Skjuta
+Inventory – vapen
+Liv
+Energi för att springa
+Någon slags healing.
+Poäng/Achievments/Dagar överlevda - belöningar
+//In och ut ur SafeHouse
+Droppa vapen/inventarie på marken eller på annan gubbe
+
+Zombie
+Spawnas som ett lik som inte kan röra sig på 15 sekunder, och som inte kan puttas eller användas som mur.
+Liv:100 Hastighet:100
+
+
+Har 4 modes. : 1-planlöst vandrande, 2-feast-mode, 3-intresserad och 4-jakt.
+1: Går omkring ”planlöst” med låg hastighet.
+2. Käkar på lik om den ser ett lik.
+3. Om den hör gunfire eller andra zombies som har hittat människor grymta blir den ”intresserad” och går i ungefär den riktningen ljuden kommer ifrån i ett antal sekunder och med en viss hastighet. Beror på avstånd till ljudkällan och ljudstyrka.
+
+4. Om den själv sett en människa går den snabbt i dess riktning och grymtar.
+
+Vision en 0.25 av skärmen rakt fram i en vinkel av 120 grader. Kan INTE se bakom hörn!
+Lukt en liten cirkel runt zombien. Lukt av människa triggar ”level 2” medan syn triggar level 3.
+
+hitpoints 25-50. alla variabler ska varieras för att få olika zombiepersonligheter.
+attackerar automatiskt vid närkontakt.
+
+
+
+Överlevare
+
+Gubbar som zombisarna vill äta. Dom kan bli zombisar. Kan ha inventory och hantera vapen.
+
+Egenskaper:
+Liv, Hastighet, Attack-skills.
+Lojalitet – vill den följa efter huvudgubben?
+Mod – benägenhet att få panik eller stanna och slåss
+
+Beteenden/modes
+Flykt
+Kämpa
+Lojalitet
+Panik – max = självmord
+
+Kartan
+Störrekarta, inte kantig omringad av vatten och bro
+Vatten-byggnad

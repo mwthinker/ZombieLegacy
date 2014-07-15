@@ -52,7 +52,7 @@ namespace zombie {
 		void collision(float impulse, Car& car, Building& building) override;
 
 		float innerSpawnRadius_;
-		float outerSpawnRadius_;
+		float outergenerateRadius_;
 		Position viewPosition_;
 		float scale_;
 		
