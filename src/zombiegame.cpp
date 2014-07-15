@@ -26,7 +26,11 @@ namespace zombie {
 		// Returns a random postion between the defined outer and inner circle centered in position.
 		Position generatePosition(Position position, float innerRadius, float outerRadius) {
 			return position + (innerRadius + (outerRadius - innerRadius) * random()) * Position(std::cos(random()*2.f*3.14f), std::sin(random()*2.f*3.14f));
-		}		
+		}
+
+		Position generatePosition(std::vector<Position> positions) {
+			return positions[randomInt(0, positions.size()-1)];
+		}
 
 		void removeDeadGraphicObjects(std::list<std::shared_ptr<Graphic>>& list) {
 			list.remove_if([](const std::shared_ptr<Graphic>& ob) {
@@ -59,7 +63,7 @@ namespace zombie {
 			std::map<std::string, Unit2D*> units = gameData_.getUnits();
 			// Add human.
 			{
-				State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
+				State state(generatePosition(gameData.getSpawningPoints()), ORIGO, 0);
 				Unit2D* human = new Unit2D(*units["Human"]);
 				engine_.setHuman(keyboard1_, state, human);
 				viewPosition_ = human->getPosition();
@@ -67,8 +71,8 @@ namespace zombie {
 			// Add zombies.
 			{
 				Unit2D* zombie = units["Zombie"];
-				for (int i = 0; i < gameData.getUnitLevel(); ++i) {
-					State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
+				for (int i = 0; i < 100; ++i) { //gameData.getUnitLevel();
+					State state(generatePosition(gameData.getSpawningPoints()), ORIGO, 0);
 					engine_.add(state, new Unit2D(*zombie));
 				}
 			}
@@ -77,10 +81,10 @@ namespace zombie {
 		// Add cars.
 		{
 			const std::map<std::string, Car2D*>& cars = gameData_.getCars();
-			for (int i = 0; i < 10; ++i) {
+			for (int i = 0; i < 50; ++i) {
 				for (auto& pair : cars) {
 					Car2D* car = pair.second;
-					State state(generatePosition(ORIGO, 0, 50), ORIGO, 0);
+					State state(generatePosition(gameData.getSpawningPoints()), ORIGO, 0);
 					engine_.add(state, new Car2D(*car));
 				}
 			}

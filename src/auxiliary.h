@@ -35,6 +35,8 @@ namespace zombie {
 	// Returns a random number. The output is uniformly distributed on the interval [a, b).
 	float random();
 
+	int randomInt(int lower, int higher);
+
 } // Namespace zombie.
 
 #endif // AUXILIARY_H

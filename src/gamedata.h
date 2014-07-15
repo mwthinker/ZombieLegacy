@@ -66,6 +66,10 @@ namespace zombie {
 			return loadFont(settings_.defaultFont_, size);
 		}
 
+		inline const std::vector<Position>& getSpawningPoints() const {
+			return spawningPoints_;		
+		}
+
 	private:
 		// Handle to first node <zombie>.
 		bool load(tinyxml2::XMLHandle xml);
@@ -95,6 +99,7 @@ namespace zombie {
 		std::map<std::string, Car2D*> cars_;
 		std::vector<Building2D*> buildings_;
 
+		std::vector<Position> spawningPoints_;
 		std::map<std::string, mw::Texture> textures_;
 		std::map<std::string, mw::Sound> sounds_;
 		std::map<std::string, mw::Font> fonts_;

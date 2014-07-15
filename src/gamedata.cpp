@@ -43,6 +43,23 @@ namespace zombie {
 			return output;
 		}
 
+		Point loadPoint(std::string line) {
+			int index = line.find("(");
+			int index2 = line.rfind(")");
+
+			// New line is the string between "((" and "))".
+			line = line.substr(index + 1, index2 - index - 1);
+
+			// Replace all ',' (comma) with whitespace.
+			for (char& chr : line) {
+				if (chr == ',') {
+					chr = ' ';
+				}
+			}
+
+			return convertFromText<Point>(line.c_str());
+		}
+
 		// Takes a string as input and returns the points.
 		// The string "POLYGON ((x1 y1, x2 y2, ...))" the input should be defined
 		// as ((...). The last point is assumed to be the same as the first, therefore
@@ -102,7 +119,7 @@ namespace zombie {
 			return element;
 		}
 
-		void loadMapItems(tinyxml2::XMLHandle objectsTag, std::vector<Building2D*>& buildings, Terrain2D& terrain) {
+		void loadMapItems(tinyxml2::XMLHandle objectsTag, std::vector<Building2D*>& buildings, std::vector<Position>& spawningPoints, Terrain2D& terrain) {
 			tinyxml2::XMLElement* element = objectsTag.FirstChildElement("object").ToElement();
 			while (element != nullptr) {
 				if (element->Attribute("type", "building")) {
@@ -143,6 +160,16 @@ namespace zombie {
 					if (stream >> word) {
 						if (word == "POLYGON") {
 							terrain.addRoadLine(loadPolygon(stream.str()));
+						}
+					}
+				} else if (element->Attribute("type", "spawningpoint")) {
+					std::string geom = convertFromText<const char*>(toText(element->FirstChildElement("geom")));
+					std::stringstream stream(geom);
+					std::string word;
+
+					if (stream >> word) {
+						if (word == "POINT") {
+							spawningPoints.push_back(loadPoint(stream.str()));
 						}
 					}
 				}
@@ -308,7 +335,7 @@ namespace zombie {
 			tinyxml2::XMLHandle mapHandle(mapXml);
 			mapHandle = mapHandle.FirstChildElement("map");
 
-			loadMapItems(mapHandle.FirstChildElement("objects"), buildings_, terrain2d_);
+			loadMapItems(mapHandle.FirstChildElement("objects"), buildings_, spawningPoints_, terrain2d_);
 
 		} catch (std::exception&) {
 			std::exit(1);

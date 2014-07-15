@@ -16,4 +16,9 @@ namespace zombie {
 		return distribution(generator);
 	}
 
+	int randomInt(int lower, int higher) {
+		std::uniform_int_distribution<int> distribution(lower, higher);
+		return distribution(generator);
+	}
+
 } // Namespace zombie.
