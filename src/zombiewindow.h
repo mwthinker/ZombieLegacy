@@ -16,9 +16,20 @@ namespace zombie {
 
 		~ZombieWindow() {
 		}
-	
+
 	private:
+        void initMenuFrame();
+        void initplayFrame();
+        void initCustomplayFrame();
+        void initHighscoreFrame();
+
+        int menuFrameIndex_;
+        int playFrameIndex_;
+        int customGameFrameIndex_;
+        int highscoreFrameIndex_;
+
 		std::shared_ptr<ZombieGame> zombieGame_;
+		GameData& gameData_;
 	};
 
 } // Namespace zombie.

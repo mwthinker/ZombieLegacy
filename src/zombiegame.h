@@ -32,7 +32,7 @@ namespace zombie {
 		// Starts the game.
 		void startGame();
 
-		// Draws the graphic and (deltaTime) should be the time past 
+		// Draws the graphic and (deltaTime) should be the time past
 		// from the previous call to this funtion.
 		void draw(Uint32 deltaTime);
 
@@ -52,10 +52,10 @@ namespace zombie {
 		void collision(float impulse, Car& car, Building& building) override;
 
 		float innerSpawnRadius_;
-		float outergenerateRadius_;
+		float outerSpawnRadius_;
 		Position viewPosition_;
 		float scale_;
-		
+
 		ZombieEngine engine_;
 		Terrain2D terrain2D_;
 

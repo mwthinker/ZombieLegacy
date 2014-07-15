@@ -1,15 +1,20 @@
-•	Köras på flera plattformar, som Mac/Windows/Linux samt Android och iPhone.
-•	Krävs låga prestandakrav av enheten för att köras optimalt.
-•	Enkel grafik men med känsla. Ljud och grafik ska vara stämningsfull.
-•	Snabbt att starta nytt spel. Intuitivt spelkoncept och gränssnitt.
-•	Multispelarsupport med samma regler som i en-spelarläge. Via internet eller på samma dator. Med enkelt gränssnitt.
-•	Stöd för att köra med speldosa.
-•	Möjlighet att enkelt ändra regler och skapa egna banor.
-•	Man kan inte vinna spelet. Bara överleva. Men det finns highscorelista
+Allmänna visioner:
+Köras på flera plattformar, som Mac/Windows/Linux samt Android och iPhone.
+
+Krävs låga prestandakrav av enheten för att köras optimalt.
+Enkel grafik men med känsla. Ljud och grafik ska vara stämningsfull.
+
+Snabbt att starta nytt spel. Intuitivt spelkoncept och gränssnitt.
+Multispelarsupport med samma regler som i en-spelarläge. Via internet eller på samma dator. Med enkelt gränssnitt.
+
+Stöd för att köra med speldosa.
+
+Möjlighet att enkelt ändra regler och skapa egna banor.
+Man kan inte vinna spelet. Bara överleva. Men det finns highscorelista
 
 Single player:
 Målet är att överleva så många dagar som möjligt. En dag är ca 1 minut. 
-Det finns en liten text i interfacet som säger ”Day 9” t ex.
+Det finns en liten text i interfacet som säger "Day 9" t ex.
 Huvudgubben kan hitta vapen och ammunition.
 
 Överlevare går omkring slumpmässigt.
@@ -58,33 +63,33 @@ Mer grunder + vapen + zombies.
 
 "zombies"
 Har 3 modes. (eller kanske steglöst?): 1-planlöst vandrande, 2-intresserad och 3-jakt.
-1: Går omkring ”planlöst” med låg hastighet.
-2. Om den hör gunfire eller andra zombies som har hittat människor grymta blir den ”intresserad” och går i ungefär den riktningen ljuden kommer ifrån i ett antal sekunder
+1: Går omkring "planlöst" med låg hastighet.
+2. Om den hör gunfire eller andra zombies som har hittat människor grymta blir den "intresserad" och går i ungefär den riktningen ljuden kommer ifrån i ett antal sekunder
 3. Om den själv sett en människa går den snabbt i dess riktning och grymtar.
 
 Vision en 0.25 av skärmen rakt fram i en vinkel av 120 grader. Kan INTE se bakom hörn!
-Lukt en liten cirkel runt zombien. Lukt av människa triggar ”level 2” medan syn triggar level 3.
+Lukt en liten cirkel runt zombien. Lukt av människa triggar "level 2" medan syn triggar level 3.
 
 hitpoints 25-50. alla variabler ska varieras för att få olika zombiepersonligheter.
 attackerar automatiskt vid närkontakt.
 
-”vapen”
+"vapen"
 vapen se separat dokument.
 
 "gränssnitt"
  panel med hitpoints, aktuellt vapen och hur mycket ammo som finns i vapnet. inledningsvis har man oändligt med magasin.
 
-”grafik”
+"grafik"
 Bilder på gubben med olika vapen.
 Bilder på zombies.
 Animationer för eldgivning.
 Animation för träff. I kött/mark.
 Animation för död zombie/gubbe.
 
-”ljud”
+"ljud"
 ljud för alla vapen
-ljud för zombie – upptäckt
-ljud för zombie – död
+ljud för zombie upptäckt
+ljud för zombie död
 
 
 Spel version 0.3***********************************
@@ -93,13 +98,13 @@ Introduktion av survivors och smittoförfarandet.
 
 
 
-När en zombie / flera zombies dödar en survivior så stannar de och feastar på hans flesh… Det blir som att de vaktar honom. Om man då dödar alla de zombiesarna kan man plundra survivorns lik. Han kan ha mat och amonution. Det leder ju också till att om survivorn hinner bli zoombie så kommer man när man dödar den zombien kunna ta amonutionen eller maten.
+När en zombie / flera zombies dödar en survivior så stannar de och feastar på hans flesh. Det blir som att de vaktar honom. Om man då dödar alla de zombiesarna kan man plundra survivorns lik. Han kan ha mat och amonution. Det leder ju också till att om survivorn hinner bli zoombie så kommer man när man dödar den zombien kunna ta amonutionen eller maten.
 
 
 Main character
 
 Skjuta
-Inventory – vapen
+Inventory vapen
 Liv
 Energi för att springa
 Någon slags healing.
@@ -113,14 +118,14 @@ Liv:100 Hastighet:100
 
 
 Har 4 modes. : 1-planlöst vandrande, 2-feast-mode, 3-intresserad och 4-jakt.
-1: Går omkring ”planlöst” med låg hastighet.
+1: Går omkring "planlöst" med låg hastighet.
 2. Käkar på lik om den ser ett lik.
-3. Om den hör gunfire eller andra zombies som har hittat människor grymta blir den ”intresserad” och går i ungefär den riktningen ljuden kommer ifrån i ett antal sekunder och med en viss hastighet. Beror på avstånd till ljudkällan och ljudstyrka.
+3. Om den hör gunfire eller andra zombies som har hittat människor grymta blir den "intresserad" och går i ungefär den riktningen ljuden kommer ifrån i ett antal sekunder och med en viss hastighet. Beror på avstånd till ljudkällan och ljudstyrka.
 
 4. Om den själv sett en människa går den snabbt i dess riktning och grymtar.
 
 Vision en 0.25 av skärmen rakt fram i en vinkel av 120 grader. Kan INTE se bakom hörn!
-Lukt en liten cirkel runt zombien. Lukt av människa triggar ”level 2” medan syn triggar level 3.
+Lukt en liten cirkel runt zombien. Lukt av människa triggar "level 2" medan syn triggar level 3.
 
 hitpoints 25-50. alla variabler ska varieras för att få olika zombiepersonligheter.
 attackerar automatiskt vid närkontakt.
@@ -133,14 +138,14 @@ Gubbar som zombisarna vill äta. Dom kan bli zombisar. Kan ha inventory och hante
 
 Egenskaper:
 Liv, Hastighet, Attack-skills.
-Lojalitet – vill den följa efter huvudgubben?
-Mod – benägenhet att få panik eller stanna och slåss
+Lojalitet , vill den följa efter huvudgubben?
+Mod , benägenhet att få panik eller stanna och slåss
 
 Beteenden/modes
 Flykt
 Kämpa
 Lojalitet
-Panik – max = självmord
+Panik - max = självmord
 
 Kartan
 Störrekarta, inte kantig omringad av vatten och bro
