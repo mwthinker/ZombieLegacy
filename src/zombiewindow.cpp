@@ -7,6 +7,7 @@
 #include <gui/button.h>
 #include <gui/frame.h>
 #include <gui/panel.h>
+#include <gui/label.h>
 #include <gui/verticallayout.h>
 
 namespace zombie {
@@ -76,6 +77,10 @@ namespace zombie {
         panel->setLayout(std::make_shared<gui::VerticalLayout>());
 		panel->setBackground(mw::Sprite("images/menu.jpg"));
         mw::Font font = gameData_.getDefaultFont(20);
+
+        auto text = std::make_shared<gui::Label>("Zombie",gameData_.getDefaultFont(60));
+        panel->add(text);
+        text->setTextColor(mw::Color(1,1,1));
 
         auto play = createButton("Play", font);
         play->addActionListener([&](gui::Component&) {
