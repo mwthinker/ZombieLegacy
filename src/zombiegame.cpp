@@ -52,14 +52,14 @@ namespace zombie {
 
 		scale_ = 1.f;
 		lastSpawnTime_ = engine_.getTime();
-		spawnPeriod_ = 2;
+		spawnPeriod_ = 1;
 
 		addKeyListener([&](gui::Component& component, const SDL_Event& keyEvent) {
 			keyboard1_->eventUpdate(keyEvent);
 		});
 
-		innerSpawnRadius_ = 0.f;
-		outerSpawnRadius_ = 5.f;
+		innerSpawnRadius_ = 8.f;
+		outerSpawnRadius_ = 15.f;
 
 		{
 			std::map<std::string, Unit2D*> units = gameData_.getUnits();
@@ -105,6 +105,20 @@ namespace zombie {
 	}
 
 	ZombieGame::~ZombieGame() {
+	}
+
+	void ZombieGame::updateUnit(Unit& unit, Unit& human) {
+		Position diff = unit.getPosition() - human.getPosition();
+		if (diff.LengthSquared() > outerSpawnRadius_*outerSpawnRadius_) {
+			double alfa = random() * 2 * PI;
+			double dist = random() * (outerSpawnRadius_ - innerSpawnRadius_) + innerSpawnRadius_;
+			Position p = dist * Position(std::cos(alfa), std::sin(alfa)) + human.getPosition();
+			
+			auto body = unit.getBody();
+			
+			// Move to new postion and direction.
+			body->SetTransform(p - body->GetPosition(), alfa - body->GetAngle());
+		}
 	}
 
 	void ZombieGame::updateSpawning(Unit& human) {

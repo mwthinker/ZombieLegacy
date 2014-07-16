@@ -30,9 +30,8 @@ namespace zombie {
 		virtual void unitDied(Unit& unit) {
 		}
 
-		// Unit is removed if the function returns true.
-		virtual bool isUnitOutside(float x, float y, bool infected) {
-			return false;
+		// Is called for each unit every cycle
+		virtual void updateUnit(Unit& unit, Unit& human) {
 		}
 
 		virtual void collision(float impulse, Car& car, Unit& unit) {

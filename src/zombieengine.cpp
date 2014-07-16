@@ -162,6 +162,11 @@ namespace zombie {
 				gameInterface_->updateSpawning(*human_);
 			}
 
+			// For all units except the human unit.
+			for (Unit* unit : units_) {
+				gameInterface_->updateUnit(*unit, *human_);				
+			}
+
 			// Update all game entities.
 			for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
 				Object* ob = static_cast<Object*>(b->GetUserData());
@@ -189,6 +194,10 @@ namespace zombie {
 	}
 
 	void ZombieEngine::removeGarbage() {
+		units_.remove_if([](Unit* unit) {
+			return unit->toBeRemoved();
+		});
+
 		// Remove all players in a safe way. I.e. No risk of removing a player in current use.
 		for (Player* player : garbagePlayers_) {
 			delete player;
@@ -238,6 +247,7 @@ namespace zombie {
 			new SurvivorBehavior(unit);
 		}
 		unit->addEventHandler(std::bind(&ZombieEngine::unitEventHandler, this, unit, std::placeholders::_2));
+		units_.push_back(unit);
 	}
 
 	void ZombieEngine::add(Building* building) {

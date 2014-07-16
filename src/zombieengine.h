@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <string>
+#include <list>
 
 namespace zombie {
 
@@ -112,6 +113,7 @@ namespace zombie {
 		// Is cleared, and called every update to physics, in a safe way.
 		// All players are assumed to be on the heap and is deallocated.
 		std::vector<Player*> garbagePlayers_;
+		std::list<Unit*> units_; // All units except the human unit.
 		
 		// Same as the abowe but for objects.
 		std::vector<Object*> garbageObjects_;

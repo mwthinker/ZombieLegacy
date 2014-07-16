@@ -38,8 +38,9 @@ namespace zombie {
 
 		void zoom(float scale);
 
-
 	private:
+		void updateUnit(Unit& unit, Unit& human) override;
+		
 		void updateSpawning(Unit& human) override;
 
 		void currentHuman(Unit& unit) override;
