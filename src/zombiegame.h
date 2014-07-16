@@ -40,7 +40,7 @@ namespace zombie {
 
 
 	private:
-		void updateSpawning() override;
+		void updateSpawning(Unit& human) override;
 
 		void currentHuman(Unit& unit) override;
 

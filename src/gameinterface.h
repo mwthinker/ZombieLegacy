@@ -15,7 +15,7 @@ namespace zombie {
 	public:
 
 		// 
-		virtual void updateSpawning() {
+		virtual void updateSpawning(Unit& human) {
 		}
 
 		// The current position of the human.
