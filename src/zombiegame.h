@@ -38,7 +38,10 @@ namespace zombie {
 
 		void zoom(float scale);
 
+
 	private:
+		void updateSpawning() override;
+
 		void currentHuman(Unit& unit) override;
 
 		void humanDied(Unit& unit) override;
@@ -55,6 +58,8 @@ namespace zombie {
 		float outerSpawnRadius_;
 		Position viewPosition_;
 		float scale_;
+		float lastSpawnTime_;
+		float spawnPeriod_;
 
 		ZombieEngine engine_;
 		Terrain2D terrain2D_;

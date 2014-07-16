@@ -51,6 +51,8 @@ namespace zombie {
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
 
 		scale_ = 1.f;
+		lastSpawnTime_ = engine_.getTime();
+		spawnPeriod_ = 2;
 
 		addKeyListener([&](gui::Component& component, const SDL_Event& keyEvent) {
 			keyboard1_->eventUpdate(keyEvent);
@@ -71,7 +73,7 @@ namespace zombie {
 			// Add zombies.
 			{
 				Unit2D* zombie = units["Zombie"];
-				for (int i = 0; i < 100; ++i) { //gameData.getUnitLevel();
+				for (int i = 0; i < 0; ++i) { //gameData.getUnitLevel();
 					State state(generatePosition(gameData.getSpawningPoints()), ORIGO, 0);
 					engine_.add(state, new Unit2D(*zombie));
 				}
@@ -81,7 +83,7 @@ namespace zombie {
 		// Add cars.
 		{
 			const std::map<std::string, Car2D*>& cars = gameData_.getCars();
-			for (int i = 0; i < 50; ++i) {
+			for (int i = 0; i < 1; ++i) {
 				for (auto& pair : cars) {
 					Car2D* car = pair.second;
 					State state(generatePosition(gameData.getSpawningPoints()), ORIGO, 0);
@@ -103,6 +105,17 @@ namespace zombie {
 	}
 
 	ZombieGame::~ZombieGame() {
+	}
+
+	void ZombieGame::updateSpawning() {
+		if (engine_.getTime() - lastSpawnTime_ > spawnPeriod_){
+			lastSpawnTime_ = engine_.getTime();
+			// Reduce spawnPeriod gradually
+			std::map<std::string, Unit2D*> units = gameData_.getUnits();
+			Unit2D* zombie = units["Zombie"];
+			State state(generatePosition(gameData_.getSpawningPoints()), ORIGO, 0);
+			engine_.add(state, new Unit2D(*zombie));
+		}
 	}
 
 	// Starts the game.

@@ -158,6 +158,8 @@ namespace zombie {
 	void ZombieEngine::updatePhysics(float timeStep) {
 		// Game is started?
 		if (started_) {
+			gameInterface_->updateSpawning();
+
 			// Update all game entities.
 			for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
 				Object* ob = static_cast<Object*>(b->GetUserData());
