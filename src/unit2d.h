@@ -32,6 +32,7 @@ namespace zombie {
 				glScale2f(2 * getRadius());
 				glRotated(getDirection() * 180 / PI, 0, 0, 1);
 				getWeapon()->draw();
+				glColor3d(1, 1, 1);
 				animation_.draw(time);
 				glPopMatrix();
 			}

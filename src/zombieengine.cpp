@@ -163,10 +163,11 @@ namespace zombie {
 			}
 
 			// For all units except the human unit.
-			for (Unit* unit : units_) {
-				gameInterface_->updateUnit(*unit, *human_);				
+			if (human_ != nullptr) {
+				for (Unit* unit : units_) {
+					gameInterface_->updateUnit(*unit, *human_);
+				}
 			}
-
 			// Update all game entities.
 			for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
 				Object* ob = static_cast<Object*>(b->GetUserData());
