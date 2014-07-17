@@ -52,20 +52,21 @@ namespace zombie {
 
 		scale_ = 1.f;
 		lastSpawnTime_ = engine_.getTime();
-		spawnPeriod_ = 1;
+		spawnPeriod_ = 0.2;
 
 		addKeyListener([&](gui::Component& component, const SDL_Event& keyEvent) {
 			keyboard1_->eventUpdate(keyEvent);
 		});
 
-		innerSpawnRadius_ = 8.f;
-		outerSpawnRadius_ = 15.f;
+		innerSpawnRadius_ = 25.f;
+		outerSpawnRadius_ = 30.f;
 
 		{
 			std::map<std::string, Unit2D*> units = gameData_.getUnits();
 			// Add human.
 			{
 				State state(generatePosition(gameData.getSpawningPoints()), ORIGO, 0);
+				//State state(ORIGO, ORIGO, 0);
 				Unit2D* human = new Unit2D(*units["Human"]);
 				engine_.setHuman(keyboard1_, state, human);
 				viewPosition_ = human->getPosition();
@@ -117,7 +118,8 @@ namespace zombie {
 			auto body = unit.getBody();
 			
 			// Move to new postion and direction.
-			body->SetTransform(p - body->GetPosition(), alfa - body->GetAngle());
+			//body->SetTransform(p - body->GetPosition(), alfa - body->GetAngle());
+			body->SetTransform(p, alfa);
 		}
 	}
 
