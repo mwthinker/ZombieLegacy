@@ -63,7 +63,7 @@ namespace zombie {
 		outerSpawnRadius_ = 30.f;
 
 		{
-			std::map<std::string, Unit2D*> units = gameData_.getUnits();
+			std::map<std::string, Unit2D*> units;// = gameData_.getUnits();
 			// Add human.
 			{
 				State state(generatePosition(gameData.getSpawningPoints()), ORIGO, 0);
@@ -84,7 +84,7 @@ namespace zombie {
 
 		// Add cars.
 		{
-			const std::map<std::string, Car2D*>& cars = gameData_.getCars();
+			const std::map<std::string, Car2D*> cars;// = gameData_.getCars();
 			for (int i = 0; i < 1; ++i) {
 				for (auto& pair : cars) {
 					Car2D* car = pair.second;
@@ -95,7 +95,7 @@ namespace zombie {
 		}
 		// Add buildings.
 		{
-			const auto& buildings = gameData_.getBuildings();
+			std::vector<Building2D*> buildings;// = gameData_.getBuildings();
 			for (Building2D* building : buildings) {
 				engine_.add(new Building2D(*building));
 			}
@@ -131,7 +131,7 @@ namespace zombie {
 			double alfa = random() * 2 * PI;
 			double dist = random() * (outerSpawnRadius_ - innerSpawnRadius_) + innerSpawnRadius_;
 			Position p = dist * Position(std::cos(alfa), std::sin(alfa)) + human.getPosition();
-			std::map<std::string, Unit2D*> units = gameData_.getUnits();
+			std::map<std::string, Unit2D*> units;// = gameData_.getUnits();
 			Unit2D* zombie = units["Zombie"];
 			State state(p, ORIGO, 0);
 			engine_.add(state, new Unit2D(*zombie));

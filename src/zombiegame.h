@@ -70,7 +70,7 @@ namespace zombie {
 		Terrain2D terrain2D_;
 
 		DevicePtr keyboard1_, keyboard2_;
-		GameData gameData_;
+		const GameData& gameData_;
 
 		std::list<std::shared_ptr<Graphic>> graphicGround_;
 		std::list<std::shared_ptr<Graphic>> graphicMiddle_;

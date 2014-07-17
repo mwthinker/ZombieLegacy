@@ -15,6 +15,7 @@
 #include <map>
 #include <string>
 #include <sstream>
+#include <iostream>
 
 namespace zombie {
 
@@ -327,7 +328,81 @@ namespace zombie {
 
 		// Load game data and map data.
 		load(handleXml);
+		dataFile_ = dataFile;
 	}
+
+	void GameData::save() {
+        xmlDoc_.SaveFile(dataFile_.c_str());
+    }
+
+    void GameData::setWindowSize(int width, int height) {
+        tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("settings");
+        zombie::insert(width, handleXml.FirstChildElement("width"));
+        zombie::insert(height, handleXml.FirstChildElement("height"));
+        save();
+    }
+
+    int GameData::getWindowWidth() const {
+        tinyxml2::XMLConstHandle handlemXl = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("settings");
+        return zombie::extract<int>(handlemXl.FirstChildElement("width"));
+    }
+    int GameData::getWindowHeight() const {
+        const tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("settings");
+        return zombie::extract<int>(handleXml.FirstChildElement("height"));
+    }
+
+    void GameData::setWindowPosition(int x, int y) {
+        tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("settings");
+        zombie::insert(x, handleXml.FirstChildElement("positionX"));
+        zombie::insert(y, handleXml.FirstChildElement("positionY"));
+        save();
+    }
+
+    int GameData::getWindowXPosition() const {
+        tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("settings");
+        return zombie::extract<int>(handleXml.FirstChildElement("positionX"));
+    }
+
+    int GameData::getWindowYPosition() const {
+        tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("settings");
+        return zombie::extract<int>(handleXml.FirstChildElement("positionY"));
+    }
+
+    void GameData::setWindowMaximized(bool maximized) {
+        tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("settings");
+        zombie::insert(maximized, handleXml.FirstChildElement("maximized"));
+        save();
+    }
+
+    bool GameData::isWindowMaximized() const {
+        tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("settings");
+        return zombie::extract<bool>(handleXml.FirstChildElement("maximized"));
+    }
+
+    bool GameData::loadCar(std::string name, const Car2D& car) {
+        tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("Cars").FirstChildElement(name.c_str());
+
+        //return zombie::extract<bool>(handleXml.FirstChildElement("maximized"));
+    }
+
+    bool GameData::loadUnit(std::string name, const Unit2D& unit) {
+    }
+
+    std::vector<Building2D*> GameData::loadBuildings() {
+
+    }
+
+    float GameData::getImpulseThreshold() const {
+    }
+
+    int GameData::getTimeStemMS() const {
+    }
+
+    Terrain2D GameData::getTerrain2D() const {
+    }
+
+    int GameData::getUnitLevel() const {
+    }
 
 	void GameData::loadCars(tinyxml2::XMLHandle movingUnitsTag) {
 		// Find all cars.
@@ -341,7 +416,7 @@ namespace zombie {
 			float length = convertFromText<float>(toText(element->FirstChildElement("length")));
 			float life = convertFromText<float>(toText(element->FirstChildElement("life")));
 
-			cars_[name] = new Car2D(mass, life, width, length, animation);
+			//cars_[name] = new Car2D(mass, life, width, length, animation);
 
 			element = element->NextSiblingElement("car");
 		}
@@ -361,7 +436,7 @@ namespace zombie {
 			float stamina = convertFromText<float>(toText(element->FirstChildElement("stamina")));
 			Animation animation = loadAnimation(toElement(element->FirstChildElement("animation")));
 			std::string weaponName = convertFromText<const char*>(toText(element->FirstChildElement("weapon")));
-			units_[name] = new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapons_[weaponName], animation);
+			//units_[name] = new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapons_[weaponName], animation);
 
 			element = element->NextSiblingElement("unit");
 		}
@@ -431,13 +506,12 @@ namespace zombie {
 
 	bool GameData::load(tinyxml2::XMLHandle xml) {
 		try {
-			settings_ = loadSettings(xml.FirstChildElement("settings"));
 			loadWeapons(xml.FirstChildElement("weapons"));
 			loadUnits(xml.FirstChildElement("movingObjects"));
 			loadCars(xml.FirstChildElement("movingObjects"));
 
 			// Load map.
-			loadMap(settings_.mapFile_);
+			//loadMap(settings_.mapFile_);
 
 			return true;
 		} catch (mw::Exception&) {
@@ -457,43 +531,54 @@ namespace zombie {
 			tinyxml2::XMLHandle mapHandle(mapXml);
 			mapHandle = mapHandle.FirstChildElement("map");
 
-			loadMapItems(mapHandle.FirstChildElement("objects"), buildings_, spawningPoints_, terrain2d_);
+			//loadMapItems(mapHandle.FirstChildElement("objects"), buildings_, spawningPoints_, terrain2d_);
 
 		} catch (std::exception&) {
 			std::exit(1);
 		}
 	}
 
-	mw::Texture GameData::loadTexture(std::string file) {
-		unsigned int size = textures_.size();
-
-		mw::Texture& texture = textures_[file];
-		// Image not found?
-		if (textures_.size() > size) {
-			texture = mw::Texture(file);
-
-			// Image not valid?
-			if (!texture.isValid()) {
-				//assert(0);
-			}
-		}
-
-		return texture;
-	}
-
 	mw::Font GameData::loadFont(std::string file, unsigned int fontSize) {
-		unsigned int size = fonts_.size();
+        unsigned int size = fonts_.size();
+        std::string key = file;
+        key += fontSize;
+        mw::Font& font = fonts_[key];
 
-		std::string key = file;
-		key += fontSize;
+        // Font not found?
+        if (fonts_.size() > size) {
+            font = mw::Font(file, fontSize);
+        }
 
-		mw::Font& font = fonts_[key];
-		// Font not found?
-		if (fonts_.size() > size) {
-			font = mw::Font(file, fontSize);
-		}
+        return font;
+    }
 
-		return font;
-	}
+    mw::Texture GameData::loadTexture(std::string file) {
+        unsigned int size = textures_.size();
+        mw::Texture& texture = textures_[file];
+
+        // Image not found?
+        if (textures_.size() > size) {
+            texture = mw::Texture(file);
+
+            // Image not valid?
+            if (!texture.isValid()) {
+                std::cerr << file << " failed to load!" << std::endl;
+            }
+        }
+
+        return texture;
+    }
+
+    mw::Sound GameData::loadSound(std::string file) {
+        unsigned int size = sounds_.size();
+        mw::Sound& sound = sounds_[file];
+
+        // Sound not found?
+        if (sounds_.size() > size) {
+            sound = mw::Sound(file);
+        }
+
+        return sound;
+    }
 
 } // Namespace zombie.

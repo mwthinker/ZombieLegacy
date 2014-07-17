@@ -26,48 +26,37 @@ namespace zombie {
 	public:
 		GameData(std::string dataFile);
 
-		inline int getWidth() const {
-			return settings_.width_;
-		}
+		void save();
 
-		inline int getHeight() const {
-			return settings_.height_;
-		}
+		int getWindowWidth() const;
+        int getWindowHeight() const;
+        void setWindowSize(int width, int height);
+        void setWindowPosition(int x, int y);
+        int getWindowXPosition() const;
+        int getWindowYPosition() const;
 
-		inline const std::map<std::string, Unit2D*>& getUnits() {
-			return units_;
-		}
+        void setWindowMaximized(bool maximized);
+        bool isWindowMaximized() const;
 
-		inline const std::map<std::string, Car2D*>& getCars() {
-			return cars_;
-		}
+        bool loadCar(std::string name, const Car2D& car);
+        bool loadUnit(std::string name, const Unit2D& car);
 
-		const std::vector<Building2D*>& getBuildings() {
-			return buildings_;
-		}
+        std::vector<Building2D*> loadBuildings();
 
-		inline float getImpulseThreshold() const {
-			return settings_.impulseThreshold_;
-		}
+		float getImpulseThreshold() const;
 
-		inline int getTimeStemMS() const {
-			return settings_.timeStepMS_;
-		}
+		int getTimeStemMS() const;
 
-		inline Terrain2D getTerrain2D() const {
-			return terrain2d_;
-		}
+		Terrain2D getTerrain2D() const;
 
-		inline int getUnitLevel() const {
-			return settings_.unitLevel_;
-		}
+		int getUnitLevel() const;
 
-		inline mw::Font getDefaultFont(int size) {
-			return loadFont(settings_.defaultFont_, size);
-		}
+		inline mw::Font getDefaultFont(int fontSize) {
+            return loadFont(font_, fontSize);
+        }
 
 		inline const std::vector<Position>& getSpawningPoints() const {
-			return spawningPoints_;		
+			return spawningPoints_;
 		}
 
 	private:
@@ -87,17 +76,13 @@ namespace zombie {
 
 		void loadFrame(tinyxml2::XMLHandle frameTag, Animation& animation);
 
-		// Get the loaded texture, if the loaded texture not exist in memory,
-		// the image (file) is loaded to memory. If the loading fails a nullptr
-		// is returned.
+		mw::Font loadFont(std::string file, unsigned int fontSize);
+        mw::Sound loadSound(std::string file);
 		mw::Texture loadTexture(std::string file);
-		mw::Font loadFont(std::string file, unsigned int size);
 
-		Settings settings_;
+		std::string font_;
+
 		std::map<std::string, WeaponPtr> weapons_;
-		std::map<std::string, Unit2D*> units_;
-		std::map<std::string, Car2D*> cars_;
-		std::vector<Building2D*> buildings_;
 
 		std::vector<Position> spawningPoints_;
 		std::map<std::string, mw::Texture> textures_;
@@ -105,8 +90,10 @@ namespace zombie {
 		std::map<std::string, mw::Font> fonts_;
 
 		Terrain2D terrain2d_;
+		tinyxml2::XMLDocument xmlDoc_;
+		std::string dataFile_;
 	};
-	
+
 } // Namespace zombie.
 
 #endif // ZOMBIEENGINE_H
