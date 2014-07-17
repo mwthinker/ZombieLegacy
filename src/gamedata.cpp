@@ -26,6 +26,128 @@ namespace zombie {
 			return stream;
 		}
 
+		// Override the stream operator for a color defined as a string "(r,g,b)".
+        // Any space character will be ignored but r, g, b represent a float value
+        // and must be seperated by "," and the whole string surrounded by "(" and ")".
+        // Example of correct usaged:
+        // stringstream stream;
+        // stream << "( 1.0, 0.1,2);
+        // Color color;
+        // stream >> color;
+        std::stringstream& operator>>(std::stringstream& stream, mw::Color& color) {
+            bool start = false;
+            bool end = false;
+
+            std::string str;
+            std::string tmp;
+            while (stream >> tmp) {
+                if (tmp.size() > 0 && !start) {
+                    if (tmp[0] == '(') {
+                        start = true;
+                        tmp[0] = ' ';
+                    } else {
+                        // Failed.
+                        stream.setstate(std::ios::failbit);
+                        return stream;
+                    }
+                }
+                if (tmp.size() > 0 && !end) {
+                    for (char& c : tmp) {
+                        if (c == ')') {
+                            c = ' ';
+                            end = true;
+                            break;
+                        }
+                    }
+                }
+                str += tmp;
+                if (start && end) {
+                    break;
+                }
+            }
+
+            if (!start || !end) {
+                // Failed.
+                stream.setstate(std::ios::failbit);
+                return stream;
+            }
+
+            std::replace(str.begin(), str.end(), ',', ' ');
+            std::stringstream newStream_(str);
+            newStream_ >> color.red_;
+            newStream_ >> color.green_;
+            newStream_ >> color.blue_;
+            float alpha = 1;
+            if (newStream_ >> alpha) {
+                color.alpha_ = alpha;
+            }
+
+            return stream;
+        }
+
+        template <class Output>
+        Output extract(tinyxml2::XMLConstHandle handle) {
+            const tinyxml2::XMLElement* element = handle.ToElement();
+            if (element == nullptr) {
+                throw mw::Exception("Missing element!");
+            }
+            const char* str = element->GetText();
+
+            if (str == nullptr) {
+                throw mw::Exception("Missing text!");
+            }
+
+            std::stringstream stream(str);
+            Output output;
+            stream >> output;
+            if (stream.fail()) {
+                throw mw::Exception("Stream failed!");
+            }
+            return output;
+        }
+
+        template <class Output>
+        Output extract(tinyxml2::XMLHandle handle) {
+            tinyxml2::XMLElement* element = handle.ToElement();
+            if (element == nullptr) {
+                throw mw::Exception("Missing element!");
+            }
+            const char* str = element->GetText();
+
+            if (str == nullptr) {
+                throw mw::Exception("Missing text!");
+            }
+
+            std::stringstream stream(str);
+            Output output;
+            stream >> output;
+            if (stream.fail()) {
+                throw mw::Exception("Stream failed!");
+            }
+            return output;
+        }
+
+        template <class Output>
+        void extract(Output& value, tinyxml2::XMLHandle handle) {
+            value = extract<Output>(handle);
+        }
+
+        template <class Input>
+        void insert(const Input& input, tinyxml2::XMLHandle handle) {
+            tinyxml2::XMLElement* element = handle.ToElement();
+            if (element == nullptr) {
+                throw mw::Exception("Missing element!");
+            }
+
+            std::stringstream stream;
+            stream << input;
+            if (stream.fail()) {
+                throw mw::Exception("Stream failed!");
+            }
+
+            element->SetText(stream.str().c_str());
+        }
+
 		// Takes c-string as input and returns the correct conversion.
 		// Throws mw::Exception if the input is null or if the conversion
 		// fails.
@@ -201,7 +323,7 @@ namespace zombie {
 			// Failed!
 			xmlDoc.PrintError();
 		}
-		tinyxml2::XMLHandle handleXml(xmlDoc.FirstChildElement("zombie"));		
+		tinyxml2::XMLHandle handleXml(xmlDoc.FirstChildElement("zombie"));
 
 		// Load game data and map data.
 		load(handleXml);
@@ -213,7 +335,7 @@ namespace zombie {
 		while (element != nullptr) {
 			std::string name = convertFromText<const char*>(toText(element->FirstChildElement("name")));
 			Animation animation = loadAnimation(toElement(element->FirstChildElement("animation")));
-			
+
 			float mass = convertFromText<float>(toText(element->FirstChildElement("mass")));
 			float width = convertFromText<float>(toText(element->FirstChildElement("width")));
 			float length = convertFromText<float>(toText(element->FirstChildElement("length")));
@@ -271,7 +393,7 @@ namespace zombie {
 	void GameData::loadFrame(tinyxml2::XMLHandle frameTag, Animation& animation) {
 		tinyxml2::XMLHandle handle = frameTag.FirstChildElement("image");
 		mw::Texture texture = loadTexture(convertFromText<std::string>(toText(handle)));
-		
+
 		float time = 1;
 		tinyxml2::XMLHandle tmp = handle.NextSiblingElement("time");
 		try {
@@ -360,7 +482,7 @@ namespace zombie {
 	}
 
 	mw::Font GameData::loadFont(std::string file, unsigned int fontSize) {
-		unsigned int size = fonts_.size();		
+		unsigned int size = fonts_.size();
 
 		std::string key = file;
 		key += fontSize;
