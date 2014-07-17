@@ -32,7 +32,7 @@ namespace zombie {
 		}
 
 		// Called when user pulls the trigger.
-		bool shoot(float time) {
+		bool shoot(float time) {			
 			if (lastShotTime_ + timeBetweenShots_ < time) {
 				if (bulletsInWeapon_ > 0) {
 					lastShotTime_ = time;
@@ -92,7 +92,6 @@ namespace zombie {
 		int bulletsInWeapon_;		// The current number of bullets in the weapon.
 		float shotSound_;
 
-		float timeElapsed_;			// Used as keeping track of the time.
 		float lastShotTime_;
 	};
 
