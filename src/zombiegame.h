@@ -40,7 +40,7 @@ namespace zombie {
 
 	private:
 		void updateUnit(Unit& unit, Unit& human) override;
-		
+
 		void updateSpawning(Unit& human) override;
 
 		void currentHuman(Unit& unit) override;
@@ -54,6 +54,10 @@ namespace zombie {
 		void collision(float impulse, Car& car1, Car& car2) override;
 
 		void collision(float impulse, Car& car, Building& building) override;
+
+		void shotMissed(const Bullet& bullet) override;
+
+		void shotHit(const Bullet& bullet, Unit& unit) override;
 
 		float innerSpawnRadius_;
 		float outerSpawnRadius_;

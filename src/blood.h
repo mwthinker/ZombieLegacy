@@ -12,7 +12,7 @@ namespace zombie {
 	public:
 		Blood(Position position);
 
-		void draw(float deltaTime);
+		void draw(float deltaTime) override;
 
 		bool toBeRemoved() const override;
 

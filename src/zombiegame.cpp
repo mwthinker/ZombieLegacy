@@ -11,6 +11,7 @@
 #include "building2d.h"
 #include "terrain2d.h"
 #include "blood.h"
+#include "shot.h"
 
 // External.
 #include <mw/exception.h>
@@ -114,11 +115,10 @@ namespace zombie {
 			double alfa = random() * 2 * PI;
 			double dist = random() * (outerSpawnRadius_ - innerSpawnRadius_) + innerSpawnRadius_;
 			Position p = dist * Position(std::cos(alfa), std::sin(alfa)) + human.getPosition();
-			
+
 			auto body = unit.getBody();
-			
+
 			// Move to new postion and direction.
-			//body->SetTransform(p - body->GetPosition(), alfa - body->GetAngle());
 			body->SetTransform(p, alfa);
 		}
 	}
@@ -161,7 +161,7 @@ namespace zombie {
 			engine_.update(deltaTime / 1000.f);
 			drawGraphicList(graphicMiddle_, deltaTime / 1000.f);
 			drawGraphicList(graphicHeaven_, deltaTime / 1000.f);
-			
+
 			removeDeadGraphicObjects(graphicGround_);
 			removeDeadGraphicObjects(graphicMiddle_);
 			removeDeadGraphicObjects(graphicHeaven_);
@@ -196,6 +196,16 @@ namespace zombie {
 	}
 
 	void ZombieGame::collision(float impulse, Car& car, Building& building) {
+	}
+
+	void ZombieGame::shotMissed(const Bullet& bullet) {
+        Position endPosition = bullet.postion_ + bullet.range_ * Position(std::cos(bullet.direction_), std::sin(bullet.direction_));
+        graphicMiddle_.push_back(std::make_shared<Shot>(bullet, endPosition));
+	}
+
+    void ZombieGame::shotHit(const Bullet& bullet, Unit& unit) {
+        graphicMiddle_.push_back(std::make_shared<Shot>(bullet, unit.getPosition()));
+        graphicGround_.push_back(std::make_shared<Blood>(unit.getPosition()));
 	}
 
 } // Namespace zombie.
