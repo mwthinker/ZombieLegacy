@@ -128,6 +128,40 @@ namespace zombie {
             return output;
         }
 
+		// Specialization for string type. In order to insure that the whole text is 
+		// returned as a string.
+		template <>
+		std::string extract(tinyxml2::XMLHandle handle) {
+			tinyxml2::XMLElement* element = handle.ToElement();
+			if (element == nullptr) {
+				throw mw::Exception("Missing element!");
+			}
+			const char* str = element->GetText();
+
+			if (str == nullptr) {
+				throw mw::Exception("Missing text!");
+			}
+
+			return std::string(str);
+		}
+
+		// Specialization for string type. In order to insure that the whole text is 
+		// returned as a string.
+		template <>
+		std::string extract(tinyxml2::XMLConstHandle handle) {
+			const tinyxml2::XMLElement* element = handle.ToElement();
+			if (element == nullptr) {
+				throw mw::Exception("Missing element!");
+			}
+			const char* str = element->GetText();
+
+			if (str == nullptr) {
+				throw mw::Exception("Missing text!");
+			}
+
+			return std::string(str);
+		}
+
         template <class Output>
         void extract(Output& value, tinyxml2::XMLHandle handle) {
             value = extract<Output>(handle);
@@ -149,23 +183,6 @@ namespace zombie {
             element->SetText(stream.str().c_str());
         }
 
-		// Takes c-string as input and returns the correct conversion.
-		// Throws mw::Exception if the input is null or if the conversion
-		// fails.
-		// E.g. float a = convertFromText<float>("1.2");
-		// Gives output, a = 1.2;
-		template <class Output>
-		Output convertFromText(const char* txt) {
-			if (txt == nullptr) {
-				throw mw::Exception("convertFromText, input null");
-			}
-
-			std::stringstream stream(txt);
-			Output output;
-			stream >> output;
-			return output;
-		}
-
 		Point loadPoint(std::string line) {
 			int index = line.find("(");
 			int index2 = line.rfind(")");
@@ -180,7 +197,10 @@ namespace zombie {
 				}
 			}
 
-			return convertFromText<Point>(line.c_str());
+			std::stringstream stream(line);
+			Point point;
+			stream >> point;
+			return point;
 		}
 
 		// Takes a string as input and returns the points.
@@ -211,124 +231,29 @@ namespace zombie {
 			return points;
 		}
 
-		template <>
-		const char* convertFromText<const char*>(const char* txt) {
-			if (txt == nullptr) {
-				throw mw::Exception("convertFromText, input null");
-			}
-			if (txt[0] == '\n') {
-				throw mw::Exception("convertFromText, string is empty");
-			}
-			return txt;
-		}
-
-		// Returns the value of the tag's element. If the value is empty, a empty
-		// string is returned. If the element don't exist a runtime exception is thrown.
-		const char* toText(tinyxml2::XMLHandle handle) {
-			tinyxml2::XMLElement* element = handle.ToElement();
-			if (element == nullptr) {
-				throw mw::Exception("convertFromText failed");
-			}
-			return element->GetText();
-		}
-
-		// Returns the tag's element. If the element don't exist a runtime exception is thrown.
-		// The return value is never null.
-		tinyxml2::XMLElement* toElement(tinyxml2::XMLHandle handle) {
-			tinyxml2::XMLElement* element = handle.ToElement();
-			if (element == nullptr) {
-				throw mw::Exception("convertFromText failed");
-			}
-			return element;
-		}
-
-		void loadMapItems(tinyxml2::XMLHandle objectsTag, std::vector<Building2D*>& buildings, std::vector<Position>& spawningPoints, Terrain2D& terrain) {
-			tinyxml2::XMLElement* element = objectsTag.FirstChildElement("object").ToElement();
-			while (element != nullptr) {
-				if (element->Attribute("type", "building")) {
-					std::string geom = convertFromText<const char*>(toText(element->FirstChildElement("geom")));
-					std::stringstream stream(geom);
-					std::string word;
-
-					if (stream >> word) {
-						if (word == "POLYGON") {
-							buildings.push_back(new Building2D(loadPolygon(stream.str())));
-						}
-					}
-				} else if (element->Attribute("type", "water")) {
-					std::string geom = convertFromText<const char*>(toText(element->FirstChildElement("geom")));
-					std::stringstream stream(geom);
-					std::string word;
-
-					if (stream >> word) {
-						if (word == "POLYGON") {
-							terrain.addWater(loadPolygon(stream.str()));
-						}
-					}
-				} else if (element->Attribute("type", "road")) {
-					std::string geom = convertFromText<const char*>(toText(element->FirstChildElement("geom")));
-					std::stringstream stream(geom);
-					std::string word;
-
-					if (stream >> word) {
-						if (word == "POLYGON") {
-							terrain.addRoad(loadPolygon(stream.str()));
-						}
-					}
-				} else if (element->Attribute("type", "roadline")) {
-					std::string geom = convertFromText<const char*>(toText(element->FirstChildElement("geom")));
-					std::stringstream stream(geom);
-					std::string word;
-
-					if (stream >> word) {
-						if (word == "POLYGON") {
-							terrain.addRoadLine(loadPolygon(stream.str()));
-						}
-					}
-				} else if (element->Attribute("type", "spawningpoint")) {
-					std::string geom = convertFromText<const char*>(toText(element->FirstChildElement("geom")));
-					std::stringstream stream(geom);
-					std::string word;
-
-					if (stream >> word) {
-						if (word == "POINT") {
-							spawningPoints.push_back(loadPoint(stream.str()));
-						}
-					}
-				}
-
-				element = element->NextSiblingElement("object");
-			}
-		}
-
-		Settings loadSettings(tinyxml2::XMLHandle settingsTag) {
-			Settings settings;
-			settings.defaultFont_ = convertFromText<std::string>(toText(settingsTag.FirstChildElement("font")));
-			settings.width_ = convertFromText<int>(toText(settingsTag.FirstChildElement("width")));
-			settings.height_ = convertFromText<int>(toText(settingsTag.FirstChildElement("height")));
-			settings.unitLevel_ = convertFromText<int>(toText(settingsTag.FirstChildElement("unitLevel")));
-			settings.zoomLevel_ = convertFromText<int>(toText(settingsTag.FirstChildElement("zoomLevel")));
-			settings.impulseThreshold_ = convertFromText<float>(toText(settingsTag.FirstChildElement("impulseThreshold")));
-			settings.timeStepMS_ = convertFromText<int>(toText(settingsTag.FirstChildElement("timeStepMS")));
-			settings.mapFile_ = convertFromText<const char*>(toText(settingsTag.FirstChildElement("map")));
-			return settings;
-		}
-
 	}
 
-	GameData::GameData(std::string dataFile) {
+	GameData::GameData(std::string dataFile) : dataFile_(dataFile) {
 		// Load XML file.
-		tinyxml2::XMLDocument xmlDoc;
-		xmlDoc.LoadFile(dataFile.c_str());
-		if (xmlDoc.Error()) {
+		xmlDoc_.LoadFile(dataFile.c_str());
+		if (xmlDoc_.Error()) {
 			// Failed!
-			xmlDoc.PrintError();
-		}
-		tinyxml2::XMLHandle handleXml(xmlDoc.FirstChildElement("zombie"));
+			xmlDoc_.PrintError();
+		} else {
+			try {
+				font_ = zombie::extract<std::string>(tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("settings").FirstChildElement("font"));
 
-		// Load game data and map data.
-		load(handleXml);
-		dataFile_ = dataFile;
+				loadWeapons();
+
+				// Load map.
+				xmlMap_.LoadFile("map.xml");
+				if (xmlMap_.Error()) {
+					xmlDoc_.PrintError();
+				}
+			} catch (mw::Exception&) {
+				int a = 1;
+			}
+		}
 	}
 
 	void GameData::save() {
@@ -346,6 +271,7 @@ namespace zombie {
         tinyxml2::XMLConstHandle handlemXl = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("settings");
         return zombie::extract<int>(handlemXl.FirstChildElement("width"));
     }
+
     int GameData::getWindowHeight() const {
         const tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("settings");
         return zombie::extract<int>(handleXml.FirstChildElement("height"));
@@ -379,122 +305,198 @@ namespace zombie {
         return zombie::extract<bool>(handleXml.FirstChildElement("maximized"));
     }
 
-    bool GameData::loadCar(std::string name, const Car2D& car) {
-        tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("Cars").FirstChildElement(name.c_str());
-
-        //return zombie::extract<bool>(handleXml.FirstChildElement("maximized"));
+	bool GameData::loadCar(std::string carName, Car2D& car) const {
+		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("movingObjects").FirstChildElement("car");
+		try {
+			while (handleXml.ToElement() != nullptr) {
+				std::string name = zombie::extract<std::string>(handleXml.FirstChildElement("name"));
+				if (name == carName) {
+					Animation animation = loadAnimation(handleXml.FirstChildElement("animation"));
+					float mass = zombie::extract<float>(handleXml.FirstChildElement("mass"));
+					float width = zombie::extract<float>(handleXml.FirstChildElement("width"));
+					float length = zombie::extract<float>(handleXml.FirstChildElement("length"));
+					float life = zombie::extract<float>(handleXml.FirstChildElement("life"));
+					car = Car2D(mass, life, width, length, animation);
+					return true;
+				}
+				handleXml = handleXml.NextSiblingElement();
+			}
+		} catch (mw::Exception&) {
+			return false;
+		}
+		return false;
     }
 
-    bool GameData::loadUnit(std::string name, const Unit2D& unit) {
+	bool GameData::loadUnit(std::string unitName, Unit2D& unit) const {
+		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("movingObjects").FirstChildElement("unit");
+		try {
+			while (handleXml.ToElement() != nullptr) {
+				std::string name = zombie::extract<std::string>(handleXml.FirstChildElement("name"));
+				if (name == unitName) {
+					float mass = zombie::extract<float>(handleXml.FirstChildElement("mass"));
+					float radius = zombie::extract<float>(handleXml.FirstChildElement("radius"));
+					float life = zombie::extract<float>(handleXml.FirstChildElement("life"));
+					bool infected = zombie::extract<bool>(handleXml.FirstChildElement("infected"));
+					float walkingSpeed = zombie::extract<float>(handleXml.FirstChildElement("walkingSpeed"));
+					float runningSpeed = zombie::extract<float>(handleXml.FirstChildElement("runningSpeed"));
+					float stamina = zombie::extract<float>(handleXml.FirstChildElement("stamina"));
+					Animation animation = loadAnimation(handleXml.FirstChildElement("animation"));
+					std::string weaponName = zombie::extract<std::string>(handleXml.FirstChildElement("weapon"));
+					unit = Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapons_[weaponName], animation);
+					return true;
+				}
+				handleXml = handleXml.NextSiblingElement("unit");
+			}
+		} catch (mw::Exception&) {
+			return false;
+		}
+		return false;
     }
 
-    std::vector<Building2D*> GameData::loadBuildings() {
+	bool GameData::loadBuildings(std::vector<Building2D>& buildings) const {
+		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlMap_.FirstChildElement("map")).FirstChildElement("objects").FirstChildElement("object");
+		try {
+			while (handleXml.ToElement() != nullptr) {
+				if (handleXml.ToElement()->Attribute("type", "building")) {
+					std::string geom = zombie::extract<std::string>(handleXml.FirstChildElement("geom"));
+					std::stringstream stream(geom);
+					std::string word;
 
+					if (stream >> word) {
+						if (word == "POLYGON") {
+							buildings.emplace_back(loadPolygon(stream.str()));
+						}
+					}
+				}
+				handleXml = handleXml.NextSiblingElement("object");
+			}
+			return true;
+		} catch (mw::Exception&) {
+			return false;
+		}
+		return false;
     }
 
     float GameData::getImpulseThreshold() const {
+		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("settings");
+		return zombie::extract<float>(handleXml.FirstChildElement("impulseThreshold"));
     }
 
     int GameData::getTimeStemMS() const {
+		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("settings");
+		return zombie::extract<int>(handleXml.FirstChildElement("timeStepMS"));
     }
 
     Terrain2D GameData::getTerrain2D() const {
+		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("weapons").FirstChildElement("weapon");
+		Terrain2D terrain2d;
+		while (handleXml.ToElement() != nullptr) {
+			if (handleXml.ToElement()->Attribute("type", "water")) {
+				std::string geom = zombie::extract<std::string>(handleXml.FirstChildElement("geom"));
+				std::stringstream stream(geom);
+				std::string word;
+
+				if (stream >> word) {
+					if (word == "POLYGON") {
+						terrain2d.addWater(loadPolygon(stream.str()));
+					}
+				}
+			} else if (handleXml.ToElement()->Attribute("type", "road")) {
+				std::string geom = zombie::extract<std::string>(handleXml.FirstChildElement("geom"));
+				std::stringstream stream(geom);
+				std::string word;
+
+				if (stream >> word) {
+					if (word == "POLYGON") {
+						terrain2d.addRoad(loadPolygon(stream.str()));
+					}
+				}
+			} else if (handleXml.ToElement()->Attribute("type", "roadline")) {
+				std::string geom = zombie::extract<std::string>(handleXml.FirstChildElement("geom"));
+				std::stringstream stream(geom);
+				std::string word;
+
+				if (stream >> word) {
+					if (word == "POLYGON") {
+						terrain2d.addRoadLine(loadPolygon(stream.str()));
+					}
+				}
+			}
+
+			handleXml = handleXml.NextSiblingElement("object");
+		}
+		return terrain2d;
     }
 
     int GameData::getUnitLevel() const {
+		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("settings");
+		return zombie::extract<int>(handleXml.FirstChildElement("unitLevel"));
     }
 
-	void GameData::loadCars(tinyxml2::XMLHandle movingUnitsTag) {
-		// Find all cars.
-		tinyxml2::XMLElement* element = movingUnitsTag.FirstChildElement("car").ToElement();
-		while (element != nullptr) {
-			std::string name = convertFromText<const char*>(toText(element->FirstChildElement("name")));
-			Animation animation = loadAnimation(toElement(element->FirstChildElement("animation")));
+	std::vector<Position> GameData::getSpawningPoints() const {
+		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlMap_.FirstChildElement("map")).FirstChildElement("objects").FirstChildElement("object");
+		std::vector<Position> points_;
+		while (handleXml.ToElement() != nullptr) {
+			if (handleXml.ToElement()->Attribute("type", "spawningpoint")) {
+				std::string geom = zombie::extract<std::string>(handleXml.FirstChildElement("geom"));
+				std::stringstream stream(geom);
+				std::string word;
 
-			float mass = convertFromText<float>(toText(element->FirstChildElement("mass")));
-			float width = convertFromText<float>(toText(element->FirstChildElement("width")));
-			float length = convertFromText<float>(toText(element->FirstChildElement("length")));
-			float life = convertFromText<float>(toText(element->FirstChildElement("life")));
+				if (stream >> word) {
+					if (word == "POINT") {
+						points_.push_back(loadPoint(stream.str()));
+					}
+				}
+			}
 
-			//cars_[name] = new Car2D(mass, life, width, length, animation);
-
-			element = element->NextSiblingElement("car");
+			handleXml = handleXml.NextSiblingElement("object");
 		}
+		return points_;
 	}
 
-	void GameData::loadUnits(tinyxml2::XMLHandle movingUnitsTag) {
-		// Find all units.
-		tinyxml2::XMLElement* element = movingUnitsTag.FirstChildElement("unit").ToElement();
-		while (element != nullptr) {
-			std::string name = convertFromText<const char*>(toText(element->FirstChildElement("name")));
-			float mass = convertFromText<float>(toText(element->FirstChildElement("mass")));
-			float radius = convertFromText<float>(toText(element->FirstChildElement("radius")));
-			float life = convertFromText<float>(toText(element->FirstChildElement("life")));
-			bool infected = convertFromText<bool>(toText(element->FirstChildElement("infected")));
-			float walkingSpeed = convertFromText<float>(toText(element->FirstChildElement("walkingSpeed")));
-			float runningSpeed = convertFromText<float>(toText(element->FirstChildElement("runningSpeed")));
-			float stamina = convertFromText<float>(toText(element->FirstChildElement("stamina")));
-			Animation animation = loadAnimation(toElement(element->FirstChildElement("animation")));
-			std::string weaponName = convertFromText<const char*>(toText(element->FirstChildElement("weapon")));
-			//units_[name] = new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapons_[weaponName], animation);
-
-			element = element->NextSiblingElement("unit");
-		}
-	}
-
-	void GameData::loadWeapons(tinyxml2::XMLHandle weaponsTag) {
+	void GameData::loadWeapons() const {
 		// Find all weapons.
-		tinyxml2::XMLElement* element = weaponsTag.FirstChildElement("weapon").ToElement();
-		while (element != nullptr) {
-			std::string name = convertFromText<const char*>(toText(element->FirstChildElement("name")));
-			std::string image = convertFromText<const char*>(toText(element->FirstChildElement("image")));
-			mw::Texture texture = loadTexture(toText(element->FirstChildElement("image")));
+		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombie")).FirstChildElement("weapons").FirstChildElement("weapon");
+		while (handleXml.ToElement() != nullptr) {
+			std::string name = zombie::extract<std::string>(handleXml.FirstChildElement("name"));
+			std::string image = zombie::extract<std::string>(handleXml.FirstChildElement("image"));
+			mw::Texture texture = loadTexture(zombie::extract<std::string>(handleXml.FirstChildElement("image")));
 
-			float damage = convertFromText<float>(toText(element->FirstChildElement("damage")));
-			float timeBetweenShots = convertFromText<float>(toText(element->FirstChildElement("timeBetweenShots")));
-			float range = convertFromText<float>(toText(element->FirstChildElement("range")));
-			int clipSize = convertFromText<int>(toText(element->FirstChildElement("clipSize")));
-			std::string shootSound = convertFromText<const char*>(toText(element->FirstChildElement("shootSound")));
-			std::string reloadSound = convertFromText<const char*>(toText(element->FirstChildElement("reloadSound")));
-			Animation animation = loadAnimation(toElement(element->FirstChildElement("animation")));
+			float damage = zombie::extract<float>(handleXml.FirstChildElement("damage"));
+			float timeBetweenShots = zombie::extract<float>(handleXml.FirstChildElement("timeBetweenShots"));
+			float range = zombie::extract<float>(handleXml.FirstChildElement("range"));
+			int clipSize = zombie::extract<int>(handleXml.FirstChildElement("clipSize"));
+			std::string shootSound = zombie::extract<std::string>(handleXml.FirstChildElement("shootSound"));
+			std::string reloadSound = zombie::extract<std::string>(handleXml.FirstChildElement("reloadSound"));
+			Animation animation = loadAnimation(handleXml.FirstChildElement("animation"));
 
 			// Add weapon.
 			weapons_[name] = std::make_shared<Weapon2D>(damage, timeBetweenShots, range, clipSize, texture, animation);
-
-			element = element->NextSiblingElement("weapon");
+			handleXml = handleXml.NextSiblingElement("weapon");
 		}
 	}
 
-	void GameData::loadFrame(tinyxml2::XMLHandle frameTag, Animation& animation) {
-		tinyxml2::XMLHandle handle = frameTag.FirstChildElement("image");
-		mw::Texture texture = loadTexture(convertFromText<std::string>(toText(handle)));
+	void GameData::loadFrame(tinyxml2::XMLConstHandle frameTag, Animation& animation) const {
+		mw::Texture texture = loadTexture(zombie::extract<std::string>(frameTag.FirstChildElement("image")));
 
 		float time = 1;
-		tinyxml2::XMLHandle tmp = handle.NextSiblingElement("time");
 		try {
-			time = convertFromText<float>(toText(tmp));
-			handle = tmp;
+			time = zombie::extract<float>(frameTag.FirstChildElement("time"));
 		} catch (mw::Exception&) {
 			// Time tag probably missing!
 			// Do nothing. Default time 1.
 		}
-
-		handle = handle.NextSiblingElement("x");
-		float x = convertFromText<float>(toText(handle));
-		handle = handle.NextSiblingElement("y");
-		float y = convertFromText<float>(toText(handle));
-		handle = handle.NextSiblingElement("dx");
-		float dx = convertFromText<float>(toText(handle));
-		handle = handle.NextSiblingElement("dy");
-		float dy = convertFromText<float>(toText(handle));
-		handle = handle.NextSiblingElement("bodyWidth");
-		float bodyWidth = convertFromText<float>(toText(handle));
+		float x = zombie::extract<float>(frameTag.FirstChildElement("x"));
+		float y = zombie::extract<float>(frameTag.FirstChildElement("y"));
+		float dx = zombie::extract<float>(frameTag.FirstChildElement("dx"));
+		float dy = zombie::extract<float>(frameTag.FirstChildElement("dy"));
+		float bodyWidth = zombie::extract<float>(frameTag.FirstChildElement("bodyWidth"));
 
 		animation.add(mw::Sprite(texture, x, y, dx, dy), bodyWidth, time);
 	}
 
-	Animation GameData::loadAnimation(tinyxml2::XMLHandle animationTag) {
-		tinyxml2::XMLHandle handle = animationTag.FirstChildElement("frame");
+	Animation GameData::loadAnimation(tinyxml2::XMLConstHandle animationTag) const {
+		tinyxml2::XMLConstHandle handle = animationTag.FirstChildElement("frame");
 		Animation animation;
 		while (handle.ToElement() != nullptr) {
 			loadFrame(handle, animation);
@@ -504,41 +506,7 @@ namespace zombie {
 		return animation;
 	}
 
-	bool GameData::load(tinyxml2::XMLHandle xml) {
-		try {
-			loadWeapons(xml.FirstChildElement("weapons"));
-			loadUnits(xml.FirstChildElement("movingObjects"));
-			loadCars(xml.FirstChildElement("movingObjects"));
-
-			// Load map.
-			//loadMap(settings_.mapFile_);
-
-			return true;
-		} catch (mw::Exception&) {
-			return false;
-		}
-	}
-
-	void GameData::loadMap(std::string map) {
-		try {
-			// Load map file.
-			tinyxml2::XMLDocument mapXml;
-			mapXml.LoadFile("map.xml");
-			if (mapXml.Error()) {
-				// Failed!
-			}
-
-			tinyxml2::XMLHandle mapHandle(mapXml);
-			mapHandle = mapHandle.FirstChildElement("map");
-
-			//loadMapItems(mapHandle.FirstChildElement("objects"), buildings_, spawningPoints_, terrain2d_);
-
-		} catch (std::exception&) {
-			std::exit(1);
-		}
-	}
-
-	mw::Font GameData::loadFont(std::string file, unsigned int fontSize) {
+	mw::Font GameData::loadFont(std::string file, unsigned int fontSize) const {
         unsigned int size = fonts_.size();
         std::string key = file;
         key += fontSize;
@@ -552,7 +520,7 @@ namespace zombie {
         return font;
     }
 
-    mw::Texture GameData::loadTexture(std::string file) {
+    mw::Texture GameData::loadTexture(std::string file) const {
         unsigned int size = textures_.size();
         mw::Texture& texture = textures_[file];
 
@@ -569,7 +537,7 @@ namespace zombie {
         return texture;
     }
 
-    mw::Sound GameData::loadSound(std::string file) {
+	mw::Sound GameData::loadSound(std::string file) const {
         unsigned int size = sounds_.size();
         mw::Sound& sound = sounds_[file];
 

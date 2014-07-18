@@ -75,6 +75,7 @@ namespace zombie {
 		std::list<std::shared_ptr<Graphic>> graphicGround_;
 		std::list<std::shared_ptr<Graphic>> graphicMiddle_;
 		std::list<std::shared_ptr<Graphic>> graphicHeaven_;
+		std::vector<Position> spawningPoints_;
 	};
 
 } // Namespace zombie_;

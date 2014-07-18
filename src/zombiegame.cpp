@@ -30,7 +30,7 @@ namespace zombie {
 		}
 
 		Position generatePosition(std::vector<Position> positions) {
-			return positions[randomInt(0, positions.size()-1)];
+			return positions[randomInt(0, positions.size() - 1)];
 		}
 
 		void removeDeadGraphicObjects(std::list<std::shared_ptr<Graphic>>& list) {
@@ -53,7 +53,7 @@ namespace zombie {
 
 		scale_ = 1.f;
 		lastSpawnTime_ = engine_.getTime();
-		spawnPeriod_ = 0.2;
+		spawnPeriod_ = 0.2f;
 
 		addKeyListener([&](gui::Component& component, const SDL_Event& keyEvent) {
 			keyboard1_->eventUpdate(keyEvent);
@@ -61,44 +61,48 @@ namespace zombie {
 
 		innerSpawnRadius_ = 25.f;
 		outerSpawnRadius_ = 30.f;
+		
+		spawningPoints_ = gameData.getSpawningPoints();
 
+		// Add human.
 		{
-			std::map<std::string, Unit2D*> units;// = gameData_.getUnits();
-			// Add human.
-			{
-				State state(generatePosition(gameData.getSpawningPoints()), ORIGO, 0);
-				//State state(ORIGO, ORIGO, 0);
-				Unit2D* human = new Unit2D(*units["Human"]);
+			Unit2D unit;
+			if (gameData.loadUnit("Human", unit)) {
+				State state(generatePosition(spawningPoints_), ORIGO, 0);
+				Unit2D* human = new Unit2D(unit);
 				engine_.setHuman(keyboard1_, state, human);
 				viewPosition_ = human->getPosition();
 			}
-			// Add zombies.
-			{
-				Unit2D* zombie = units["Zombie"];
-				for (int i = 0; i < 0; ++i) { //gameData.getUnitLevel();
-					State state(generatePosition(gameData.getSpawningPoints()), ORIGO, 0);
-					engine_.add(state, new Unit2D(*zombie));
+		}
+		
+		// Add zombies.
+		{
+			Unit2D unit;
+			if (gameData.loadUnit("Zombie", unit)) {
+				for (int i = 0; i < 40; ++i) { //gameData.getUnitLevel();
+					State state(generatePosition(spawningPoints_), ORIGO, 0);
+					engine_.add(state, new Unit2D(unit));
 				}
 			}
 		}
 
 		// Add cars.
 		{
-			const std::map<std::string, Car2D*> cars;// = gameData_.getCars();
-			for (int i = 0; i < 1; ++i) {
-				for (auto& pair : cars) {
-					Car2D* car = pair.second;
-					State state(generatePosition(gameData.getSpawningPoints()), ORIGO, 0);
-					engine_.add(state, new Car2D(*car));
+			Car2D car;
+			if (gameData.loadCar("Volvo", car)) {
+				for (int i = 0; i < 15; ++i) {
+					State state(generatePosition(spawningPoints_), ORIGO, 0);
+					engine_.add(state, new Car2D(car));
 				}
 			}
 		}
+
+
 		// Add buildings.
-		{
-			std::vector<Building2D*> buildings;// = gameData_.getBuildings();
-			for (Building2D* building : buildings) {
-				engine_.add(new Building2D(*building));
-			}
+		std::vector<Building2D> buildings;
+		gameData_.loadBuildings(buildings);
+		for (const Building2D& building : buildings) {
+			engine_.add(new Building2D(building));
 		}
 
 		terrain2D_ = gameData.getTerrain2D();
@@ -112,8 +116,8 @@ namespace zombie {
 	void ZombieGame::updateUnit(Unit& unit, Unit& human) {
 		Position diff = unit.getPosition() - human.getPosition();
 		if (diff.LengthSquared() > outerSpawnRadius_*outerSpawnRadius_) {
-			double alfa = random() * 2 * PI;
-			double dist = random() * (outerSpawnRadius_ - innerSpawnRadius_) + innerSpawnRadius_;
+			float alfa = random() * 2 * PI;
+			float dist = random() * (outerSpawnRadius_ - innerSpawnRadius_) + innerSpawnRadius_;
 			Position p = dist * Position(std::cos(alfa), std::sin(alfa)) + human.getPosition();
 
 			auto body = unit.getBody();
@@ -124,17 +128,18 @@ namespace zombie {
 	}
 
 	void ZombieGame::updateSpawning(Unit& human) {
-		if (engine_.getTime() - lastSpawnTime_ > spawnPeriod_){
+		if (engine_.getTime() - lastSpawnTime_ > spawnPeriod_) {
 			lastSpawnTime_ = engine_.getTime();
 			// Reduce spawnPeriod gradually
 
-			double alfa = random() * 2 * PI;
-			double dist = random() * (outerSpawnRadius_ - innerSpawnRadius_) + innerSpawnRadius_;
+			float alfa = random() * 2 * PI;
+			float dist = random() * (outerSpawnRadius_ - innerSpawnRadius_) + innerSpawnRadius_;
 			Position p = dist * Position(std::cos(alfa), std::sin(alfa)) + human.getPosition();
-			std::map<std::string, Unit2D*> units;// = gameData_.getUnits();
-			Unit2D* zombie = units["Zombie"];
-			State state(p, ORIGO, 0);
-			engine_.add(state, new Unit2D(*zombie));
+			Unit2D zombie;
+			if (gameData_.loadUnit("Zombie", zombie)) {
+				State state(p, ORIGO, 0);
+				engine_.add(state, new Unit2D(zombie));
+			}
 		}
 	}
 
@@ -199,13 +204,13 @@ namespace zombie {
 	}
 
 	void ZombieGame::shotMissed(const Bullet& bullet) {
-        Position endPosition = bullet.postion_ + bullet.range_ * Position(std::cos(bullet.direction_), std::sin(bullet.direction_));
-        graphicMiddle_.push_back(std::make_shared<Shot>(bullet, endPosition));
+		Position endPosition = bullet.postion_ + bullet.range_ * Position(std::cos(bullet.direction_), std::sin(bullet.direction_));
+		graphicMiddle_.push_back(std::make_shared<Shot>(bullet, endPosition));
 	}
 
-    void ZombieGame::shotHit(const Bullet& bullet, Unit& unit) {
-        graphicMiddle_.push_back(std::make_shared<Shot>(bullet, unit.getPosition()));
-        graphicGround_.push_back(std::make_shared<Blood>(unit.getPosition()));
+	void ZombieGame::shotHit(const Bullet& bullet, Unit& unit) {
+		graphicMiddle_.push_back(std::make_shared<Shot>(bullet, unit.getPosition()));
+		graphicGround_.push_back(std::make_shared<Blood>(unit.getPosition()));
 	}
 
 } // Namespace zombie.

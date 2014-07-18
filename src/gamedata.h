@@ -38,10 +38,10 @@ namespace zombie {
         void setWindowMaximized(bool maximized);
         bool isWindowMaximized() const;
 
-        bool loadCar(std::string name, const Car2D& car);
-        bool loadUnit(std::string name, const Unit2D& car);
+		bool loadCar(std::string name, Car2D& car) const;
+		bool loadUnit(std::string name, Unit2D& car) const;
 
-        std::vector<Building2D*> loadBuildings();
+		bool loadBuildings(std::vector<Building2D>& buildings) const;
 
 		float getImpulseThreshold() const;
 
@@ -55,42 +55,28 @@ namespace zombie {
             return loadFont(font_, fontSize);
         }
 
-		inline const std::vector<Position>& getSpawningPoints() const {
-			return spawningPoints_;
-		}
+		std::vector<Position> getSpawningPoints() const;
 
 	private:
-		// Handle to first node <zombie>.
-		bool load(tinyxml2::XMLHandle xml);
+		void loadWeapons() const;
 
-		// Handle to map (node = <map>) to be loaded.
-		void loadMap(std::string map);
+		Animation loadAnimation(tinyxml2::XMLConstHandle animationTag) const;
 
-		void loadUnits(tinyxml2::XMLHandle movingUnitsTag);
+		void loadFrame(tinyxml2::XMLConstHandle frameTag, Animation& animation) const;
 
-		void loadCars(tinyxml2::XMLHandle movingCarsTag);
-
-		void loadWeapons(tinyxml2::XMLHandle weaponsTag);
-
-		Animation loadAnimation(tinyxml2::XMLHandle animationTag);
-
-		void loadFrame(tinyxml2::XMLHandle frameTag, Animation& animation);
-
-		mw::Font loadFont(std::string file, unsigned int fontSize);
-        mw::Sound loadSound(std::string file);
-		mw::Texture loadTexture(std::string file);
+		mw::Font loadFont(std::string file, unsigned int fontSize) const;
+		mw::Sound loadSound(std::string file) const;
+		mw::Texture loadTexture(std::string file) const;
 
 		std::string font_;
 
-		std::map<std::string, WeaponPtr> weapons_;
-
-		std::vector<Position> spawningPoints_;
-		std::map<std::string, mw::Texture> textures_;
-		std::map<std::string, mw::Sound> sounds_;
-		std::map<std::string, mw::Font> fonts_;
-
-		Terrain2D terrain2d_;
+		mutable std::map<std::string, WeaponPtr> weapons_;
+		mutable std::map<std::string, mw::Texture> textures_;
+		mutable std::map<std::string, mw::Sound> sounds_;
+		mutable std::map<std::string, mw::Font> fonts_;
+		
 		tinyxml2::XMLDocument xmlDoc_;
+		tinyxml2::XMLDocument xmlMap_;
 		std::string dataFile_;
 	};
 

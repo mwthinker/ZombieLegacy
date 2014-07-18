@@ -7,11 +7,14 @@
 		<font>fonts/Ubuntu-B.ttf</font>
 		<width>600</width>
 		<height>600</height>
+		<positionX>400</positionX>
+		<positionY>400</positionY>
+		<maximized>0</maximized>
 		<unitLevel>20</unitLevel>
 		<zoomLevel>3</zoomLevel>
 		<impulseThreshold>10</impulseThreshold>
 		<timeStepMS>17</timeStepMS>
-		<map>map.xml</map>		
+		<map>map.xml</map>
 	</settings>
 	<weapons>
 		<weapon>

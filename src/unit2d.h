@@ -9,6 +9,9 @@ namespace zombie {
 
 	class Unit2D : public Unit {
 	public:
+		Unit2D() : Unit(1, 1, 1, 1, 1, true, nullptr) {
+		}
+
 		Unit2D(float mass, float radius, float life, float walkingSpeed,
 			float runningSpeed, bool isInfected, const WeaponPtr& weapon, const Animation& animation) :
 			Unit(mass, radius, life, walkingSpeed, runningSpeed, isInfected, weapon), animation_(animation) {
@@ -21,7 +24,9 @@ namespace zombie {
 		}
 
 		Unit2D& operator=(const Unit2D& unit) {
+			Unit::operator=(unit);
 			animation_ = unit.animation_;
+			return *this;
 		}
 
 		void draw(float time) override {
