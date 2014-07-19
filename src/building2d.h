@@ -59,9 +59,45 @@ namespace zombie {
 				glEnd();
 			}
 			
-			
-			
-
+			// DRAW FAKE 3D BUILDING OUTLINES WITH HEIGHT = z
+			glLineWidth(0.1);
+			glColor3f(0.5, 0.5, 0.5);
+			glBegin(GL_LINES);
+			glVertex2d(corners[0].x, corners[0].y);
+			glVertex2d(corners[1].x, corners[1].y);
+			glEnd();
+			glBegin(GL_LINES);
+			glVertex2d(corners[0].x, corners[0].y);
+			glVertex2d(corners[3].x, corners[3].y);
+			glEnd();
+			glBegin(GL_LINES);
+			glVertex2d(corners[0].x, corners[0].y + z);
+			glVertex2d(corners[1].x, corners[1].y + z);
+			glEnd();
+			glBegin(GL_LINES);
+			glVertex2d(corners[0].x, corners[0].y + z);
+			glVertex2d(corners[3].x, corners[3].y + z);
+			glEnd();
+			glBegin(GL_LINES);
+			glVertex2d(corners[3].x, corners[3].y);
+			glVertex2d(corners[3].x, corners[3].y + z);
+			glEnd();
+			glBegin(GL_LINES);
+			glVertex2d(corners[0].x, corners[0].y);
+			glVertex2d(corners[0].x, corners[0].y + z);
+			glEnd();
+			glBegin(GL_LINES);
+			glVertex2d(corners[1].x, corners[1].y);
+			glVertex2d(corners[1].x, corners[1].y + z);
+			glEnd();
+			glBegin(GL_LINES);
+			glVertex2d(corners[3].x, corners[3].y + z);
+			glVertex2d(corners[2].x, corners[2].y + z);
+			glEnd();
+			glBegin(GL_LINES);
+			glVertex2d(corners[1].x, corners[1].y + z);
+			glVertex2d(corners[2].x, corners[2].y + z);
+			glEnd();
 		}
 	};
 
