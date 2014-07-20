@@ -178,17 +178,10 @@ namespace zombie {
 			}
 
 			// Update the objects physics interactions.
-			world_->Step(timeStep, 4, 2);
+			world_->Step(timeStep, 6, 2);
 
 			// Move the time ahead.
-			time_ += timeStep;
-
-			if (human_ != nullptr && !human_->toBeRemoved()) {
-				Position p = human_->getPosition();
-				gameInterface_->currentHuman(*human_);
-			} else {
-				human_ = nullptr;
-			}
+			time_ += timeStep;			
 
 			removeGarbage();
 		}
@@ -213,23 +206,31 @@ namespace zombie {
 		garbageObjects_.clear();
 	}
 
-	void ZombieEngine::update(float deltaTime) {
-		// DeltaTime to big?
-		if (deltaTime > 0.250) {
+	void ZombieEngine::update(float frameTime) {
+		if (frameTime > 0.25) {
 			// To avoid spiral of death.
-			deltaTime = 0.250;
+			frameTime = 0.25;
 		}
 
-		accumulator_ += deltaTime;
+		accumulator_ += frameTime;
 		while (accumulator_ >= timeStep_) {
 			accumulator_ -= timeStep_;
 			updatePhysics(timeStep_);
 		}
 
+		const double alpha = accumulator_ / timeStep_;
+
 		// Draw all objects.
 		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
 			Object* ob = static_cast<Object*>(b->GetUserData());
-			ob->draw(deltaTime);
+			ob->draw(accumulator_, timeStep_);
+		}
+
+		if (human_ != nullptr && !human_->toBeRemoved()) {
+			Position p = human_->getPosition();
+			gameInterface_->currentHuman(*human_);
+		} else {
+			human_ = nullptr;
 		}
 	}
 
@@ -268,8 +269,6 @@ namespace zombie {
 			case Unit::SHOOT:
 				doShotDamage(unit, unit->getLastBullet());
 				break;
-			default:
-				break;
 		}
 	}
 
@@ -277,8 +276,6 @@ namespace zombie {
 		switch (carEvent) {
 			case Car::ACTION:
 				doAction(car);
-				break;
-			default:
 				break;
 		}
 	}

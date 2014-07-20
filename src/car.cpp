@@ -78,6 +78,7 @@ namespace zombie {
 	}
 
 	void Car::updatePhysics(float time, float timeStep, Input input) {
+		previousState_ = getState();
 		b2Vec2 force = getDirectionVector();
 
 		// Accelate or decelerate

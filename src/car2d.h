@@ -19,21 +19,25 @@ namespace zombie {
 		}
 
 		// Draws the car.
-		void draw(float time) override {
+		void draw(float accumulator, float timeStep) override {
 			// Draw body.
+			const float alpha = accumulator / timeStep;
+
 			State state = getState();
+			state.position_ = alpha * state.position_ + (1.f - alpha) * previousState().position_;
 
 			glPushMatrix();
 			glTranslate2f(state.position_);
 			glRotated(state.angle_ * 180 / PI, 0, 0, 1);
 			glRotated(270, 0, 0, 1);
 			glScaled(getWidth(), getWidth(), 1);
-			animation_.draw(time);
+			animation_.draw(timeStep);
 			glPopMatrix();
 		}
 
 	private:
 		Animation animation_;
+		State previousState_;
 	};
 	
 } // Namespace zombie.

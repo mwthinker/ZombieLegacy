@@ -84,6 +84,11 @@ namespace zombie {
 
 		void destroyBody(b2World* world) override;
 
+	protected:
+		inline State previousState() const {
+			return previousState_;
+		}
+
 	private:
 		void applyFriction(float frictionForwardFrontWheel, float frictionForwardBackWheel,
 			float frictionLateralFrontWheel, float frictionLateralBackWheel);
@@ -109,6 +114,8 @@ namespace zombie {
 		float mass_;
 		float currentTime_;
 		float wheelDelta_;
+
+		State previousState_;
 	};
 
 } // Namespace zombie.

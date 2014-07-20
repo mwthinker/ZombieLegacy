@@ -31,7 +31,7 @@ namespace zombie {
 		}
 
 		// Draw the object in world coordinates.
-		virtual void draw(float deltaTime) = 0;
+		virtual void draw(float accumulator, float timeStep) = 0;
 
 	};
 

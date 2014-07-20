@@ -29,7 +29,7 @@ namespace zombie {
 			return *this;
 		}
 
-		void draw(float time) override {
+		void draw(float accumulator, float timeStep) override {
 			if (isActive()) {
 				// Draw body.
 				glPushMatrix();
@@ -38,7 +38,7 @@ namespace zombie {
 				glRotated(getDirection() * 180 / PI, 0, 0, 1);
 				getWeapon()->draw();
 				glColor3d(1, 1, 1);
-				animation_.draw(time);
+				animation_.draw(timeStep);
 				glPopMatrix();
 			}
 		}

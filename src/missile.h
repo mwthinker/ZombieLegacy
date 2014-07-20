@@ -20,7 +20,7 @@ namespace zombie {
 
 		}
 
-		void draw(float time) override {
+		void draw(float accumulator, float timeStep) override {
 		}
 
 		bool toBeRemoved() const {
