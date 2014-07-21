@@ -181,13 +181,17 @@ namespace zombie {
 			world_->Step(timeStep, 6, 2);
 
 			// Move the time ahead.
-			time_ += timeStep;			
+			time_ += timeStep;
 
 			removeGarbage();
 		}
 	}
 
 	void ZombieEngine::removeGarbage() {
+		if (human_ != nullptr && human_->toBeRemoved()) {
+			human_ = nullptr;
+		}
+
 		units_.remove_if([](Unit* unit) {
 			return unit->toBeRemoved();
 		});
@@ -207,6 +211,11 @@ namespace zombie {
 	}
 
 	void ZombieEngine::update(float frameTime) {
+		if (human_ != nullptr) {
+			Position p = human_->getPosition();
+			gameInterface_->currentHuman(*human_);
+		}
+
 		if (frameTime > 0.25) {
 			// To avoid spiral of death.
 			frameTime = 0.25;
@@ -224,13 +233,6 @@ namespace zombie {
 		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
 			Object* ob = static_cast<Object*>(b->GetUserData());
 			ob->draw(accumulator_, timeStep_);
-		}
-
-		if (human_ != nullptr && !human_->toBeRemoved()) {
-			Position p = human_->getPosition();
-			gameInterface_->currentHuman(*human_);
-		} else {
-			human_ = nullptr;
 		}
 	}
 

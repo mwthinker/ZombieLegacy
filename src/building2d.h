@@ -38,8 +38,8 @@ namespace zombie {
 			glTranslate2f(-delta);
 			*/
 			// DRAW BUILDING FOOTPRINT (USE THIS FOR PAVEMENT!)
+			glColor3f(0.8f, 0.8f, 0.8f);
 			glBegin(GL_POLYGON);
-
 			for (unsigned int i = 0; i < 4 && i < corners.size(); ++i) {
 				glVertex2d(corners[i].x, corners[i].y);
 			}
@@ -49,6 +49,7 @@ namespace zombie {
 			// DRAW FAKE 3D BUILDING WITH HEIGHT = z 
 			// (WHITOUT CORNER OUTLINES)
 			int z = 3;
+			glColor3f(0.7f, 0.7f, 0.7f);
 			for (unsigned int i = 0; i < 3 && i < corners.size(); ++i) {
 				glBegin(GL_POLYGON);
 				glVertex2d(corners[i].x, corners[i].y);
@@ -60,7 +61,6 @@ namespace zombie {
 			}
 			
 			// DRAW FAKE 3D BUILDING OUTLINES WITH HEIGHT = z
-			glLineWidth(0.1f);
 			glColor3f(0.5, 0.5, 0.5);
 			glBegin(GL_LINES);
 			glVertex2d(corners[0].x, corners[0].y);

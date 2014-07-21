@@ -16,6 +16,7 @@ namespace zombie {
 			index_ = 0;
 			reset_ = false;
 			time_ = 0;
+			lastTime_ = 0;
 		}
 
 		// The animation is reset to the first frame.
@@ -29,7 +30,6 @@ namespace zombie {
 			frames_.push_back(Frame(sprite, bodyWidth, time));
 		}
 
-		// Draws the correct frame at the (time) time.
 		void draw(float deltaTime) {
 			time_ += deltaTime;
 			if (reset_) {

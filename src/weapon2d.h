@@ -6,8 +6,6 @@
 
 #include <mw/sprite.h>
 
-#include <memory>
-
 namespace zombie {
 	
 	// Describes a Weapon and is responsible of shooting.
@@ -18,7 +16,7 @@ namespace zombie {
 
 		Weapon2D(float damage, float timeBetweenShots, float range, int clipSize, mw::Sprite symbol, Animation animation) : Weapon(damage, timeBetweenShots, range, clipSize), 
 			symbol_(symbol), animation_(animation) {
-		}		
+		}
 
 		void drawSymbol() override {
 			symbol_.draw();

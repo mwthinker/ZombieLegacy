@@ -6,8 +6,6 @@
 
 namespace zombie {
 
-	class Unit;
-
 	class WeaponItem : public Object {
 	public:
 		WeaponItem(float x, float y, const WeaponPtr& weapon) {

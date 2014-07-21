@@ -1,32 +1,31 @@
 #ifndef GAMEDATA_H
 #define GAMEDATA_H
 
-#include "settings.h"
 #include "animation.h"
-#include "state.h"
-#include "terrain2d.h"
-#include "weaponitem2d.h"
+#include "box2ddef.h"
 
 #include <mw/sound.h>
 #include <mw/texture.h>
 #include <mw/font.h>
+
 #include <tinyxml2.h>
 
 #include <functional>
 #include <map>
+#include <string>
 
 namespace zombie {
 
-	class Building2D;
-	class Car2D;
-	class Unit2D;
 	class WeaponItem2D;
+	class DataInterface;
 
 	class GameData {
 	public:
 		GameData(std::string dataFile);
 
 		void save();
+
+		void load(DataInterface& dataInterface) const;
 
 		int getWindowWidth() const;
         int getWindowHeight() const;
@@ -38,16 +37,9 @@ namespace zombie {
         void setWindowMaximized(bool maximized);
         bool isWindowMaximized() const;
 
-		bool loadCar(std::string name, Car2D& car) const;
-		bool loadUnit(std::string name, Unit2D& car) const;
-
-		bool loadBuildings(std::vector<Building2D>& buildings) const;
-
 		float getImpulseThreshold() const;
 
 		int getTimeStemMS() const;
-
-		Terrain2D getTerrain2D() const;
 
 		int getUnitLevel() const;
 
@@ -55,10 +47,16 @@ namespace zombie {
             return loadFont(font_, fontSize);
         }
 
-		std::vector<Position> getSpawningPoints() const;
+		std::vector<Position> loadSpawningPoints() const;
 
 	private:
-		void loadWeapons() const;
+		void loadCar(DataInterface&) const;
+		void loadHuman(DataInterface&) const;
+		void loadZombie(DataInterface&) const;
+		void loadMap(DataInterface&) const;
+		void loadWeapon(DataInterface&) const;
+
+		void extract(mw::Sprite& sprite, tinyxml2::XMLConstHandle handle) const;
 
 		Animation loadAnimation(tinyxml2::XMLConstHandle animationTag) const;
 
@@ -69,8 +67,7 @@ namespace zombie {
 		mw::Texture loadTexture(std::string file) const;
 
 		std::string font_;
-
-		mutable std::map<std::string, WeaponPtr> weapons_;
+		
 		mutable std::map<std::string, mw::Texture> textures_;
 		mutable std::map<std::string, mw::Sound> sounds_;
 		mutable std::map<std::string, mw::Font> fonts_;

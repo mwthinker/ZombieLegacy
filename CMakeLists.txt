@@ -25,6 +25,7 @@ set(SOURCES_ZOMBIE
 	src/car.cpp
 	src/car.h
 	src/car2d.h
+	src/datainterface.h
 	src/device.h
 	src/driver.h
 	src/explosion.h

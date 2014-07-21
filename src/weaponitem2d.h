@@ -4,7 +4,7 @@
 #include "weaponitem.h"
 #include "weapon.h"
 
-namespace zombie {
+namespace zombie {	
 
 	class WeaponItem2D : public WeaponItem {
 	public:
