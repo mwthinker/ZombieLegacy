@@ -28,7 +28,7 @@
 			<reloadSound>sounds/handgunReload.wav</reloadSound>
 			<animation>
 				<frame>
-					<image x="256" y="512" w="25" h="256">images/spritesheet.png</image>
+					<image x="256" y="512" w="256" h="256">images/spritesheet.png</image>
 					<bodyWidth>130</bodyWidth>
 				</frame>
 			</animation>
