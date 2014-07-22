@@ -28,7 +28,7 @@ namespace zombie {
 	// and simulating the game mechanics.
 	class ZombieEngine : public b2ContactListener {
 	public:
-		ZombieEngine(GameInterface* gameInterface, int timeStepMS, float impulseThreshold);
+		ZombieEngine(GameInterface& gameInterface, int timeStepMS, float impulseThreshold);
 		~ZombieEngine();
 
 		// Starts the game.
@@ -92,11 +92,12 @@ namespace zombie {
 		void doAction(Car* unit);
 		void doShotDamage(Unit* shooter, const Bullet& properties);
 
+		void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override;
+
 		void BeginContact(b2Contact* contact) override;
-		
+
 		// Is called when the contact has get out of view or is destroyed.
 		void EndContact(b2Contact* contact) override;
-		void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override;
 
 		bool started_; // The game is started.
 		float time_; // Local game time.
@@ -108,7 +109,7 @@ namespace zombie {
 		float accumulator_;
 
 		b2World* world_;
-		GameInterface* gameInterface_;
+		GameInterface& gameInterface_;
 		
 		// Is cleared, and called every update to physics, in a safe way.
 		// All players are assumed to be on the heap and is deallocated.

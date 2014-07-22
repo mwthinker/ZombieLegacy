@@ -19,14 +19,14 @@ namespace zombie {
 
 	namespace {
 
-		void collision(GameInterface* game, float impulse, Object* ob1, Object* ob2) {
+		void collision(GameInterface& game, float impulse, Object* ob1, Object* ob2) {
 			if (Car* car1 = dynamic_cast<Car*>(ob1)) {
 				if (Car* car2 = dynamic_cast<Car*>(ob2)) {
-					game->collision(impulse, *car1, *car2);
+					game.collision(impulse, *car1, *car2);
 				} else if (Unit* unit2 = dynamic_cast<Unit*>(ob2)) {
-					game->collision(impulse, *car1, *unit2);
+					game.collision(impulse, *car1, *unit2);
 				} else if (Building* building = dynamic_cast<Building*>(ob2)) {
-					game->collision(impulse, *car1, *building);
+					game.collision(impulse, *car1, *building);
 				}
 			} else if (Unit* unit1 = dynamic_cast<Unit*>(ob1)) {
 				if (nullptr != dynamic_cast<Unit*>(ob2)) {
@@ -116,8 +116,7 @@ namespace zombie {
 		}
 	}
 
-	ZombieEngine::ZombieEngine(GameInterface* gameInterface, int timeStepMS, float impulseThreshold) {
-		gameInterface_ = gameInterface;
+	ZombieEngine::ZombieEngine(GameInterface& gameInterface, int timeStepMS, float impulseThreshold) : gameInterface_(gameInterface) {
 		impulseThreshold_ = impulseThreshold;
 		human_ = nullptr;
 
@@ -159,13 +158,13 @@ namespace zombie {
 		// Game is started?
 		if (started_) {
 			if (human_ != nullptr) {
-				gameInterface_->updateSpawning(*human_);
+				gameInterface_.updateSpawning(*human_);
 			}
 
 			// For all units except the human unit.
 			if (human_ != nullptr) {
 				for (Unit* unit : units_) {
-					gameInterface_->updateUnit(*unit, *human_);
+					gameInterface_.updateUnit(*unit, *human_);
 				}
 			}
 			// Update all game entities.
@@ -213,7 +212,7 @@ namespace zombie {
 	void ZombieEngine::update(float frameTime) {
 		if (human_ != nullptr) {
 			Position p = human_->getPosition();
-			gameInterface_->currentHuman(*human_);
+			gameInterface_.currentHuman(*human_);
 		}
 
 		if (frameTime > 0.25) {
@@ -339,7 +338,7 @@ namespace zombie {
 			Object* ob = static_cast<Object*>(fixture->GetUserData());
 
 			if (Unit* target = dynamic_cast<Unit*>(ob)) {
-				gameInterface_->shotHit(bullet, *target);
+				gameInterface_.shotHit(bullet, *target);
 				// Target alive?
 				if (!target->isDead()) {
 					target->updateHealthPoint(-bullet.damage_);
@@ -347,15 +346,28 @@ namespace zombie {
 					if (target->isDead()) {
 						// Human?
 						if (human_ == target) {
-							gameInterface_->humanDied(*target);
+							gameInterface_.humanDied(*target);
 						} else {
-							gameInterface_->unitDied(*target);
+							gameInterface_.unitDied(*target);
 						}
 					}
 				}
 			} else {
-				gameInterface_->shotMissed(bullet);
+				gameInterface_.shotMissed(bullet);
 			}
+		}
+	}
+
+	void ZombieEngine::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
+		Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
+		Object* ob2 = static_cast<Object*>(contact->GetFixtureB()->GetUserData());
+		float maxImpulse = 0;
+		for (int32 i = 0; i < impulse->count; ++i) {
+			maxImpulse = b2Max(maxImpulse, impulse->normalImpulses[i]);
+		}
+
+		if (maxImpulse > impulseThreshold_) {
+			collision(gameInterface_, maxImpulse, ob1, ob2);
 		}
 	}
 
@@ -374,18 +386,5 @@ namespace zombie {
 			looker->removeSeenObject(object);
 		}
 	}	
-
-	void ZombieEngine::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
-		Object* ob1 = static_cast<Object*>(contact->GetFixtureA()->GetUserData());
-		Object* ob2 = static_cast<Object*>(contact->GetFixtureB()->GetUserData());
-		float maxImpulse = 0;
-		for (int32 i = 0; i < impulse->count; ++i) {
-			maxImpulse = b2Max(maxImpulse, impulse->normalImpulses[i]);
-		}
-
-		if (maxImpulse > impulseThreshold_) {
-			collision(gameInterface_, maxImpulse, ob1, ob2);
-		}
-	}
 
 } // Namespace zombie.

@@ -46,7 +46,7 @@ namespace zombie {
 
 	}
 
-	ZombieGame::ZombieGame(const GameData& gameData) : engine_(this, gameData.getTimeStemMS(), gameData.getImpulseThreshold()), gameData_(gameData) {
+	ZombieGame::ZombieGame(const GameData& gameData) : engine_(*this, gameData.getTimeStemMS(), gameData.getImpulseThreshold()), gameData_(gameData) {
 		keyboard1_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT,
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
 
@@ -206,7 +206,7 @@ namespace zombie {
 	}
 
 	void ZombieGame::loadCar(float mass, float width, float length, float life, const Animation& animation) {
-		car_ = std::unique_ptr<Car2D>(new Car2D(mass, width, length, life, animation));
+		car_ = std::unique_ptr<Car2D>(new Car2D(mass, life, width, length, animation));
 	}
 
 	void ZombieGame::loadRoad(const std::vector<Position>& road) {
