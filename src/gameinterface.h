@@ -43,7 +43,7 @@ namespace zombie {
 		virtual void collision(float impulse, Car& car, Building& building) {
 		}
 
-		virtual void shotMissed(const Bullet& bullet) {
+		virtual void shotMissed(const Bullet& bullet, Position end) {
 		}
 
 		virtual void shotHit(const Bullet& bullet, Unit& unit) {

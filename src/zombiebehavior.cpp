@@ -26,7 +26,7 @@ namespace zombie {
 
 		if (time > findNewTargetTime_) {
 			findNewTargetTime_ = random() * 3 + time;
-			
+
 			MovingObject* target = findUninfectedTarget(unit_->getPosition(), unit_->getVisibleObjects());
 
 			if (target != nullptr) {
@@ -43,7 +43,7 @@ namespace zombie {
 			// Has a target?
 			if (targetConnection_.connected()) {
 				Position dir = targetPosition_ - unit_->getPosition();
-				targetAngle_ = std::atan2(dir.y,dir.x);
+				targetAngle_ = std::atan2(dir.y, dir.x);
 				forward_ = true;
 
 				double distSquared = (unit_->getPosition() - unit_->getPosition()).LengthSquared();
@@ -53,7 +53,7 @@ namespace zombie {
 					input.shoot_ = true;
 				}
 			} else {
-				targetAngle_ += (random()-0.5)*2 * PI * 2 * 0.1;
+				targetAngle_ += (random() - 0.5) * 2 * PI * 2 * 0.1;
 				forward_ = random() > 0.25;
 			}
 		}
@@ -61,7 +61,7 @@ namespace zombie {
 		double diffAngle = calculateDifferenceBetweenAngles(targetAngle_, unit_->getDirection());
 
 		// Turn?
-		if (std::abs(diffAngle) > 0.1 ) {
+		if (std::abs(diffAngle) > 0.1) {
 			if (diffAngle > 0) {
 				input.turnLeft_ = true;
 			} else {
@@ -77,13 +77,13 @@ namespace zombie {
 		return unit_;
 	}
 
-	MovingObject* ZombieBehavior::findUninfectedTarget(Position position, const std::list<MovingObject*>& units) const {			
+	MovingObject* ZombieBehavior::findUninfectedTarget(Position position, const std::list<MovingObject*>& units) const {
 		MovingObject* target(nullptr);
 		double distant = 100;
 		for (MovingObject* unit : units) {
 			// Not infected?
 			if (!unit->isInfected()) {
-				double tmp = (position - unit->getPosition()).LengthSquared();					
+				double tmp = (position - unit->getPosition()).LengthSquared();
 				// Closer?
 				if (tmp < distant) {
 					target = unit;
@@ -93,7 +93,7 @@ namespace zombie {
 		}
 		return target;
 	}
-	
+
 	void ZombieBehavior::targetUpdate(MovingObject* mOb) {
 		targetPosition_ = mOb->getPosition();
 	}

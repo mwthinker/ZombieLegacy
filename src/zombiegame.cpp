@@ -50,9 +50,9 @@ namespace zombie {
 		keyboard1_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT,
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
 
-		scale_ = 1.f;
+		scale_ = 2.f;
 		lastSpawnTime_ = engine_.getTime();
-		spawnPeriod_ = 0.2f;
+		spawnPeriod_ = 0.5f;
 
 		addKeyListener([&](gui::Component& component, const SDL_Event& keyEvent) {
 			keyboard1_->eventUpdate(keyEvent);
@@ -60,7 +60,7 @@ namespace zombie {
 
 		innerSpawnRadius_ = 25.f;
 		outerSpawnRadius_ = 30.f;
-		
+
 		spawningPoints_ = gameData.loadSpawningPoints();
 
 		gameData.load(*this);
@@ -86,7 +86,7 @@ namespace zombie {
 			engine_.add(state, new Car2D(*car_));
 		}
 
-		setBackgroundColor(mw::Color(0, 0.4, 0));
+		setBackgroundColor(mw::Color(0, 0.1, 0));
 	}
 
 	ZombieGame::~ZombieGame() {
@@ -114,9 +114,9 @@ namespace zombie {
 			float alfa = random() * 2 * PI;
 			float dist = random() * (outerSpawnRadius_ - innerSpawnRadius_) + innerSpawnRadius_;
 			Position p = dist * Position(std::cos(alfa), std::sin(alfa)) + human.getPosition();
-			
+
 			State state(p, ORIGO, 0);
-			engine_.add(state, new Unit2D(*zombie_));			
+			engine_.add(state, new Unit2D(*zombie_));
 		}
 	}
 
@@ -180,9 +180,8 @@ namespace zombie {
 	void ZombieGame::collision(float impulse, Car& car, Building& building) {
 	}
 
-	void ZombieGame::shotMissed(const Bullet& bullet) {
-		Position endPosition = bullet.postion_ + bullet.range_ * Position(std::cos(bullet.direction_), std::sin(bullet.direction_));
-		graphicMiddle_.push_back(std::make_shared<Shot>(bullet, endPosition));
+	void ZombieGame::shotMissed(const Bullet& bullet, Position end) {
+		graphicMiddle_.push_back(std::make_shared<Shot>(bullet, end));
 	}
 
 	void ZombieGame::shotHit(const Bullet& bullet, Unit& unit) {
@@ -194,13 +193,13 @@ namespace zombie {
 	void ZombieGame::loadBuilding(const std::vector<Position>& corners) {
 		engine_.add(new Building2D(corners));
 	}
-	
+
 	void ZombieGame::loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, std::string weapon) {
 		for (int i = 0; i < 40; ++i) { //gameData.getUnitLevel();
 			zombie_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, true, weapons_[weapon].clone(), animation));
 		}
 	}
-	
+
 	void ZombieGame::loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, std::string weapon) {
 		human_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, false, weapons_[weapon].clone(), animation));
 	}
@@ -211,7 +210,7 @@ namespace zombie {
 
 	void ZombieGame::loadRoad(const std::vector<Position>& road) {
 		terrain_.addRoad(road);
-	}	
+	}
 
 	void ZombieGame::loadRoadLine(const std::vector<Position>& roadLine) {
 		terrain_.addRoadLine(roadLine);

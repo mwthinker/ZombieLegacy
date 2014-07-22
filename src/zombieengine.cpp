@@ -53,7 +53,7 @@ namespace zombie {
 		class ClosestRayCastCallback : public b2RayCastCallback {
 		public:
 			ClosestRayCastCallback(std::function<bool(b2Fixture*)> conditionFunc) {
-				closestFraction_ = 100.f;
+				closestFraction_ = 1.f;
 				fixture_ = nullptr;
 				conditionFunc_ = conditionFunc;
 			}
@@ -67,14 +67,19 @@ namespace zombie {
 				// Is a physical fixture?
 				if (conditionFunc_(fixture)) {
 					fixture_ = fixture;
+					closestFraction_ = fraction;
 				}
-
+				
 				// Fraction to clip the ray for closest hit.
 				return fraction;
 			}
 
+			float getFraction() const {
+				return closestFraction_;
+			}
+
 			void reset() {
-				closestFraction_ = 100.f;
+				closestFraction_ = 1.f;
 				fixture_ = nullptr;
 			}
 
@@ -353,8 +358,11 @@ namespace zombie {
 					}
 				}
 			} else {
-				gameInterface_.shotMissed(bullet);
+				// Calculate the hit position on the unknown object.
+				gameInterface_.shotMissed(bullet, shooter->getPosition() + bullet.range_ * callback.getFraction() * dir);
 			}
+		} else {			
+			gameInterface_.shotMissed(bullet, endP);
 		}
 	}
 

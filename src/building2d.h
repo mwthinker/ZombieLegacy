@@ -18,7 +18,7 @@ namespace zombie {
 		void draw(float accumulator, float timeStep) override {
 			auto& corners = getCorners();
 			
-			glColor3d(0.2, 0.3, 0.6);
+			glColor3d(0.05, 0.05, 0.05);
 			glBegin(GL_POLYGON);
 
 			for (unsigned int i = 0; i < 3 && i < corners.size(); ++i) {
