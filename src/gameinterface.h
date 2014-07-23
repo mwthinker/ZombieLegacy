@@ -1,52 +1,43 @@
 #ifndef GAMEINTERFACE_H
 #define GAMEINTERFACE_H
 
-#include "unit.h"
-#include "car.h"
-#include "building.h"
+#include "box2ddef.h"
 
 namespace zombie {
 
+	class Unit;
+	class Car;
+	class Bullet;
+
 	class GameInterface {
-	protected:
-		~GameInterface() {
-		}
-
 	public:
+		// Is called for human every game cycle.
+		virtual void updateEachCycle(Unit& human) = 0;
 
-		// 
-		virtual void updateSpawning(Unit& human) {
-		}
+		// Is called for each unit every game cycle.
+		virtual void updateEachCycle(Unit& unit, Unit& human) = 0;
 
 		// The current position of the human.
-		virtual void currentHuman(Unit& unit) {
-		}
+		virtual void currentHuman(Unit& unit) = 0;
 
 		// The human just died.
-		virtual void humanDied(Unit& unit) {
-		}
+		virtual void humanDied(Unit& unit) = 0;
 
 		// A unit just died.
-		virtual void unitDied(Unit& unit) {
-		}
+		virtual void unitDied(Unit& unit) = 0;
 
-		// Is called for each unit every cycle
-		virtual void updateUnit(Unit& unit, Unit& human) {
-		}
+		virtual void collision(float impulse, Car& car, Unit& unit) = 0;
 
-		virtual void collision(float impulse, Car& car, Unit& unit) {
-		}
+		virtual void collision(float impulse, Car& car1, Car& car2) = 0;
 
-		virtual void collision(float impulse, Car& car1, Car& car2) {
-		}
+		virtual void collision(float impulse, Car& car, Building& building) = 0;
 
-		virtual void collision(float impulse, Car& car, Building& building) {
-		}
+		virtual void shotMissed(const Bullet& bullet, Position end) = 0;
 
-		virtual void shotMissed(const Bullet& bullet, Position end) {
-		}
+		virtual void shotHit(const Bullet& bullet, Unit& unit) = 0;
 
-		virtual void shotHit(const Bullet& bullet, Unit& unit) {
+	protected:
+		~GameInterface() {
 		}
 	};
 

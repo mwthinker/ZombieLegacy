@@ -35,10 +35,10 @@ namespace zombie {
 		ZombieGame(const GameData& gameData);
 		~ZombieGame();
 
-		// Starts the game.
+		// Start the game.
 		void startGame();
 
-		// Draws the graphic and (deltaTime) should be the time past
+		// Draw the graphic and (deltaTime) should be the time past
 		// from the previous call to this funtion.
 		// Override, gui::Component.
 		void draw(Uint32 deltaTime) override;
@@ -47,9 +47,9 @@ namespace zombie {
 
 	private:
 		// Implements the GameInterface.
-		void updateUnit(Unit& unit, Unit& human) override;
+		void updateEachCycle(Unit& unit, Unit& human) override;
 
-		void updateSpawning(Unit& human) override;
+		void updateEachCycle(Unit& human) override;
 
 		void currentHuman(Unit& unit) override;
 
@@ -95,7 +95,7 @@ namespace zombie {
 
 		ZombieEngine engine_;
 
-		DevicePtr keyboard1_, keyboard2_;
+		DevicePtr keyboard_;
 		const GameData& gameData_;
 
 		std::unique_ptr<Unit2D> human_;

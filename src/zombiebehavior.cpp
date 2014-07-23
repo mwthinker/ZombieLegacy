@@ -1,6 +1,6 @@
 #include "zombiebehavior.h"
 #include "auxiliary.h"
-#include "movingobject.h"
+#include "unit.h"
 
 #include <list>
 

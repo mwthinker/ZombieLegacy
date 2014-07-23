@@ -163,13 +163,13 @@ namespace zombie {
 		// Game is started?
 		if (started_) {
 			if (human_ != nullptr) {
-				gameInterface_.updateSpawning(*human_);
+				gameInterface_.updateEachCycle(*human_);
 			}
 
 			// For all units except the human unit.
 			if (human_ != nullptr) {
 				for (Unit* unit : units_) {
-					gameInterface_.updateUnit(*unit, *human_);
+					gameInterface_.updateEachCycle(*unit, *human_);
 				}
 			}
 			// Update all game entities.

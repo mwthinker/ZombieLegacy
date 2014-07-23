@@ -43,7 +43,6 @@ set(SOURCES_ZOMBIE
 	src/object.h
 	src/player.cpp
 	src/player.h
-	src/settings.h
 	src/state.h
 	src/terrain2d.cpp
 	src/terrain2d.h

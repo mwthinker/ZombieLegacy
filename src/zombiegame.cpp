@@ -1,8 +1,6 @@
 #include "zombiegame.h"
-#include "inputkeyboard.h"
-#include "building.h"
 #include "auxiliary.h"
-#include "settings.h"
+#include "inputkeyboard.h"
 #include "unit2d.h"
 #include "car2d.h"
 #include "weapon2d.h"
@@ -47,7 +45,7 @@ namespace zombie {
 	}
 
 	ZombieGame::ZombieGame(const GameData& gameData) : engine_(*this, gameData.getTimeStemMS(), gameData.getImpulseThreshold()), gameData_(gameData) {
-		keyboard1_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT,
+		keyboard_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT,
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
 
 		scale_ = 2.f;
@@ -55,7 +53,7 @@ namespace zombie {
 		spawnPeriod_ = 0.5f;
 
 		addKeyListener([&](gui::Component& component, const SDL_Event& keyEvent) {
-			keyboard1_->eventUpdate(keyEvent);
+			keyboard_->eventUpdate(keyEvent);
 		});
 
 		innerSpawnRadius_ = 25.f;
@@ -69,7 +67,7 @@ namespace zombie {
 		{
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
 			Unit* human = new Unit2D(*human_);
-			engine_.setHuman(keyboard1_, state, human);
+			engine_.setHuman(keyboard_, state, human);
 			viewPosition_ = human->getPosition();
 		}
 
@@ -92,30 +90,22 @@ namespace zombie {
 	ZombieGame::~ZombieGame() {
 	}
 
-	void ZombieGame::updateUnit(Unit& unit, Unit& human) {
+	void ZombieGame::updateEachCycle(Unit& unit, Unit& human) {
 		Position diff = unit.getPosition() - human.getPosition();
 		if (diff.LengthSquared() > outerSpawnRadius_*outerSpawnRadius_) {
-			float alfa = random() * 2 * PI;
-			float dist = random() * (outerSpawnRadius_ - innerSpawnRadius_) + innerSpawnRadius_;
-			Position p = dist * Position(std::cos(alfa), std::sin(alfa)) + human.getPosition();
-
-			auto body = unit.getBody();
-
 			// Move to new postion and direction.
-			body->SetTransform(p, alfa);
+			float angle = 2 * PI * random();
+			unit.getBody()->SetTransform(generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_), angle);
 		}
 	}
 
-	void ZombieGame::updateSpawning(Unit& human) {
+	void ZombieGame::updateEachCycle(Unit& human) {
 		if (engine_.getTime() - lastSpawnTime_ > spawnPeriod_) {
 			lastSpawnTime_ = engine_.getTime();
+			
 			// Reduce spawnPeriod gradually
-
-			float alfa = random() * 2 * PI;
-			float dist = random() * (outerSpawnRadius_ - innerSpawnRadius_) + innerSpawnRadius_;
-			Position p = dist * Position(std::cos(alfa), std::sin(alfa)) + human.getPosition();
-
-			State state(p, ORIGO, 0);
+			float angle = 2 * PI * random();
+			State state(generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_), ORIGO, angle);
 			engine_.add(state, new Unit2D(*zombie_));
 		}
 	}

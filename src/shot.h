@@ -13,7 +13,7 @@ namespace zombie {
 	class Shot : public Graphic {
 	public:
 		Shot(const Bullet& bullet, Position endPoint) {
-			speed_ = 20.f;
+			speed_ = 25.f;
 			time_ = 0;
 			position_ = bullet.postion_;
 			direction_ = (endPoint - bullet.postion_);
