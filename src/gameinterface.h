@@ -11,14 +11,11 @@ namespace zombie {
 
 	class GameInterface {
 	public:
-		// Is called for human every game cycle.
-		virtual void updateEachCycle(Unit& human) = 0;
-
 		// Is called for each unit every game cycle.
 		virtual void updateEachCycle(Unit& unit, Unit& human) = 0;
 
-		// The current position of the human.
-		virtual void currentHuman(Unit& unit) = 0;
+		// Is called for each unit every game cycle.
+		virtual void updateEachCycle(Unit& human) = 0;
 
 		// The human just died.
 		virtual void humanDied(Unit& unit) = 0;

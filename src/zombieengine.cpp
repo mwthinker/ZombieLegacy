@@ -172,6 +172,7 @@ namespace zombie {
 					gameInterface_.updateEachCycle(*unit, *human_);
 				}
 			}
+
 			// Update all game entities.
 			for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
 				Object* ob = static_cast<Object*>(b->GetUserData());
@@ -215,11 +216,6 @@ namespace zombie {
 	}
 
 	void ZombieEngine::update(float frameTime) {
-		if (human_ != nullptr) {
-			Position p = human_->getPosition();
-			gameInterface_.currentHuman(*human_);
-		}
-
 		if (frameTime > 0.25) {
 			// To avoid spiral of death.
 			frameTime = 0.25;

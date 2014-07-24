@@ -264,7 +264,7 @@ namespace zombie {
 
 	void GameData::loadCar(DataInterface& dataInterface) const {
 		tinyxml2::XMLConstHandle carTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("car");
-		Animation animation = loadAnimation(carTag.FirstChildElement("animation"));
+		Animation animation = loadAnimation(carTag.FirstChildElement("moveAnimation"));
 		float mass = zombie::extract<float>(carTag.FirstChildElement("mass"));
 		float width = zombie::extract<float>(carTag.FirstChildElement("width"));
 		float length = zombie::extract<float>(carTag.FirstChildElement("length"));
@@ -281,7 +281,7 @@ namespace zombie {
 		float walkingSpeed = zombie::extract<float>(humanTag.FirstChildElement("walkingSpeed"));
 		float runningSpeed = zombie::extract<float>(humanTag.FirstChildElement("runningSpeed"));
 		float stamina = zombie::extract<float>(humanTag.FirstChildElement("stamina"));
-		Animation animation = loadAnimation(humanTag.FirstChildElement("animation"));
+		Animation animation = loadAnimation(humanTag.FirstChildElement("moveAnimation"));
 		std::string weaponName = zombie::extract<std::string>(humanTag.FirstChildElement("weapon"));
 		
 		dataInterface.loadHuman(mass, radius, life, walkingSpeed, runningSpeed,stamina,animation, weaponName);
@@ -295,7 +295,7 @@ namespace zombie {
 		float walkingSpeed = zombie::extract<float>(humanTag.FirstChildElement("walkingSpeed"));
 		float runningSpeed = zombie::extract<float>(humanTag.FirstChildElement("runningSpeed"));
 		float stamina = zombie::extract<float>(humanTag.FirstChildElement("stamina"));
-		Animation animation = loadAnimation(humanTag.FirstChildElement("animation"));
+		Animation animation = loadAnimation(humanTag.FirstChildElement("moveAnimation"));
 		std::string weaponName = zombie::extract<std::string>(humanTag.FirstChildElement("weapon"));
 
 		dataInterface.loadZombie(mass, radius, life, walkingSpeed, runningSpeed, stamina, animation, weaponName);

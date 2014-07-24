@@ -69,6 +69,7 @@ namespace zombie {
 			Unit* human = new Unit2D(*human_);
 			engine_.setHuman(keyboard_, state, human);
 			viewPosition_ = human->getPosition();
+			refViewPosition_ = viewPosition_;
 		}
 
 		// Add zombies to engine.
@@ -99,17 +100,6 @@ namespace zombie {
 		}
 	}
 
-	void ZombieGame::updateEachCycle(Unit& human) {
-		if (engine_.getTime() - lastSpawnTime_ > spawnPeriod_) {
-			lastSpawnTime_ = engine_.getTime();
-			
-			// Reduce spawnPeriod gradually
-			float angle = 2 * PI * random();
-			State state(generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_), ORIGO, angle);
-			engine_.add(state, new Unit2D(*zombie_));
-		}
-	}
-
 	// Starts the game.
 	void ZombieGame::startGame() {
 		engine_.start();
@@ -117,6 +107,8 @@ namespace zombie {
 
 	void ZombieGame::draw(Uint32 deltaTime) {
 		gui::Component::draw(deltaTime);
+
+		viewPosition_ += .01f * deltaTime * (refViewPosition_ - viewPosition_);
 
 		// Draw map centered around first human player.
 		glPushMatrix();
@@ -145,8 +137,17 @@ namespace zombie {
 		glPopMatrix();
 	}
 
-	void ZombieGame::currentHuman(Unit& unit) {
-		viewPosition_ += 0.1f * (unit.getPosition() - viewPosition_);
+	void ZombieGame::updateEachCycle(Unit& human) {
+		refViewPosition_ = human.getPosition();// -human.getBody()->GetLinearVelocity();
+
+		if (engine_.getTime() - lastSpawnTime_ > spawnPeriod_) {
+			lastSpawnTime_ = engine_.getTime();
+
+			// Reduce spawnPeriod gradually
+			float angle = 2 * PI * random();
+			State state(generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_), ORIGO, angle);
+			engine_.add(state, new Unit2D(*zombie_));
+		}
 	}
 
 	void ZombieGame::zoom(float scale) {

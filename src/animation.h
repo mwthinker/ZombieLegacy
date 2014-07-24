@@ -17,6 +17,7 @@ namespace zombie {
 			reset_ = false;
 			time_ = 0;
 			lastTime_ = 0;
+			speed_ = 1.f;
 		}
 
 		// The animation is reset to the first frame.
@@ -31,11 +32,11 @@ namespace zombie {
 		}
 
 		void draw(float deltaTime) {
-			time_ += deltaTime;
+			time_ += deltaTime * speed_;
 			if (reset_) {
 				reset_ = false;
 				lastTime_ = time_;
-			}			
+			}
 
 			if (!frames_.empty()) {
 				// New frame?
@@ -51,6 +52,14 @@ namespace zombie {
 				frame.sprite_.draw();
 				glPopMatrix();
 			}
+		}
+
+		void setSpeed(float speed) {
+			speed_ = speed;
+		}
+
+		float getSpeed() const {
+			return speed_;
 		}
 
 	private:
@@ -69,6 +78,7 @@ namespace zombie {
 		float lastTime_;
 		bool reset_;
 		float time_;
+		float speed_;
 
 		std::vector<Frame> frames_;
 		int index_;

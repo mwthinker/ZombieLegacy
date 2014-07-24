@@ -49,9 +49,7 @@ namespace zombie {
 		// Implements the GameInterface.
 		void updateEachCycle(Unit& unit, Unit& human) override;
 
-		void updateEachCycle(Unit& human) override;
-
-		void currentHuman(Unit& unit) override;
+		void updateEachCycle(Unit& unit) override;
 
 		void humanDied(Unit& unit) override;
 
@@ -91,7 +89,9 @@ namespace zombie {
 		float scale_;
 		float lastSpawnTime_;
 		float spawnPeriod_;
+		
 		Position viewPosition_;
+		Position refViewPosition_;
 
 		ZombieEngine engine_;
 
