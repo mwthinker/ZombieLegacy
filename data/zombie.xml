@@ -53,7 +53,7 @@
 	<car>
 		<animation>
 			<frame>
-				<image x="0" y="768" w="256" h="256">images/spritesheet.png</image>
+				<image">images/jeep.png</image>
 				<bodyWidth>104</bodyWidth>
 			</frame>
 		</animation>
