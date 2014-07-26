@@ -78,6 +78,11 @@ namespace zombie {
 			garbagePlayers_.push_back(player);
 		}
 
+		// Interpolated state for the human.
+		State getHumanState() const {
+			return humanState_;
+		}
+
 	private:
 		// Updates the game time by (msDeltaTime).
 		void updatePhysics(float timeStep);
@@ -120,6 +125,7 @@ namespace zombie {
 		std::vector<Object*> garbageObjects_;
 
 		float impulseThreshold_;
+		State humanState_;
 	};
 
 } // Namespace zombie.

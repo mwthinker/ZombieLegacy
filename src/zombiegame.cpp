@@ -107,8 +107,8 @@ namespace zombie {
 
 	void ZombieGame::draw(Uint32 deltaTime) {
 		gui::Component::draw(deltaTime);
-
-		viewPosition_ += .01f * deltaTime * (refViewPosition_ - viewPosition_);
+		
+		viewPosition_ += 100 * deltaTime/1000.f * (refViewPosition_ - viewPosition_);
 
 		// Draw map centered around first human player.
 		glPushMatrix();
@@ -135,11 +135,10 @@ namespace zombie {
 		}
 
 		glPopMatrix();
+		refViewPosition_ = engine_.getHumanState().position_;
 	}
 
 	void ZombieGame::updateEachCycle(Unit& human) {
-		refViewPosition_ = human.getPosition();// -human.getBody()->GetLinearVelocity();
-
 		if (engine_.getTime() - lastSpawnTime_ > spawnPeriod_) {
 			lastSpawnTime_ = engine_.getTime();
 

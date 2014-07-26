@@ -49,7 +49,7 @@ namespace zombie {
 		// Implements the GameInterface.
 		void updateEachCycle(Unit& unit, Unit& human) override;
 
-		void updateEachCycle(Unit& unit) override;
+		void updateEachCycle(Unit& human) override;
 
 		void humanDied(Unit& unit) override;
 
@@ -68,15 +68,15 @@ namespace zombie {
 
 		// Implements the DataInterface.
 		void loadBuilding(const std::vector<Position>& corners) override;
-		
+
 		void loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, std::string weapon) override;
-		
+
 		void loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, std::string weapon) override;
-		
+
 		void loadCar(float mass, float width, float length, float life, const Animation& animation) override;
-		
+
 		void loadRoad(const std::vector<Position>& road) override;
-		
+
 		void loadRoadLine(const std::vector<Position>& roadline) override;
 
 		void loadWater(const std::vector<Position>& positions) override;
@@ -89,7 +89,7 @@ namespace zombie {
 		float scale_;
 		float lastSpawnTime_;
 		float spawnPeriod_;
-		
+
 		Position viewPosition_;
 		Position refViewPosition_;
 

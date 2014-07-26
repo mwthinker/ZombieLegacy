@@ -11,9 +11,6 @@ namespace zombie {
 
 	class Car2D : public Car {
 	public:
-		Car2D() : Car(1, 1, 1, 1) {
-		}
-
 		Car2D(float mass, float life, float width, float length, const Animation& animation) :
 			Car(mass, life, width, length), animation_(animation) {
 		}

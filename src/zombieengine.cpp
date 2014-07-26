@@ -220,14 +220,25 @@ namespace zombie {
 			// To avoid spiral of death.
 			frameTime = 0.25;
 		}
+		
+		// Previous state for the human in the physic loop.
+		State previousState;
 
 		accumulator_ += frameTime;
 		while (accumulator_ >= timeStep_) {
 			accumulator_ -= timeStep_;
+			if (human_ != nullptr) {
+				previousState = human_->getState();
+			}
 			updatePhysics(timeStep_);
 		}
 
-		const double alpha = accumulator_ / timeStep_;
+		if (human_ != nullptr) {
+			const float alpha = accumulator_ / timeStep_;
+			humanState_ = human_->getState();
+			humanState_.position_ = alpha * humanState_.position_ + (1.f - alpha) * previousState.position_;
+			humanState_.velocity_ = alpha * humanState_.velocity_ + (1.f - alpha) * previousState.velocity_;
+		}
 
 		// Draw all objects.
 		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
@@ -237,6 +248,7 @@ namespace zombie {
 	}
 
 	void ZombieEngine::setHuman(DevicePtr device, State state, Unit* unit) {
+		humanState_ = state;
 		unit->createBody(world_, state);
 		human_ = unit;
 		Player* player = new HumanPlayer(device, unit);

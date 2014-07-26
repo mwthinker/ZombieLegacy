@@ -14,7 +14,7 @@ namespace zombie {
 		// Is called for each unit every game cycle.
 		virtual void updateEachCycle(Unit& unit, Unit& human) = 0;
 
-		// Is called for each unit every game cycle.
+		// Is called for the human every game cycle.
 		virtual void updateEachCycle(Unit& human) = 0;
 
 		// The human just died.
