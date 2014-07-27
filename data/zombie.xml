@@ -8,14 +8,13 @@
         <maximized>1</maximized>
 	</window>
     <settings>
-        <font>fonts/Ubuntu-B.ttf</font>        
+        <font>fonts/Ubuntu-B.ttf</font>
         <unitLevel>20</unitLevel>
-        <zoomLevel>3</zoomLevel>
         <impulseThreshold>10</impulseThreshold>
         <timeStepMS>17</timeStepMS>
         <map>map.xml</map>
     </settings>
-	<menu>	
+	<menu>
 		<soundHighlited>sounds/handgunReload.wav</soundHighlited>
 		<soundChoice>sounds/handgun.wav</soundChoice>
 		<backGroundImage>images/menu.jpg</backGroundImage>

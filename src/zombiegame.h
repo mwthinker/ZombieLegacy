@@ -111,6 +111,6 @@ namespace zombie {
 		Terrain2D terrain_;
 	};
 
-} // Namespace zombie
+} // Namespace zombie.
 
 #endif // ZOMBIEGAME_H

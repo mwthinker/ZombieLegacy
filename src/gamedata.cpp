@@ -435,7 +435,7 @@ namespace zombie {
 		return zombie::extract<float>(handleXml.FirstChildElement("impulseThreshold"));
     }
 
-    int GameData::getTimeStemMS() const {
+	int GameData::getTimeStepMS() const {
 		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("settings");
 		return zombie::extract<int>(handleXml.FirstChildElement("timeStepMS"));
     }

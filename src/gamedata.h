@@ -39,7 +39,7 @@ namespace zombie {
 
 		float getImpulseThreshold() const;
 
-		int getTimeStemMS() const;
+		int getTimeStepMS() const;
 
 		mw::Sound getMenuHighlitedSound() const;
 		mw::Sound getMenuChoiceSound() const;

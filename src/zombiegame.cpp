@@ -44,7 +44,7 @@ namespace zombie {
 
 	}
 
-	ZombieGame::ZombieGame(const GameData& gameData) : engine_(*this, gameData.getTimeStemMS(), gameData.getImpulseThreshold()), gameData_(gameData) {
+	ZombieGame::ZombieGame(const GameData& gameData) : engine_(*this, gameData.getTimeStepMS(), gameData.getImpulseThreshold()), gameData_(gameData) {
 		keyboard_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT,
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
 
@@ -185,7 +185,7 @@ namespace zombie {
 	}
 
 	void ZombieGame::loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, std::string weapon) {
-		for (int i = 0; i < 40; ++i) { //gameData.getUnitLevel();
+		for (int i = 0; i < gameData_.getUnitLevel(); ++i) {
 			zombie_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, true, weapons_[weapon].clone(), animation));
 		}
 	}
