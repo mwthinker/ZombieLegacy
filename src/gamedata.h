@@ -41,6 +41,9 @@ namespace zombie {
 
 		int getTimeStemMS() const;
 
+		mw::Sound getMenuHighlitedSound() const;
+		mw::Sound getMenuChoiceSound() const;
+
 		int getUnitLevel() const;
 
 		inline mw::Font getDefaultFont(int fontSize) {

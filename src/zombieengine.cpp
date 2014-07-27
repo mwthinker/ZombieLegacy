@@ -233,7 +233,7 @@ namespace zombie {
 			updatePhysics(timeStep_);
 		}
 
-		if (human_ != nullptr) {
+		if (human_ != nullptr && started_) {
 			const float alpha = accumulator_ / timeStep_;
 			humanState_ = human_->getState();
 			humanState_.position_ = alpha * humanState_.position_ + (1.f - alpha) * previousState.position_;

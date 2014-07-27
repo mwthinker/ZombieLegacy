@@ -16,6 +16,11 @@
         <timeStepMS>17</timeStepMS>
         <map>map.xml</map>
     </settings>
+	<menu>	
+		<soundHighlited>sounds/handgunReload.wav</soundHighlited>
+		<soundChoice>sounds/handgun.wav</soundChoice>
+		<backGroundImage>images/menu.jpg</backGroundImage>
+	</menu>
     <weapons>
         <weapon>
             <name>Handgun</name>

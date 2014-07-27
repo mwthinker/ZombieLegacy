@@ -23,7 +23,7 @@ namespace zombie {
 
 		// Returns a random postion between the defined outer and inner circle centered in position.
 		Position generatePosition(Position position, float innerRadius, float outerRadius) {
-			return position + (innerRadius + (outerRadius - innerRadius) * random()) * Position(std::cos(random()*2.f*3.14f), std::sin(random()*2.f*3.14f));
+			return position + (innerRadius + (outerRadius - innerRadius) * random()) * Position(std::cos(random()*2.f*PI), std::sin(random()*2.f*PI));
 		}
 
 		Position generatePosition(std::vector<Position> positions) {
@@ -85,7 +85,7 @@ namespace zombie {
 			engine_.add(state, new Car2D(*car_));
 		}
 
-		setBackgroundColor(mw::Color(0, 0.1, 0));
+		setBackgroundColor(0, 0.1f, 0);
 	}
 
 	ZombieGame::~ZombieGame() {
@@ -108,7 +108,7 @@ namespace zombie {
 	void ZombieGame::draw(Uint32 deltaTime) {
 		gui::Component::draw(deltaTime);
 		
-		viewPosition_ += 100 * deltaTime/1000.f * (refViewPosition_ - viewPosition_);
+		viewPosition_ += 10 * deltaTime/1000.f * (refViewPosition_ - viewPosition_);
 
 		// Draw map centered around first human player.
 		glPushMatrix();

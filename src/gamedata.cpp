@@ -262,6 +262,18 @@ namespace zombie {
 		loadMap(dataInterface);
 	}
 
+	mw::Sound GameData::getMenuHighlitedSound() const {
+		tinyxml2::XMLConstHandle soundTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("menu");
+		std::string name = zombie::extract<std::string>(soundTag.FirstChildElement("soundHighlited"));
+		return loadSound(name);
+	}
+
+	mw::Sound GameData::getMenuChoiceSound() const {
+		tinyxml2::XMLConstHandle soundTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("menu");
+		std::string name = zombie::extract<std::string>(soundTag.FirstChildElement("soundChoice"));
+		return loadSound(name);
+	}
+
 	void GameData::loadCar(DataInterface& dataInterface) const {
 		tinyxml2::XMLConstHandle carTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("car");
 		Animation animation = loadAnimation(carTag.FirstChildElement("moveAnimation"));
