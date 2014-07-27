@@ -41,7 +41,10 @@ namespace zombie {
 
 		std::shared_ptr<gui::Button> createButton(std::string str, const mw::Font& font) {
 			auto button = std::make_shared<gui::Button>(str, font);
-			button->setAutoSizeToFitText(true);
+			button->setAutoSizeToFitText(true);			
+			button->setHoverColor(0.7f, 0, 0);
+			button->setFocusColor(0.8f, 0, 0);
+			button->setPushColor(0.9f, 0, 0);
 			return button;
 		}
 
@@ -108,7 +111,7 @@ namespace zombie {
 		auto panel = std::make_shared<gui::Panel>();
 		add(panel, gui::BorderLayout::CENTER);
 		panel->setLayout(std::make_shared<gui::VerticalLayout>());
-		panel->setBackground(mw::Sprite("images/menu.jpg"));
+		panel->setBackground(gameData_.getMenuBackgroundImage());
 		mw::Font font = gameData_.getDefaultFont(20);
 
 		auto text = std::make_shared<gui::Label>("Zombie", gameData_.getDefaultFont(60));

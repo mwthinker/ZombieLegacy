@@ -386,47 +386,47 @@ namespace zombie {
 	}
 
     void GameData::setWindowSize(int width, int height) {
-        tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("settings");
+        tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
         zombie::insert(width, handleXml.FirstChildElement("width"));
         zombie::insert(height, handleXml.FirstChildElement("height"));
         save();
     }
 
     int GameData::getWindowWidth() const {
-        tinyxml2::XMLConstHandle handlemXl = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("settings");
+        tinyxml2::XMLConstHandle handlemXl = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
         return zombie::extract<int>(handlemXl.FirstChildElement("width"));
     }
 
     int GameData::getWindowHeight() const {
-        const tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("settings");
+        const tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
         return zombie::extract<int>(handleXml.FirstChildElement("height"));
     }
 
     void GameData::setWindowPosition(int x, int y) {
-        tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("settings");
+        tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
         zombie::insert(x, handleXml.FirstChildElement("positionX"));
         zombie::insert(y, handleXml.FirstChildElement("positionY"));
         save();
     }
 
     int GameData::getWindowXPosition() const {
-        tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("settings");
+        tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
         return zombie::extract<int>(handleXml.FirstChildElement("positionX"));
     }
 
     int GameData::getWindowYPosition() const {
-        tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("settings");
+        tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
         return zombie::extract<int>(handleXml.FirstChildElement("positionY"));
     }
 
     void GameData::setWindowMaximized(bool maximized) {
-        tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("settings");
+        tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
         zombie::insert(maximized, handleXml.FirstChildElement("maximized"));
         save();
     }
 
     bool GameData::isWindowMaximized() const {
-        tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("settings");
+        tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
         return zombie::extract<bool>(handleXml.FirstChildElement("maximized"));
     }
 
@@ -444,6 +444,11 @@ namespace zombie {
 		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("settings");
 		return zombie::extract<int>(handleXml.FirstChildElement("unitLevel"));
     }
+
+	mw::Sprite GameData::getMenuBackgroundImage() const {
+		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("menu");
+		return loadTexture(zombie::extract<std::string>(handleXml.FirstChildElement("backGroundImage")));
+	}
 
 	std::vector<Position> GameData::loadSpawningPoints() const {
 		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlMap_.FirstChildElement("map")).FirstChildElement("objects").FirstChildElement("object");

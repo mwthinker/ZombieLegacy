@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zombieGame>
-    <buildings>
-        <hitSound>sounds/buildingHit.wav</hitSound>
-    </buildings>
-    <settings>
-        <font>fonts/Ubuntu-B.ttf</font>
-        <width>600</width>
+	<window>
+		<width>600</width>
         <height>600</height>
         <positionX>432</positionX>
         <positionY>200</positionY>
         <maximized>1</maximized>
+	</window>
+    <settings>
+        <font>fonts/Ubuntu-B.ttf</font>        
         <unitLevel>20</unitLevel>
         <zoomLevel>3</zoomLevel>
         <impulseThreshold>10</impulseThreshold>
@@ -21,6 +20,9 @@
 		<soundChoice>sounds/handgun.wav</soundChoice>
 		<backGroundImage>images/menu.jpg</backGroundImage>
 	</menu>
+	<buildings>
+        <hitSound>sounds/buildingHit.wav</hitSound>
+    </buildings>
     <weapons>
         <weapon>
             <name>Handgun</name>
