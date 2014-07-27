@@ -163,6 +163,17 @@ namespace zombie {
             value = extract<Output>(handle);
         }
 
+		template <class Output>
+		Output getValueFromTag(const tinyxml2::XMLDocument& xmlDoc, std::string input) {
+			std::stringstream stream(input);
+			std::string tag;
+			tinyxml2::XMLConstHandle handleXml(xmlDoc);
+			while (stream >> tag) {
+				handleXml = handleXml.FirstChildElement(tag.c_str());
+			}
+			return extract<Output>(handleXml);
+		}
+
         template <class Input>
         void insert(const Input& input, tinyxml2::XMLHandle handle) {
             tinyxml2::XMLElement* element = handle.ToElement();
@@ -393,13 +404,11 @@ namespace zombie {
     }
 
     int GameData::getWindowWidth() const {
-        tinyxml2::XMLConstHandle handlemXl = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
-        return zombie::extract<int>(handlemXl.FirstChildElement("width"));
+		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame window width");
     }
 
     int GameData::getWindowHeight() const {
-        const tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
-        return zombie::extract<int>(handleXml.FirstChildElement("height"));
+		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame window height");
     }
 
     void GameData::setWindowPosition(int x, int y) {
@@ -410,13 +419,11 @@ namespace zombie {
     }
 
     int GameData::getWindowXPosition() const {
-        tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
-        return zombie::extract<int>(handleXml.FirstChildElement("positionX"));
+		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame window positionX");
     }
 
     int GameData::getWindowYPosition() const {
-        tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
-        return zombie::extract<int>(handleXml.FirstChildElement("positionY"));
+		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame window positionY");
     }
 
     void GameData::setWindowMaximized(bool maximized) {
@@ -426,23 +433,19 @@ namespace zombie {
     }
 
     bool GameData::isWindowMaximized() const {
-        tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
-        return zombie::extract<bool>(handleXml.FirstChildElement("maximized"));
+		return zombie::getValueFromTag<bool>(xmlDoc_, "zombieGame window maximized");
     }
 
     float GameData::getImpulseThreshold() const {
-		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("settings");
-		return zombie::extract<float>(handleXml.FirstChildElement("impulseThreshold"));
+		return zombie::getValueFromTag<float>(xmlDoc_, "zombieGame settings impulseThreshold");
     }
 
 	int GameData::getTimeStepMS() const {
-		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("settings");
-		return zombie::extract<int>(handleXml.FirstChildElement("timeStepMS"));
+		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame settings timeStepMS");
     }
 
     int GameData::getUnitLevel() const {
-		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("settings");
-		return zombie::extract<int>(handleXml.FirstChildElement("unitLevel"));
+		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame settings unitLevel");
     }
 
 	mw::Sprite GameData::getMenuBackgroundImage() const {
