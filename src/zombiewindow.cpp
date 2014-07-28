@@ -121,25 +121,25 @@ namespace zombie {
 		auto play = createButton("Play", font);
 		play->addActionListener([&](gui::Component&) {
 			setCurrentPanel(playFrameIndex_);
-			//gameData_.getMenuChoiceSound().play();
+			gameData_.getMenuChoiceSound().play();
 		});
 		panel->addToGroup(play);
 
 		auto customGame = createButton("Custom game", font);
 		customGame->addActionListener([&](gui::Component&) {
-			//gameData_.getMenuChoiceSound().play();
+			gameData_.getMenuChoiceSound().play();
 		});
 		panel->addToGroup(customGame);
 
 		auto highScore = createButton("Highscore", font);
 		highScore->addActionListener([&](gui::Component&) {
-			//gameData_.getMenuChoiceSound().play();
+			gameData_.getMenuChoiceSound().play();
 		});
 		panel->addToGroup(highScore);
 
 		auto quit = createButton("Quit", font);
 		quit->addActionListener([&](gui::Component&) {
-			//gameData_.getMenuChoiceSound().play();
+			gameData_.getMenuChoiceSound().play();
 			Window::quit();
 		});
 		panel->addToGroup(quit);
