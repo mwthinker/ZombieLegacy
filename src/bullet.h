@@ -8,7 +8,7 @@ namespace zombie {
 		Position postion_;
 		float damage_;
 		float direction_;
-		float range_;	
+		float range_;
 	};
 
 } // Namespace zombie.

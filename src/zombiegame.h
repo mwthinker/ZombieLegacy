@@ -61,9 +61,9 @@ namespace zombie {
 
 		void collision(float impulse, Car& car, Building& building) override;
 
-		void shotMissed(const Bullet& bullet, Position end) override;
+		void shotMissed(const Bullet& bullet, Position hitPosition) override;
 
-		void shotHit(const Bullet& bullet, Unit& unit) override;
+		void shotHit(const Bullet& bullet, Position hitPosition, Unit& unit) override;
 		// End of the GameInterface.
 
 		// Implements the DataInterface.

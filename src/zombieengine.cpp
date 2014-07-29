@@ -336,22 +336,24 @@ namespace zombie {
 
 	void ZombieEngine::doShotDamage(Unit* shooter, const Bullet& bullet) {
 		b2Vec2 dir(std::cos(bullet.direction_), std::sin(bullet.direction_));
-		b2Vec2 endP = shooter->getPosition() + bullet.range_ * dir;
+		b2Vec2 hitPosition = shooter->getPosition() + bullet.range_ * dir;
 
 		// Return the closest physcal object.
 		ClosestRayCastCallback callback([](b2Fixture* fixture) {
 			return !fixture->IsSensor();
 		});
 
-		world_->RayCast(&callback, shooter->getPosition(), endP);
+		world_->RayCast(&callback, shooter->getPosition(), hitPosition);
 		b2Fixture* fixture = callback.getFixture();
+
+		hitPosition = shooter->getPosition() + bullet.range_ * callback.getFraction() * dir;
 
 		// Did bullet hit something?
 		if (fixture != nullptr) {
 			Object* ob = static_cast<Object*>(fixture->GetUserData());
 
 			if (Unit* target = dynamic_cast<Unit*>(ob)) {
-				gameInterface_.shotHit(bullet, *target);
+				gameInterface_.shotHit(bullet, hitPosition, *target);
 				// Target alive?
 				if (!target->isDead()) {
 					target->updateHealthPoint(-bullet.damage_);
@@ -367,10 +369,10 @@ namespace zombie {
 				}
 			} else {
 				// Calculate the hit position on the unknown object.
-				gameInterface_.shotMissed(bullet, shooter->getPosition() + bullet.range_ * callback.getFraction() * dir);
+				gameInterface_.shotMissed(bullet, hitPosition);
 			}
-		} else {			
-			gameInterface_.shotMissed(bullet, endP);
+		} else {
+			gameInterface_.shotMissed(bullet, hitPosition);
 		}
 	}
 

@@ -173,12 +173,12 @@ namespace zombie {
 	void ZombieGame::collision(float impulse, Car& car, Building& building) {
 	}
 
-	void ZombieGame::shotMissed(const Bullet& bullet, Position end) {
-		graphicMiddle_.push_back(std::make_shared<Shot>(bullet, end));
+	void ZombieGame::shotMissed(const Bullet& bullet, Position hitPosition) {
+		graphicMiddle_.push_back(std::make_shared<Shot>(bullet, hitPosition));
 	}
 
-	void ZombieGame::shotHit(const Bullet& bullet, Unit& unit) {
-		graphicMiddle_.push_back(std::make_shared<Shot>(bullet, unit.getPosition()));
+	void ZombieGame::shotHit(const Bullet& bullet, Position hitPosition, Unit& unit) {
+		graphicMiddle_.push_back(std::make_shared<Shot>(bullet, hitPosition));
 		if (unit.isInfected()) {
 			graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
 		} else {
