@@ -83,6 +83,14 @@ namespace zombie {
 			return humanState_;
 		}
 
+		inline float getTimeStepMS() const{
+			return timeStep_;
+		}
+
+		inline float getImpulseThreshold() const {
+			return impulseThreshold_;
+		}
+
 	private:
 		// Updates the game time by (msDeltaTime).
 		void updatePhysics(float timeStep);

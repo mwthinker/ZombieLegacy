@@ -167,6 +167,20 @@ namespace zombie {
 	}
 
 	void ZombieGame::collision(float impulse, Car& car, Unit& unit) {
+		unit.updateHealthPoint(-60 * impulse * engine_.getTimeStepMS() / 0.016f);
+		if (unit.isDead()) {
+			if (unit.isInfected()) {
+				graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieDie_));
+			} else {
+				graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanDie_));
+			}
+		} else {
+			if (unit.isInfected()) {
+				graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
+			} else {
+				graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanInjured_));
+			}
+		}
 	}
 
 	void ZombieGame::collision(float impulse, Car& car1, Car& car2) {
