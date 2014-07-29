@@ -217,17 +217,19 @@ namespace zombie {
 		
 		// Previous state for the human in the physic loop.
 		State previousState;
+		bool physicRan = false;
 
 		accumulator_ += frameTime;
 		while (accumulator_ >= timeStep_) {
 			accumulator_ -= timeStep_;
 			if (human_ != nullptr) {
 				previousState = human_->getState();
+				physicRan = true;
 			}
 			updatePhysics(timeStep_);
 		}
 
-		if (human_ != nullptr && started_) {
+		if (physicRan && human_ != nullptr && started_) {
 			const float alpha = accumulator_ / timeStep_;
 			humanState_ = human_->getState();
 			humanState_.position_ = alpha * humanState_.position_ + (1.f - alpha) * previousState.position_;
