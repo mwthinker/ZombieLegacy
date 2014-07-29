@@ -22,7 +22,7 @@ namespace zombie {
 	class Unit : public MovingObject {
 	public:
 		enum UnitEvent {
-			SHOOT, RELOADING, DIE, WALK, STANDSTILL, RUN, ACTION, REMOVED
+			SHOOT, RELOADING, DIE, INJURED, WALK, STANDSTILL, RUN, ACTION, REMOVED
 		};
 
 		Unit(float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const WeaponPtr& weapon);

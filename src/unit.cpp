@@ -232,6 +232,7 @@ namespace zombie {
 	void Unit::updateHealthPoint(float deltaLife) {
 		if (!isDead_) {
 			healthPoints_ += deltaLife;
+			eventSignal_(this, UnitEvent::INJURED);
 		}
 		if (healthPoints_ < 0) {
 			isDead_ = true;

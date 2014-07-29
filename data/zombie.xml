@@ -73,8 +73,8 @@
         <life>1000000</life>
     </car>
     <human>
-        <hitSound>sounds/zombieHit1.wav</hitSound>
-		<dieSound>sounds/zombieDeath1.wav</dieSound>
+        <hitSound>sounds/humanHit.wav</hitSound>
+		<dieSound>sounds/zombieDeath.wav</dieSound>
         <moveAnimation>
             <frame>
                 <image x="256" y="0" w="256" h="256">images/unitSpritesheet.png</image>
@@ -91,8 +91,8 @@
         <weapon>Handgun</weapon>
     </human>
     <zombie>
-        <hitSound>sounds/zombieHit1.wav</hitSound>
-		<dieSound>sounds/zombieDeath1.wav</dieSound>
+        <hitSound>sounds/zombieHit.wav</hitSound>
+		<dieSound>sounds/zombieDeath.wav</dieSound>
         <moveAnimation>
             <frame>
                 <image x="0" y="256" w="256" h="256">images/unitSpritesheet.png</image>

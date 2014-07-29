@@ -20,11 +20,15 @@ namespace zombie {
 		Unit2D(const Unit2D& unit) : Unit(unit) {
 			animation_ = unit.animation_;
 			addEventHandler(std::bind(&Unit2D::eventHandler, this, this, std::placeholders::_2));
+			die_ = unit.die_;
+			hit_ = unit.hit_;
 		}
 
 		Unit2D& operator=(const Unit2D& unit) {
 			Unit::operator=(unit);
 			animation_ = unit.animation_;
+			die_ = unit.die_;
+			hit_ = unit.hit_;
 			return *this;
 		}
 
@@ -60,6 +64,10 @@ namespace zombie {
 					break;
 				case Unit::DIE:
 					die_.play();
+					break;
+				case Unit::INJURED:
+					hit_.play();
+					break;
 				case Unit::SHOOT:
 					getWeapon()->playShotSound();
 					break;
@@ -72,7 +80,6 @@ namespace zombie {
 	private:
 		Animation animation_;
 		mw::Sound die_;
-		mw::Sound reload_;
 		mw::Sound hit_;
 	};
 
