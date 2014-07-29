@@ -69,7 +69,7 @@ namespace zombie {
 					fixture_ = fixture;
 					closestFraction_ = fraction;
 				}
-				
+
 				// Fraction to clip the ray for closest hit.
 				return fraction;
 			}
@@ -214,7 +214,7 @@ namespace zombie {
 			// To avoid spiral of death.
 			frameTime = 0.25;
 		}
-		
+
 		// Previous state for the human in the physic loop.
 		State previousState;
 		bool physicRan = false;
@@ -399,6 +399,6 @@ namespace zombie {
 		if (getVisibleObject(contact, object, looker)) {
 			looker->removeSeenObject(object);
 		}
-	}	
+	}
 
 } // Namespace zombie.

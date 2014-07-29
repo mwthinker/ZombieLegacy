@@ -134,7 +134,9 @@ namespace zombie {
 		}
 
 		glPopMatrix();
-		refViewPosition_ = engine_.getHumanState().position_;
+		
+		State state = engine_.getHumanState();
+		refViewPosition_ = state.position_ + 0.5 * state.velocity_;
 	}
 
 	void ZombieGame::updateEachCycle(Unit& human) {

@@ -16,6 +16,7 @@ namespace zombie {
 		void updatePhysics(float time, float deltaTime) override {
 			car_->updatePhysics(time, deltaTime, device_->nextInput());
 			unit_->getBody()->SetTransform(car_->getPosition(), 0);
+			unit_->getBody()->SetLinearVelocity(car_->getBody()->GetLinearVelocity());
 		}
 
 		MovingObject* getMovingObject() const override {
