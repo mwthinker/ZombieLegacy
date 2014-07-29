@@ -183,14 +183,16 @@ namespace zombie {
 		engine_.add(new Building2D(corners));
 	}
 
-	void ZombieGame::loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, std::string weapon) {
-		for (int i = 0; i < gameData_.getUnitLevel(); ++i) {
-			zombie_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, true, weapons_[weapon].clone(), animation));
-		}
+	void ZombieGame::loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) {
+		zombie_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, true, weapons_[weapon].clone(), animation));
+		zombie_->setDieSound(die);
+		zombie_->setHitSound(hitSound);
 	}
 
-	void ZombieGame::loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, std::string weapon) {
+	void ZombieGame::loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) {
 		human_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, false, weapons_[weapon].clone(), animation));
+		human_->setDieSound(die);
+		human_->setHitSound(hitSound);
 	}
 
 	void ZombieGame::loadCar(float mass, float width, float length, float life, const Animation& animation) {
@@ -205,8 +207,10 @@ namespace zombie {
 		terrain_.addWater(corners);
 	}
 
-	void ZombieGame::loadWeapon(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation) {
+	void ZombieGame::loadWeapon(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation, const mw::Sound& shoot, const mw::Sound& reload) {
 		weapons_[name] = Weapon2D(damage, timeBetweenShots, range, clipSize, symbol, animation);
+		weapons_[name].setReloadSound(reload);
+		weapons_[name].setShotSound(shoot);
 	}
 
 } // Namespace zombie.

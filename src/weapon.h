@@ -45,6 +45,10 @@ namespace zombie {
 
 		// Tries to reload the weapon. If it reloads return true, else false.
 		bool reload() {
+			if (bulletsInWeapon_ == clipSize_) {
+				// No need to reload.
+				return false;
+			}
 			bulletsInWeapon_ = clipSize_;
 			return true;
 		}
@@ -75,6 +79,12 @@ namespace zombie {
 		}
 
 		virtual void draw() {
+		}
+
+		virtual void playShotSound() {
+		}
+
+		virtual void playReloadSound() {
 		}
 
 		virtual WeaponPtr clone() const {

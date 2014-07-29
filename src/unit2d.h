@@ -5,6 +5,8 @@
 #include "animation.h"
 #include "auxiliary.h"
 
+#include <mw/sound.h>
+
 namespace zombie {
 
 	class Unit2D : public Unit {
@@ -24,6 +26,14 @@ namespace zombie {
 			Unit::operator=(unit);
 			animation_ = unit.animation_;
 			return *this;
+		}
+
+		void setDieSound(const mw::Sound& sound) {
+			die_ = sound;
+		}
+
+		void setHitSound(const mw::Sound& sound) {
+			hit_ = sound;
 		}
 
 		void draw(float accumulator, float timeStep) override {
@@ -48,13 +58,22 @@ namespace zombie {
 				case Unit::STANDSTILL:
 					animation_.restart();
 					break;
-				default:
+				case Unit::DIE:
+					die_.play();
+				case Unit::SHOOT:
+					getWeapon()->playShotSound();
+					break;
+				case Unit::RELOADING:
+					getWeapon()->playReloadSound();
 					break;
 			}
 		}
 
 	private:
 		Animation animation_;
+		mw::Sound die_;
+		mw::Sound reload_;
+		mw::Sound hit_;
 	};
 
 } // Namespace zombie.

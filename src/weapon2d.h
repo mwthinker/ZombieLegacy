@@ -5,6 +5,9 @@
 #include "animation.h"
 
 #include <mw/sprite.h>
+#include <mw/sound.h>
+
+#include <memory>
 
 namespace zombie {
 	
@@ -30,9 +33,29 @@ namespace zombie {
 			return std::make_shared<Weapon2D>(*this);
 		}
 
+		void playShotSound() override {
+			mw::Sound sound = shoot_;
+			sound.play();
+		}
+
+		void playReloadSound() override {
+			mw::Sound sound = reload_;
+			sound.play();
+		}
+
+		void setReloadSound(const mw::Sound& sound) {
+			reload_ = sound;
+		}
+
+		void setShotSound(const mw::Sound& sound) {
+			shoot_ = sound;
+		}
+
 	private:
 		mw::Sprite symbol_;
 		Animation animation_;
+		mw::Sound shoot_;
+		mw::Sound reload_;
 	};
 
 } // Namespace zombie.

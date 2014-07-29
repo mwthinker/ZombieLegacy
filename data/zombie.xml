@@ -5,7 +5,7 @@
         <height>600</height>
         <positionX>432</positionX>
         <positionY>200</positionY>
-        <maximized>1</maximized>
+        <maximized>0</maximized>
 	</window>
 	<interface>
 		<font>fonts/Ubuntu-B.ttf</font>
@@ -34,7 +34,7 @@
             <timeBetweenShots>0.3</timeBetweenShots>
             <range>10</range>
             <clipSize>12</clipSize>
-            <shootSound>sounds/handgunShoot.wav</shootSound>
+            <shootSound>sounds/handgun.wav</shootSound>
             <reloadSound>sounds/handgunReload.wav</reloadSound>
             <animation>
                 <frame>
@@ -73,8 +73,8 @@
         <life>1000000</life>
     </car>
     <human>
-        <hitSound>sounds/humanHit.wav</hitSound>
-		<dieSound>sounds/zombieDeath.wav</dieSound>
+        <hitSound>sounds/zombieHit1.wav</hitSound>
+		<dieSound>sounds/zombieDeath1.wav</dieSound>
         <moveAnimation>
             <frame>
                 <image x="256" y="0" w="256" h="256">images/unitSpritesheet.png</image>
@@ -91,8 +91,8 @@
         <weapon>Handgun</weapon>
     </human>
     <zombie>
-        <hitSound>sounds/zombieHit.wav</hitSound>
-		<dieSound>sounds/zombieDeath.wav</dieSound>
+        <hitSound>sounds/zombieHit1.wav</hitSound>
+		<dieSound>sounds/zombieDeath1.wav</dieSound>
         <moveAnimation>
             <frame>
                 <image x="0" y="256" w="256" h="256">images/unitSpritesheet.png</image>
