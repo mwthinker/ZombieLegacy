@@ -121,7 +121,7 @@ namespace zombie {
 		auto play = createButton("Play", font);
 		play->addActionListener([&](gui::Component&) {
 			setCurrentPanel(playFrameIndex_);
-			gameData_.getMenuChoiceSound().play();
+			//gameData_.getMenuChoiceSound().play();
 		});
 		panel->addToGroup(play);
 

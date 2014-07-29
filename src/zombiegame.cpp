@@ -7,8 +7,8 @@
 #include "weaponitem2d.h"
 #include "building2d.h"
 #include "terrain2d.h"
-#include "blood.h"
 #include "shot.h"
+#include "graphicanimation.h"
 
 // External.
 #include <mw/exception.h>
@@ -153,11 +153,15 @@ namespace zombie {
 	}
 
 	void ZombieGame::unitDied(Unit& unit) {
-		graphicGround_.push_back(std::make_shared<Blood>(unit.getPosition()));
+		if (unit.isInfected()) {
+			graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieDie_));
+		} else {
+			graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanDie_));
+		}
 	}
 
 	void ZombieGame::humanDied(Unit& unit) {
-		graphicGround_.push_back(std::make_shared<Blood>(unit.getPosition()));
+		graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanDie_));
 	}
 
 	void ZombieGame::collision(float impulse, Car& car, Unit& unit) {
@@ -175,7 +179,11 @@ namespace zombie {
 
 	void ZombieGame::shotHit(const Bullet& bullet, Unit& unit) {
 		graphicMiddle_.push_back(std::make_shared<Shot>(bullet, unit.getPosition()));
-		graphicGround_.push_back(std::make_shared<Blood>(unit.getPosition()));
+		if (unit.isInfected()) {
+			graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
+		} else {
+			graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanInjured_));
+		}
 	}
 
 	// Implements the data interface.
@@ -183,16 +191,20 @@ namespace zombie {
 		engine_.add(new Building2D(corners));
 	}
 
-	void ZombieGame::loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) {
-		zombie_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, true, weapons_[weapon].clone(), animation));
+	void ZombieGame::loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) {
+		zombie_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, true, weapons_[weapon].clone(), moveA));
 		zombie_->setDieSound(die);
 		zombie_->setHitSound(hitSound);
+		zombieInjured_ = injuredA;
+		zombieDie_ = dieA;
 	}
 
-	void ZombieGame::loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) {
-		human_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, false, weapons_[weapon].clone(), animation));
+	void ZombieGame::loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) {
+		human_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, false, weapons_[weapon].clone(), moveA));
 		human_->setDieSound(die);
 		human_->setHitSound(hitSound);
+		humanInjured_ = injuredA;
+		humanDie_ = dieA;
 	}
 
 	void ZombieGame::loadCar(float mass, float width, float length, float life, const Animation& animation) {

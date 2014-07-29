@@ -6,7 +6,7 @@
 #include "bullet.h"
 #include "auxiliary.h"
 
-#include <SDL_opengl.h>
+#include <mw/opengl.h>
 
 namespace zombie {
 

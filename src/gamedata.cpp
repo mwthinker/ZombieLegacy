@@ -304,12 +304,14 @@ namespace zombie {
 		float walkingSpeed = zombie::extract<float>(humanTag.FirstChildElement("walkingSpeed"));
 		float runningSpeed = zombie::extract<float>(humanTag.FirstChildElement("runningSpeed"));
 		float stamina = zombie::extract<float>(humanTag.FirstChildElement("stamina"));
-		Animation animation = loadAnimation(humanTag.FirstChildElement("moveAnimation"));
-		mw::Sound die = loadSound(zombie::extract<std::string>(humanTag.FirstChildElement("dieSound")));
-		mw::Sound hit = loadSound(zombie::extract<std::string>(humanTag.FirstChildElement("hitSound")));
+		Animation moveA = loadAnimation(humanTag.FirstChildElement("moveAnimation"));
+		Animation injuredA = loadAnimation(humanTag.FirstChildElement("injuredAnimation"));
+		Animation dieA = loadAnimation(humanTag.FirstChildElement("dieAnimation"));
+		mw::Sound dieS = loadSound(zombie::extract<std::string>(humanTag.FirstChildElement("dieSound")));
+		mw::Sound hitS = loadSound(zombie::extract<std::string>(humanTag.FirstChildElement("hitSound")));
 		std::string weaponName = zombie::extract<std::string>(humanTag.FirstChildElement("weapon"));
 		
-		dataInterface.loadHuman(mass, radius, life, walkingSpeed, runningSpeed, stamina, animation, die, hit, weaponName);
+		dataInterface.loadHuman(mass, radius, life, walkingSpeed, runningSpeed, stamina, moveA, injuredA, dieA, dieS, hitS, weaponName);
 	}
 
 	void GameData::loadZombie(DataInterface& dataInterface) const {
@@ -320,12 +322,14 @@ namespace zombie {
 		float walkingSpeed = zombie::extract<float>(zombieTag.FirstChildElement("walkingSpeed"));
 		float runningSpeed = zombie::extract<float>(zombieTag.FirstChildElement("runningSpeed"));
 		float stamina = zombie::extract<float>(zombieTag.FirstChildElement("stamina"));
-		Animation animation = loadAnimation(zombieTag.FirstChildElement("moveAnimation"));
-		mw::Sound die = loadSound(zombie::extract<std::string>(zombieTag.FirstChildElement("dieSound")));
-		mw::Sound hit = loadSound(zombie::extract<std::string>(zombieTag.FirstChildElement("hitSound")));
+		Animation moveA = loadAnimation(zombieTag.FirstChildElement("moveAnimation"));
+		Animation injuredA = loadAnimation(zombieTag.FirstChildElement("injuredAnimation"));
+		Animation dieA = loadAnimation(zombieTag.FirstChildElement("dieAnimation"));
+		mw::Sound dieS = loadSound(zombie::extract<std::string>(zombieTag.FirstChildElement("dieSound")));
+		mw::Sound hitS = loadSound(zombie::extract<std::string>(zombieTag.FirstChildElement("hitSound")));
 		std::string weaponName = zombie::extract<std::string>(zombieTag.FirstChildElement("weapon"));
 
-		dataInterface.loadZombie(mass, radius, life, walkingSpeed, runningSpeed, stamina, animation, die, hit, weaponName);
+		dataInterface.loadZombie(mass, radius, life, walkingSpeed, runningSpeed, stamina, moveA, injuredA, dieA, dieS, hitS, weaponName);
 	}
 
 	void GameData::loadMap(DataInterface& dataInterface) const {
@@ -557,7 +561,7 @@ namespace zombie {
 
             // Image not valid?
             if (!texture.isValid()) {
-                std::cerr << file << " failed to load!" << std::endl;
+				std::cerr << std::endl << file << " failed to load!";
             }
         }
 
@@ -567,7 +571,7 @@ namespace zombie {
 	mw::Sound GameData::loadSound(std::string file) const {
         unsigned int size = sounds_.size();
         mw::Sound& sound = sounds_[file];
-
+		
         // Sound not found?
         if (sounds_.size() > size) {
             sound = mw::Sound(file);

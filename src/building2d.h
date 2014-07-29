@@ -4,7 +4,7 @@
 #include "building.h"
 #include "auxiliary.h"
 
-#include <SDL_opengl.h>
+#include <mw/opengl.h>
 
 #include <vector>
 

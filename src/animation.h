@@ -18,12 +18,15 @@ namespace zombie {
 			time_ = 0;
 			lastTime_ = 0;
 			speed_ = 1.f;
+			loop_ = true;
+			end_ = false;
 		}
 
 		// The animation is reset to the first frame.
 		void restart() {
 			index_ = 0;
 			reset_ = true;
+			end_ = false;
 		}
 
 		// Add a frame and point it to the current sprite sheet.
@@ -40,8 +43,16 @@ namespace zombie {
 
 			if (!frames_.empty()) {
 				// New frame?
-				if (time_ > frames_[index_].time_ + lastTime_) {
-					index_ = (1 + index_) % frames_.size();
+				if (!end_ && time_ > frames_[index_].time_ + lastTime_) {
+					if (loop_) {
+						index_ = (1 + index_) % frames_.size();
+					} else {
+						if (index_ + 1 < frames_.size()) {
+							++index_;
+						} else {
+							end_ = true;
+						}
+					}
 					lastTime_ = time_; // Frame updated.
 				}
 
@@ -60,6 +71,18 @@ namespace zombie {
 
 		float getSpeed() const {
 			return speed_;
+		}
+
+		void setLooping(bool loop) {
+			loop_ = loop;
+		}
+
+		bool isLooping() const {
+			return loop_;
+		}
+
+		bool isEnded() const {
+			return end_;
 		}
 
 	private:
@@ -81,7 +104,9 @@ namespace zombie {
 		float speed_;
 
 		std::vector<Frame> frames_;
-		int index_;
+		unsigned int index_;
+		bool loop_;
+		bool end_;
 	};
 
 } // Namespace zombie.

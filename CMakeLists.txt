@@ -16,8 +16,6 @@ set(SOURCES_ZOMBIE
 	src/animation.h
 	src/auxiliary.cpp
 	src/auxiliary.h
-	src/blood.cpp
-	src/blood.h
 	src/box2ddef.h
 	src/building.h
 	src/building2d.h
@@ -33,6 +31,7 @@ set(SOURCES_ZOMBIE
 	src/gamedata.h
 	src/gameinterface.h
 	src/graphic.h
+	src/graphicanimation.h
 	src/humanplayer.h
 	src/input.h
 	src/inputkeyboard.h
@@ -55,7 +54,7 @@ set(SOURCES_ZOMBIE
 	src/weapon.h
 	src/weapon2d.h
 	src/weaponitem.h
-	src/weaponitem2d.h	
+	src/weaponitem2d.h
 	src/zombiebehavior.cpp
 	src/zombiebehavior.h
 	src/zombieengine.cpp

@@ -69,9 +69,9 @@ namespace zombie {
 		// Implements the DataInterface.
 		void loadBuilding(const std::vector<Position>& corners) override;
 
-		void loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) override;
+		void loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) override;
 
-		void loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) override;
+		void loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) override;
 
 		void loadCar(float mass, float width, float length, float life, const Animation& animation) override;
 
@@ -87,6 +87,11 @@ namespace zombie {
 		float scale_;
 		float lastSpawnTime_;
 		float spawnPeriod_;
+		
+		Animation humanInjured_;
+		Animation humanDie_;
+		Animation zombieInjured_;
+		Animation zombieDie_;
 
 		Position viewPosition_;
 		Position refViewPosition_;

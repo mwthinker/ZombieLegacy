@@ -3,7 +3,7 @@
 
 #include "box2ddef.h"
 
-#include <SDL_opengl.h>
+#include <mw/opengl.h>
 
 #include <cmath>
 

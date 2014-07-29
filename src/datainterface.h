@@ -12,8 +12,8 @@ namespace zombie {
 
 	class DataInterface {
 	public:		
-		virtual void loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) = 0;
-		virtual void loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& animation, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) = 0;
+		virtual void loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) = 0;
+		virtual void loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) = 0;
 		virtual void loadCar(float mass, float width, float length, float life, const Animation& animation) = 0;
 		
 		virtual void loadBuilding(const std::vector<Position>& corners) = 0;

@@ -5,7 +5,7 @@
 #include "auxiliary.h"
 #include "animation.h"
 
-#include <SDL_opengl.h>
+#include <mw/opengl.h>
 
 namespace zombie {
 

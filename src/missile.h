@@ -4,7 +4,7 @@
 #include "object.h"
 #include "state.h"
 
-#include <SDL_opengl.h>
+#include <mw/opengl.h>
 
 namespace zombie {
 
