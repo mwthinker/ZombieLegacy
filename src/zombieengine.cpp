@@ -121,14 +121,11 @@ namespace zombie {
 		}
 	}
 
-	ZombieEngine::ZombieEngine(GameInterface& gameInterface, int timeStepMS, float impulseThreshold) : gameInterface_(gameInterface) {
+	ZombieEngine::ZombieEngine(GameInterface& gameInterface, int timeStepMS, float impulseThreshold) : gameInterface_(gameInterface), world_(b2Vec2(0, 0)) {
 		impulseThreshold_ = impulseThreshold;
 		human_ = nullptr;
 
-		// Create a world with no "gravity".
-		world_ = new b2World(b2Vec2(0, 0));
-
-		world_->SetContactListener(this);
+		world_.SetContactListener(this);
 
 		started_ = false;
 		time_ = 0.0f;
@@ -140,7 +137,7 @@ namespace zombie {
 	ZombieEngine::~ZombieEngine() {
 		// Remove all game objects.
 		std::vector<Object*> removeObjects;
-		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
+		for (b2Body* b = world_.GetBodyList(); b; b = b->GetNext()) {
 			Object* ob = static_cast<Object*>(b->GetUserData());
 			// Can't remove in the loop because the iterator will be set in a undefined state.
 			removeObjects.push_back(ob);
@@ -149,9 +146,6 @@ namespace zombie {
 		for (Object* ob : removeObjects) {
 			delete ob;
 		}
-
-		// All game objects are removed, remove world!
-		delete world_;
 	}
 
 	void ZombieEngine::start() {
@@ -174,7 +168,7 @@ namespace zombie {
 			}
 
 			// Update all game entities.
-			for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
+			for (b2Body* b = world_.GetBodyList(); b; b = b->GetNext()) {
 				Object* ob = static_cast<Object*>(b->GetUserData());
 				ob->update(time_, timeStep);
 				if (ob->toBeRemoved()) {
@@ -183,7 +177,7 @@ namespace zombie {
 			}
 
 			// Update the objects physics interactions.
-			world_->Step(timeStep, 6, 2);
+			world_.Step(timeStep, 6, 2);
 
 			// Move the time ahead.
 			time_ += timeStep;
@@ -209,7 +203,7 @@ namespace zombie {
 
 		// Remove units in a safe way. I.e. No risk of removing a unit in current use.
 		for (Object* object : garbageObjects_) {
-			object->destroyBody(world_);
+			object->destroyBody(&world_);
 			delete object;
 		}
 		garbageObjects_.clear();
@@ -241,7 +235,7 @@ namespace zombie {
 		}
 
 		// Draw all objects.
-		for (b2Body* b = world_->GetBodyList(); b; b = b->GetNext()) {
+		for (b2Body* b = world_.GetBodyList(); b; b = b->GetNext()) {
 			Object* ob = static_cast<Object*>(b->GetUserData());
 			ob->draw(accumulator_, timeStep_);
 		}
@@ -249,14 +243,14 @@ namespace zombie {
 
 	void ZombieEngine::setHuman(DevicePtr device, State state, Unit* unit) {
 		humanState_ = state;
-		unit->createBody(world_, state);
+		unit->createBody(&world_, state);
 		human_ = unit;
 		Player* player = new HumanPlayer(device, unit);
 		unit->addEventHandler(std::bind(&ZombieEngine::unitEventHandler, this, unit, std::placeholders::_2));
 	}
 
 	void ZombieEngine::add(State state, Unit* unit) {
-		unit->createBody(world_, state);
+		unit->createBody(&world_, state);
 		if (unit->isInfected()) {
 			new ZombieBehavior(unit);
 		} else {
@@ -267,11 +261,11 @@ namespace zombie {
 	}
 
 	void ZombieEngine::add(Building* building) {
-		building->createBody(world_);
+		building->createBody(&world_);
 	}
 
 	void ZombieEngine::add(State state, Car* car) {
-		car->createBody(world_, state);
+		car->createBody(&world_, state);
 		car->addEventHandler(std::bind(&ZombieEngine::carEventHandler, this, car, std::placeholders::_2));
 	}
 
@@ -302,7 +296,7 @@ namespace zombie {
 		ClosestRayCastCallback callback([](b2Fixture* fixture) {
 			return !fixture->IsSensor() && fixture->GetBody()->GetUserData() != nullptr || fixture->IsSensor() && fixture->GetUserData() != nullptr;
 		});
-		world_->RayCast(&callback, unit->getPosition(), unit->getPosition() + dir);
+		world_.RayCast(&callback, unit->getPosition(), unit->getPosition() + dir);
 		b2Fixture* fixture = callback.getFixture();
 
 		// Is there an object near by?
@@ -343,7 +337,7 @@ namespace zombie {
 			return !fixture->IsSensor();
 		});
 
-		world_->RayCast(&callback, shooter->getPosition(), hitPosition);
+		world_.RayCast(&callback, shooter->getPosition(), hitPosition);
 		b2Fixture* fixture = callback.getFixture();
 
 		hitPosition = shooter->getPosition() + bullet.range_ * callback.getFraction() * dir;

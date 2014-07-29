@@ -61,7 +61,7 @@ namespace zombie {
 		
 		// Returns the current world. Use with care!
 		inline b2World* getWorld() {
-			return world_;
+			return &world_;
 		}
 
 		// Removes the object from memory in a safe way.
@@ -113,7 +113,7 @@ namespace zombie {
 		float timeStep_;
 		float accumulator_;
 
-		b2World* world_;
+		b2World world_;
 		GameInterface& gameInterface_;
 		
 		// Is cleared, and called every update to physics, in a safe way.
