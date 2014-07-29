@@ -199,11 +199,7 @@ namespace zombie {
 
 	void ZombieGame::loadRoad(const std::vector<Position>& road) {
 		terrain_.addRoad(road);
-	}
-
-	void ZombieGame::loadRoadLine(const std::vector<Position>& roadLine) {
-		terrain_.addRoadLine(roadLine);
-	}
+	}	
 
 	void ZombieGame::loadWater(const std::vector<Position>& corners) {
 		terrain_.addWater(corners);

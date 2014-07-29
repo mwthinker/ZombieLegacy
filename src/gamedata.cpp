@@ -357,16 +357,6 @@ namespace zombie {
 						dataInterface.loadRoad(loadPolygon(stream.str()));
 					}
 				}
-			} else if (handleXml.ToElement()->Attribute("type", "roadline")) {
-				std::string geom = zombie::extract<std::string>(handleXml.FirstChildElement("geom"));
-				std::stringstream stream(geom);
-				std::string word;
-
-				if (stream >> word) {
-					if (word == "POLYGON") {
-						dataInterface.loadRoadLine(loadPolygon(stream.str()));
-					}
-				}
 			}
 
 			handleXml = handleXml.NextSiblingElement("object");

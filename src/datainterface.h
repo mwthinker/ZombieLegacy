@@ -18,7 +18,6 @@ namespace zombie {
 		
 		virtual void loadBuilding(const std::vector<Position>& corners) = 0;
 		virtual void loadRoad(const std::vector<Position>& road) = 0;
-		virtual void loadRoadLine(const std::vector<Position>& roadLine) = 0;
 		virtual void loadWater(const std::vector<Position>& positions) = 0;
 		virtual void loadWeapon(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation) = 0;
 	

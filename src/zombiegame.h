@@ -77,8 +77,6 @@ namespace zombie {
 
 		void loadRoad(const std::vector<Position>& road) override;
 
-		void loadRoadLine(const std::vector<Position>& roadline) override;
-
 		void loadWater(const std::vector<Position>& positions) override;
 
 		void loadWeapon(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation) override;

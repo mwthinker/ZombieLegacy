@@ -18,10 +18,6 @@ namespace zombie {
 			roads_.push_back(road);
 		}
 
-		void addRoadLine(const std::vector<Position>& roadline) {
-			roadLines_.push_back(roadline);
-		}
-
 		void addWater(const std::vector<Position>& water) {
 			lakes_.push_back(water);
 		}
@@ -37,13 +33,6 @@ namespace zombie {
 				}
 			}
 
-			glColor3d(1, 1, 1);
-			for (const RoadLine& roadLine : roadLines_) {
-				for (unsigned int i = 0; i < 3 && i < roadLine.size(); ++i) {
-					glVertex2d(roadLine[i].x, roadLine[i].y);
-				}
-			}
-
 			glColor3d(0, 0, 0.3);
 			for (const Water& water : lakes_) {
 				for (unsigned int i = 0; i < 3 && i < water.size(); ++i) {
@@ -56,11 +45,9 @@ namespace zombie {
 
 	private:
 		typedef std::vector<Position> Road;
-		typedef std::vector<Position> RoadLine;
 		typedef std::vector<Position> Water;
 
 		std::vector<Road> roads_;
-		std::vector<RoadLine> roadLines_;
 		std::vector<Water> lakes_;
 	};
 
