@@ -39,6 +39,9 @@ namespace zombie {
 
 		float getImpulseThreshold() const;
 
+		float getInnerSpawnRadius() const;
+		float getOuterSpawnRadius() const;
+
 		int getTimeStepMS() const;
 
 		mw::Sound getMenuHighlitedSound() const;

@@ -56,12 +56,11 @@ namespace zombie {
 			keyboard_->eventUpdate(keyEvent);
 		});
 
-		innerSpawnRadius_ = 25.f;
-		outerSpawnRadius_ = 30.f;
-
-		spawningPoints_ = gameData.loadSpawningPoints();
-
 		gameData.load(*this);
+
+		innerSpawnRadius_ = gameData.getInnerSpawnRadius();
+		outerSpawnRadius_ = gameData.getOuterSpawnRadius();
+		spawningPoints_ = gameData.loadSpawningPoints();
 
 		// Add human to engine.
 		{
@@ -73,7 +72,7 @@ namespace zombie {
 		}
 
 		// Add zombies to engine.
-		for (int i = 0; i < 40; ++i) { //gameData.getUnitLevel();
+		for (int i = 0; i < gameData.getUnitLevel(); ++i) {
 			Unit* zombie = new Unit2D(*zombie_);
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
 			engine_.add(state, zombie);

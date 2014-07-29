@@ -248,10 +248,10 @@ namespace zombie {
 			xmlDoc_.PrintError();
 		} else {
 			try {
-				font_ = zombie::extract<std::string>(tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("settings").FirstChildElement("font"));
+				font_ = zombie::getValueFromTag<std::string>(xmlDoc_, "zombieGame interface font");
 
 				// Load map.
-				xmlMap_.LoadFile("map.xml");
+				xmlMap_.LoadFile(zombie::getValueFromTag<std::string>(xmlDoc_, "zombieGame settings map").c_str());
 				if (xmlMap_.Error()) {
 					xmlDoc_.PrintError();
 				}
@@ -439,6 +439,14 @@ namespace zombie {
     float GameData::getImpulseThreshold() const {
 		return zombie::getValueFromTag<float>(xmlDoc_, "zombieGame settings impulseThreshold");
     }
+
+	float GameData::getInnerSpawnRadius() const {
+		return zombie::getValueFromTag<float>(xmlDoc_, "zombieGame settings innerSpawnRadius");
+	}
+	
+	float GameData::getOuterSpawnRadius() const {
+		return zombie::getValueFromTag<float>(xmlDoc_, "zombieGame settings outerSpawnRadius");
+	}
 
 	int GameData::getTimeStepMS() const {
 		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame settings timeStepMS");

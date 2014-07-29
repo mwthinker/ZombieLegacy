@@ -7,12 +7,16 @@
         <positionY>200</positionY>
         <maximized>1</maximized>
 	</window>
+	<interface>
+		<font>fonts/Ubuntu-B.ttf</font>
+	</interface>
     <settings>
-        <font>fonts/Ubuntu-B.ttf</font>
+		<map>map.xml</map>
         <unitLevel>20</unitLevel>
         <impulseThreshold>10</impulseThreshold>
         <timeStepMS>17</timeStepMS>
-        <map>map.xml</map>
+		<innerSpawnRadius>20.0</innerSpawnRadius>
+		<outerSpawnRadius>30.0</outerSpawnRadius>
     </settings>
 	<menu>
 		<soundHighlited>sounds/handgunReload.wav</soundHighlited>
@@ -70,6 +74,7 @@
     </car>
     <human>
         <hitSound>sounds/humanHit.wav</hitSound>
+		<dieSound>sounds/zombieDeath.wav</dieSound>
         <moveAnimation>
             <frame>
                 <image x="256" y="0" w="256" h="256">images/unitSpritesheet.png</image>
@@ -87,6 +92,7 @@
     </human>
     <zombie>
         <hitSound>sounds/zombieHit.wav</hitSound>
+		<dieSound>sounds/zombieDeath.wav</dieSound>
         <moveAnimation>
             <frame>
                 <image x="0" y="256" w="256" h="256">images/unitSpritesheet.png</image>
