@@ -19,20 +19,13 @@ namespace zombie {
 
 	namespace {
 
-		void collision(GameInterface& game, float impulse, Object* ob1, Object* ob2) {
-			if (Car* car1 = dynamic_cast<Car*>(ob1)) {
-				if (Car* car2 = dynamic_cast<Car*>(ob2)) {
-					game.collision(impulse, *car1, *car2);
-				} else if (Unit* unit2 = dynamic_cast<Unit*>(ob2)) {
-					game.collision(impulse, *car1, *unit2);
-				} else if (Building* building = dynamic_cast<Building*>(ob2)) {
-					game.collision(impulse, *car1, *building);
-				}
-			} else if (Unit* unit1 = dynamic_cast<Unit*>(ob1)) {
-				if (nullptr != dynamic_cast<Unit*>(ob2)) {
-					// ob2 is not a unit, this in order to avoid a infinity loop.
-					collision(game, impulse, ob2, ob1);
-				}
+		void collision(GameInterface& game, float impulse, Object* ob) {
+			if (Car* car = dynamic_cast<Car*>(ob)) {
+				game.collision(impulse, *car);
+			} else if (Unit* unit = dynamic_cast<Unit*>(ob)) {
+				game.collision(impulse, *unit);
+			} else if (Building* building = dynamic_cast<Building*>(ob)) {
+				game.collision(impulse, *building);
 			}
 		}
 
@@ -381,7 +374,8 @@ namespace zombie {
 		}
 
 		if (maxImpulse > impulseThreshold_) {
-			collision(gameInterface_, maxImpulse, ob1, ob2);
+			collision(gameInterface_, maxImpulse, ob1);
+			collision(gameInterface_, maxImpulse, ob2);
 		}
 	}
 

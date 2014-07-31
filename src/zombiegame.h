@@ -55,11 +55,11 @@ namespace zombie {
 
 		void unitDied(Unit& unit) override;
 
-		void collision(float impulse, Car& car, Unit& unit) override;
+		void collision(float impulse, Unit& unit) override;
 
-		void collision(float impulse, Car& car1, Car& car2) override;
+		void collision(float impulse, Car& car) override;
 
-		void collision(float impulse, Car& car, Building& building) override;
+		void collision(float impulse, Building& building) override;
 
 		void shotMissed(const Bullet& bullet, Position hitPosition) override;
 

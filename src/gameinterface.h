@@ -23,11 +23,11 @@ namespace zombie {
 		// A unit just died.
 		virtual void unitDied(Unit& unit) = 0;
 
-		virtual void collision(float impulse, Car& car, Unit& unit) = 0;
+		virtual void collision(float impulse, Unit& unit) = 0;
 
-		virtual void collision(float impulse, Car& car1, Car& car2) = 0;
+		virtual void collision(float impulse, Car& car) = 0;
 
-		virtual void collision(float impulse, Car& car, Building& building) = 0;
+		virtual void collision(float impulse, Building& building) = 0;
 
 		virtual void shotMissed(const Bullet& bullet, Position hitPosition) = 0;
 
