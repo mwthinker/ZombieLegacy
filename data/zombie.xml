@@ -38,7 +38,7 @@
             <timeBetweenShots>0.3</timeBetweenShots>
             <range>10</range>
             <clipSize>12</clipSize>
-            <shootSound>sounds/handgun.wav</shootSound>
+            <shootSound>sounds/handgunShoot.wav</shootSound>
             <reloadSound>sounds/handgunReload.wav</reloadSound>
             <animation>
                 <frame>
