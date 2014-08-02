@@ -46,7 +46,7 @@ namespace zombie {
 				targetAngle_ = std::atan2(dir.y, dir.x);
 				forward_ = true;
 
-				double distSquared = (unit_->getPosition() - unit_->getPosition()).LengthSquared();
+				double distSquared = (unit_->getPosition() - targetPosition_).LengthSquared();
 				// Target is in range?
 				if (distSquared < unit_->getWeapon()->range() * unit_->getWeapon()->range()) {
 					// Attack!
