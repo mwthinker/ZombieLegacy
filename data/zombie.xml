@@ -20,7 +20,7 @@
     </settings>
     <menu>
         <soundHighlited>sounds/handgunReload.wav</soundHighlited>
-        <soundChoice>sounds/handgun.wav</soundChoice>
+        <soundChoice>sounds/handgunShoot.wav</soundChoice>
         <backGroundImage>images/menu.jpg</backGroundImage>
     </menu>
     <music>
