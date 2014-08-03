@@ -68,7 +68,7 @@
         <moveAnimation>
             <frame>
                 <image>images/jeep.png</image>
-                <bodyWidth>104</bodyWidth>
+                <bodyWidth>130</bodyWidth>
             </frame>
         </moveAnimation>
         <mass>10</mass>
