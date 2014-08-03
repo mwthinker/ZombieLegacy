@@ -81,7 +81,22 @@
         <dieSound>sounds/zombieDeath.wav</dieSound>
         <moveAnimation>
             <frame>
-                <image x="256" y="0" w="256" h="256">images/unitSpritesheet.png</image>
+                <image x="0" y="0" w="178" h="130">images/1.png</image>
+                <time>0.18</time>
+                <bodyWidth>130</bodyWidth>
+            </frame>
+            <frame>
+                <image x="0" y="0" w="178" h="130">images/2.png</image>
+                <time>0.18</time>
+                <bodyWidth>130</bodyWidth>
+            </frame>
+            <frame>
+                <image x="0" y="0" w="178" h="130">images/3.png</image>
+                <time>0.18</time>
+                <bodyWidth>130</bodyWidth>
+            </frame>
+            <frame>
+                <image x="0" y="0" w="178" h="130">images/4.png</image>
                 <time>0.18</time>
                 <bodyWidth>130</bodyWidth>
             </frame>
