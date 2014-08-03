@@ -81,22 +81,22 @@
         <dieSound>sounds/zombieDeath.wav</dieSound>
         <moveAnimation>
             <frame>
-                <image x="0" y="0" w="256" h="256">images/1.png</image>
+                <image>images/1.png</image>
                 <time>0.18</time>
                 <bodyWidth>130</bodyWidth>
             </frame>
             <frame>
-                <image x="0" y="0" w="256" h="256">images/2.png</image>
+                <image>images/2.png</image>
                 <time>0.18</time>
                 <bodyWidth>130</bodyWidth>
             </frame>
             <frame>
-                <image x="0" y="0" w="256" h="256">images/3.png</image>
+                <image>images/3.png</image>
                 <time>0.18</time>
                 <bodyWidth>130</bodyWidth>
             </frame>
             <frame>
-                <image x="0" y="0" w="256" h="256">images/4.png</image>
+                <image>images/4.png</image>
                 <time>0.18</time>
                 <bodyWidth>130</bodyWidth>
             </frame>
@@ -105,27 +105,27 @@
             <frame>
                 <image>images/bloodDeath10.png</image>
                 <time>0.1</time>
-                <bodyWidth>3</bodyWidth>
+                <bodyWidth>130</bodyWidth>
             </frame>
             <frame>
                 <image>images/bloodDeath11.png</image>
                 <time>0.1</time>
-                <bodyWidth>256</bodyWidth>
+                <bodyWidth>230</bodyWidth>
             </frame>
             <frame>
                 <image>images/bloodDeath12.png</image>
                 <time>0.1</time>
-                <bodyWidth>256</bodyWidth>
+                <bodyWidth>230</bodyWidth>
             </frame>
             <frame>
                 <image>images/bloodDeath13.png</image>
                 <time>0.1</time>
-                <bodyWidth>256</bodyWidth>
+                <bodyWidth>230</bodyWidth>
             </frame>
             <frame>
                 <image>images/bloodDeath14.png</image>
                 <time>10</time>
-                <bodyWidth>256</bodyWidth>
+                <bodyWidth>230</bodyWidth>
             </frame>
         </dieAnimation>
         <injuredAnimation>
@@ -153,36 +153,61 @@
         <dieSound>sounds/zombieDeath.wav</dieSound>
         <moveAnimation>
             <frame>
-                <image x="0" y="256" w="256" h="256">images/unitSpritesheet.png</image>
+                <image x="0" y="1024" w="512" h="512">images/zombie.png</image>
                 <time>0.18</time>
-                <bodyWidth>130</bodyWidth>
+                <bodyWidth>230</bodyWidth>
+            </frame>
+			<frame>
+                <image x="0" y="512" w="512" h="512">images/zombie.png</image>
+                <time>0.18</time>
+                <bodyWidth>230</bodyWidth>
+            </frame>
+			<frame>
+                <image x="512" y="1024" w="512" h="512">images/zombie.png</image>
+                <time>0.18</time>
+                <bodyWidth>230</bodyWidth>
+            </frame>
+			<frame>
+                <image x="512" y="512" w="512" h="512">images/zombie.png</image>
+                <time>0.18</time>
+                <bodyWidth>230</bodyWidth>
+            </frame>
+			<frame>
+                <image x="0" y="0" w="512" h="512">images/zombie.png</image>
+                <time>0.18</time>
+                <bodyWidth>230</bodyWidth>
+            </frame>
+			<frame>
+                <image x="512" y="0" w="512" h="512">images/zombie.png</image>
+                <time>0.18</time>
+                <bodyWidth>230</bodyWidth>
             </frame>
         </moveAnimation>
         <dieAnimation>
             <frame>
                 <image>images/bloodDeath10.png</image>
                 <time>0.1</time>
-                <bodyWidth>64</bodyWidth>
+                <bodyWidth>230</bodyWidth>
             </frame>
             <frame>
                 <image>images/bloodDeath11.png</image>
                 <time>0.1</time>
-                <bodyWidth>64</bodyWidth>
+                <bodyWidth>230</bodyWidth>
             </frame>
             <frame>
                 <image>images/bloodDeath12.png</image>
                 <time>0.1</time>
-                <bodyWidth>64</bodyWidth>
+                <bodyWidth>230</bodyWidth>
             </frame>
             <frame>
                 <image>images/bloodDeath13.png</image>
                 <time>0.1</time>
-                <bodyWidth>64</bodyWidth>
+                <bodyWidth>230</bodyWidth>
             </frame>
             <frame>
                 <image>images/bloodDeath14.png</image>
                 <time>10</time>
-                <bodyWidth>64</bodyWidth>
+                <bodyWidth>230</bodyWidth>
             </frame>
         </dieAnimation>
         <injuredAnimation>
