@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zombieGame>
     <window>
-        <width>600</width>
-        <height>600</height>
+        <width>800</width>
+        <height>800</height>
         <positionX>432</positionX>
         <positionY>200</positionY>
-        <maximized>1</maximized>
+        <maximized>0</maximized>
     </window>
+	<explosion>
+		<shockwaveImage>images/shockwave.png</shockwaveImage>
+		<particleImage>images/fireBall.png</particleImage>
+		<emitterImage>images/trail.png</emitterImage>
+		<sound></sound>
+	</explosion>
+	<fog>
+		<image>images/fog.png</image>
+		<radius>20</radius>
+	</fog>
     <interface>
         <font>fonts/Ubuntu-B.ttf</font>
     </interface>

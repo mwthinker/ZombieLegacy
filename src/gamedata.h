@@ -45,7 +45,7 @@ namespace zombie {
 		int getTimeStepMS() const;
 
 		mw::Sound getMenuHighlitedSound() const;
-		mw::Sound getMenuChoiceSound() const;
+		mw::Sound getMenuChoiceSound() const;		
 
 		mw::Sprite getMenuBackgroundImage() const;
 
@@ -63,6 +63,8 @@ namespace zombie {
 		void loadZombie(DataInterface&) const;
 		void loadMap(DataInterface&) const;
 		void loadWeapon(DataInterface&) const;
+		void loadExplosion(DataInterface&) const;
+		void loadFog(DataInterface&) const;
 
 		void extract(mw::Sprite& sprite, tinyxml2::XMLConstHandle handle) const;
 

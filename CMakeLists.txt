@@ -64,6 +64,15 @@ set(SOURCES_ZOMBIE
 	src/zombiewindow.h
 	src/zombiewindow.cpp
 )
+# Source files.
+set(SOURCES_EFFECT
+	src/emitter.h
+	src/explosion.h
+	src/fog.h
+	src/fog.cpp
+	src/particleengine.h
+	src/shockwave.h
+)
 # End of source files.
 
 find_package(OpenGL REQUIRED)
@@ -91,7 +100,7 @@ include_directories(${SDL2_INCLUDE_DIRS}
 	TinyXML2/src
 )
 
-add_executable(Zombie ${SOURCES_ZOMBIE})
+add_executable(Zombie ${SOURCES_ZOMBIE} ${SOURCES_EFFECT})
 
 if (MSVC)
 	set_target_properties(Zombie PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")

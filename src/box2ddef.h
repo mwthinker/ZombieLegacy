@@ -10,6 +10,7 @@ namespace zombie {
 	const float PI = b2_pi;
 
 	const b2Vec2 ORIGO(0, 0);
+	const b2Vec2 ZERO(0, 0);
 
 	// Math vectors.
 	typedef b2Vec2 Velocity;

@@ -8,6 +8,8 @@
 #include "graphic.h"
 #include "datainterface.h"
 #include "terrain2d.h"
+#include "explosion.h"
+#include "fog.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
@@ -67,6 +69,10 @@ namespace zombie {
 		// End of the GameInterface.
 
 		// Implements the DataInterface.
+		void loadExplosion(const mw::Texture& particle, const mw::Sprite& shockwave, const mw::Sprite& emitter, const mw::Sound& sound) override;
+
+		void loadFog(const mw::Texture& fog, float radius) override;
+
 		void loadBuilding(const std::vector<Position>& corners) override;
 
 		void loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) override;
@@ -87,6 +93,9 @@ namespace zombie {
 		float scale_;
 		float lastSpawnTime_;
 		float spawnPeriod_;
+
+		std::shared_ptr<Explosion> explosion_;
+		std::shared_ptr<Fog> fog_;
 		
 		Animation humanInjured_;
 		Animation humanDie_;

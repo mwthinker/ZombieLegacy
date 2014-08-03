@@ -16,6 +16,9 @@ namespace zombie {
 		virtual void loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) = 0;
 		virtual void loadCar(float mass, float width, float length, float life, const Animation& animation) = 0;
 		
+		virtual void loadExplosion(const mw::Texture& particle, const mw::Sprite& shockwave, const mw::Sprite& emitter, const mw::Sound& sound) = 0;
+		virtual void loadFog(const mw::Texture& fog, float radius) = 0;
+
 		virtual void loadBuilding(const std::vector<Position>& corners) = 0;
 		virtual void loadRoad(const std::vector<Position>& road) = 0;
 		virtual void loadWater(const std::vector<Position>& positions) = 0;

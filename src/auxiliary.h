@@ -43,6 +43,8 @@ namespace zombie {
 	// Returns a random number. The output is uniformly distributed on the interval [a, b).
 	float random();
 
+	float random(float min, float max);
+
 	int randomInt(int lower, int higher);
 
 } // Namespace zombie.

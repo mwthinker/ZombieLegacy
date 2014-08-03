@@ -271,6 +271,8 @@ namespace zombie {
 		loadCar(dataInterface);
 		loadZombie(dataInterface);
 		loadMap(dataInterface);
+		loadExplosion(dataInterface);
+		loadFog(dataInterface);
 	}
 
 	mw::Sound GameData::getMenuHighlitedSound() const {
@@ -312,6 +314,24 @@ namespace zombie {
 		std::string weaponName = zombie::extract<std::string>(humanTag.FirstChildElement("weapon"));
 		
 		dataInterface.loadHuman(mass, radius, life, walkingSpeed, runningSpeed, stamina, moveA, injuredA, dieA, dieS, hitS, weaponName);
+	}
+
+	void GameData::loadExplosion(DataInterface& dataInterface) const {
+		tinyxml2::XMLConstHandle explosionTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("explosion");
+		mw::Texture particle = loadTexture(zombie::extract<std::string>(explosionTag.FirstChildElement("particleImage")));
+		mw::Sprite shockwave;
+		extract(shockwave, explosionTag.FirstChildElement("shockwaveImage"));
+		mw::Sprite emitter;
+		extract(emitter, explosionTag.FirstChildElement("emitterImage"));
+		mw::Sound sound = loadSound(zombie::extract<std::string>(explosionTag.FirstChildElement("shockwaveImage")));
+		dataInterface.loadExplosion(particle, shockwave, emitter , sound);
+	}
+
+	void GameData::loadFog(DataInterface& dataInterface) const {
+		tinyxml2::XMLConstHandle zombieGameTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("fog");
+		mw::Texture fog = loadTexture(zombie::extract<std::string>(zombieGameTag.FirstChildElement("image")));
+		float radius = zombie::extract<float>(zombieGameTag.FirstChildElement("radius"));
+		dataInterface.loadFog(fog, radius);
 	}
 
 	void GameData::loadZombie(DataInterface& dataInterface) const {

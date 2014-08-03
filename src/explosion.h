@@ -1,72 +1,72 @@
 #ifndef EXPLOSION_H
 #define EXPLOSION_H
 
-#include "object.h"
 #include "box2ddef.h"
+#include "auxiliary.h"
+#include "graphic.h"
+#include "particleengine.h"
+#include "shockwave.h"
+#include "emitter.h"
 
-#include <cassert>
+#include <mw/opengl.h>
+#include <mw/color.h>
+#include <mw/sprite.h>
+#include <mw/sound.h>
+
+#include <array>
+#include <vector>
 
 namespace zombie {
 
-	class Explosion : Object {
+	class Explosion : public Graphic {
 	public:
-		Explosion(float damage) {
-			damage_ = damage;
-			body_ = nullptr;
+		Explosion(const mw::Texture& particle, const mw::Sprite& shockwave, const mw::Sprite& emitter, const mw::Sound& sound)
+			: shockWave_(shockwave, 5, 1 / 2.f),
+			particleEngine_(particle, 0.f, 0.f, 0.f, 1.f, 0.1f, 0.6f, 0.1f, 0.3f),			
+			emitter_(emitter, 10.f, 30.f, 0.2f) {
+
+			particleEngine_.setLoop(false);
+			time_ = 0;
+			delay_ = 0.1f;
+			position_ = ZERO;
+			angle_ = 0.f;
+			sound_ = sound;
 		}
 
-		void createBody(b2World* world, Position position, float angle) {
-			// Create a small circle.
-			assert(body_ == nullptr); // Must be a nullptr.
-			
-			b2Vec2 rayDir(sin(angle), cos(angle));
+		Explosion(const Position position, float angle, const Explosion& explosion) : particleEngine_(explosion.particleEngine_), shockWave_(explosion.shockWave_), emitter_(explosion.emitter_) {
+			position_ = position;
+			angle_ = angle;
+			time_ = explosion.time_;
+			delay_ = explosion.delay_;
+			sound_ = explosion.sound_;
+		}		
 
-			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
-			bd.fixedRotation = true;
-			bd.bullet = true; // Prevent tunneling at high speed
-			bd.linearDamping = 10; // Air drag.
-			bd.gravityScale = 0;
-			bd.position = position;
-			bd.linearVelocity = damage_ * rayDir;
-			body_ = world->CreateBody(&bd);
-
-			b2CircleShape circleShape;
-			circleShape.m_radius = 0.01; // very small
-
-			b2FixtureDef fd;
-			fd.shape = &circleShape;
-			fd.density = 1;
-			fd.friction = 0;
-			fd.restitution = 0.99f; // High restitution to reflect off obstacles.
-			fd.filter.groupIndex = -1; // Particles should not collide with each other.
-			body_->CreateFixture(&fd);
-			body_->SetUserData(this);
+		void draw(float deltaTime) override {
+			time_ += deltaTime;
+			glPushMatrix();
+			glTranslate2f(position_);
+			glRotatef(angle_);
+			shockWave_.draw(deltaTime);
+			//emitter_.draw(deltaTime);
+			if (time_ > delay_) {
+				particleEngine_.draw(deltaTime);
+			}
+			glPopMatrix();
 		}
 
-		void destroyBody(b2World* world) override {
-			world->DestroyBody(body_);
-			body_ = nullptr;
-		}
-
-		bool isDestroyed() const override {
-			return body_ == nullptr;
-		}
-
-		void draw(float time) override {
-			/*
-			const WeaponObject* wOb = static_cast<const WeaponObject*>(ob);
-			Position p = wOb->getPosition();
-			glColor3d(0,0,1);
-			drawCircle(p.x,p.y,wOb->getRadius(),6,true);
-			return true;
-			*/
+		bool toBeRemoved() const {
+			return particleEngine_.isFinnish();
 		}
 
 	private:
-		float damage_;
-
-		b2Body* body_;
+		Position position_;
+		float angle_;
+		ParticleEngine<1000> particleEngine_;
+		ShockWave shockWave_;
+		Emitter<100> emitter_;
+		float delay_;
+		float time_;
+		mw::Sound sound_;
 	};
 
 } // Namespace zombie.

@@ -16,6 +16,10 @@ namespace zombie {
 		return distribution(generator);
 	}
 
+	float random(float min, float max) {
+		return min + random() * (max - min);
+	}
+
 	int randomInt(int lower, int higher) {
 		std::uniform_int_distribution<int> distribution(lower, higher);
 		return distribution(generator);

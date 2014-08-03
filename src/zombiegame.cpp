@@ -9,6 +9,8 @@
 #include "terrain2d.h"
 #include "shot.h"
 #include "graphicanimation.h"
+#include "explosion.h"
+#include "fog.h"
 
 // External.
 #include <mw/exception.h>
@@ -48,7 +50,7 @@ namespace zombie {
 		keyboard_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT,
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
 
-		scale_ = 2.f;
+		scale_ = 1.f;
 		lastSpawnTime_ = engine_.getTime();
 		spawnPeriod_ = 0.5f;
 
@@ -108,6 +110,9 @@ namespace zombie {
 		gui::Component::draw(deltaTime);
 		
 		viewPosition_ += 10 * deltaTime/1000.f * (refViewPosition_ - viewPosition_);
+		if (fog_) {
+			fog_->update(viewPosition_);
+		}
 
 		// Draw map centered around first human player.
 		glPushMatrix();
@@ -130,7 +135,10 @@ namespace zombie {
 			removeDeadGraphicObjects(graphicHeaven_);
 		} else {
 			terrain_.draw(0);
+			drawGraphicList(graphicGround_, 0);
 			engine_.update(0);
+			drawGraphicList(graphicMiddle_, 0);
+			drawGraphicList(graphicHeaven_, 0);
 		}
 
 		glPopMatrix();
@@ -195,14 +203,26 @@ namespace zombie {
 
 	void ZombieGame::shotHit(const Bullet& bullet, Position hitPosition, Unit& unit) {
 		graphicMiddle_.push_back(std::make_shared<Shot>(bullet, hitPosition));
+		graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
 		if (unit.isInfected()) {
 			graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
+			// Temporary, just for fun!
+			graphicHeaven_.push_back(std::make_shared<Explosion>(hitPosition, unit.getDirection(), *explosion_));
 		} else {
 			graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanInjured_));
 		}
 	}
 
 	// Implements the data interface.
+	void ZombieGame::loadExplosion(const mw::Texture& particle, const mw::Sprite& shockwave, const mw::Sprite& emitter, const mw::Sound& sound) {
+		explosion_ = std::make_shared<Explosion>(particle, shockwave, emitter, sound);
+	}
+
+	void ZombieGame::loadFog(const mw::Texture& fog, float radius) {
+		fog_ = std::make_shared<Fog>(fog, radius);
+		graphicHeaven_.push_back(fog_);
+	}
+
 	void ZombieGame::loadBuilding(const std::vector<Position>& corners) {
 		engine_.add(new Building2D(corners));
 	}
