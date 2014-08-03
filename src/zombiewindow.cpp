@@ -50,7 +50,7 @@ namespace zombie {
 
 	} // Anonymous namespace.
 
-	ZombieWindow::ZombieWindow(GameData& gameData) : gui::Frame(gameData.getWindowWidth(), gameData.getWindowHeight(), true, "Zombie", "images/icon.bmp"), gameData_(gameData) {
+	ZombieWindow::ZombieWindow(GameData& gameData) : gui::Frame(gameData.getWindowWidth(), gameData.getWindowHeight(), true, "Zombie", "images/1.png"), gameData_(gameData) {
 		SDL_SetWindowPosition(mw::Window::getSdlWindow(), gameData.getWindowXPosition(), gameData.getWindowYPosition());
 		SDL_SetWindowMinimumSize(mw::Window::getSdlWindow(), 400, 400);
 		if (gameData.isWindowMaximized()) {
