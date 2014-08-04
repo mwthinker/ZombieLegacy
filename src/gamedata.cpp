@@ -361,30 +361,40 @@ namespace zombie {
 				std::stringstream stream(geom);
 				std::string word;
 
-				if (stream >> word) {
-					if (word == "POLYGON") {
-						dataInterface.loadBuilding(loadPolygon(stream.str()));
-					}
+				if (stream >> word) { // Assume "POLYGON"
+					dataInterface.loadBuilding(loadPolygon(stream.str()));
 				}
 			} else if (handleXml.ToElement()->Attribute("type", "water")) {
 				std::string geom = zombie::extract<std::string>(handleXml.FirstChildElement("geom"));
 				std::stringstream stream(geom);
 				std::string word;
 
-				if (stream >> word) {
-					if (word == "POLYGON") {
-						dataInterface.loadWater(loadPolygon(stream.str()));
-					}
+				if (stream >> word) { // Assume "POLYGON"
+					dataInterface.loadWater(loadPolygon(stream.str()));
 				}
 			} else if (handleXml.ToElement()->Attribute("type", "road")) {
 				std::string geom = zombie::extract<std::string>(handleXml.FirstChildElement("geom"));
 				std::stringstream stream(geom);
 				std::string word;
 
-				if (stream >> word) {
-					if (word == "POLYGON") {
-						dataInterface.loadRoad(loadPolygon(stream.str()));
-					}
+				if (stream >> word) { // Assume "POLYGON"
+					dataInterface.loadRoad(loadPolygon(stream.str()));
+				}
+			} else if (handleXml.ToElement()->Attribute("type", "tree")) {
+				std::string geom = zombie::extract<std::string>(handleXml.FirstChildElement("geom"));
+				std::stringstream stream(geom);
+				std::string word;
+
+				if (stream >> word) { // Assume "POINT"
+					dataInterface.loadTree(loadPoint(stream.str()));
+				}
+			} else if (handleXml.ToElement()->Attribute("type", "spawningpoint")) {
+				std::string geom = zombie::extract<std::string>(handleXml.FirstChildElement("geom"));
+				std::stringstream stream(geom);
+				std::string word;
+
+				if (stream >> word) { // Assume "POINT"
+					dataInterface.loadSpawningPoint(loadPoint(stream.str()));
 				}
 			}
 
@@ -476,30 +486,18 @@ namespace zombie {
     }
 
 	mw::Sprite GameData::getMenuBackgroundImage() const {
-		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("menu");
-		return loadTexture(zombie::extract<std::string>(handleXml.FirstChildElement("backGroundImage")));
+		tinyxml2::XMLConstHandle menuTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("menu");
+		mw::Sprite sprite;
+		extract(sprite, menuTag.FirstChildElement("backGroundImage"));
+		return sprite;
 	}
 
-	std::vector<Position> GameData::loadSpawningPoints() const {
-		tinyxml2::XMLConstHandle handleXml = tinyxml2::XMLConstHandle(xmlMap_.FirstChildElement("map")).FirstChildElement("objects").FirstChildElement("object");
-		std::vector<Position> points_;
-		while (handleXml.ToElement() != nullptr) {
-			if (handleXml.ToElement()->Attribute("type", "spawningpoint")) {
-				std::string geom = zombie::extract<std::string>(handleXml.FirstChildElement("geom"));
-				std::stringstream stream(geom);
-				std::string word;
-
-				if (stream >> word) {
-					if (word == "POINT") {
-						points_.push_back(loadPoint(stream.str()));
-					}
-				}
-			}
-
-			handleXml = handleXml.NextSiblingElement("object");
-		}
-		return points_;
-	}	
+	mw::Sprite GameData::getTreeImage() const {
+		tinyxml2::XMLConstHandle treeTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("tree");
+		mw::Sprite sprite;
+		extract(sprite, treeTag.FirstChildElement("image"));
+		return sprite;
+	}
 
 	void GameData::loadFrame(tinyxml2::XMLConstHandle frameTag, Animation& animation) const {
 		mw::Sprite sprite;

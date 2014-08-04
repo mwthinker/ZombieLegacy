@@ -77,6 +77,10 @@ namespace zombie {
 
 		void loadFog(const mw::Texture& fog, float radius, const mw::Color& color) override;
 
+		void loadTree(const Position& position) override;
+		
+		void loadSpawningPoint(const Position& position) override;
+
 		void loadBuilding(const std::vector<Position>& corners) override;
 
 		void loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) override;
@@ -105,6 +109,7 @@ namespace zombie {
 		Animation humanDie_;
 		Animation zombieInjured_;
 		Animation zombieDie_;
+		mw::Sprite tree_;
 
 		Position viewPosition_;
 		Position refViewPosition_;

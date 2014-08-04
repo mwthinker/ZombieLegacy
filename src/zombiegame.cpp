@@ -11,6 +11,7 @@
 #include "graphicanimation.h"
 #include "explosion.h"
 #include "fog.h"
+#include "tree2D.h"
 
 // External.
 #include <mw/exception.h>
@@ -59,11 +60,12 @@ namespace zombie {
 			keyboard_->eventUpdate(keyEvent);
 		});
 
-		gameData.load(*this);
+		tree_ = gameData.getTreeImage();
+
+		gameData.load(*this);		
 
 		innerSpawnRadius_ = gameData.getInnerSpawnRadius();
 		outerSpawnRadius_ = gameData.getOuterSpawnRadius();
-		spawningPoints_ = gameData.loadSpawningPoints();
 
 		// Add human to engine.
 		{
@@ -224,6 +226,14 @@ namespace zombie {
 	void ZombieGame::loadFog(const mw::Texture& fog, float radius, const mw::Color& color) {
 		fog_ = std::make_shared<Fog>(fog, radius, color);
 		graphicHeaven_.push_back(fog_);
+	}
+
+	void ZombieGame::loadTree(const Position& position) {
+		engine_.add(new Tree2D(position, tree_));
+	}
+
+	void ZombieGame::loadSpawningPoint(const Position& position) {
+		spawningPoints_.push_back(position);
 	}
 
 	void ZombieGame::loadBuilding(const std::vector<Position>& corners) {

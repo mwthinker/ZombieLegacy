@@ -7,7 +7,7 @@
 
 #include <vector>
 
-namespace zombie {	
+namespace zombie {
 
 	class Terrain2D {
 	public:

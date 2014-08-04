@@ -23,6 +23,7 @@ namespace zombie {
 	class GameInterface;
 	class Building;
 	class WeaponItem;
+	class Tree;
 
 	// Responsible of all creation and deallocation of game objects 
 	// and simulating the game mechanics.
@@ -43,11 +44,13 @@ namespace zombie {
 
 		// Add a ai player to the game.
 		void add(State state, Unit* unit);
-
+		
 		// Add a empty car to the game.
 		void add(State state, Car* car);
 
 		void add(Building* building);
+
+		void add(Tree* tree);
 
 		// Get the current game time.
 		inline float getTime() const {

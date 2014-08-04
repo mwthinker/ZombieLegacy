@@ -2,6 +2,7 @@
 #include "gameinterface.h"
 #include "unit.h"
 #include "car.h"
+#include "tree.h"
 #include "building.h"
 #include "weaponitem.h"
 #include "bullet.h"
@@ -257,6 +258,10 @@ namespace zombie {
 
 	void ZombieEngine::add(Building* building) {
 		building->createBody(&world_);
+	}
+
+	void ZombieEngine::add(Tree* tree) {
+		tree->createBody(&world_);
 	}
 
 	void ZombieEngine::add(State state, Car* car) {

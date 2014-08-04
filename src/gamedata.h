@@ -49,13 +49,13 @@ namespace zombie {
 
 		mw::Sprite getMenuBackgroundImage() const;
 
+		mw::Sprite getTreeImage() const;
+
 		int getUnitLevel() const;
 
 		inline mw::Font getDefaultFont(int fontSize) {
             return loadFont(font_, fontSize);
         }
-
-		std::vector<Position> loadSpawningPoints() const;
 
 	private:
 		void loadCar(DataInterface&) const;

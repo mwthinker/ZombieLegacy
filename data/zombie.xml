@@ -18,6 +18,9 @@
 		<radius>20</radius>
 		<color>(0,0,0)</color>
 	</fog>
+	<tree>
+		<image>images/tree.png</image>
+	</tree>
     <interface>
         <font>fonts/Ubuntu-B.ttf</font>
     </interface>
