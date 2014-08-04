@@ -16,6 +16,7 @@
 	<fog>
 		<image>images/fog.png</image>
 		<radius>20</radius>
+		<color>(0,0,0)</color>
 	</fog>
     <interface>
         <font>fonts/Ubuntu-B.ttf</font>
@@ -67,10 +68,6 @@
             <shootSound>sounds/ZombieFist.wav</shootSound>
             <reloadSound>sounds/ZombieReload.wav</reloadSound>
             <animation>
-                <frame>
-                    <image x="256" y="768" w="256" h="256">images/unitSpritesheet.png</image>
-                    <bodyWidth>130</bodyWidth>
-                </frame>
             </animation>
         </weapon>
     </weapons>

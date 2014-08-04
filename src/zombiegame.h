@@ -75,7 +75,7 @@ namespace zombie {
 		// Implements the DataInterface.
 		void loadExplosion(const mw::Texture& particle, const mw::Sprite& shockwave, const mw::Sprite& emitter, const mw::Sound& sound) override;
 
-		void loadFog(const mw::Texture& fog, float radius) override;
+		void loadFog(const mw::Texture& fog, float radius, const mw::Color& color) override;
 
 		void loadBuilding(const std::vector<Position>& corners) override;
 

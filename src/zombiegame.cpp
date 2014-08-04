@@ -220,7 +220,7 @@ namespace zombie {
 		explosion_ = std::make_shared<Explosion>(particle, shockwave, emitter, sound);
 	}
 
-	void ZombieGame::loadFog(const mw::Texture& fog, float radius) {
+	void ZombieGame::loadFog(const mw::Texture& fog, float radius, const mw::Color& color) {
 		fog_ = std::make_shared<Fog>(fog, radius);
 		graphicHeaven_.push_back(fog_);
 	}

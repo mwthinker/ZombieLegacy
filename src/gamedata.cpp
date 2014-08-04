@@ -331,7 +331,8 @@ namespace zombie {
 		tinyxml2::XMLConstHandle zombieGameTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("fog");
 		mw::Texture fog = loadTexture(zombie::extract<std::string>(zombieGameTag.FirstChildElement("image")));
 		float radius = zombie::extract<float>(zombieGameTag.FirstChildElement("radius"));
-		dataInterface.loadFog(fog, radius);
+		mw::Color color = zombie::extract<mw::Color>(zombieGameTag.FirstChildElement("color"));
+		dataInterface.loadFog(fog, radius, color);
 	}
 
 	void GameData::loadZombie(DataInterface& dataInterface) const {
