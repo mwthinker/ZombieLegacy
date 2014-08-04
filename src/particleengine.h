@@ -28,6 +28,7 @@ namespace zombie {
 			maxSize_ = maxSize;
 			restart();
 			loop_ = true;
+			addColor_ = true;
 		}
 
 		void setLoop(bool loop) {
@@ -42,7 +43,11 @@ namespace zombie {
 			glEnable(GL_BLEND);
 
 			// Add colors.
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+			if (addColor_) {
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+			} else {
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			}
 			texture_.bind();
 
 			for (auto& particle : particles_) {
@@ -79,6 +84,10 @@ namespace zombie {
 			color_.red_ = red;
 			color_.green_ = green;
 			color_.blue_ = blue;
+		}
+
+		void setBlend(bool addColor) {
+			addColor_ = addColor;
 		}
 
 	private:
@@ -133,6 +142,7 @@ namespace zombie {
 		float time_;
 		float minSpawnRadius_, maxSpawnRadius_, minSpeed_, maxSpeed_, minTimeLife_, maxTimeLife_, minSize_, maxSize_;
 		bool loop_;
+		bool addColor_;
 	};
 
 } // Namespace zombie.

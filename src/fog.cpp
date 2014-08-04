@@ -37,9 +37,11 @@ namespace zombie {
 
 	}
 
-	Fog::Fog(const mw::Texture& fog, float radius) : fog_(fog, radius, radius, 0.1f, 0.4f, 2.f, 5.f, 0.5f, 2.f) {
+	Fog::Fog(const mw::Texture& fog, float radius, const mw::Color& color) : fog_(fog, radius, radius, 0.1f, 0.4f, 2.f, 5.f, 0.5f, 2.f) {
 		radius_ = radius;
-		//fog_.setColor(0.2f, 0.2f, 0.2f
+		color_ = color;
+		fog_.setColor(color_.red_, color_.green_, color_.blue_);
+		fog_.setBlend(false);
 	}
 
 	void Fog::update(Position center) {
@@ -54,8 +56,7 @@ namespace zombie {
 		fog_.draw(deltaTime);
 		glRotatef(120);
 		fog_.draw(deltaTime);
-		//glColor3f(0.2f, 0.2f, 0.2f);
-		glColor3f(1.f, 1.f, 1.f);
+		color_.glColor4f();
 		drawInversCircel(radius_, 20);
 		glPopMatrix();
 	}

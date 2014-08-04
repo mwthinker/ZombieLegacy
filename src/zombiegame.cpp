@@ -221,7 +221,7 @@ namespace zombie {
 	}
 
 	void ZombieGame::loadFog(const mw::Texture& fog, float radius, const mw::Color& color) {
-		fog_ = std::make_shared<Fog>(fog, radius);
+		fog_ = std::make_shared<Fog>(fog, radius, color);
 		graphicHeaven_.push_back(fog_);
 	}
 

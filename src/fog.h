@@ -16,7 +16,7 @@ namespace zombie {
 
 	class Fog : public Graphic {
 	public:
-		Fog(const mw::Texture& fog, float radius);
+		Fog(const mw::Texture& fog, float radius, const mw::Color& color);
 
 		void draw(float deltaTime);
 
@@ -30,6 +30,7 @@ namespace zombie {
 		ParticleEngine<1000> fog_;
 		float radius_;
 		Position center_;
+		mw::Color color_;
 	};
 
 } // Namespace zombie.
