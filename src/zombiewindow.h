@@ -2,8 +2,10 @@
 #define ZOMBIEWINDOW_H
 
 #include <gui/frame.h>
+#include <gui/label.h>
 
 #include <memory>
+#include <sstream>
 
 namespace zombie {
 
@@ -30,6 +32,7 @@ namespace zombie {
 
 		std::shared_ptr<ZombieGame> zombieGame_;
 		GameData& gameData_;
+		std::shared_ptr<gui::Label> label_;
 	};
 
 } // Namespace zombie.

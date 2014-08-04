@@ -87,6 +87,7 @@ namespace zombie {
 		}
 
 		setBackgroundColor(0, 0.1f, 0);
+		zombiesKilled_ = 0;
 	}
 
 	ZombieGame::~ZombieGame() {
@@ -164,6 +165,7 @@ namespace zombie {
 
 	void ZombieGame::unitDied(Unit& unit) {
 		if (unit.isInfected()) {
+			++zombiesKilled_;
 			graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieDie_));
 		} else {
 			graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanDie_));

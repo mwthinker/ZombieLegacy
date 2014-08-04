@@ -47,6 +47,10 @@ namespace zombie {
 
 		void zoom(float scale);
 
+		int getZombiesKilled() const {
+			return zombiesKilled_;
+		}
+
 	private:
 		// Implements the GameInterface.
 		void updateEachCycle(Unit& unit, Unit& human) override;
@@ -121,6 +125,7 @@ namespace zombie {
 		std::map<std::string, Weapon2D> weapons_;
 
 		Terrain2D terrain_;
+		int zombiesKilled_;
 	};
 
 } // Namespace zombie.

@@ -86,6 +86,8 @@ namespace zombie {
 			}
 		});
 
+		
+
 		zombieGame_ = std::make_shared<ZombieGame>(gameData);
 		// Always react on key events!
 		zombieGame_->setGrabFocus(true);
@@ -143,7 +145,7 @@ namespace zombie {
 			Window::quit();
 		});
 		panel->addToGroup(quit);
-	}
+	}	
 
 	void ZombieWindow::initplayFrame() {
 		setCurrentPanel(playFrameIndex_);
@@ -158,7 +160,14 @@ namespace zombie {
 		panel->add(createButton("Button", font));
 		panel->add(createButton("Button", font));
 		panel->add(createButton("Button", font));
-		panel->add(createButton("Button", font));
+		label_ = std::make_shared<gui::Label>("Kill count: 0", font);
+		label_->setTextColor(1,0,0);
+		panel->add(label_);
+		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
+			std::stringstream stream;
+			stream << "Kill count: " << zombieGame_->getZombiesKilled();
+			label_->setText(stream.str());
+		});
 	}
 
 	void ZombieWindow::initCustomplayFrame() {
