@@ -81,33 +81,67 @@ namespace zombie {
 			wall_.draw();
 			glPopMatrix();
 			*/
+
+			// RIGHT WALL
 			const mw::Texture& texture = wall_.getTexture();
 			wall_.bind();
-
 			glEnable(GL_BLEND);
 			glEnable(GL_TEXTURE_2D);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 			glNormal3f(0, 0, 1);
 			glBegin(GL_QUADS);
 			glTexCoord2f(wall_.getX() / texture.getWidth(), wall_.getY() / texture.getHeight());
-			glVertex2f(-0.5, -0.5);
-
+			glVertex2f(corners[0].x, corners[0].y);
 			glTexCoord2f((wall_.getX() + wall_.getWidth()) / texture.getWidth(), wall_.getY() / texture.getHeight());
-			glVertex2f(0.5, -0.5);
-
+			glVertex2f(corners[1].x, corners[1].y);
 			glTexCoord2f((wall_.getX() + wall_.getWidth()) / texture.getWidth(), (wall_.getY() + wall_.getHeight()) / texture.getHeight());
-			glVertex2f(0.5, 0.5);
-
+			glVertex2f(corners[1].x, corners[1].y+height_);
 			glTexCoord2f(wall_.getX() / texture.getWidth(), (wall_.getY() + wall_.getHeight()) / texture.getHeight());
-			glVertex2f(-0.5, 0.5);
+			glVertex2f(corners[0].x, corners[0].y + height_);
 			glEnd();
-
 			glDisable(GL_TEXTURE_2D);
 			glDisable(GL_BLEND);
 			
+			// LEFT WALL
+			//const mw::Texture& texture = wall_.getTexture();
+			wall_.bind();
+			glEnable(GL_BLEND);
+			glEnable(GL_TEXTURE_2D);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glNormal3f(0, 0, 1);
+			glBegin(GL_QUADS);
+			glTexCoord2f(wall_.getX() / texture.getWidth(), wall_.getY() / texture.getHeight());
+			glVertex2f(corners[3].x, corners[3].y);
+			glTexCoord2f((wall_.getX() + wall_.getWidth()) / texture.getWidth(), wall_.getY() / texture.getHeight());
+			glVertex2f(corners[0].x, corners[0].y);
+			glTexCoord2f((wall_.getX() + wall_.getWidth()) / texture.getWidth(), (wall_.getY() + wall_.getHeight()) / texture.getHeight());
+			glVertex2f(corners[0].x, corners[0].y + height_);
+			glTexCoord2f(wall_.getX() / texture.getWidth(), (wall_.getY() + wall_.getHeight()) / texture.getHeight());
+			glVertex2f(corners[3].x, corners[3].y + height_);
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_BLEND);
 
-
+			// ROOF
+			//const mw::Texture& texture = wall_.getTexture();
+			wall_.bind();
+			glEnable(GL_BLEND);
+			glEnable(GL_TEXTURE_2D);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glNormal3f(0, 0, 1);
+			glBegin(GL_QUADS);
+			glTexCoord2f(wall_.getX() / texture.getWidth(), wall_.getY() / texture.getHeight());
+			glVertex2f(corners[0].x, corners[0].y+height_);
+			glTexCoord2f((wall_.getX() + wall_.getWidth()) / texture.getWidth(), wall_.getY() / texture.getHeight());
+			glVertex2f(corners[1].x, corners[1].y+height_);
+			glTexCoord2f((wall_.getX() + wall_.getWidth()) / texture.getWidth(), (wall_.getY() + wall_.getHeight()) / texture.getHeight());
+			glVertex2f(corners[2].x, corners[2].y + height_);
+			glTexCoord2f(wall_.getX() / texture.getWidth(), (wall_.getY() + wall_.getHeight()) / texture.getHeight());
+			glVertex2f(corners[3].x, corners[3].y + height_);
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_BLEND);
+			
 		}
 	
 	private:
