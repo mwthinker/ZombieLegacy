@@ -5,22 +5,25 @@
         <height>800</height>
         <positionX>432</positionX>
         <positionY>200</positionY>
-        <maximized>0</maximized>
+        <maximized>1</maximized>
     </window>
-	<explosion>
-		<shockwaveImage>images/shockwave.png</shockwaveImage>
-		<particleImage>images/fireBall.png</particleImage>
-		<emitterImage>images/trail.png</emitterImage>
-		<sound></sound>
-	</explosion>
-	<fog>
-		<image>images/fog.png</image>
-		<radius>20</radius>
-		<color>(0,0,0)</color>
-	</fog>
-	<tree>
-		<image>images/tree.png</image>
-	</tree>
+    <explosion>
+        <shockwaveImage>images/shockwave.png</shockwaveImage>
+        <particleImage>images/fireBall.png</particleImage>
+        <emitterImage>images/trail.png</emitterImage>
+        <sound/>
+    </explosion>
+    <fog>
+        <image>images/fog.png</image>
+        <radius>20</radius>
+        <color>(0,0,0)</color>
+    </fog>
+    <tree>
+        <image>images/tree.png</image>
+    </tree>
+    <building>
+        <image>images/building.png</image>
+    </building>
     <interface>
         <font>fonts/Ubuntu-B.ttf</font>
     </interface>
@@ -70,8 +73,7 @@
             <clipSize>1000000</clipSize>
             <shootSound>sounds/ZombieFist.wav</shootSound>
             <reloadSound>sounds/ZombieReload.wav</reloadSound>
-            <animation>
-            </animation>
+            <animation/>
         </weapon>
     </weapons>
     <car>
@@ -167,27 +169,27 @@
                 <time>0.18</time>
                 <bodyWidth>230</bodyWidth>
             </frame>
-			<frame>
+            <frame>
                 <image x="0" y="512" w="512" h="512">images/zombie.png</image>
                 <time>0.18</time>
                 <bodyWidth>230</bodyWidth>
             </frame>
-			<frame>
+            <frame>
                 <image x="512" y="1024" w="512" h="512">images/zombie.png</image>
                 <time>0.18</time>
                 <bodyWidth>230</bodyWidth>
             </frame>
-			<frame>
+            <frame>
                 <image x="512" y="512" w="512" h="512">images/zombie.png</image>
                 <time>0.18</time>
                 <bodyWidth>230</bodyWidth>
             </frame>
-			<frame>
+            <frame>
                 <image x="0" y="0" w="512" h="512">images/zombie.png</image>
                 <time>0.18</time>
                 <bodyWidth>230</bodyWidth>
             </frame>
-			<frame>
+            <frame>
                 <image x="512" y="0" w="512" h="512">images/zombie.png</image>
                 <time>0.18</time>
                 <bodyWidth>230</bodyWidth>
