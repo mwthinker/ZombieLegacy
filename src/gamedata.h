@@ -51,6 +51,8 @@ namespace zombie {
 
 		mw::Sprite getTreeImage() const;
 
+		mw::Sprite getWallImage() const;
+
 		int getUnitLevel() const;
 
 		inline mw::Font getDefaultFont(int fontSize) {

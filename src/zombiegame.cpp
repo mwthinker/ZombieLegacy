@@ -61,6 +61,7 @@ namespace zombie {
 		});
 
 		tree_ = gameData.getTreeImage();
+		wall_ = gameData.getWallImage();
 
 		gameData.load(*this);		
 
@@ -237,7 +238,7 @@ namespace zombie {
 	}
 
 	void ZombieGame::loadBuilding(const std::vector<Position>& corners) {
-		engine_.add(new Building2D(corners));
+		engine_.add(new Building2D(corners, wall_));
 	}
 
 	void ZombieGame::loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) {

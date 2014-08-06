@@ -1,6 +1,8 @@
 #ifndef BUILDING2D_H
 #define BUILDING2D_H
 
+#include <mw/texture.h>
+
 #include "building.h"
 #include "auxiliary.h"
 
@@ -12,7 +14,7 @@ namespace zombie {
 
 	class Building2D : public Building {
 	public:
-		Building2D(const std::vector<Position>& corners) : Building(corners) {
+		Building2D(const std::vector<Position>& corners, const mw::Sprite& wall) : Building(corners), wall_(wall) {
 			height_ = 2 + random() * 3;
 		}
 
@@ -67,10 +69,50 @@ namespace zombie {
 			glVertex2d(corners[1].x, corners[1].y + height_);
 			glVertex2d(corners[2].x, corners[2].y + height_);
 			glEnd();
+			
+			// SPRITE EXPERIMENTS
+			// Draw body.
+			/*
+			glPushMatrix();
+			glTranslate2f(getPosition());
+			glScale2f(2 * getRadius());
+			glRotated(0, 0, 0, 1);
+			glColor3d(1, 1, 1);
+			wall_.draw();
+			glPopMatrix();
+			*/
+			const mw::Texture& texture = wall_.getTexture();
+			wall_.bind();
+
+			glEnable(GL_BLEND);
+			glEnable(GL_TEXTURE_2D);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			glNormal3f(0, 0, 1);
+			glBegin(GL_QUADS);
+			glTexCoord2f(wall_.getX() / texture.getWidth(), wall_.getY() / texture.getHeight());
+			glVertex2f(-0.5, -0.5);
+
+			glTexCoord2f((wall_.getX() + wall_.getWidth()) / texture.getWidth(), wall_.getY() / texture.getHeight());
+			glVertex2f(0.5, -0.5);
+
+			glTexCoord2f((wall_.getX() + wall_.getWidth()) / texture.getWidth(), (wall_.getY() + wall_.getHeight()) / texture.getHeight());
+			glVertex2f(0.5, 0.5);
+
+			glTexCoord2f(wall_.getX() / texture.getWidth(), (wall_.getY() + wall_.getHeight()) / texture.getHeight());
+			glVertex2f(-0.5, 0.5);
+			glEnd();
+
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_BLEND);
+			
+
+
 		}
 	
 	private:
 		float height_;
+		mw::Sprite wall_;
 	};
 
 

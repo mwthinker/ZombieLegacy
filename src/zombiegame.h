@@ -110,6 +110,7 @@ namespace zombie {
 		Animation zombieInjured_;
 		Animation zombieDie_;
 		mw::Sprite tree_;
+		mw::Sprite wall_;
 
 		Position viewPosition_;
 		Position refViewPosition_;
