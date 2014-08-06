@@ -132,6 +132,8 @@ namespace zombie {
 
 		Terrain2D terrain_;
 		int zombiesKilled_;
+		int unitMaxLimit_;
+		int nbrUnits_;;
 	};
 
 } // Namespace zombie.

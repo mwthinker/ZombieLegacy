@@ -485,6 +485,10 @@ namespace zombie {
 		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame settings unitLevel");
     }
 
+	int GameData::getUnitLimit() const {
+		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame settings unitLimit");
+	}
+
 	mw::Sprite GameData::getMenuBackgroundImage() const {
 		tinyxml2::XMLConstHandle menuTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("menu");
 		mw::Sprite sprite;

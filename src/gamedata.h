@@ -55,6 +55,8 @@ namespace zombie {
 
 		int getUnitLevel() const;
 
+		int getUnitLimit() const;
+
 		inline mw::Font getDefaultFont(int fontSize) {
             return loadFont(font_, fontSize);
         }

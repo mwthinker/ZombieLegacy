@@ -62,7 +62,9 @@ namespace zombie {
 
 		tree_ = gameData.getTreeImage();
 		wall_ = gameData.getWallImage();
+		nbrUnits_ = 0;
 
+		unitMaxLimit_ = gameData.getUnitLimit();
 		gameData.load(*this);		
 
 		innerSpawnRadius_ = gameData.getInnerSpawnRadius();
@@ -75,6 +77,7 @@ namespace zombie {
 			engine_.setHuman(keyboard_, state, human);
 			viewPosition_ = human->getPosition();
 			refViewPosition_ = viewPosition_;
+			++nbrUnits_;
 		}
 
 		// Add zombies to engine.
@@ -82,6 +85,7 @@ namespace zombie {
 			Unit* zombie = new Unit2D(*zombie_);
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
 			engine_.add(state, zombie);
+			++nbrUnits_;
 		}
 
 		// Add cars to engine.
@@ -156,10 +160,13 @@ namespace zombie {
 		if (engine_.getTime() - lastSpawnTime_ > spawnPeriod_) {
 			lastSpawnTime_ = engine_.getTime();
 
-			// Reduce spawnPeriod gradually
-			float angle = 2 * PI * random();
-			State state(generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_), ORIGO, angle);
-			engine_.add(state, new Unit2D(*zombie_));
+			if (unitMaxLimit_ > nbrUnits_) {
+				// Reduce spawnPeriod gradually
+				float angle = 2 * PI * random();
+				State state(generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_), ORIGO, angle);
+				engine_.add(state, new Unit2D(*zombie_));
+				++nbrUnits_;
+			}
 		}
 	}
 
@@ -168,6 +175,7 @@ namespace zombie {
 	}
 
 	void ZombieGame::unitDied(Unit& unit) {
+		--nbrUnits_;
 		if (unit.isInfected()) {
 			++zombiesKilled_;
 			graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieDie_));

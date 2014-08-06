@@ -27,6 +27,7 @@
     <settings>
         <map>map.xml</map>
         <unitLevel>50</unitLevel>
+		<unitLimit>80</unitLimit>
         <impulseThreshold>2</impulseThreshold>
         <timeStepMS>17</timeStepMS>
         <innerSpawnRadius>20.0</innerSpawnRadius>
