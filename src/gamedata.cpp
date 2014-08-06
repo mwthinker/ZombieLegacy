@@ -500,9 +500,9 @@ namespace zombie {
 	}
 
 	mw::Sprite GameData::getWallImage() const {
-		tinyxml2::XMLConstHandle wallTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("building");
+		tinyxml2::XMLConstHandle wallTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("buildings");
 		mw::Sprite sprite;
-		extract(sprite, wallTag.FirstChildElement("image"));
+		extract(sprite, wallTag.FirstChildElement("wallImage"));
 		return sprite;
 	}
 

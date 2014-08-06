@@ -21,9 +21,6 @@
     <tree>
         <image>images/tree.png</image>
     </tree>
-    <building>
-        <image>images/building.png</image>
-    </building>
     <interface>
         <font>fonts/Ubuntu-B.ttf</font>
     </interface>
@@ -46,6 +43,7 @@
     </music>
     <buildings>
         <hitSound>sounds/buildingHit.wav</hitSound>
+		<wallImage>images/building.png</wallImage>
     </buildings>
     <weapons>
         <weapon>
