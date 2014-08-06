@@ -38,7 +38,7 @@ namespace zombie {
 				glVertex2d(corners[i].x, corners[i].y);
 				glEnd();
 			}
-			
+			/*
 			// Draw fake 3D building outlines with height.
 			glColor3f(0.5f, 0.5f, 0.5f);
 			glBegin(GL_LINES);
@@ -69,7 +69,7 @@ namespace zombie {
 			glVertex2d(corners[1].x, corners[1].y + height_);
 			glVertex2d(corners[2].x, corners[2].y + height_);
 			glEnd();
-			
+			*/
 			// SPRITE EXPERIMENTS
 			// Draw body.
 			/*
