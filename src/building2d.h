@@ -129,8 +129,41 @@ namespace zombie {
 			glVertex2f(corners[3].x + dx*c, corners[3].y + dy*c);
 			glEnd();
 
+			// RIGHT WALL BACK
+			s.bind();
+			glBegin(GL_QUADS);
+			glTexCoord2f(s.getX() / texture.getWidth(), s.getY() / texture.getHeight());
+			glVertex2f(corners[1].x, corners[1].y);
+			glTexCoord2f((s.getX() + s.getWidth()) / texture.getWidth(), s.getY() / texture.getHeight());
+			glVertex2f(corners[2].x, corners[2].y);
+			glTexCoord2f((s.getX() + s.getWidth()) / texture.getWidth(), (s.getY() + s.getHeight()) / texture.getHeight());
+			dx = -humanPosition().x + corners[2].x;
+			dy = -humanPosition().y + corners[2].y;
+			glVertex2f(corners[2].x + dx*c, corners[2].y + dy*c);
+			glTexCoord2f(s.getX() / texture.getWidth(), (s.getY() + s.getHeight()) / texture.getHeight());
+			dx = -humanPosition().x + corners[1].x;
+			dy = -humanPosition().y + corners[1].y;
+			glVertex2f(corners[1].x + dx*c, corners[1].y + dy*c);
+			glEnd();
+
+			// LEFT WALL BACK
+			s.bind();
+			glBegin(GL_QUADS);
+			glTexCoord2f(s.getX() / texture.getWidth(), s.getY() / texture.getHeight());
+			glVertex2f(corners[2].x, corners[2].y);
+			glTexCoord2f((s.getX() + s.getWidth()) / texture.getWidth(), s.getY() / texture.getHeight());
+			glVertex2f(corners[3].x, corners[3].y);
+			glTexCoord2f((s.getX() + s.getWidth()) / texture.getWidth(), (s.getY() + s.getHeight()) / texture.getHeight());
+			dx = -humanPosition().x + corners[3].x;
+			dy = -humanPosition().y + corners[3].y;
+			glVertex2f(corners[3].x + dx*c, corners[3].y + dy*c);
+			glTexCoord2f(s.getX() / texture.getWidth(), (s.getY() + s.getHeight()) / texture.getHeight());
+			dx = -humanPosition().x + corners[2].x;
+			dy = -humanPosition().y + corners[2].y;
+			glVertex2f(corners[2].x + dx*c, corners[2].y + dy*c);
+			glEnd();
+
 			// ROOF
-			// LEFT WALL
 			s.bind();
 			glBegin(GL_QUADS);
 			glTexCoord2f(s.getX() / texture.getWidth(), s.getY() / texture.getHeight());
