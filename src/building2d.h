@@ -20,7 +20,8 @@ namespace zombie {
 			height_ = 2 + random() * 3;
 			leftWall_.setDrawFunction(std::bind(&Building2D::drawLeftWall, this, leftWall_));
 			rightWall_.setDrawFunction(std::bind(&Building2D::drawRightWall, this, rightWall_));
-			roof_.setDrawFunction(std::bind(&Building2D::drawRoof, this, roof_));
+			//roof_.setDrawFunction(std::bind(&Building2D::drawRoof, this, roof_));
+			roof_.setDrawFunction(std::bind(&Building2D::drawGTAstyle, this, roof_));
 		}
 
 		void draw(float accumulator, float timeStep) override {
@@ -30,10 +31,9 @@ namespace zombie {
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			
 			glColor3f(1, 1, 1);
-			leftWall_.draw();
-			rightWall_.draw();
+			//leftWall_.draw();
+			//rightWall_.draw();
 			roof_.draw();
-			
 			glDisable(GL_TEXTURE_2D);
 			glDisable(GL_BLEND);
 		}
@@ -89,7 +89,69 @@ namespace zombie {
 			glVertex2f(corners[3].x, corners[3].y + height_);
 			glEnd();
 		}
-	
+
+		void drawGTAstyle(const mw::Sprite& s) {
+			double c = 0.1;
+			const mw::Texture& texture = s.getTexture();
+			auto& corners = getCorners();
+			
+			// RIGHT WALL
+			s.bind();
+			glBegin(GL_QUADS);
+			glTexCoord2f(s.getX() / texture.getWidth(), s.getY() / texture.getHeight());
+			glVertex2f(corners[0].x, corners[0].y);
+			glTexCoord2f((s.getX() + s.getWidth()) / texture.getWidth(), s.getY() / texture.getHeight());
+			glVertex2f(corners[1].x, corners[1].y);
+			glTexCoord2f((s.getX() + s.getWidth()) / texture.getWidth(), (s.getY() + s.getHeight()) / texture.getHeight());
+			double dx = -humanPosition().x + corners[1].x;
+			double dy = -humanPosition().y + corners[1].y;
+			glVertex2f(corners[1].x+dx*c, corners[1].y+dy*c);
+			glTexCoord2f(s.getX() / texture.getWidth(), (s.getY() + s.getHeight()) / texture.getHeight());
+			dx = -humanPosition().x + corners[0].x;
+			dy = -humanPosition().y + corners[0].y;
+			glVertex2f(corners[0].x + dx*c, corners[0].y + dy*c);
+			glEnd();
+
+			// LEFT WALL
+			s.bind();
+			glBegin(GL_QUADS);
+			glTexCoord2f(s.getX() / texture.getWidth(), s.getY() / texture.getHeight());
+			glVertex2f(corners[3].x, corners[3].y);
+			glTexCoord2f((s.getX() + s.getWidth()) / texture.getWidth(), s.getY() / texture.getHeight());
+			glVertex2f(corners[0].x, corners[0].y);
+			glTexCoord2f((s.getX() + s.getWidth()) / texture.getWidth(), (s.getY() + s.getHeight()) / texture.getHeight());
+			dx = -humanPosition().x + corners[0].x;
+			dy = -humanPosition().y + corners[0].y;
+			glVertex2f(corners[0].x + dx*c, corners[0].y + dy*c);
+			glTexCoord2f(s.getX() / texture.getWidth(), (s.getY() + s.getHeight()) / texture.getHeight());
+			dx = -humanPosition().x + corners[3].x;
+			dy = -humanPosition().y + corners[3].y;
+			glVertex2f(corners[3].x + dx*c, corners[3].y + dy*c);
+			glEnd();
+
+			// ROOF
+			// LEFT WALL
+			s.bind();
+			glBegin(GL_QUADS);
+			glTexCoord2f(s.getX() / texture.getWidth(), s.getY() / texture.getHeight());
+			dx = -humanPosition().x  + corners[0].x;
+			dy = -humanPosition().y + corners[0].y;
+			glVertex2f(corners[0].x+dx*c, corners[0].y+dy*c);
+			glTexCoord2f((s.getX() + s.getWidth()) / texture.getWidth(), s.getY() / texture.getHeight());
+			dx = -humanPosition().x + corners[1].x;
+			dy = -humanPosition().y + corners[1].y;
+			glVertex2f(corners[1].x+dx*c, corners[1].y+dy*c);
+			glTexCoord2f((s.getX() + s.getWidth()) / texture.getWidth(), (s.getY() + s.getHeight()) / texture.getHeight());
+			dx = -humanPosition().x + corners[2].x;
+			dy = -humanPosition().y + corners[2].y;
+			glVertex2f(corners[2].x + dx*c, corners[2].y + dy*c);
+			glTexCoord2f(s.getX() / texture.getWidth(), (s.getY() + s.getHeight()) / texture.getHeight());
+			dx = -humanPosition().x + corners[3].x;
+			dy = -humanPosition().y + corners[3].y;
+			glVertex2f(corners[3].x + dx*c, corners[3].y + dy*c);
+			glEnd();
+		}
+
 	private:
 		float height_;
 		mw::Sprite leftWall_, rightWall_, roof_;
