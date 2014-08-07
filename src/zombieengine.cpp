@@ -165,6 +165,7 @@ namespace zombie {
 			for (b2Body* b = world_.GetBodyList(); b; b = b->GetNext()) {
 				Object* ob = static_cast<Object*>(b->GetUserData());
 				ob->update(time_, timeStep);
+				ob->setHumanPosition(humanState_.position_);
 				if (ob->toBeRemoved()) {
 					remove(ob);
 				}

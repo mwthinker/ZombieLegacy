@@ -10,6 +10,9 @@ namespace zombie {
 	// Represent a object inside the "zombie world".
 	class Object {
 	public:
+		Object() : humanPosition_(ZERO) {
+		}
+
 		// Should remove the object from the world!
 		virtual ~Object() {
 		}
@@ -33,6 +36,16 @@ namespace zombie {
 		// Draw the object in world coordinates.
 		virtual void draw(float accumulator, float timeStep) = 0;
 
+		Position humanPosition() const {
+			return humanPosition_;
+		}
+
+		void setHumanPosition(const Position& position) {
+			humanPosition_ = position;
+		}
+
+	private:
+		Position humanPosition_;
 	};
 
 } // Namespace zombie.
