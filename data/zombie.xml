@@ -56,12 +56,14 @@
             <clipSize>12</clipSize>
             <shootSound>sounds/handgunShoot.wav</shootSound>
             <reloadSound>sounds/handgunReload.wav</reloadSound>
-            <animation>
+            <moveAnimation>
                 <frame>
                     <image x="256" y="256" w="256" h="256">images/unitSpritesheet.png</image>
                     <bodyWidth>130</bodyWidth>
                 </frame>
-            </animation>
+            </moveAnimation>
+			<moveImageGripX></moveImageGripX>
+			<moveImageGripY></moveImageGripY>
         </weapon>
         <weapon>
             <name>ZombieFist</name>
@@ -72,7 +74,9 @@
             <clipSize>1000000</clipSize>
             <shootSound>sounds/ZombieFist.wav</shootSound>
             <reloadSound>sounds/ZombieReload.wav</reloadSound>
-            <animation/>
+            <moveAnimation/>
+			<moveImageGripX/>
+			<moveImageGripY/>
         </weapon>
     </weapons>
     <car>
@@ -112,6 +116,8 @@
                 <bodyWidth>130</bodyWidth>
             </frame>
         </moveAnimation>
+		<moveImageGripX>0</moveImageGripX>
+		<moveImageGripY>0</moveImageGripY>
         <dieAnimation>
             <frame>
                 <image>images/bloodDeath10.png</image>
@@ -194,6 +200,8 @@
                 <bodyWidth>230</bodyWidth>
             </frame>
         </moveAnimation>
+		<moveImageGripX>0</moveImageGripX>
+		<moveImageGripY>0</moveImageGripY>
         <dieAnimation>
             <frame>
                 <image>images/bloodDeath10.png</image>

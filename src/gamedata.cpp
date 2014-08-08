@@ -356,7 +356,7 @@ namespace zombie {
 
 			mw::Sound shoot = loadSound(zombie::extract<std::string>(weaponTag.FirstChildElement("shootSound")));
 			mw::Sound reload = loadSound(zombie::extract<std::string>(weaponTag.FirstChildElement("reloadSound")));
-			Animation animation = extractAnimation(weaponTag.FirstChildElement("animation"));
+			Animation animation = extractAnimation(weaponTag.FirstChildElement("moveAnimation"));
 
 			dataInterface.loadWeapon(name, damage, timeBetweenShots, range, clipSize, sprite, animation, shoot, reload);
 
