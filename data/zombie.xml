@@ -62,8 +62,8 @@
                     <bodyWidth>130</bodyWidth>
                 </frame>
             </moveAnimation>
-			<moveImageGripX></moveImageGripX>
-			<moveImageGripY></moveImageGripY>
+			<moveImageGripX>0</moveImageGripX>
+			<moveImageGripY>0</moveImageGripY>
         </weapon>
         <weapon>
             <name>ZombieFist</name>
@@ -75,8 +75,8 @@
             <shootSound>sounds/ZombieFist.wav</shootSound>
             <reloadSound>sounds/ZombieReload.wav</reloadSound>
             <moveAnimation/>
-			<moveImageGripX/>
-			<moveImageGripY/>
+			<moveImageGripX>0</moveImageGripX>
+			<moveImageGripY>0</moveImageGripY>
         </weapon>
     </weapons>
     <car>

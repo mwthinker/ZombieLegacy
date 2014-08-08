@@ -28,7 +28,7 @@ namespace zombie {
 
 	// Responsible of all creation and deallocation of game objects 
 	// and simulating the game mechanics.
-	class ZombieEngine : public b2ContactListener {
+	class ZombieEngine {
 	public:
 		ZombieEngine(GameInterface& gameInterface, int timeStepMS, float impulseThreshold);
 		~ZombieEngine();

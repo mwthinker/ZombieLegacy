@@ -3,6 +3,7 @@
 
 #include "weapon.h"
 #include "animation.h"
+#include "auxiliary.h"
 
 #include <mw/sprite.h>
 #include <mw/sound.h>
@@ -17,8 +18,8 @@ namespace zombie {
 		Weapon2D() {
 		}
 
-		Weapon2D(float damage, float timeBetweenShots, float range, int clipSize, mw::Sprite symbol, Animation animation) : Weapon(damage, timeBetweenShots, range, clipSize), 
-			symbol_(symbol), animation_(animation) {
+		Weapon2D(float damage, float timeBetweenShots, float range, int clipSize, mw::Sprite symbol, Animation animation, Position grip) : Weapon(damage, timeBetweenShots, range, clipSize), 
+			symbol_(symbol), animation_(animation), grip_(grip) {
 		}
 
 		void drawSymbol() override {
@@ -26,7 +27,10 @@ namespace zombie {
 		}
 
 		void draw() override {
+			glPushMatrix();
+			glTranslate2f(grip_);
 			animation_.draw(0);
+			glPopMatrix();
 		}
 
 		WeaponPtr clone() const override {
@@ -54,6 +58,7 @@ namespace zombie {
 	private:
 		mw::Sprite symbol_;
 		Animation animation_;
+		Position grip_;
 		mw::Sound shoot_;
 		mw::Sound reload_;
 	};

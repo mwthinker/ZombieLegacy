@@ -95,9 +95,9 @@ namespace zombie {
 
 		void loadBuilding(const std::vector<Position>& corners) override;
 
-		void loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) override;
+		void loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, Position grip, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) override;
 
-		void loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) override;
+		void loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, Position grip, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) override;
 
 		void loadCar(float mass, float width, float length, float life, const Animation& animation) override;
 
@@ -105,7 +105,7 @@ namespace zombie {
 
 		void loadWater(const std::vector<Position>& positions) override;
 
-		void loadWeapon(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation, const mw::Sound& shoot, const mw::Sound& reload) override;
+		void loadWeapon(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation, Position grip, const mw::Sound& shoot, const mw::Sound& reload) override;
 		// End of the DataInterface.
 
 		float innerSpawnRadius_;

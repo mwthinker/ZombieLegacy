@@ -254,16 +254,16 @@ namespace zombie {
 		engine_.add(new Building2D(corners, wall_, wall_, wall_));
 	}
 
-	void ZombieGame::loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) {
-		zombie_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, true, weapons_[weapon].clone(), moveA));
+	void ZombieGame::loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, Position grip, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) {
+		zombie_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, true, weapons_[weapon].clone(), moveA, grip));
 		zombie_->setDieSound(die);
 		zombie_->setHitSound(hitSound);
 		zombieInjured_ = injuredA;
 		zombieDie_ = dieA;
 	}
 
-	void ZombieGame::loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) {
-		human_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, false, weapons_[weapon].clone(), moveA));
+	void ZombieGame::loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, Position grip, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) {
+		human_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, false, weapons_[weapon].clone(), moveA, grip));
 		human_->setDieSound(die);
 		human_->setHitSound(hitSound);
 		humanInjured_ = injuredA;
@@ -282,8 +282,8 @@ namespace zombie {
 		terrain_.addWater(corners);
 	}
 
-	void ZombieGame::loadWeapon(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation, const mw::Sound& shoot, const mw::Sound& reload) {
-		weapons_[name] = Weapon2D(damage, timeBetweenShots, range, clipSize, symbol, animation);
+	void ZombieGame::loadWeapon(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation, Position grip, const mw::Sound& shoot, const mw::Sound& reload) {
+		weapons_[name] = Weapon2D(damage, timeBetweenShots, range, clipSize, symbol, animation, grip);
 		weapons_[name].setReloadSound(reload);
 		weapons_[name].setShotSound(shoot);
 	}

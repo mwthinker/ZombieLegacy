@@ -12,14 +12,15 @@ namespace zombie {
 	class Unit2D : public Unit {
 	public:
 		Unit2D(float mass, float radius, float life, float walkingSpeed,
-			float runningSpeed, bool isInfected, const WeaponPtr& weapon, const Animation& animation) :
-			Unit(mass, radius, life, walkingSpeed, runningSpeed, isInfected, weapon), animation_(animation) {
+			float runningSpeed, bool isInfected, const WeaponPtr& weapon, const Animation& animation, Position grip) :
+			Unit(mass, radius, life, walkingSpeed, runningSpeed, isInfected, weapon), animation_(animation), grip_(grip) {
 			addEventHandler(std::bind(&Unit2D::eventHandler, this, this, std::placeholders::_2));
 		}
 
 		Unit2D(const Unit2D& unit) : Unit(unit) {
 			animation_ = unit.animation_;
 			addEventHandler(std::bind(&Unit2D::eventHandler, this, this, std::placeholders::_2));
+			grip_ = unit.grip_;
 			die_ = unit.die_;
 			hit_ = unit.hit_;
 		}
@@ -49,6 +50,14 @@ namespace zombie {
 				glRotated(getDirection() * 180 / PI, 0, 0, 1);
 				glColor3d(1, 1, 1);
 				animation_.draw(timeStep);
+				glPopMatrix();
+
+				// Draw weapon.
+				glPushMatrix();
+				glTranslate2f(getPosition());
+				glScale2f(2 * getRadius());
+				glRotated(getDirection() * 180 / PI, 0, 0, 1);
+				glTranslate2f(grip_);
 				getWeapon()->draw();
 				glPopMatrix();
 			}
@@ -79,6 +88,7 @@ namespace zombie {
 
 	private:
 		Animation animation_;
+		Position grip_;
 		mw::Sound die_;
 		mw::Sound hit_;
 	};
