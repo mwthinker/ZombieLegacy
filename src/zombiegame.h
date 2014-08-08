@@ -52,8 +52,15 @@ namespace zombie {
 		}
 
 		double getHealth() {
-			//double health = human_->helath.
-			return 1;
+			return health_;
+		}
+
+		int getClipSize() {
+			return clipsize_;
+		}
+
+		int getBulletsInWeapon() {
+			return bulletsInWeapon_;
 		}
 
 	private:
@@ -138,7 +145,10 @@ namespace zombie {
 		Terrain2D terrain_;
 		int zombiesKilled_;
 		int unitMaxLimit_;
-		int nbrUnits_;;
+		int nbrUnits_;
+		double health_;
+		int bulletsInWeapon_;
+		int clipsize_;
 	};
 
 } // Namespace zombie.

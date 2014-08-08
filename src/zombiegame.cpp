@@ -51,7 +51,9 @@ namespace zombie {
 	ZombieGame::ZombieGame(const GameData& gameData) : engine_(*this, gameData.getTimeStepMS(), gameData.getImpulseThreshold()), gameData_(gameData) {
 		keyboard_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT,
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
-
+		clipsize_ = 0;
+		bulletsInWeapon_ = 0;
+		health_ = 0;
 		scale_ = 1.f;
 		lastSpawnTime_ = engine_.getTime();
 		spawnPeriod_ = 0.5f;
@@ -168,6 +170,9 @@ namespace zombie {
 				++nbrUnits_;
 			}
 		}
+		health_ = human.healthPoints();
+		clipsize_ = human.getWeapon()->clipSize();
+		bulletsInWeapon_ = human.getWeapon()->getBulletsInWeapon();
 	}
 
 	void ZombieGame::zoom(float scale) {

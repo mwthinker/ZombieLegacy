@@ -169,17 +169,17 @@ namespace zombie {
 		panel->add(label3_);
 		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
 			std::stringstream stream;
-			stream << "Kill count: " << zombieGame_->getZombiesKilled();
+			stream << "Kill count: " << zombieGame_->getZombiesKilled() << "    ";
 			label1_->setText(stream.str());
 		});
 		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
 			std::stringstream stream;
-			stream << "Health: " << zombieGame_->getHealth() << "/1";
+			stream << "Health: " << zombieGame_->getHealth() << "/100     ";
 			label2_->setText(stream.str());
 		});
 		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
 			std::stringstream stream;
-			stream << "Ammo: " << zombieGame_->getHealth() << "/1/1";
+			stream << "Ammo: " << zombieGame_->getBulletsInWeapon() << "/" << zombieGame_->getClipSize();
 			label3_->setText(stream.str());
 		});
 	}
