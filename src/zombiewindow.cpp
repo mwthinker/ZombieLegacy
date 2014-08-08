@@ -157,16 +157,30 @@ namespace zombie {
 		panel->setBackgroundColor(0, 0, 0);
 		mw::Font font = gameData_.getDefaultFont(15);
 
-		panel->add(createButton("Button", font));
-		panel->add(createButton("Button", font));
-		panel->add(createButton("Button", font));
-		label_ = std::make_shared<gui::Label>("Kill count: 0", font);
-		label_->setTextColor(1,0,0);
-		panel->add(label_);
+		//panel->add(createButton("Button", font));
+		label1_ = std::make_shared<gui::Label>("Kill count: 0", font);
+		label2_ = std::make_shared<gui::Label>("Health: ?", font);
+		label3_ = std::make_shared<gui::Label>("Ammo: ?", font);
+		label1_->setTextColor(1,0,0);
+		label2_->setTextColor(1, 0, 0);
+		label3_->setTextColor(1, 0, 0);
+		panel->add(label1_);
+		panel->add(label2_);
+		panel->add(label3_);
 		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
 			std::stringstream stream;
 			stream << "Kill count: " << zombieGame_->getZombiesKilled();
-			label_->setText(stream.str());
+			label1_->setText(stream.str());
+		});
+		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
+			std::stringstream stream;
+			stream << "Health: " << zombieGame_->getHealth() << "/1";
+			label2_->setText(stream.str());
+		});
+		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
+			std::stringstream stream;
+			stream << "Ammo: " << zombieGame_->getHealth() << "/1/1";
+			label3_->setText(stream.str());
 		});
 	}
 

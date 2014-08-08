@@ -51,6 +51,11 @@ namespace zombie {
 			return zombiesKilled_;
 		}
 
+		double getHealth() {
+			//double health = human_->helath.
+			return 1;
+		}
+
 	private:
 		// Implements the GameInterface.
 		void updateEachCycle(Unit& unit, Unit& human) override;

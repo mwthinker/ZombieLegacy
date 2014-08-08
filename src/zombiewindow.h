@@ -32,7 +32,7 @@ namespace zombie {
 
 		std::shared_ptr<ZombieGame> zombieGame_;
 		GameData& gameData_;
-		std::shared_ptr<gui::Label> label_;
+		std::shared_ptr<gui::Label> label1_,label2_,label3_;
 	};
 
 } // Namespace zombie.
