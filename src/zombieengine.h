@@ -6,6 +6,7 @@
 #include "car.h"
 #include "box2ddef.h"
 #include "missile.h"
+#include "contactlistener.h"
 
 #include <mw/signal.h>
 
@@ -108,15 +109,8 @@ namespace zombie {
 		void doAction(Car* unit);
 		void doShotDamage(Unit* shooter, const Bullet& properties);
 
-		void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override;
-
-		void BeginContact(b2Contact* contact) override;
-
-		// Is called when the contact has get out of view or is destroyed.
-		void EndContact(b2Contact* contact) override;
-
 		bool started_; // The game is started.
-		float time_; // Local game time.
+		float time_; // Game time.
 
 		Unit* human_;
 
@@ -126,13 +120,14 @@ namespace zombie {
 
 		b2World world_;
 		GameInterface& gameInterface_;
+		ContactListener contactListener_;
 		
 		// Is cleared, and called every update to physics, in a safe way.
-		// All players are assumed to be on the heap and is deallocated.
+		// All players are assumed to be on the heap, and are deallocated.
 		std::vector<Player*> garbagePlayers_;
 		std::list<Unit*> units_; // All units except the human unit.
 		
-		// Same as the abowe but for objects.
+		// Same as the above but for objects.
 		std::vector<Object*> garbageObjects_;
 
 		float impulseThreshold_;

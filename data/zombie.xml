@@ -49,7 +49,7 @@
     <weapons>
         <weapon>
             <name>Handgun</name>
-            <image>images/handgun.png</image>
+            <symbolImage>images/handgun.png</symbolImage>
             <damage>60</damage>
             <timeBetweenShots>0.3</timeBetweenShots>
             <range>10</range>
@@ -65,7 +65,7 @@
         </weapon>
         <weapon>
             <name>ZombieFist</name>
-            <image>images/ZombieFist.png</image>
+            <symbolImage>images/ZombieFist.png</symbolImage>
             <damage>10</damage>
             <timeBetweenShots>0.3</timeBetweenShots>
             <range>1</range>

@@ -408,7 +408,7 @@ namespace zombie {
 		while (weaponTag.ToElement() != nullptr) {
 			std::string name = zombie::extract<std::string>(weaponTag.FirstChildElement("name"));
 			mw::Sprite sprite;
-			extract(sprite, weaponTag.FirstChildElement("image"));
+			extract(sprite, weaponTag.FirstChildElement("symbolImage"));
 
 			float damage = zombie::extract<float>(weaponTag.FirstChildElement("damage"));
 			float timeBetweenShots = zombie::extract<float>(weaponTag.FirstChildElement("timeBetweenShots"));

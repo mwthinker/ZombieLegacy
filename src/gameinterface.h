@@ -8,6 +8,7 @@ namespace zombie {
 	class Unit;
 	class Car;
 	class Bullet;
+	class Building;
 
 	class GameInterface {
 	public:

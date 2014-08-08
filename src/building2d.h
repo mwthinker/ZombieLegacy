@@ -91,7 +91,7 @@ namespace zombie {
 		}
 
 		void drawGTAstyle(const mw::Sprite& s) {
-			double c = 0.1;
+			float c = 0.1f;
 			const mw::Texture& texture = s.getTexture();
 			auto& corners = getCorners();
 			
@@ -103,8 +103,8 @@ namespace zombie {
 			glTexCoord2f((s.getX() + s.getWidth()) / texture.getWidth(), s.getY() / texture.getHeight());
 			glVertex2f(corners[1].x, corners[1].y);
 			glTexCoord2f((s.getX() + s.getWidth()) / texture.getWidth(), (s.getY() + s.getHeight()) / texture.getHeight());
-			double dx = -humanPosition().x + corners[1].x;
-			double dy = -humanPosition().y + corners[1].y;
+			float dx = -humanPosition().x + corners[1].x;
+			float dy = -humanPosition().y + corners[1].y;
 			glVertex2f(corners[1].x+dx*c, corners[1].y+dy*c);
 			glTexCoord2f(s.getX() / texture.getWidth(), (s.getY() + s.getHeight()) / texture.getHeight());
 			dx = -humanPosition().x + corners[0].x;
