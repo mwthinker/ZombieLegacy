@@ -5,7 +5,7 @@
         <height>800</height>
         <positionX>432</positionX>
         <positionY>200</positionY>
-        <maximized>1</maximized>
+        <maximized>0</maximized>
     </window>
     <explosion>
         <shockwaveImage>images/shockwave.png</shockwaveImage>
@@ -16,7 +16,7 @@
     <fog>
         <image>images/fog.png</image>
         <radius>20</radius>
-        <color>(0,0,0)</color>
+        <color>(0 0 0)</color>
     </fog>
     <tree>
         <image>images/tree.png</image>

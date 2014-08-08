@@ -17,118 +17,10 @@ namespace zombie {
 
 	namespace {
 
-		std::stringstream& operator>>(std::stringstream& stream, Point& point) {
-			stream >> point.x;
-			stream >> point.y;
-			return stream;
-		}
-
-		// Override the stream operator for a color defined as a string "(r,g,b)".
-        // Any space character will be ignored but r, g, b represent a float value
-        // and must be seperated by "," and the whole string surrounded by "(" and ")".
-        // Example of correct usaged:
-        // stringstream stream;
-        // stream << "( 1.0, 0.1,2);
-        // Color color;
-        // stream >> color;
-        std::stringstream& operator>>(std::stringstream& stream, mw::Color& color) {
-            bool start = false;
-            bool end = false;
-
-            std::string str;
-            std::string tmp;
-            while (stream >> tmp) {
-                if (tmp.size() > 0 && !start) {
-                    if (tmp[0] == '(') {
-                        start = true;
-                        tmp[0] = ' ';
-                    } else {
-                        // Failed.
-                        stream.setstate(std::ios::failbit);
-                        return stream;
-                    }
-                }
-                if (tmp.size() > 0 && !end) {
-                    for (char& c : tmp) {
-                        if (c == ')') {
-                            c = ' ';
-                            end = true;
-                            break;
-                        }
-                    }
-                }
-                str += tmp;
-                if (start && end) {
-                    break;
-                }
-            }
-
-            if (!start || !end) {
-                // Failed.
-                stream.setstate(std::ios::failbit);
-                return stream;
-            }
-
-            std::replace(str.begin(), str.end(), ',', ' ');
-            std::stringstream newStream_(str);
-            newStream_ >> color.red_;
-            newStream_ >> color.green_;
-            newStream_ >> color.blue_;
-            float alpha = 1;
-            if (newStream_ >> alpha) {
-                color.alpha_ = alpha;
-            }
-
-            return stream;
-        }
-
-        template <class Output>
-        Output extract(tinyxml2::XMLConstHandle handle) {
-            const tinyxml2::XMLElement* element = handle.ToElement();
-            if (element == nullptr) {
-                throw mw::Exception("Missing element!");
-            }
-            const char* str = element->GetText();
-
-            if (str == nullptr) {
-                throw mw::Exception("Missing text!");
-            }
-
-            std::stringstream stream(str);
-            Output output;
-            stream >> output;
-            if (stream.fail()) {
-                throw mw::Exception("Stream failed!");
-            }
-            return output;
-        }
-
-        template <class Output>
-        Output extract(tinyxml2::XMLHandle handle) {
-            tinyxml2::XMLElement* element = handle.ToElement();
-            if (element == nullptr) {
-                throw mw::Exception("Missing element!");
-            }
-            const char* str = element->GetText();
-
-            if (str == nullptr) {
-                throw mw::Exception("Missing text!");
-            }
-
-            std::stringstream stream(str);
-            Output output;
-            stream >> output;
-            if (stream.fail()) {
-                throw mw::Exception("Stream failed!");
-            }
-            return output;
-        }
-
-		// Specialization for string type. In order to insure that the whole text is 
-		// returned as a string.
-		template <>
-		std::string extract(tinyxml2::XMLHandle handle) {
-			tinyxml2::XMLElement* element = handle.ToElement();
+		// Generic template function to extract value from xml tag.
+		template <class Output>
+		Output extract(tinyxml2::XMLConstHandle handle) {
+			const tinyxml2::XMLElement* element = handle.ToElement();
 			if (element == nullptr) {
 				throw mw::Exception("Missing element!");
 			}
@@ -138,7 +30,90 @@ namespace zombie {
 				throw mw::Exception("Missing text!");
 			}
 
-			return std::string(str);
+			std::stringstream stream(str);
+			Output output;
+			stream >> output;
+			if (stream.fail()) {
+				throw mw::Exception("Stream failed!");
+			}
+			return output;
+		}
+
+		// Template specialization. Point must be defined as "POINT (12.3 55.3)".
+		// x = 12.3, y = 55.3
+		template <>
+		Point extract(tinyxml2::XMLConstHandle handle) {
+			const tinyxml2::XMLElement* element = handle.ToElement();
+			if (element == nullptr) {
+				throw mw::Exception("Missing element!");
+			}
+			const char* str = element->GetText();
+
+			if (str == nullptr) {
+				throw mw::Exception("Missing text!");
+			}
+
+			std::stringstream stream(str);
+			std::string word;
+			stream >> word;
+			if (word != "POINT") {
+				throw mw::Exception("Invalid 'POINT'!");
+			}
+
+			char chr = 0;;
+			Point point;
+			stream >> chr;
+			if (chr != '(') {
+				throw mw::Exception("Missing '('!");
+			}
+			if (!(stream >> point.x)) {
+				throw mw::Exception("x coord invalid");
+			}
+			if (!(stream >> point.y)) {
+				throw mw::Exception("y coord invalid");
+			}
+			chr = 0;
+			stream >> chr;
+			if (chr != ')') {
+				throw mw::Exception("Missing ')'!");
+			}
+
+			return point;
+		}
+
+		// Template specialization. Color must be defined as "(0.1 0.2 0.3)" or "(0.1 0.2 0.3 0.4)"
+		// red = 0.1, green = 0.2, blue = 0.3, alpha = 0.4
+		template <>
+		mw::Color extract(tinyxml2::XMLConstHandle handle) {
+			const tinyxml2::XMLElement* element = handle.ToElement();
+			if (element == nullptr) {
+				throw mw::Exception("Missing element!");
+			}
+			const char* str = element->GetText();
+
+			if (str == nullptr) {
+				throw mw::Exception("Missing text!");
+			}
+
+			std::stringstream stream(str);
+			char chr = 0;;
+			mw::Color color;
+			stream >> chr;
+			if (chr != '(') {
+				throw mw::Exception("Missing '('!");
+			}
+			if (!(stream >> color.red_)) {
+				throw mw::Exception("Red value invalid");
+			}
+			if (!(stream >> color.green_)) {
+				throw mw::Exception("Green value invalid");
+			}
+			if (!(stream >> color.blue_)) {
+				throw mw::Exception("Blue value invalid");
+			}
+			// Assume that everything is correct.
+			stream >> color.alpha_;
+			return color;
 		}
 
 		// Specialization for string type. In order to insure that the whole text is 
@@ -158,11 +133,9 @@ namespace zombie {
 			return std::string(str);
 		}
 
-        template <class Output>
-        void extract(Output& value, tinyxml2::XMLHandle handle) {
-            value = extract<Output>(handle);
-        }
-
+		// Returns the value defined in the input string. 
+		// E.g. input = "zombieGame interface font", returns the 
+		// value defined in the tag inside <zombieGame><interface><font>value</font></interface></zombieGame>
 		template <class Output>
 		Output getValueFromTag(const tinyxml2::XMLDocument& xmlDoc, std::string input) {
 			std::stringstream stream(input);
@@ -172,42 +145,6 @@ namespace zombie {
 				handleXml = handleXml.FirstChildElement(tag.c_str());
 			}
 			return extract<Output>(handleXml);
-		}
-
-        template <class Input>
-        void insert(const Input& input, tinyxml2::XMLHandle handle) {
-            tinyxml2::XMLElement* element = handle.ToElement();
-            if (element == nullptr) {
-                throw mw::Exception("Missing element!");
-            }
-
-            std::stringstream stream;
-            stream << input;
-            if (stream.fail()) {
-                throw mw::Exception("Stream failed!");
-            }
-
-            element->SetText(stream.str().c_str());
-        }
-
-		Point loadPoint(std::string line) {
-			int index = line.find("(");
-			int index2 = line.rfind(")");
-
-			// New line is the string between "((" and "))".
-			line = line.substr(index + 1, index2 - index - 1);
-
-			// Replace all ',' (comma) with whitespace.
-			for (char& chr : line) {
-				if (chr == ',') {
-					chr = ' ';
-				}
-			}
-
-			std::stringstream stream(line);
-			Point point;
-			stream >> point;
-			return point;
 		}
 
 		// Takes a string as input and returns the points.
@@ -231,11 +168,28 @@ namespace zombie {
 			Point point;
 			std::stringstream stream(line);
 			std::vector<Point> points;
-			while (stream >> point) {
+			while (stream >> point.x && stream >> point.y) {
 				points.push_back(point);
 			}
 			points.pop_back();
 			return points;
+		}
+
+		// Saves the value in the tag defined by handle.
+		template <class Value>
+		void insert(const Value& value, tinyxml2::XMLHandle handle) {
+			tinyxml2::XMLElement* element = handle.ToElement();
+			if (element == nullptr) {
+				throw mw::Exception("Missing element!");
+			}
+
+			std::stringstream stream;
+			stream << value;
+			if (stream.fail()) {
+				throw mw::Exception("Stream failed!");
+			}
+
+			element->SetText(stream.str().c_str());
 		}
 
 	}
@@ -262,8 +216,8 @@ namespace zombie {
 	}
 
 	void GameData::save() {
-        xmlDoc_.SaveFile(dataFile_.c_str());
-    }
+		xmlDoc_.SaveFile(dataFile_.c_str());
+	}
 
 	void GameData::load(DataInterface& dataInterface) const {
 		loadWeapon(dataInterface);
@@ -289,7 +243,7 @@ namespace zombie {
 
 	void GameData::loadCar(DataInterface& dataInterface) const {
 		tinyxml2::XMLConstHandle carTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("car");
-		Animation animation = loadAnimation(carTag.FirstChildElement("moveAnimation"));
+		Animation animation = extractAnimation(carTag.FirstChildElement("moveAnimation"));
 		float mass = zombie::extract<float>(carTag.FirstChildElement("mass"));
 		float width = zombie::extract<float>(carTag.FirstChildElement("width"));
 		float length = zombie::extract<float>(carTag.FirstChildElement("length"));
@@ -306,25 +260,23 @@ namespace zombie {
 		float walkingSpeed = zombie::extract<float>(humanTag.FirstChildElement("walkingSpeed"));
 		float runningSpeed = zombie::extract<float>(humanTag.FirstChildElement("runningSpeed"));
 		float stamina = zombie::extract<float>(humanTag.FirstChildElement("stamina"));
-		Animation moveA = loadAnimation(humanTag.FirstChildElement("moveAnimation"));
-		Animation injuredA = loadAnimation(humanTag.FirstChildElement("injuredAnimation"));
-		Animation dieA = loadAnimation(humanTag.FirstChildElement("dieAnimation"));
+		Animation moveA = extractAnimation(humanTag.FirstChildElement("moveAnimation"));
+		Animation injuredA = extractAnimation(humanTag.FirstChildElement("injuredAnimation"));
+		Animation dieA = extractAnimation(humanTag.FirstChildElement("dieAnimation"));
 		mw::Sound dieS = loadSound(zombie::extract<std::string>(humanTag.FirstChildElement("dieSound")));
 		mw::Sound hitS = loadSound(zombie::extract<std::string>(humanTag.FirstChildElement("hitSound")));
 		std::string weaponName = zombie::extract<std::string>(humanTag.FirstChildElement("weapon"));
-		
+
 		dataInterface.loadHuman(mass, radius, life, walkingSpeed, runningSpeed, stamina, moveA, injuredA, dieA, dieS, hitS, weaponName);
 	}
 
 	void GameData::loadExplosion(DataInterface& dataInterface) const {
 		tinyxml2::XMLConstHandle explosionTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("explosion");
 		mw::Texture particle = loadTexture(zombie::extract<std::string>(explosionTag.FirstChildElement("particleImage")));
-		mw::Sprite shockwave;
-		extract(shockwave, explosionTag.FirstChildElement("shockwaveImage"));
-		mw::Sprite emitter;
-		extract(emitter, explosionTag.FirstChildElement("emitterImage"));
+		mw::Sprite shockwave = extractSprite(explosionTag.FirstChildElement("shockwaveImage"));
+		mw::Sprite emitter = extractSprite(explosionTag.FirstChildElement("emitterImage"));
 		mw::Sound sound = loadSound(zombie::extract<std::string>(explosionTag.FirstChildElement("shockwaveImage")));
-		dataInterface.loadExplosion(particle, shockwave, emitter , sound);
+		dataInterface.loadExplosion(particle, shockwave, emitter, sound);
 	}
 
 	void GameData::loadFog(DataInterface& dataInterface) const {
@@ -343,9 +295,9 @@ namespace zombie {
 		float walkingSpeed = zombie::extract<float>(zombieTag.FirstChildElement("walkingSpeed"));
 		float runningSpeed = zombie::extract<float>(zombieTag.FirstChildElement("runningSpeed"));
 		float stamina = zombie::extract<float>(zombieTag.FirstChildElement("stamina"));
-		Animation moveA = loadAnimation(zombieTag.FirstChildElement("moveAnimation"));
-		Animation injuredA = loadAnimation(zombieTag.FirstChildElement("injuredAnimation"));
-		Animation dieA = loadAnimation(zombieTag.FirstChildElement("dieAnimation"));
+		Animation moveA = extractAnimation(zombieTag.FirstChildElement("moveAnimation"));
+		Animation injuredA = extractAnimation(zombieTag.FirstChildElement("injuredAnimation"));
+		Animation dieA = extractAnimation(zombieTag.FirstChildElement("dieAnimation"));
 		mw::Sound dieS = loadSound(zombie::extract<std::string>(zombieTag.FirstChildElement("dieSound")));
 		mw::Sound hitS = loadSound(zombie::extract<std::string>(zombieTag.FirstChildElement("hitSound")));
 		std::string weaponName = zombie::extract<std::string>(zombieTag.FirstChildElement("weapon"));
@@ -381,21 +333,9 @@ namespace zombie {
 					dataInterface.loadRoad(loadPolygon(stream.str()));
 				}
 			} else if (handleXml.ToElement()->Attribute("type", "tree")) {
-				std::string geom = zombie::extract<std::string>(handleXml.FirstChildElement("geom"));
-				std::stringstream stream(geom);
-				std::string word;
-
-				if (stream >> word) { // Assume "POINT"
-					dataInterface.loadTree(loadPoint(stream.str()));
-				}
+				dataInterface.loadTree(zombie::extract<Point>(handleXml.FirstChildElement("geom")));
 			} else if (handleXml.ToElement()->Attribute("type", "spawningpoint")) {
-				std::string geom = zombie::extract<std::string>(handleXml.FirstChildElement("geom"));
-				std::stringstream stream(geom);
-				std::string word;
-
-				if (stream >> word) { // Assume "POINT"
-					dataInterface.loadSpawningPoint(loadPoint(stream.str()));
-				}
+				dataInterface.loadSpawningPoint(zombie::extract<Point>(handleXml.FirstChildElement("geom")));
 			}
 
 			handleXml = handleXml.NextSiblingElement("object");
@@ -407,83 +347,82 @@ namespace zombie {
 		tinyxml2::XMLConstHandle weaponTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("weapons").FirstChildElement("weapon");
 		while (weaponTag.ToElement() != nullptr) {
 			std::string name = zombie::extract<std::string>(weaponTag.FirstChildElement("name"));
-			mw::Sprite sprite;
-			extract(sprite, weaponTag.FirstChildElement("symbolImage"));
+			mw::Sprite sprite = extractSprite(weaponTag.FirstChildElement("symbolImage"));
 
 			float damage = zombie::extract<float>(weaponTag.FirstChildElement("damage"));
 			float timeBetweenShots = zombie::extract<float>(weaponTag.FirstChildElement("timeBetweenShots"));
 			float range = zombie::extract<float>(weaponTag.FirstChildElement("range"));
 			int clipSize = zombie::extract<int>(weaponTag.FirstChildElement("clipSize"));
-			
+
 			mw::Sound shoot = loadSound(zombie::extract<std::string>(weaponTag.FirstChildElement("shootSound")));
 			mw::Sound reload = loadSound(zombie::extract<std::string>(weaponTag.FirstChildElement("reloadSound")));
-			Animation animation = loadAnimation(weaponTag.FirstChildElement("animation"));
+			Animation animation = extractAnimation(weaponTag.FirstChildElement("animation"));
 
 			dataInterface.loadWeapon(name, damage, timeBetweenShots, range, clipSize, sprite, animation, shoot, reload);
-			
+
 			weaponTag = weaponTag.NextSiblingElement("weapon");
 		}
 	}
 
-    void GameData::setWindowSize(int width, int height) {
-        tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
-        zombie::insert(width, handleXml.FirstChildElement("width"));
-        zombie::insert(height, handleXml.FirstChildElement("height"));
-        save();
-    }
+	void GameData::setWindowSize(int width, int height) {
+		tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
+		zombie::insert(width, handleXml.FirstChildElement("width"));
+		zombie::insert(height, handleXml.FirstChildElement("height"));
+		save();
+	}
 
-    int GameData::getWindowWidth() const {
+	int GameData::getWindowWidth() const {
 		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame window width");
-    }
+	}
 
-    int GameData::getWindowHeight() const {
+	int GameData::getWindowHeight() const {
 		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame window height");
-    }
+	}
 
-    void GameData::setWindowPosition(int x, int y) {
-        tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
-        zombie::insert(x, handleXml.FirstChildElement("positionX"));
-        zombie::insert(y, handleXml.FirstChildElement("positionY"));
-        save();
-    }
+	void GameData::setWindowPosition(int x, int y) {
+		tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
+		zombie::insert(x, handleXml.FirstChildElement("positionX"));
+		zombie::insert(y, handleXml.FirstChildElement("positionY"));
+		save();
+	}
 
-    int GameData::getWindowXPosition() const {
+	int GameData::getWindowXPosition() const {
 		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame window positionX");
-    }
+	}
 
-    int GameData::getWindowYPosition() const {
+	int GameData::getWindowYPosition() const {
 		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame window positionY");
-    }
+	}
 
-    void GameData::setWindowMaximized(bool maximized) {
-        tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
-        zombie::insert(maximized, handleXml.FirstChildElement("maximized"));
-        save();
-    }
+	void GameData::setWindowMaximized(bool maximized) {
+		tinyxml2::XMLHandle handleXml = tinyxml2::XMLHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("window");
+		zombie::insert(maximized, handleXml.FirstChildElement("maximized"));
+		save();
+	}
 
-    bool GameData::isWindowMaximized() const {
+	bool GameData::isWindowMaximized() const {
 		return zombie::getValueFromTag<bool>(xmlDoc_, "zombieGame window maximized");
-    }
+	}
 
-    float GameData::getImpulseThreshold() const {
+	float GameData::getImpulseThreshold() const {
 		return zombie::getValueFromTag<float>(xmlDoc_, "zombieGame settings impulseThreshold");
-    }
+	}
 
 	float GameData::getInnerSpawnRadius() const {
 		return zombie::getValueFromTag<float>(xmlDoc_, "zombieGame settings innerSpawnRadius");
 	}
-	
+
 	float GameData::getOuterSpawnRadius() const {
 		return zombie::getValueFromTag<float>(xmlDoc_, "zombieGame settings outerSpawnRadius");
 	}
 
 	int GameData::getTimeStepMS() const {
 		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame settings timeStepMS");
-    }
+	}
 
-    int GameData::getUnitLevel() const {
+	int GameData::getUnitLevel() const {
 		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame settings unitLevel");
-    }
+	}
 
 	int GameData::getUnitLimit() const {
 		return zombie::getValueFromTag<int>(xmlDoc_, "zombieGame settings unitLimit");
@@ -491,28 +430,24 @@ namespace zombie {
 
 	mw::Sprite GameData::getMenuBackgroundImage() const {
 		tinyxml2::XMLConstHandle menuTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("menu");
-		mw::Sprite sprite;
-		extract(sprite, menuTag.FirstChildElement("backGroundImage"));
+		mw::Sprite sprite = extractSprite(menuTag.FirstChildElement("backGroundImage"));
 		return sprite;
 	}
 
 	mw::Sprite GameData::getTreeImage() const {
 		tinyxml2::XMLConstHandle treeTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("tree");
-		mw::Sprite sprite;
-		extract(sprite, treeTag.FirstChildElement("image"));
+		mw::Sprite sprite = extractSprite(treeTag.FirstChildElement("image"));
 		return sprite;
 	}
 
 	mw::Sprite GameData::getWallImage() const {
 		tinyxml2::XMLConstHandle wallTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("buildings");
-		mw::Sprite sprite;
-		extract(sprite, wallTag.FirstChildElement("wallImage"));
+		mw::Sprite sprite = extractSprite(wallTag.FirstChildElement("wallImage"));
 		return sprite;
 	}
 
 	void GameData::loadFrame(tinyxml2::XMLConstHandle frameTag, Animation& animation) const {
-		mw::Sprite sprite;
-		GameData::extract(sprite, frameTag.FirstChildElement("image"));
+		mw::Sprite sprite = extractSprite(frameTag.FirstChildElement("image"));
 
 		float time = 1;
 		try {
@@ -526,7 +461,7 @@ namespace zombie {
 		animation.add(sprite, bodyWidth, time);
 	}
 
-	void GameData::extract(mw::Sprite& sprite, tinyxml2::XMLConstHandle handle) const {
+	mw::Sprite GameData::extractSprite(tinyxml2::XMLConstHandle handle) const {
 		const tinyxml2::XMLElement* element = handle.ToElement();
 		if (element == nullptr) {
 			throw mw::Exception("Missing element!");
@@ -553,10 +488,10 @@ namespace zombie {
 			w = (float) texture.getWidth();
 		}
 
-		sprite = mw::Sprite(texture, x, y, w, h);
+		return mw::Sprite(texture, x, y, w, h);
 	}
 
-	Animation GameData::loadAnimation(tinyxml2::XMLConstHandle animationTag) const {
+	Animation GameData::extractAnimation(tinyxml2::XMLConstHandle animationTag) const {
 		tinyxml2::XMLConstHandle handle = animationTag.FirstChildElement("frame");
 		Animation animation;
 		while (handle.ToElement() != nullptr) {
@@ -568,46 +503,46 @@ namespace zombie {
 	}
 
 	mw::Font GameData::loadFont(std::string file, unsigned int fontSize) const {
-        unsigned int size = fonts_.size();
-        std::string key = file;
-        key += fontSize;
-        mw::Font& font = fonts_[key];
+		unsigned int size = fonts_.size();
+		std::string key = file;
+		key += fontSize;
+		mw::Font& font = fonts_[key];
 
-        // Font not found?
-        if (fonts_.size() > size) {
-            font = mw::Font(file, fontSize);
-        }
+		// Font not found?
+		if (fonts_.size() > size) {
+			font = mw::Font(file, fontSize);
+		}
 
-        return font;
-    }
+		return font;
+	}
 
-    mw::Texture GameData::loadTexture(std::string file) const {
-        unsigned int size = textures_.size();
-        mw::Texture& texture = textures_[file];
+	mw::Texture GameData::loadTexture(std::string file) const {
+		unsigned int size = textures_.size();
+		mw::Texture& texture = textures_[file];
 
-        // Image not found?
-        if (textures_.size() > size) {
-            texture = mw::Texture(file);
+		// Image not found?
+		if (textures_.size() > size) {
+			texture = mw::Texture(file);
 
-            // Image not valid?
-            if (!texture.isValid()) {
+			// Image not valid?
+			if (!texture.isValid()) {
 				std::cerr << std::endl << file << " failed to load!";
-            }
-        }
+			}
+		}
 
-        return texture;
-    }
+		return texture;
+	}
 
 	mw::Sound GameData::loadSound(std::string file) const {
-        unsigned int size = sounds_.size();
-        mw::Sound& sound = sounds_[file];
-		
-        // Sound not found?
-        if (sounds_.size() > size) {
-            sound = mw::Sound(file);
-        }
+		unsigned int size = sounds_.size();
+		mw::Sound& sound = sounds_[file];
 
-        return sound;
-    }
+		// Sound not found?
+		if (sounds_.size() > size) {
+			sound = mw::Sound(file);
+		}
+
+		return sound;
+	}
 
 } // Namespace zombie.

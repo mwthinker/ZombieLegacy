@@ -70,9 +70,9 @@ namespace zombie {
 		void loadExplosion(DataInterface&) const;
 		void loadFog(DataInterface&) const;
 
-		void extract(mw::Sprite& sprite, tinyxml2::XMLConstHandle handle) const;
+		mw::Sprite extractSprite(tinyxml2::XMLConstHandle handle) const;
 
-		Animation loadAnimation(tinyxml2::XMLConstHandle animationTag) const;
+		Animation extractAnimation(tinyxml2::XMLConstHandle animationTag) const;
 
 		void loadFrame(tinyxml2::XMLConstHandle frameTag, Animation& animation) const;
 
