@@ -63,6 +63,10 @@ namespace zombie {
 			return bulletsInWeapon_;
 		}
 
+		int getNbrUnits() {
+			return nbrUnits_;
+		}
+
 	private:
 		// Implements the GameInterface.
 		void updateEachCycle(Unit& unit, Unit& human) override;

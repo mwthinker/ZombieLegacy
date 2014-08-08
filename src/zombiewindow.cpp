@@ -161,12 +161,15 @@ namespace zombie {
 		label1_ = std::make_shared<gui::Label>("Kill count: 0", font);
 		label2_ = std::make_shared<gui::Label>("Health: ?", font);
 		label3_ = std::make_shared<gui::Label>("Ammo: ?", font);
+		label4_ = std::make_shared<gui::Label>("Live units: ?", font);
 		label1_->setTextColor(1,0,0);
 		label2_->setTextColor(1, 0, 0);
 		label3_->setTextColor(1, 0, 0);
+		label4_->setTextColor(1, 0, 0);
 		panel->add(label1_);
 		panel->add(label2_);
 		panel->add(label3_);
+		panel->add(label4_);
 		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
 			std::stringstream stream;
 			stream << "Kill count: " << zombieGame_->getZombiesKilled() << "    ";
@@ -179,8 +182,13 @@ namespace zombie {
 		});
 		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
 			std::stringstream stream;
-			stream << "Ammo: " << zombieGame_->getBulletsInWeapon() << "/" << zombieGame_->getClipSize();
+			stream << "Ammo: " << zombieGame_->getBulletsInWeapon() << "/" << zombieGame_->getClipSize() << "     ";
 			label3_->setText(stream.str());
+		});
+		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
+			std::stringstream stream;
+			stream << "Live units: " << zombieGame_->getNbrUnits();
+			label4_->setText(stream.str());
 		});
 	}
 
