@@ -59,12 +59,12 @@
             <moveAnimation>
                 <frame>
                     <image x="0" y="0" w="256" h="256">images/bazooka.png</image>
-                    <bodyWidth>200</bodyWidth>
+                    <bodyWidth>320</bodyWidth>
                 </frame>
             </moveAnimation>
 			<size>0.5</size>
-            <moveImageGripX>-0.1325</moveImageGripX>
-            <moveImageGripY>-0.0425</moveImageGripY>
+            <moveImageGripX>-0.1525</moveImageGripX>
+            <moveImageGripY>-0.0825</moveImageGripY>
         </weapon>
         <weapon>
             <name>ZombieFist</name>
