@@ -10,6 +10,7 @@
 #include "terrain2d.h"
 #include "explosion.h"
 #include "fog.h"
+#include "weaponeffect.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
