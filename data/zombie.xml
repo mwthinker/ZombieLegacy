@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zombieGame>
     <window>
-        <width>470</width>
-        <height>570</height>
+        <width>1000</width>
+        <height>1000</height>
         <positionX>577</positionX>
-        <positionY>267</positionY>
-        <maximized>1</maximized>
+        <positionY>50</positionY>
+        <maximized>0</maximized>
     </window>
     <explosion>
         <shockwaveImage>images/shockwave.png</shockwaveImage>
@@ -26,8 +26,8 @@
     </interface>
     <settings>
         <map>map.xml</map>
-        <unitLevel>100</unitLevel>
-        <unitLimit>200</unitLimit>
+        <unitLevel>50</unitLevel>
+        <unitLimit>70</unitLimit>
         <impulseThreshold>2</impulseThreshold>
         <timeStepMS>17</timeStepMS>
         <innerSpawnRadius>15.0</innerSpawnRadius>
@@ -40,7 +40,7 @@
     </menu>
     <music>
         <switch>off</switch>
-        <track>sounds/Zombie Time v2.mp3</track>
+        <track>sounds/ZombieTime_v2.mp3</track>
     </music>
     <buildings>
         <hitSound>sounds/buildingHit.wav</hitSound>
@@ -59,11 +59,12 @@
             <moveAnimation>
                 <frame>
                     <image x="0" y="0" w="256" h="256">images/bazooka.png</image>
-                    <bodyWidth>128</bodyWidth>
+                    <bodyWidth>200</bodyWidth>
                 </frame>
             </moveAnimation>
-            <moveImageGripX>0.65</moveImageGripX>
-            <moveImageGripY>-0.29</moveImageGripY>
+			<size>0.5</size>
+            <moveImageGripX>-0.1325</moveImageGripX>
+            <moveImageGripY>-0.0425</moveImageGripY>
         </weapon>
         <weapon>
             <name>ZombieFist</name>
@@ -75,7 +76,8 @@
             <shootSound>sounds/ZombieFist.wav</shootSound>
             <reloadSound>sounds/ZombieReload.wav</reloadSound>
             <moveAnimation/>
-            <moveImageGripX>0</moveImageGripX>
+            <size>1</size>
+			<moveImageGripX>0</moveImageGripX>
             <moveImageGripY>0</moveImageGripY>
         </weapon>
     </weapons>
@@ -116,8 +118,8 @@
                 <bodyWidth>130</bodyWidth>
             </frame>
         </moveAnimation>
-        <moveImageGripX>0</moveImageGripX>
-        <moveImageGripY>0</moveImageGripY>
+        <moveImageGripX>0.33</moveImageGripX>
+        <moveImageGripY>-0.15</moveImageGripY>
         <dieAnimation>
             <frame>
                 <image>images/bloodDeath10.png</image>

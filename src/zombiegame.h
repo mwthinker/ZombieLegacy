@@ -110,7 +110,7 @@ namespace zombie {
 
 		void loadWater(const std::vector<Position>& positions) override;
 
-		void loadWeapon(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation, Position grip, const mw::Sound& shoot, const mw::Sound& reload) override;
+		void loadWeapon(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation, float size, Position grip, const mw::Sound& shoot, const mw::Sound& reload) override;
 		// End of the DataInterface.
 
 		float innerSpawnRadius_;

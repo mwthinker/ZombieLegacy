@@ -1,6 +1,9 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
+#include "box2ddef.h"
+#include "auxiliary.h"
+
 #include <mw/sprite.h>
 #include <mw/color.h>
 

@@ -18,8 +18,8 @@ namespace zombie {
 		Weapon2D() {
 		}
 
-		Weapon2D(float damage, float timeBetweenShots, float range, int clipSize, mw::Sprite symbol, Animation animation, Position grip) : Weapon(damage, timeBetweenShots, range, clipSize), 
-			symbol_(symbol), animation_(animation), grip_(grip) {
+		Weapon2D(float damage, float timeBetweenShots, float range, int clipSize, mw::Sprite symbol, Animation animation, float size, Position grip) : Weapon(damage, timeBetweenShots, range, clipSize),
+			symbol_(symbol), animation_(animation), grip_(grip), size_(size) {
 		}
 
 		void drawSymbol() override {
@@ -28,7 +28,8 @@ namespace zombie {
 
 		void draw() override {
 			glPushMatrix();
-			glTranslate2f(grip_);
+			glTranslate2f(-grip_);
+			glScale2f(size_);
 			animation_.draw(0);
 			glPopMatrix();
 		}
@@ -53,11 +54,12 @@ namespace zombie {
 
 		void setShotSound(const mw::Sound& sound) {
 			shoot_ = sound;
-		}
+		}		
 
 	private:
 		mw::Sprite symbol_;
 		Animation animation_;
+		float size_;
 		Position grip_;
 		mw::Sound shoot_;
 		mw::Sound reload_;

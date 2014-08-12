@@ -44,19 +44,19 @@ namespace zombie {
 		void draw(float accumulator, float timeStep) override {
 			if (isActive()) {
 				// Draw body.
-				glPushMatrix();
-				glTranslate2f(getPosition());
-				glScale2f(2 * getRadius());
-				glRotated(getDirection() * 180 / PI, 0, 0, 1);
+				float worldScale = 2 * getRadius();
+				Position worldPosition = getPosition();
+				float angle = getDirection() * 180 / PI;
+
 				glColor3d(1, 1, 1);
+				glPushMatrix();
+				glTranslate2f(worldPosition);
+				glPushMatrix();
+				glScale2f(worldScale);
+				glRotatef(angle);
 				animation_.draw(timeStep);
 				glPopMatrix();
-
-				// Draw weapon.
-				glPushMatrix();
-				glTranslate2f(getPosition());
-				glScale2f(2 * getRadius());
-				glRotated(getDirection() * 180 / PI, 0, 0, 1);
+				glRotatef(angle);
 				glTranslate2f(grip_);
 				getWeapon()->draw();
 				glPopMatrix();

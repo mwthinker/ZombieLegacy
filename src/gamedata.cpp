@@ -363,11 +363,12 @@ namespace zombie {
 			mw::Sound shoot = loadSound(zombie::extract<std::string>(weaponTag.FirstChildElement("shootSound")));
 			mw::Sound reload = loadSound(zombie::extract<std::string>(weaponTag.FirstChildElement("reloadSound")));
 			Animation animation = extractAnimation(weaponTag.FirstChildElement("moveAnimation"));
+			float size = zombie::extract<float>(weaponTag.FirstChildElement("size"));
 			Position grip;
 			grip.x = zombie::extract<float>(weaponTag.FirstChildElement("moveImageGripX"));
 			grip.y = zombie::extract<float>(weaponTag.FirstChildElement("moveImageGripY"));
 
-			dataInterface.loadWeapon(name, damage, timeBetweenShots, range, clipSize, sprite, animation, grip, shoot, reload);
+			dataInterface.loadWeapon(name, damage, timeBetweenShots, range, clipSize, sprite, animation, size, grip, shoot, reload);
 
 			weaponTag = weaponTag.NextSiblingElement("weapon");
 		}

@@ -282,8 +282,8 @@ namespace zombie {
 		terrain_.addWater(corners);
 	}
 
-	void ZombieGame::loadWeapon(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation, Position grip, const mw::Sound& shoot, const mw::Sound& reload) {
-		weapons_[name] = Weapon2D(damage, timeBetweenShots, range, clipSize, symbol, animation, grip);
+	void ZombieGame::loadWeapon(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation, float size, Position grip, const mw::Sound& shoot, const mw::Sound& reload) {
+		weapons_[name] = Weapon2D(damage, timeBetweenShots, range, clipSize, symbol, animation, size, grip);
 		weapons_[name].setReloadSound(reload);
 		weapons_[name].setShotSound(shoot);
 	}
