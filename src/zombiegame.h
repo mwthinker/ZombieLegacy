@@ -11,6 +11,7 @@
 #include "explosion.h"
 #include "fog.h"
 #include "weaponeffect.h"
+#include "weaponinterface.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
