@@ -58,6 +58,7 @@ set(SOURCES_ZOMBIE
 	src/weapon.h
 	src/weapon2d.h
 	src/weaponeffect.h
+	src/weaponinterface.h
 	src/weaponitem.h
 	src/weaponitem2d.h
 	src/zombiebehavior.cpp
