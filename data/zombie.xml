@@ -101,7 +101,7 @@
             <moveImageGripX>-0.1525</moveImageGripX>
             <moveImageGripY>-0.0825</moveImageGripY>
 			<projectile type="missile">
-				<mass>10</mass>
+				<mass>100</mass>
 				<width>1</width>
 				<length>2</length>
 				<animation>
@@ -115,7 +115,7 @@
 				<damage>60</damage>
 				<range>10</range>
 				<deathTime>10</deathTime>
-				<speed>10</speed>
+				<speed>15</speed>
 			</projectile>
         </weapon>
     </weapons>

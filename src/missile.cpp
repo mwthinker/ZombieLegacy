@@ -24,7 +24,7 @@ namespace zombie {
 		bodyDef.position = position;
 		bodyDef.angle = angle;
 		body_ = world->CreateBody(&bodyDef);
-		body_->SetLinearVelocity(Velocity(speed_, 0));
+		body_->SetLinearVelocity(speed_ * Velocity(std::cos(angle), std::sin(angle)));
 		body_->SetUserData(this);
 
 		// Body properties.
