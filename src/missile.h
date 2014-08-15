@@ -9,15 +9,18 @@
 
 namespace zombie {
 
+	class Missile;
+	typedef std::shared_ptr<Missile> MissilePtr;
+
 	class Missile : public Object {
 	public:
-		Missile(GameInterface& gameInterface, float width, float length,
-			float range, float damage, float explosionRadius);
+		Missile(GameInterface& gameInterface, float width, float length, float speed,
+			float explodeTime, float damage, float explosionRadius);
 
 		virtual ~Missile() {
 		}
 
-		void createBody(b2World* world, State state);
+		void createBody(b2World* world, Position position, float angle);
 
 		void update(float time, float timeStep) override final;
 
@@ -26,6 +29,10 @@ namespace zombie {
 		bool toBeRemoved() const final;
 
 		void destroyBody(b2World* world) override final;
+		
+		b2Body* getBody() const override {
+			return body_;
+		}
 
 		float getWidth() const {
 			return width_;
@@ -62,7 +69,6 @@ namespace zombie {
 		GameInterface& gameInterface_;
 		bool exploded_;
 
-		float range_;
 		float damage_;
 		float explosionRadius_;
 		float force_;
@@ -74,6 +80,7 @@ namespace zombie {
 		float length_, width_;
 		float mass_;
 		float explodeTime_;
+		float speed_;
 
 		State previousState_;
 	};

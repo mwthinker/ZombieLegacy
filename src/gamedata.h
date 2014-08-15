@@ -69,6 +69,9 @@ namespace zombie {
 		void loadWeapon(DataInterface&) const;
 		void loadExplosion(DataInterface&) const;
 		void loadFog(DataInterface&) const;
+				
+		void loadMissile(tinyxml2::XMLConstHandle projectileTag, DataInterface&, std::string name, float damage, float timeBetweenShots, float range, int clipSize,
+			const mw::Sprite& symbol, const Animation& moveAnimation, float size, Position grip, const mw::Sound& shoot, const mw::Sound& reload) const;
 
 		mw::Sprite extractSprite(tinyxml2::XMLConstHandle handle) const;
 

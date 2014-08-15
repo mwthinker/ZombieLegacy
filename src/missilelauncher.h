@@ -3,44 +3,51 @@
 
 #include "object.h"
 #include "state.h"
+#include "missile.h"
 #include "weaponinterface.h"
-
-#include <mw/sound.h>
 
 namespace zombie {
 
 	class MissileLauncher : public WeaponInterface {
 	public:
-		MissileLauncher(float damage, float timeBetweenShots, float range, mw::Sound shot = mw::Sound(), mw::Sound reload = mw::Sound());
+		MissileLauncher(int clipSize, float timeBetweenShots,
+			float range);
 
-		void pullTrigger(Unit& unit, float time) override;
+		void pullTrigger(Unit& unit, float time) override final;
 
-		void releaseTrigger(Unit& unit, float time) override;
+		void releaseTrigger(Unit& unit, float time) override final;
 
-		int getClipSize() const override;
+		int getClipSize() const override final;
 
-		int getBulletsInWeapon() const override;
+		int getBulletsInWeapon() const override final;
 
-		void reload(float time) override;
+		void reload(float time) override final;
 
-		float getRange() const override;
+		float getRange() const override final;
 
-		void initEngine(b2World* world, GameInterface* gameInterface) override;
+		void initEngine(b2World* world, GameInterface* gameInterface) override final;
 
-		WeaponInterfacePtr clone() const override;
+	protected:
+		// Is called when a new missile is launched. The missile returned is
+		// used as the project tile. The ownership takes over by the box2d world.
+		virtual Missile* shot() = 0;
+		
+		// Is called when reloading.
+		virtual void reload() {
+		}
 
 	private:
 		GameInterface* gameInterface_;
 		b2World* world_;
 
-		float damage_;				// The damage made by the weapon.
+		int clipSize_;
 		float timeBetweenShots_;
 		float range_;				// The range of the weapon.
 
 		int bulletsInWeapon_;		// The current number of bullets in the weapon.
 		float lastShotTime_;
 
-		mw::Sound shot_, reload_;
+		MissilePtr missile_;
 	};
 
 } // Namespace zombie.

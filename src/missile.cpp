@@ -4,28 +4,28 @@
 
 namespace zombie {
 
-	Missile::Missile(GameInterface& gameInterface, float width, float length,
-		float range, float damage, float explosionRadius) : gameInterface_(gameInterface) {
+	Missile::Missile(GameInterface& gameInterface, float width, float length, float speed,
+		float explodeTime, float damage, float explosionRadius) : gameInterface_(gameInterface) {
 		
-		range_ = range;
+		speed_ = speed;
 		damage_ = damage;
 		explosionRadius_ = explosionRadius;
 		width_ = width;
 		length_ = length;
 		exploded_ = false;
-		explodeTime_ = 5;
+		explodeTime_ = explodeTime;
 		time_ = 0;
 	}
 
-	void Missile::createBody(b2World* world, State state) {
+	void Missile::createBody(b2World* world, Position position, float angle) {
 		// Box2d properties.
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_dynamicBody;
-		bodyDef.position = state.position_;
-		bodyDef.angle = state.angle_;
+		bodyDef.position = position;
+		bodyDef.angle = angle;
 		body_ = world->CreateBody(&bodyDef);
+		body_->SetLinearVelocity(Velocity(speed_, 0));
 		body_->SetUserData(this);
-		explodeTime_ = range_ / state.velocity_.Length();
 
 		// Body properties.
 		{

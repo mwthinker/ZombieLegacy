@@ -353,11 +353,9 @@ namespace zombie {
 		tinyxml2::XMLConstHandle weaponTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("weapons").FirstChildElement("weapon");
 		while (weaponTag.ToElement() != nullptr) {
 			std::string name = zombie::extract<std::string>(weaponTag.FirstChildElement("name"));
-			mw::Sprite sprite = extractSprite(weaponTag.FirstChildElement("symbolImage"));
+			mw::Sprite symbolImage = extractSprite(weaponTag.FirstChildElement("symbolImage"));
 
-			float damage = zombie::extract<float>(weaponTag.FirstChildElement("damage"));
 			float timeBetweenShots = zombie::extract<float>(weaponTag.FirstChildElement("timeBetweenShots"));
-			float range = zombie::extract<float>(weaponTag.FirstChildElement("range"));
 			int clipSize = zombie::extract<int>(weaponTag.FirstChildElement("clipSize"));
 
 			mw::Sound shoot = loadSound(zombie::extract<std::string>(weaponTag.FirstChildElement("shootSound")));
@@ -368,10 +366,33 @@ namespace zombie {
 			grip.x = zombie::extract<float>(weaponTag.FirstChildElement("moveImageGripX"));
 			grip.y = zombie::extract<float>(weaponTag.FirstChildElement("moveImageGripY"));
 
-			dataInterface.loadWeapon(name, damage, timeBetweenShots, range, clipSize, sprite, animation, size, grip, shoot, reload);
+			auto projectileTag = weaponTag.FirstChildElement("projectile");
+			float damage = zombie::extract<float>(projectileTag.FirstChildElement("damage"));
+			float range = zombie::extract<float>(projectileTag.FirstChildElement("range"));
+
+			if (projectileTag.ToElement()->Attribute("type", "bullet")) {
+				dataInterface.loadGun(name, damage, timeBetweenShots, range, clipSize, symbolImage, animation, size, grip, shoot, reload);
+			} else if (projectileTag.ToElement()->Attribute("type", "missile")) {
+				loadMissile(projectileTag, dataInterface, name, damage, timeBetweenShots, range, clipSize, symbolImage, animation, size, grip, shoot, reload);
+			}
 
 			weaponTag = weaponTag.NextSiblingElement("weapon");
 		}
+	}
+
+	void GameData::loadMissile(tinyxml2::XMLConstHandle projectileTag, DataInterface& dataInterface, std::string name, float damage, float timeBetweenShots, float range, int clipSize,
+		const mw::Sprite& symbolImage, const Animation& moveAnimation, float size, Position grip, const mw::Sound& shoot, const mw::Sound& reload) const {
+
+		float mass = zombie::extract<float>(projectileTag.FirstChildElement("range"));
+		float width = zombie::extract<float>(projectileTag.FirstChildElement("width"));
+		float length = zombie::extract<float>(projectileTag.FirstChildElement("length"));
+		Animation animation = extractAnimation(projectileTag.FirstChildElement("animation"));
+		mw::Sound moveSound = loadSound(zombie::extract<std::string>(projectileTag.FirstChildElement("moveSound")));
+		float damageRadius = zombie::extract<float>(projectileTag.FirstChildElement("damageRadius"));
+		float deathTime = zombie::extract<float>(projectileTag.FirstChildElement("deathTime"));
+		float speed = zombie::extract<float>(projectileTag.FirstChildElement("speed"));
+		dataInterface.loadMissile(name, damage, timeBetweenShots, range, clipSize, symbolImage, moveAnimation, size, grip, shoot, reload,
+			mass, width, length, animation, moveSound, damageRadius, deathTime, speed);
 	}
 
 	void GameData::setWindowSize(int width, int height) {

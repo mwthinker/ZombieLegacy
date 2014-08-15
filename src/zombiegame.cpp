@@ -13,6 +13,7 @@
 #include "fog.h"
 #include "tree2D.h"
 #include "gun.h"
+#include "missilelauncher2d.h"
 
 // External.
 #include <mw/exception.h>
@@ -287,8 +288,16 @@ namespace zombie {
 		terrain_.addWater(corners);
 	}
 
-	void ZombieGame::loadWeapon(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation, float size, Position grip, const mw::Sound& shoot, const mw::Sound& reload) {
-		weapons_[name] = Weapon2D(std::make_shared<Gun>(damage, timeBetweenShots, range, clipSize, shoot, reload), symbol, animation, size, grip); //Weapon2D(damage, timeBetweenShots, range, clipSize, symbol, animation, size, grip);
+	void ZombieGame::loadGun(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation, float size, Position grip, const mw::Sound& shoot, const mw::Sound& reload) {		
+		weapons_[name] = Weapon2D(std::make_shared<Gun>(damage, timeBetweenShots, range, clipSize, shoot, reload), symbol, animation, size, grip);
+	}
+
+	void ZombieGame::loadMissile(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol,
+		const Animation& animation, float size, Position grip, const mw::Sound& shoot, const mw::Sound& reload,
+		float mass, float width, float length, const Animation& projectileAnimation, const mw::Sound& moveSound, float damageRadius, float deathTime, float speed) {
+		Missile2D missile(projectileAnimation, *this, width, length, speed, deathTime, damage, damageRadius);
+		auto missileLauncher = std::make_shared<MissileLauncher2D>(missile, clipSize, timeBetweenShots, range, shoot, reload);
+		weapons_[name] = Weapon2D(missileLauncher, symbol, animation, size, grip);
 	}
 
 } // Namespace zombie.

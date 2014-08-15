@@ -6,15 +6,15 @@
 
 #include <mw/opengl.h>
 
-namespace zombie {
+namespace zombie {	
 
 	class Missile2D : public Missile {
 	public:
-		Missile2D(const Animation& animation, GameInterface& gameInterface, float width, float length, float range, float damage, float explosionRadius)
-			: Missile(gameInterface, width, length, range, damage, explosionRadius),
+		Missile2D(const Animation& animation, GameInterface& gameInterface, float width, float length,
+			float speed, float explodeTime, float damage, float explosionRadius)
+			: Missile(gameInterface, width, length, speed, explodeTime, damage, explosionRadius),
 			animation_(animation) {
-
-		}		
+		}
 
 		void draw(float accumulator, float timeStep) override {
 			// Draw body.

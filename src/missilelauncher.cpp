@@ -1,9 +1,13 @@
 #include "missilelauncher.h"
+#include "unit.h"
+
+#include <cassert>
 
 namespace zombie {
-
-	MissileLauncher::MissileLauncher(float damage, float timeBetweenShots, float range, mw::Sound shot, mw::Sound reload) : shot_(shot), reload_(reload) {
-		damage_ = damage;
+	
+	MissileLauncher::MissileLauncher(int clipSize, float timeBetweenShots,
+		float range) {
+		clipSize_ = clipSize;
 		timeBetweenShots_ = timeBetweenShots;
 		range_ = range;
 		bulletsInWeapon_ = 1;
@@ -15,8 +19,10 @@ namespace zombie {
 			if (bulletsInWeapon_ > 0) {
 				lastShotTime_ = time;
 				--bulletsInWeapon_;
-				mw::Sound sound = shot_;
-				sound.play();
+				Missile* missile = shot();
+				assert(missile != nullptr);
+				missile->createBody(unit.getBody()->GetWorld(), unit.getPosition(), unit.getDirection());
+				// The missile now belongs to the box2d world.
 			}
 		}
 	}
@@ -25,7 +31,7 @@ namespace zombie {
 	}
 
 	int MissileLauncher::getClipSize() const {
-		return 1;
+		return clipSize_;
 	}
 
 	int MissileLauncher::getBulletsInWeapon() const {
@@ -38,20 +44,17 @@ namespace zombie {
 
 	// Tries to reload the weapon. If it reloads return true, else false.
 	void MissileLauncher::reload(float time) {
-		if (bulletsInWeapon_ == 0) {
-			mw::Sound sound = reload_;
-			sound.play();
-			bulletsInWeapon_ = 1;
+		if (bulletsInWeapon_ == clipSize_) {
+			// No need to reload.
+		} else {
+			reload();
+			bulletsInWeapon_ += 1;
 		}
 	}
 
 	void MissileLauncher::initEngine(b2World* world, GameInterface* gameInterface) {
 		gameInterface_ = gameInterface;
 		world_ = world;
-	}
-
-	WeaponInterfacePtr MissileLauncher::clone() const {
-		return std::make_shared<MissileLauncher>(*this);
 	}
 
 } // Namespace zombie.
