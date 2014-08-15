@@ -33,6 +33,10 @@ namespace zombie {
 			return false;
 		}
 
+		// Is called when a collion occurs.
+		virtual void collision(float impulse) {
+		}
+
 		// Draw the object in world coordinates.
 		virtual void draw(float accumulator, float timeStep) = 0;
 

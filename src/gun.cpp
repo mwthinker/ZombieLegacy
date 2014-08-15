@@ -53,15 +53,6 @@ namespace zombie {
 		lastShotTime_ = 0.0f;
 	}
 
-	Gun::Gun() {
-		damage_ = 35.f;
-		timeBetweenShots_ = 0.1f;
-		range_ = 30.f;
-		clipSize_ = 12;
-		bulletsInWeapon_ = 12;
-		lastShotTime_ = 0.0f;
-	}
-
 	void Gun::pullTrigger(Unit& unit, float time) {
 		if (lastShotTime_ + timeBetweenShots_ < time) {
 			if (bulletsInWeapon_ > 0) {
@@ -98,6 +89,15 @@ namespace zombie {
 
 	float Gun::getRange() const {
 		return range_;
+	}
+
+	void Gun::initEngine(b2World* world, GameInterface* gameInterface) {
+		gameInterface_ = gameInterface;
+		world_ = world;
+	}
+
+	WeaponInterfacePtr Gun::clone() const {
+		return std::make_shared<Gun>(*this);
 	}
 
 } // Namespace zombie.

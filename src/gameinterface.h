@@ -34,6 +34,8 @@ namespace zombie {
 
 		virtual void shotHit(Position startPosition, Position hitPosition, Unit& unit) = 0;
 
+		virtual void explosion(Position position, float explosionRadius) = 0;
+
 	protected:
 		~GameInterface() {
 		}

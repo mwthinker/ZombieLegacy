@@ -25,4 +25,3 @@ namespace zombie {
 } // Namespace zombie.
 
 #endif // CONTACTLISTENER_H
-

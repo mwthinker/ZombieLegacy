@@ -233,6 +233,10 @@ namespace zombie {
 		}
 	}
 
+	void ZombieGame::explosion(Position position, float explosionRadius) {
+		graphicHeaven_.push_back(std::make_shared<Explosion>(position, 0.f, *explosion_));
+	}
+
 	// Implements the data interface.
 	void ZombieGame::loadExplosion(const mw::Texture& particle, const mw::Sprite& shockwave, const mw::Sprite& emitter, const mw::Sound& sound) {
 		explosion_ = std::make_shared<Explosion>(particle, shockwave, emitter, sound);

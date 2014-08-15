@@ -19,24 +19,6 @@
 
 namespace zombie {
 
-	namespace {
-
-		class InViewQueryCallback : public b2QueryCallback {
-		public:
-			std::vector<b2Fixture*> foundFixtures;
-
-			bool ReportFixture(b2Fixture* fixture) {
-				foundFixtures.push_back(fixture);
-				return true; // Keep going to find all fixtures in the query area.
-			}
-
-			void reset() {
-				foundFixtures.clear();
-			}
-		};		
-
-	}
-
 	ZombieEngine::ZombieEngine(GameInterface& gameInterface, int timeStepMS, float impulseThreshold) : gameInterface_(gameInterface), world_(b2Vec2(0, 0)), contactListener_(gameInterface, impulseThreshold) {
 		impulseThreshold_ = impulseThreshold;
 		human_ = nullptr;

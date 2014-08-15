@@ -88,6 +88,9 @@ namespace zombie {
 		void shotMissed(Position startPosition, Position hitPosition) override;
 
 		void shotHit(Position startPosition, Position hitPosition, Unit& unit) override;
+
+		void explosion(Position position, float explosionRadius) override;
+
 		// End of the GameInterface.
 
 		// Implements the DataInterface.

@@ -65,6 +65,8 @@ namespace zombie {
 		}
 
 		if (maxImpulse > impulseThreshold_) {
+			ob1->collision(maxImpulse);
+			ob2->collision(maxImpulse);
 			collision(gameInterface_, maxImpulse, ob1);
 			collision(gameInterface_, maxImpulse, ob2);
 		}

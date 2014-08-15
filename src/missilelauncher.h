@@ -1,19 +1,17 @@
-#ifndef GUN_H
-#define GUN_H
+#ifndef MISSILELAUNCHER_H
+#define MISSILELAUNCHER_H
 
-#include "weaponinterface.h"
+#include "object.h"
 #include "state.h"
-#include "box2ddef.h"
+#include "weaponinterface.h"
 
 #include <mw/sound.h>
 
-#include <memory>
-
 namespace zombie {
 
-	class Gun : public WeaponInterface {
+	class MissileLauncher : public WeaponInterface {
 	public:
-		Gun(float damage, float timeBetweenShots, float range, int clipSize, mw::Sound shot = mw::Sound(), mw::Sound reload = mw::Sound());
+		MissileLauncher(float damage, float timeBetweenShots, float range, mw::Sound shot = mw::Sound(), mw::Sound reload = mw::Sound());
 
 		void pullTrigger(Unit& unit, float time) override;
 
@@ -27,7 +25,7 @@ namespace zombie {
 
 		float getRange() const override;
 
-		void initEngine(b2World* world, GameInterface* gameInterface);
+		void initEngine(b2World* world, GameInterface* gameInterface) override;
 
 		WeaponInterfacePtr clone() const override;
 
@@ -39,7 +37,6 @@ namespace zombie {
 		float timeBetweenShots_;
 		float range_;				// The range of the weapon.
 
-		int clipSize_;				// The number of bullets for a reload.
 		int bulletsInWeapon_;		// The current number of bullets in the weapon.
 		float lastShotTime_;
 
@@ -48,4 +45,4 @@ namespace zombie {
 
 } // Namespace zombie.
 
-#endif // GUN_H
+#endif // MISSILELAUNCHER_H
