@@ -48,7 +48,7 @@ namespace zombie {
 
 				double distSquared = (unit_->getPosition() - targetPosition_).LengthSquared();
 				// Target is in range?
-				if (distSquared < unit_->getWeapon()->range() * unit_->getWeapon()->range()) {
+				if (distSquared < unit_->getWeapon()->getRange() * unit_->getWeapon()->getRange()) {
 					// Attack!
 					input.shoot_ = true;
 				}

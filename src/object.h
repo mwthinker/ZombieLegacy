@@ -7,7 +7,7 @@
 
 namespace zombie {
 
-	// Represent a object inside the "zombie world".
+	// Represent a physical object inside the "zombie world".
 	class Object {
 	public:
 		Object() : humanPosition_(ZERO) {
@@ -24,7 +24,7 @@ namespace zombie {
 		virtual b2Body* getBody() const = 0;
 
 		// Update the object. The parameter is the current "game" time and the time step is 
-		// the length of the time to be simultaded in the updated call.
+		// the length of the time to be simulated in the updated call.
 		inline virtual void update(float time, float timeStep) {
 		}
 		

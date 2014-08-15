@@ -4,8 +4,8 @@
 #include "auxiliary.h"
 #include "car.h"
 #include "building.h"
+#include "box2ddef.h"
 
-#include <Box2D/Box2D.h>
 #include <cmath>
 
 namespace zombie {
@@ -158,19 +158,19 @@ namespace zombie {
 				body_->SetAngularVelocity(0.0);
 			}			
 
-			// Want to shoot? And weapon is ready?
-			if (input.shoot_ && weapon_->shoot(time)) {
-				bullet_.direction_ = angle;
-				bullet_.range_ = weapon_->range();
-				bullet_.postion_ = getPosition();
-				bullet_.damage_ = weapon_->damage();
-				eventSignal_(this, UnitEvent::SHOOT);
+			// Want to shoot?
+			if (input.shoot_) {
+				if (weapon_) {
+					weapon_->pullTrigger(*this, time);
+					weapon_->releaseTrigger(*this, time);
+				}
 			}
 
-			// Want to reload? And weapon is ready?
-			if (input.reload_ && weapon_->reload()) {
-				input.reload_ = true;
-				eventSignal_(this, UnitEvent::RELOADING);
+			// Want to reload?
+			if (input.reload_) {
+				if (weapon_) {
+					weapon_->reload(time);
+				}
 			}
 
 			if (input.action_) {

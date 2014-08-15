@@ -3,7 +3,6 @@
 
 #include "box2ddef.h"
 #include "graphic.h"
-#include "bullet.h"
 #include "auxiliary.h"
 
 #include <mw/opengl.h>
@@ -12,14 +11,14 @@ namespace zombie {
 
 	class Shot : public Graphic {
 	public:
-		Shot(const Bullet& bullet, Position endPoint) {
+		Shot(Position startPoint, Position endPoint) {
 			speed_ = 25.f;
 			time_ = 0;
-			position_ = bullet.postion_;
-			direction_ = (endPoint - bullet.postion_);
+			position_ = startPoint;
+			direction_ = (endPoint - startPoint);
 			float dist = direction_.Normalize();
 			duration_ = dist / speed_;
-			angle_ = calculateAnglePointToPoint(bullet.postion_, endPoint) * 180 / PI; // RAD -> DEG.
+			angle_ = calculateAnglePointToPoint(startPoint, endPoint) * 180 / PI; // RAD -> DEG.
 		}
 
 		void draw(float deltaTime) override {

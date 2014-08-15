@@ -18,11 +18,11 @@ set(SOURCES_ZOMBIE
 	src/auxiliary.h
 	src/box2ddef.h
 	src/building.h
-	src/building2d.h
-	src/bullet.h
+	src/building2d.h	
 	src/car.cpp
 	src/car.h
 	src/car2d.h
+	src/closestraycastcallback.h
 	src/contactlistener.h
 	src/contactlistener.cpp
 	src/datainterface.h
@@ -34,6 +34,8 @@ set(SOURCES_ZOMBIE
 	src/gameinterface.h
 	src/graphic.h
 	src/graphicanimation.h
+	src/gun.cpp
+	src/gun.h
 	src/humanplayer.h
 	src/input.h
 	src/inputkeyboard.h
@@ -57,7 +59,6 @@ set(SOURCES_ZOMBIE
 	src/unit2d.h
 	src/weapon.h
 	src/weapon2d.h
-	src/weaponeffect.h
 	src/weaponinterface.h
 	src/weaponitem.h
 	src/weaponitem2d.h

@@ -5,7 +5,6 @@
 #include "input.h"
 #include "weapon.h"
 #include "state.h"
-#include "bullet.h"
 #include "box2ddef.h"
 
 #include <mw/signal.h>
@@ -22,7 +21,7 @@ namespace zombie {
 	class Unit : public MovingObject {
 	public:
 		enum UnitEvent {
-			SHOOT, RELOADING, DIE, INJURED, WALK, STANDSTILL, RUN, ACTION, REMOVED
+			DIE, INJURED, WALK, STANDSTILL, RUN, ACTION, REMOVED
 		};
 
 		Unit(float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const WeaponPtr& weapon);
@@ -84,10 +83,6 @@ namespace zombie {
 
 		b2Body* getBody() const override;
 
-		const Bullet& getLastBullet() const {
-			return bullet_;
-		}
-
 		void destroyBody(b2World* world) override;
 
 	private:
@@ -106,7 +101,6 @@ namespace zombie {
 
 		WeaponPtr weapon_;
 		bool isInfected_;
-		Bullet bullet_;
 
 		float timeLeftToRun_;
 		

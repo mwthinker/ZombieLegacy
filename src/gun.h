@@ -1,0 +1,56 @@
+#ifndef GUN_H
+#define GUN_H
+
+#include "weaponinterface.h"
+#include "state.h"
+#include "box2ddef.h"
+#include <mw/sound.h>
+
+#include <memory>
+
+namespace zombie {
+
+	class Gun : public WeaponInterface {
+	public:
+		Gun();
+
+		Gun(float damage, float timeBetweenShots, float range, int clipSize, mw::Sound shot = mw::Sound(), mw::Sound reload = mw::Sound());
+
+		void pullTrigger(Unit& unit, float time) override;
+
+		void releaseTrigger(Unit& unit, float time) override;
+
+		int getClipSize() const override;
+
+		int getBulletsInWeapon() const override;
+
+		void reload(float time) override;
+
+		float getRange() const override;
+
+		void initEngine(b2World* world, GameInterface* gameInterface) override {
+			gameInterface_ = gameInterface;
+			world_ = world;
+		}
+
+		WeaponInterfacePtr clone() const override {
+			return std::make_shared<Gun>(*this);
+		}
+	private:
+		GameInterface* gameInterface_;
+		b2World* world_;
+
+		float damage_;				// The damage made by the weapon.
+		float timeBetweenShots_;
+		float range_;				// The range of the weapon.
+
+		int clipSize_;				// The number of bullets for a reload.
+		int bulletsInWeapon_;		// The current number of bullets in the weapon.
+		float lastShotTime_;
+
+		mw::Sound shot_, reload_;
+	};
+
+} // Namespace zombie.
+
+#endif // GUN_H

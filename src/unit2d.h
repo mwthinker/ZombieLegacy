@@ -77,12 +77,6 @@ namespace zombie {
 				case Unit::INJURED:
 					hit_.play();
 					break;
-				case Unit::SHOOT:
-					getWeapon()->playShotSound();
-					break;
-				case Unit::RELOADING:
-					getWeapon()->playReloadSound();
-					break;
 			}
 		}
 

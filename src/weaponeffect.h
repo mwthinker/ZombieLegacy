@@ -12,22 +12,12 @@ namespace zombie {
 	
 	class WeaponEffect {
 	public:
-		virtual void update(double timestep) = 0;
+		virtual void playShotSound() {
+		}
+
+		virtual void playReloadSound() {
+		}
 	private:
-
-	};
-
-	class HandgunEffect : WeaponEffect{
-		void update(double timestep) {
-			// Do something!
-		}
-
-	};
-
-	class BazookaEffect : WeaponEffect{
-		void update(double timestep) {
-			// Do something!
-		}
 
 	};
 

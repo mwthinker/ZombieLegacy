@@ -30,9 +30,9 @@ namespace zombie {
 
 		virtual void collision(float impulse, Building& building) = 0;
 
-		virtual void shotMissed(const Bullet& bullet, Position hitPosition) = 0;
+		virtual void shotMissed(Position startPosition, Position hitPosition) = 0;
 
-		virtual void shotHit(const Bullet& bullet, Position hitPosition, Unit& unit) = 0;
+		virtual void shotHit(Position startPosition, Position hitPosition, Unit& unit) = 0;
 
 	protected:
 		~GameInterface() {

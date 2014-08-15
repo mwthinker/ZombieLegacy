@@ -18,8 +18,9 @@ namespace zombie {
 		Weapon2D() {
 		}
 
-		Weapon2D(float damage, float timeBetweenShots, float range, int clipSize, mw::Sprite symbol, Animation animation, float size, Position grip) : Weapon(damage, timeBetweenShots, range, clipSize),
-			symbol_(symbol), animation_(animation), grip_(grip), size_(size) {
+		Weapon2D(const WeaponInterfacePtr& weaponInterface, mw::Sprite symbol,
+			Animation animation, float size, Position grip) : 
+			Weapon(weaponInterface), symbol_(symbol), animation_(animation), grip_(grip), size_(size) {
 		}
 
 		void drawSymbol() override {
@@ -38,31 +39,11 @@ namespace zombie {
 			return std::make_shared<Weapon2D>(*this);
 		}
 
-		void playShotSound() override {
-			mw::Sound sound = shoot_;
-			sound.play();
-		}
-
-		void playReloadSound() override {
-			mw::Sound sound = reload_;
-			sound.play();
-		}
-
-		void setReloadSound(const mw::Sound& sound) {
-			reload_ = sound;
-		}
-
-		void setShotSound(const mw::Sound& sound) {
-			shoot_ = sound;
-		}		
-
 	private:
 		mw::Sprite symbol_;
 		Animation animation_;
 		float size_;
 		Position grip_;
-		mw::Sound shoot_;
-		mw::Sound reload_;
 	};
 
 } // Namespace zombie.

@@ -53,7 +53,7 @@ namespace zombie {
 			return zombiesKilled_;
 		}
 
-		double getHealth() {
+		float getHealth() {
 			return health_;
 		}
 
@@ -85,9 +85,9 @@ namespace zombie {
 
 		void collision(float impulse, Building& building) override;
 
-		void shotMissed(const Bullet& bullet, Position hitPosition) override;
+		void shotMissed(Position startPosition, Position hitPosition) override;
 
-		void shotHit(const Bullet& bullet, Position hitPosition, Unit& unit) override;
+		void shotHit(Position startPosition, Position hitPosition, Unit& unit) override;
 		// End of the GameInterface.
 
 		// Implements the DataInterface.
@@ -152,7 +152,7 @@ namespace zombie {
 		int zombiesKilled_;
 		int unitMaxLimit_;
 		int nbrUnits_;
-		double health_;
+		float health_;
 		int bulletsInWeapon_;
 		int clipsize_;
 	};

@@ -1,33 +1,43 @@
 #ifndef WEAPONINTERFACE_H
 #define WEAPONINTERFACE_H
 
-#include "weapon.h"
-#include "animation.h"
 #include "auxiliary.h"
+#include "state.h"
+#include "box2ddef.h"
+#include "gameinterface.h"
 
-#include <mw/sprite.h>
 #include <mw/sound.h>
 
 #include <memory>
 
 namespace zombie {
 
+	class WeaponInterface;
+	typedef std::shared_ptr<WeaponInterface> WeaponInterfacePtr;
+
 	// Describes a Weapon and is responsible of shooting.
 	class WeaponInterface {
 	public:
-		WeaponInterface() {
+		virtual void pullTrigger(Unit& unit, float time) {
 		}
 
-		virtual void shoot() = 0;
-		virtual void reload() = 0;
+		virtual void releaseTrigger(Unit& unit, float time) {
+		}
+		
+		virtual void reload(float time) {
+		}
 
-		// For possible use later on. Movement might affect accuracy. Entering a car might abort reloading ... etc.
-		void forward() {};
-		void backward() {};
-		void turnLeft() {};
-		void turnRight() {};
-		void run() {};
-		void action() {};
+		virtual float getRange() const = 0;
+
+		virtual int getClipSize() const = 0;
+
+		virtual int getBulletsInWeapon() const = 0;
+
+		// Should be called by ZombieEngine.
+		virtual void initEngine(b2World* world_, GameInterface* gameInterface) {
+		}
+
+		virtual WeaponInterfacePtr clone() const = 0;
 	private:
 	};
 

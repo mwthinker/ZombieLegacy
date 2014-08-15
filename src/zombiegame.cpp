@@ -12,6 +12,7 @@
 #include "explosion.h"
 #include "fog.h"
 #include "tree2D.h"
+#include "gun.h"
 
 // External.
 #include <mw/exception.h>
@@ -171,7 +172,7 @@ namespace zombie {
 			}
 		}
 		health_ = human.healthPoints();
-		clipsize_ = human.getWeapon()->clipSize();
+		clipsize_ = human.getWeapon()->getClipSize();
 		bulletsInWeapon_ = human.getWeapon()->getBulletsInWeapon();
 	}
 
@@ -216,12 +217,12 @@ namespace zombie {
 	void ZombieGame::collision(float impulse, Building& building) {
 	}
 
-	void ZombieGame::shotMissed(const Bullet& bullet, Position hitPosition) {
-		graphicMiddle_.push_back(std::make_shared<Shot>(bullet, hitPosition));
+	void ZombieGame::shotMissed(Position startPosition, Position hitPosition) {
+		graphicMiddle_.push_back(std::make_shared<Shot>(startPosition, hitPosition));
 	}
 
-	void ZombieGame::shotHit(const Bullet& bullet, Position hitPosition, Unit& unit) {
-		graphicMiddle_.push_back(std::make_shared<Shot>(bullet, hitPosition));
+	void ZombieGame::shotHit(Position startPosition, Position hitPosition, Unit& unit) {
+		graphicMiddle_.push_back(std::make_shared<Shot>(startPosition, hitPosition));
 		graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
 		if (unit.isInfected()) {
 			graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
@@ -283,9 +284,7 @@ namespace zombie {
 	}
 
 	void ZombieGame::loadWeapon(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation, float size, Position grip, const mw::Sound& shoot, const mw::Sound& reload) {
-		weapons_[name] = Weapon2D(damage, timeBetweenShots, range, clipSize, symbol, animation, size, grip);
-		weapons_[name].setReloadSound(reload);
-		weapons_[name].setShotSound(shoot);
+		weapons_[name] = Weapon2D(std::make_shared<Gun>(damage, timeBetweenShots, range, clipSize, shoot, reload), symbol, animation, size, grip); //Weapon2D(damage, timeBetweenShots, range, clipSize, symbol, animation, size, grip);
 	}
 
 } // Namespace zombie.

@@ -5,13 +5,14 @@
 #include "tree.h"
 #include "building.h"
 #include "weaponitem.h"
-#include "bullet.h"
+#include "weaponinterface.h"
 #include "input.h"
 #include "zombiebehavior.h"
 #include "survivorbehavior.h"
 #include "humanplayer.h"
 #include "driver.h"
 #include "box2ddef.h"
+#include "closestraycastcallback.h"
 
 #include <vector>
 #include <string>
@@ -32,46 +33,7 @@ namespace zombie {
 			void reset() {
 				foundFixtures.clear();
 			}
-		};
-
-		class ClosestRayCastCallback : public b2RayCastCallback {
-		public:
-			ClosestRayCastCallback(std::function<bool(b2Fixture*)> conditionFunc) {
-				closestFraction_ = 1.f;
-				fixture_ = nullptr;
-				conditionFunc_ = conditionFunc;
-			}
-
-			b2Fixture* getFixture() const {
-				return fixture_;
-			}
-
-			// Ray-cast callback.
-			float32 ReportFixture(b2Fixture* fixture, const b2Vec2 &point, const b2Vec2 &normal, float32 fraction) override {
-				// Is a physical fixture?
-				if (conditionFunc_(fixture)) {
-					fixture_ = fixture;
-					closestFraction_ = fraction;
-				}
-
-				// Fraction to clip the ray for closest hit.
-				return fraction;
-			}
-
-			float getFraction() const {
-				return closestFraction_;
-			}
-
-			void reset() {
-				closestFraction_ = 1.f;
-				fixture_ = nullptr;
-			}
-
-		private:
-			b2Fixture* fixture_;
-			std::function<bool(b2Fixture*)> conditionFunc_;
-			float closestFraction_;
-		};
+		};		
 
 	}
 
@@ -128,6 +90,13 @@ namespace zombie {
 				ob->setHumanPosition(humanState_.position_);
 				if (ob->toBeRemoved()) {
 					remove(ob);
+				}
+			}
+
+			// Signal the gameInterface for all units that died.
+			for (Unit* unit : units_) {
+				if (unit->isDead()) {
+					gameInterface_.unitDied(*unit);
 				}
 			}
 
@@ -201,6 +170,7 @@ namespace zombie {
 	void ZombieEngine::setHuman(DevicePtr device, State state, Unit* unit) {
 		humanState_ = state;
 		unit->createBody(&world_, state);
+		unit->getWeapon()->init(&world_, &gameInterface_);
 		human_ = unit;
 		Player* player = new HumanPlayer(device, unit);
 		unit->addEventHandler(std::bind(&ZombieEngine::unitEventHandler, this, unit, std::placeholders::_2));
@@ -208,6 +178,7 @@ namespace zombie {
 
 	void ZombieEngine::add(State state, Unit* unit) {
 		unit->createBody(&world_, state);
+		unit->getWeapon()->init(&world_, &gameInterface_);
 		if (unit->isInfected()) {
 			new ZombieBehavior(unit);
 		} else {
@@ -234,9 +205,6 @@ namespace zombie {
 		switch (unitEvent) {
 			case Unit::ACTION:
 				doAction(unit);
-				break;
-			case Unit::SHOOT:
-				doShotDamage(unit, unit->getLastBullet());
 				break;
 		}
 	}
@@ -287,48 +255,6 @@ namespace zombie {
 		driver->getUnit()->setActive(true);
 		garbagePlayers_.push_back(driver);
 		car->setDriver(nullptr);
-	}
-
-	void ZombieEngine::doShotDamage(Unit* shooter, const Bullet& bullet) {
-		b2Vec2 dir(std::cos(bullet.direction_), std::sin(bullet.direction_));
-		b2Vec2 hitPosition = shooter->getPosition() + bullet.range_ * dir;
-
-		// Return the closest physcal object.
-		ClosestRayCastCallback callback([](b2Fixture* fixture) {
-			return !fixture->IsSensor();
-		});
-
-		world_.RayCast(&callback, shooter->getPosition(), hitPosition);
-		b2Fixture* fixture = callback.getFixture();
-
-		hitPosition = shooter->getPosition() + bullet.range_ * callback.getFraction() * dir;
-
-		// Did bullet hit something?
-		if (fixture != nullptr) {
-			Object* ob = static_cast<Object*>(fixture->GetUserData());
-
-			if (Unit* target = dynamic_cast<Unit*>(ob)) {
-				gameInterface_.shotHit(bullet, hitPosition, *target);
-				// Target alive?
-				if (!target->isDead()) {
-					target->updateHealthPoint(-bullet.damage_);
-					// Died now?
-					if (target->isDead()) {
-						// Human?
-						if (human_ == target) {
-							gameInterface_.humanDied(*target);
-						} else {
-							gameInterface_.unitDied(*target);
-						}
-					}
-				}
-			} else {
-				// Calculate the hit position on the unknown object.
-				gameInterface_.shotMissed(bullet, hitPosition);
-			}
-		} else {
-			gameInterface_.shotMissed(bullet, hitPosition);
-		}
 	}
 
 } // Namespace zombie.

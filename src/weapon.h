@@ -1,6 +1,10 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
+#include "weaponinterface.h"
+#include "state.h"
+#include "gameinterface.h"
+
 #include <memory>
 
 namespace zombie {
@@ -11,98 +15,65 @@ namespace zombie {
 	// Describes a Weapon and is responsible of shooting.
 	class Weapon {
 	public:
-		Weapon() {
-			damage_ = 35.f;
-			timeBetweenShots_ = 0.1f;
-			range_ = 30.f;
-			clipSize_ = 12;
-			bulletsInWeapon_ = 12;
-			lastShotTime_ = 0.0f;
-			shotSound_ = range_;
+		Weapon() : weaponInterface_(nullptr) {
 		}
 
-		Weapon(float damage, float timeBetweenShots, float range, int clipSize) {
-			damage_ = damage;
-			timeBetweenShots_ = timeBetweenShots;
-			range_ = range;
-			clipSize_ = clipSize;
-			bulletsInWeapon_ = clipSize;
-			lastShotTime_ = 0.0f;
-			shotSound_ = range_;
+		Weapon(const Weapon& weapon) {
+			weaponInterface_ = weapon.weaponInterface_->clone();
 		}
 
-		// Called when user pulls the trigger.
-		bool shoot(float time) {			
-			if (lastShotTime_ + timeBetweenShots_ < time) {
-				if (bulletsInWeapon_ > 0) {
-					lastShotTime_ = time;
-					--bulletsInWeapon_;
-					return true;
-				}
-			}
-			return false;
+		Weapon& operator=(const Weapon& weapon) {
+			weaponInterface_ = weapon.weaponInterface_->clone();
+			return *this;
+		}
+
+		Weapon(const WeaponInterfacePtr& weaponInterface) : weaponInterface_(weaponInterface) {
+		}
+
+		void pullTrigger(Unit& shooter, float time) {
+			weaponInterface_->pullTrigger(shooter, time);
+		}
+
+		void releaseTrigger(Unit& shooter, float time) {
+			weaponInterface_->releaseTrigger(shooter, time);
 		}
 
 		// Tries to reload the weapon. If it reloads return true, else false.
-		bool reload() {
-			if (bulletsInWeapon_ == clipSize_) {
-				// No need to reload.
-				return false;
-			}
-			bulletsInWeapon_ = clipSize_;
-			return true;
+		void reload(float time) {
+			weaponInterface_->reload(time);
 		}
 
-		// Returns the point damage.
-		float damage() const {
-			return damage_;
-		}	
-
-		//
-		float range() const {
-			return range_;
-		}
-
-		int clipSize() const {
-			return clipSize_;
+		int getClipSize() const {
+			return weaponInterface_->getClipSize();
 		}
 
 		int getBulletsInWeapon() const {
-			return bulletsInWeapon_;
+			return weaponInterface_->getBulletsInWeapon();
 		}
 
-		double getShotSound() const {
-			return shotSound_;
-		}
-
+		// Draw the weapon symbol.
 		virtual void drawSymbol() {
 		}
 
+		// Draw the weapon. The function will be called when the physical object is drawn.
 		virtual void draw() {
 		}
 
-		virtual void playShotSound() {
-		}
-
-		virtual void playReloadSound() {
+		float getRange() const {
+			return weaponInterface_->getRange();
 		}
 
 		virtual WeaponPtr clone() const {
 			return std::make_shared<Weapon>(*this);
 		}
 
+		// Should be called by the zombieEngine.
+		virtual void init(b2World* world_, GameInterface* gameInterface) {
+			weaponInterface_->initEngine(world_, gameInterface);
+		}
+
 	private:
-		bool reload_;				// Is true when the weapon is reloading.
-
-		float damage_;				// The damage made by the weapon.
-		float timeBetweenShots_;
-		float range_;				// The range of the weapon.
-
-		int clipSize_;				// The number of bullets for a reload.
-		int bulletsInWeapon_;		// The current number of bullets in the weapon.
-		float shotSound_;
-
-		float lastShotTime_;
+		WeaponInterfacePtr weaponInterface_;
 	};
 
 } // Namespace zombie.
