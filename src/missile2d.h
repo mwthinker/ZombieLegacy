@@ -11,8 +11,8 @@ namespace zombie {
 	class Missile2D : public Missile {
 	public:
 		Missile2D(const Animation& animation, GameInterface& gameInterface, float width, float length,
-			float speed, float explodeTime, float damage, float explosionRadius)
-			: Missile(gameInterface, width, length, speed, explodeTime, damage, explosionRadius),
+			float mass, float speed, float explodeTime, float damage, float explosionRadius)
+			: Missile(gameInterface, width, length, mass, speed, explodeTime, damage, explosionRadius),
 			animation_(animation) {
 		}
 

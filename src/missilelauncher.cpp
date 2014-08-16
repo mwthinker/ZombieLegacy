@@ -1,5 +1,6 @@
 #include "missilelauncher.h"
 #include "unit.h"
+#include "auxiliary.h"
 
 #include <cassert>
 
@@ -21,7 +22,7 @@ namespace zombie {
 				--bulletsInWeapon_;
 				Missile* missile = shot();
 				assert(missile != nullptr);
-				missile->createBody(unit.getBody()->GetWorld(), unit.getPosition(), unit.getDirection());
+				missile->createBody(unit.getBody()->GetWorld(), unit.getPosition() + (unit.getRadius() + missile->getLength() * 0.5f) * directionVector(unit.getDirection()), unit.getDirection());
 				// The missile now belongs to the box2d world.
 			}
 		}
@@ -44,9 +45,7 @@ namespace zombie {
 
 	// Tries to reload the weapon. If it reloads return true, else false.
 	void MissileLauncher::reload(float time) {
-		if (bulletsInWeapon_ == clipSize_) {
-			// No need to reload.
-		} else {
+		if (bulletsInWeapon_ < clipSize_) {
 			reload();
 			bulletsInWeapon_ += 1;
 		}

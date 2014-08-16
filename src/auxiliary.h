@@ -40,6 +40,10 @@ namespace zombie {
 		::glRotatef(angle, 0, 0, 1);
 	}
 
+	static Position directionVector(float angle) {
+		return Position(std::cos(angle), std::sin(angle));
+	}
+
 	// Returns a random number. The output is uniformly distributed on the interval [a, b).
 	float random();
 

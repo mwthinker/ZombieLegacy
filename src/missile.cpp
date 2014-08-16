@@ -1,10 +1,11 @@
 #include "missile.h"
 #include "inviewquerycallback.h"
 #include "unit.h"
+#include "auxiliary.h"
 
 namespace zombie {
 
-	Missile::Missile(GameInterface& gameInterface, float width, float length, float speed,
+	Missile::Missile(GameInterface& gameInterface, float width, float length, float mass, float speed,
 		float explodeTime, float damage, float explosionRadius) : gameInterface_(gameInterface) {
 		
 		speed_ = speed;
@@ -15,6 +16,7 @@ namespace zombie {
 		exploded_ = false;
 		explodeTime_ = explodeTime;
 		time_ = 0;
+		mass_ = mass;
 	}
 
 	void Missile::createBody(b2World* world, Position position, float angle) {
@@ -24,13 +26,13 @@ namespace zombie {
 		bodyDef.position = position;
 		bodyDef.angle = angle;
 		body_ = world->CreateBody(&bodyDef);
-		body_->SetLinearVelocity(speed_ * Velocity(std::cos(angle), std::sin(angle)));
+		body_->SetLinearVelocity(speed_ * directionVector(angle));
 		body_->SetUserData(this);
 
 		// Body properties.
 		{
 			b2PolygonShape dynamicBox;
-			dynamicBox.SetAsBox(0.5f *length_, 0.5f * width_); // Expected parameters is half the side.
+			dynamicBox.SetAsBox(0.5f * length_, 0.5f * width_); // Expected parameters is half the side.
 
 			b2FixtureDef fixtureDef;
 			fixtureDef.shape = &dynamicBox;

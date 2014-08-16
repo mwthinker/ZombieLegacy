@@ -295,7 +295,7 @@ namespace zombie {
 	void ZombieGame::loadMissile(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol,
 		const Animation& animation, float size, Position grip, const mw::Sound& shoot, const mw::Sound& reload,
 		float mass, float width, float length, const Animation& projectileAnimation, const mw::Sound& moveSound, float damageRadius, float deathTime, float speed) {
-		Missile2D missile(projectileAnimation, *this, width, length, speed, deathTime, damage, damageRadius);
+		Missile2D missile(projectileAnimation, *this, width, length, mass, speed, deathTime, damage, damageRadius);
 		auto missileLauncher = std::make_shared<MissileLauncher2D>(missile, clipSize, timeBetweenShots, range, shoot, reload);
 		weapons_[name] = Weapon2D(missileLauncher, symbol, animation, size, grip);
 	}

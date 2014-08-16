@@ -14,7 +14,7 @@ namespace zombie {
 
 	class Missile : public Object {
 	public:
-		Missile(GameInterface& gameInterface, float width, float length, float speed,
+		Missile(GameInterface& gameInterface, float width, float length, float mass, float speed,
 			float explodeTime, float damage, float explosionRadius);
 
 		virtual ~Missile() {
@@ -68,7 +68,7 @@ namespace zombie {
 
 		GameInterface& gameInterface_;
 		bool exploded_;
-
+		
 		float damage_;
 		float explosionRadius_;
 		float force_;
