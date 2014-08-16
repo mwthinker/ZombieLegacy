@@ -77,6 +77,8 @@ namespace zombie {
 
 		Animation extractAnimation(tinyxml2::XMLConstHandle animationTag) const;
 
+		mw::Sound extractSound(tinyxml2::XMLConstHandle handle) const;
+
 		void loadFrame(tinyxml2::XMLConstHandle frameTag, Animation& animation) const;
 
 		mw::Font loadFont(std::string file, unsigned int fontSize) const;

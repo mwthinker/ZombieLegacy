@@ -231,14 +231,12 @@ namespace zombie {
 
 	mw::Sound GameData::getMenuHighlitedSound() const {
 		tinyxml2::XMLConstHandle soundTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("menu");
-		std::string name = zombie::extract<std::string>(soundTag.FirstChildElement("soundHighlited"));
-		return loadSound(name);
+		return extractSound(soundTag.FirstChildElement("soundHighlited"));
 	}
 
 	mw::Sound GameData::getMenuChoiceSound() const {
 		tinyxml2::XMLConstHandle soundTag = tinyxml2::XMLConstHandle(xmlDoc_.FirstChildElement("zombieGame")).FirstChildElement("menu");
-		std::string name = zombie::extract<std::string>(soundTag.FirstChildElement("soundChoice"));
-		return loadSound(name);
+		return extractSound(soundTag.FirstChildElement("soundChoice"));
 	}
 
 	void GameData::loadCar(DataInterface& dataInterface) const {
@@ -266,8 +264,8 @@ namespace zombie {
 		grip.y = zombie::extract<float>(humanTag.FirstChildElement("moveImageGripY"));
 		Animation injuredA = extractAnimation(humanTag.FirstChildElement("injuredAnimation"));
 		Animation dieA = extractAnimation(humanTag.FirstChildElement("dieAnimation"));
-		mw::Sound dieS = loadSound(zombie::extract<std::string>(humanTag.FirstChildElement("dieSound")));
-		mw::Sound hitS = loadSound(zombie::extract<std::string>(humanTag.FirstChildElement("hitSound")));
+		mw::Sound dieS = extractSound(humanTag.FirstChildElement("dieSound"));
+		mw::Sound hitS = extractSound(humanTag.FirstChildElement("hitSound"));
 		std::string weaponName = zombie::extract<std::string>(humanTag.FirstChildElement("weapon"));
 
 		dataInterface.loadHuman(mass, radius, life, walkingSpeed, runningSpeed, stamina, moveA, grip, injuredA, dieA, dieS, hitS, weaponName);
@@ -278,7 +276,7 @@ namespace zombie {
 		mw::Texture particle = loadTexture(zombie::extract<std::string>(explosionTag.FirstChildElement("particleImage")));
 		mw::Sprite shockwave = extractSprite(explosionTag.FirstChildElement("shockwaveImage"));
 		mw::Sprite emitter = extractSprite(explosionTag.FirstChildElement("emitterImage"));
-		mw::Sound sound = loadSound(zombie::extract<std::string>(explosionTag.FirstChildElement("shockwaveImage")));
+		mw::Sound sound = extractSound(explosionTag.FirstChildElement("shockwaveImage"));
 		dataInterface.loadExplosion(particle, shockwave, emitter, sound);
 	}
 
@@ -304,8 +302,8 @@ namespace zombie {
 		grip.y = zombie::extract<float>(zombieTag.FirstChildElement("moveImageGripY"));
 		Animation injuredA = extractAnimation(zombieTag.FirstChildElement("injuredAnimation"));
 		Animation dieA = extractAnimation(zombieTag.FirstChildElement("dieAnimation"));
-		mw::Sound dieS = loadSound(zombie::extract<std::string>(zombieTag.FirstChildElement("dieSound")));
-		mw::Sound hitS = loadSound(zombie::extract<std::string>(zombieTag.FirstChildElement("hitSound")));
+		mw::Sound dieS = extractSound(zombieTag.FirstChildElement("dieSound"));
+		mw::Sound hitS = extractSound(zombieTag.FirstChildElement("hitSound"));
 		std::string weaponName = zombie::extract<std::string>(zombieTag.FirstChildElement("weapon"));
 
 		dataInterface.loadZombie(mass, radius, life, walkingSpeed, runningSpeed, stamina, moveA, grip, injuredA, dieA, dieS, hitS, weaponName);
@@ -358,8 +356,8 @@ namespace zombie {
 			float timeBetweenShots = zombie::extract<float>(weaponTag.FirstChildElement("timeBetweenShots"));
 			int clipSize = zombie::extract<int>(weaponTag.FirstChildElement("clipSize"));
 
-			mw::Sound shoot = loadSound(zombie::extract<std::string>(weaponTag.FirstChildElement("shootSound")));
-			mw::Sound reload = loadSound(zombie::extract<std::string>(weaponTag.FirstChildElement("reloadSound")));
+			mw::Sound shoot = extractSound(weaponTag.FirstChildElement("shootSound"));
+			mw::Sound reload = extractSound(weaponTag.FirstChildElement("reloadSound"));
 			Animation animation = extractAnimation(weaponTag.FirstChildElement("moveAnimation"));
 			float size = zombie::extract<float>(weaponTag.FirstChildElement("size"));
 			Position grip;
@@ -387,7 +385,7 @@ namespace zombie {
 		float width = zombie::extract<float>(projectileTag.FirstChildElement("width"));
 		float length = zombie::extract<float>(projectileTag.FirstChildElement("length"));
 		Animation animation = extractAnimation(projectileTag.FirstChildElement("animation"));
-		mw::Sound moveSound = loadSound(zombie::extract<std::string>(projectileTag.FirstChildElement("moveSound")));
+		mw::Sound moveSound = extractSound(projectileTag.FirstChildElement("moveSound"));
 		float damageRadius = zombie::extract<float>(projectileTag.FirstChildElement("damageRadius"));
 		float deathTime = zombie::extract<float>(projectileTag.FirstChildElement("deathTime"));
 		float speed = zombie::extract<float>(projectileTag.FirstChildElement("speed"));
@@ -531,6 +529,20 @@ namespace zombie {
 		}
 
 		return animation;
+	}
+
+	mw::Sound GameData::extractSound(tinyxml2::XMLConstHandle handle) const {
+		const tinyxml2::XMLElement* element = handle.ToElement();
+		if (element == nullptr) {
+			throw mw::Exception("Missing element!");
+		}
+
+		const char* str = element->GetText();
+
+		if (str != nullptr) {
+			return loadSound(str);
+		}
+		return mw::Sound();
 	}
 
 	mw::Font GameData::loadFont(std::string file, unsigned int fontSize) const {
