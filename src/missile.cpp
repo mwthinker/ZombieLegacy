@@ -1,6 +1,7 @@
 #include "missile.h"
 #include "inviewquerycallback.h"
 #include "unit.h"
+#include "gameinterface.h"
 #include "auxiliary.h"
 
 namespace zombie {
@@ -60,6 +61,39 @@ namespace zombie {
 
 	bool Missile::toBeRemoved() const {
 		return exploded_;
+	}
+
+	b2Body* Missile::getBody() const {
+		return body_;
+	}
+
+	float Missile::getWidth() const {
+		return width_;
+	}
+
+	float Missile::getLength() const {
+		return length_;
+	}
+
+	Position Missile::getPosition() const {
+		return body_->GetPosition();
+	}
+
+	float Missile::getDirection() const {
+		return body_->GetAngle();
+	}
+
+	State Missile::getState() const {
+		State state;
+		state.angle_ = body_->GetAngle();
+		state.position_ = body_->GetPosition();
+		state.velocity_ = body_->GetLinearVelocity();
+		state.anglularVelocity_ = body_->GetAngularVelocity();
+		return state;
+	}
+
+	State Missile::previousState() const {
+		return previousState_;
 	}
 
 	void Missile::explode() {

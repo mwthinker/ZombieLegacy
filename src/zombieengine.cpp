@@ -5,7 +5,6 @@
 #include "tree.h"
 #include "building.h"
 #include "weaponitem.h"
-#include "weaponinterface.h"
 #include "input.h"
 #include "zombiebehavior.h"
 #include "survivorbehavior.h"

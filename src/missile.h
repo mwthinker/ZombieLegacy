@@ -4,13 +4,11 @@
 #include "object.h"
 #include "state.h"
 #include "gameinterface.h"
-
-#include <mw/opengl.h>
+#include "box2ddef.h"
 
 namespace zombie {
 
-	class Missile;
-	typedef std::shared_ptr<Missile> MissilePtr;
+	class GameInterface;
 
 	class Missile : public Object {
 	public:
@@ -26,40 +24,21 @@ namespace zombie {
 
 		void collision(float impulse) override final;
 
-		bool toBeRemoved() const final;
+		bool toBeRemoved() const override final;
 		
-		b2Body* getBody() const override {
-			return body_;
-		}
+		b2Body* getBody() const override final;
 
-		float getWidth() const {
-			return width_;
-		}
+		float getWidth() const;
 
-		float getLength() const {
-			return length_;
-		}
+		float getLength() const;
 
-		Position getPosition() const {
-			return body_->GetPosition();
-		}
+		Position getPosition() const;
 
-		float getDirection() const {
-			return body_->GetAngle();
-		}
+		float getDirection() const;
 
-		State getState() const {
-			State state;
-			state.angle_ = body_->GetAngle();
-			state.position_ = body_->GetPosition();
-			state.velocity_ = body_->GetLinearVelocity();
-			state.anglularVelocity_ = body_->GetAngularVelocity();
-			return state;
-		}
+		State getState() const;
 
-		inline State previousState() const {
-			return previousState_;
-		}
+		State previousState() const;
 
 	private:
 		void explode();

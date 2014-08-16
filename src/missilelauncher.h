@@ -46,8 +46,6 @@ namespace zombie {
 
 		int bulletsInWeapon_;		// The current number of bullets in the weapon.
 		float lastShotTime_;
-
-		MissilePtr missile_;
 	};
 
 } // Namespace zombie.
