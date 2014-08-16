@@ -26,6 +26,8 @@ namespace zombie {
 
 		radius_ = radius;
 		mass_ = mass;
+
+		body_ = nullptr;
 	}
 
 	Unit::Unit(const Unit& unit) {
@@ -45,6 +47,8 @@ namespace zombie {
 
 		radius_ = unit.radius_;
 		mass_ = unit.mass_;
+
+		body_ = nullptr;
 	}
 
 	Unit& Unit::operator=(const Unit& unit) {
@@ -64,6 +68,8 @@ namespace zombie {
 
 		radius_ = unit.radius_;
 		mass_ = unit.mass_;
+
+		body_ = nullptr;
 
 		return *this;
 	}
@@ -253,12 +259,6 @@ namespace zombie {
 
 	b2Body* Unit::getBody() const {
 		return body_;
-	}
-
-	void Unit::destroyBody(b2World* world) {
-		eventSignal_(this, REMOVED);
-		world->DestroyBody(body_);
-		body_ = nullptr;
 	}
 
 } // Namespace zombie.

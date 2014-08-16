@@ -109,7 +109,7 @@ namespace zombie {
 
 		// Remove units in a safe way. I.e. No risk of removing a unit in current use.
 		for (Object* object : garbageObjects_) {
-			object->destroyBody(&world_);
+			object->destroyBody();
 			delete object;
 		}
 		garbageObjects_.clear();

@@ -11,6 +11,8 @@ namespace zombie {
 		WeaponItem(float x, float y, const WeaponPtr& weapon) {
 			radius_ = 0.5;
 			weapon_ = weapon;
+
+			body_ = nullptr;
 		}
 
 		void createBody(b2World* world) {
@@ -53,11 +55,6 @@ namespace zombie {
 
 		b2Body* getBody() const override {
 			return body_;
-		}
-
-		void destroyBody(b2World* world) override {
-			world->DestroyBody(body_);
-			body_ = nullptr;
 		}
 
 	private:

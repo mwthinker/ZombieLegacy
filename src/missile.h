@@ -27,8 +27,6 @@ namespace zombie {
 		void collision(float impulse) override final;
 
 		bool toBeRemoved() const final;
-
-		void destroyBody(b2World* world) override final;
 		
 		b2Body* getBody() const override {
 			return body_;

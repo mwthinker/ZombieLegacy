@@ -12,18 +12,17 @@ namespace zombie {
 	public:
 		Object() : humanPosition_(ZERO) {
 		}
-
-		// Should remove the object from the world!
+		
+		// Must call destroyBody() before destructor is called.
 		virtual ~Object() {
 		}
-
-		// Deallocates the body.
-		virtual void destroyBody(b2World* world) = 0;
 
 		// Return the body for the object. Use with care!
 		virtual b2Body* getBody() const = 0;
 
-		// Update the object. The parameter is the current "game" time and the time step is 
+		void destroyBody();
+
+		// Update the object. The "time" parameter is the current game time and the "timeStep" is 
 		// the length of the time to be simulated in the updated call.
 		inline virtual void update(float time, float timeStep) {
 		}
@@ -33,18 +32,18 @@ namespace zombie {
 			return false;
 		}
 
-		// Is called when a collion occurs.
+		// Is called when a collision occurs.
 		virtual void collision(float impulse) {
 		}
 
 		// Draw the object in world coordinates.
 		virtual void draw(float accumulator, float timeStep) = 0;
 
-		Position humanPosition() const {
+		inline Position humanPosition() const {
 			return humanPosition_;
 		}
 
-		void setHumanPosition(const Position& position) {
+		inline void setHumanPosition(const Position& position) {
 			humanPosition_ = position;
 		}
 

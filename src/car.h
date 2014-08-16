@@ -16,8 +16,7 @@ namespace zombie {
 	public:
 		enum CarEvent {
 			ACTION,
-			MOVED,
-			REMOVED
+			MOVED
 		};
 
 		Car(float mass, float life, float width, float length);
@@ -81,8 +80,6 @@ namespace zombie {
 		mw::signals::Connection addEventHandler(mw::Signal<Car*, CarEvent>::Callback callback) {
 			return eventSignal_.connect(callback);
 		}
-
-		void destroyBody(b2World* world) override;
 
 	protected:
 		inline State previousState() const {

@@ -12,6 +12,7 @@ namespace zombie {
 	class Tree : public Object {
 	public:
 		Tree(const Position& position) : position_(position) {
+			body_ = nullptr;
 			radius_ = random(0.5f, 2);
 			angle_ = random(0, 2*PI);
 		}
@@ -53,11 +54,6 @@ namespace zombie {
 
 		b2Body* getBody() const override {
 			return body_;
-		}
-
-		void destroyBody(b2World* world) override {
-			world->DestroyBody(body_);
-			body_ = nullptr;
 		}
 
 	private:

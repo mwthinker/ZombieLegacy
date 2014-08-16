@@ -21,7 +21,7 @@ namespace zombie {
 	class Unit : public MovingObject {
 	public:
 		enum UnitEvent {
-			DIE, INJURED, WALK, STANDSTILL, RUN, ACTION, REMOVED
+			DIE, INJURED, WALK, STANDSTILL, RUN, ACTION
 		};
 
 		Unit(float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const WeaponPtr& weapon);
@@ -82,8 +82,6 @@ namespace zombie {
 		mw::signals::Connection addEventHandler(mw::Signal<Unit*, UnitEvent>::Callback);
 
 		b2Body* getBody() const override;
-
-		void destroyBody(b2World* world) override;
 
 	private:
 		// Properties

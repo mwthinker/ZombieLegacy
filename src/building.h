@@ -64,11 +64,6 @@ namespace zombie {
 			return body_;
 		}
 
-		void destroyBody(b2World* world) override {
-			world->DestroyBody(body_);
-			body_ = nullptr;
-		}
-
 	protected:
 		void init() {
 			body_ = nullptr;

@@ -17,6 +17,8 @@ namespace zombie {
 		explodeTime_ = explodeTime;
 		time_ = 0;
 		mass_ = mass;
+
+		body_ = nullptr;
 	}
 
 	void Missile::createBody(b2World* world, Position position, float angle) {
@@ -54,11 +56,6 @@ namespace zombie {
 		if (!exploded_ && explodeTime_ < time_) {
 			explode();
 		}
-	}
-
-	void Missile::destroyBody(b2World* world) {
-		world->DestroyBody(body_);
-		body_ = nullptr;
 	}
 
 	bool Missile::toBeRemoved() const {

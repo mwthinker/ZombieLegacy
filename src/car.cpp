@@ -12,6 +12,7 @@
 namespace zombie {
 
 	Car::Car(float mass, float life, float width, float length) {
+		body_ = nullptr;
 		length_ = length;
 		width_ = width;
 
@@ -32,6 +33,7 @@ namespace zombie {
 		steeringAngle_ = car.steeringAngle_;
 		wheelDelta_ = car.wheelDelta_;
 		mass_ = car.mass_;
+		body_ = nullptr;
 	}
 	
 	Car& Car::operator=(const Car& car) {
@@ -42,7 +44,8 @@ namespace zombie {
 		steeringAngle_ = car.steeringAngle_;
 		wheelDelta_ = car.wheelDelta_;
 		mass_ = car.mass_;
-		
+		body_ = nullptr;
+
 		return  *this;
 	}
 
@@ -143,12 +146,6 @@ namespace zombie {
 		b2Vec2 forward = body_->GetWorldVector(b2Vec2(1, 0));
 		force = -frictionForwardFrontWheel * b2Dot(forward, body_->GetLinearVelocity()) * forward;
 		body_->ApplyForce(force, getFrontWheelPosition());
-	}
-
-	void Car::destroyBody(b2World* world) {
-		eventSignal_(this, REMOVED);
-		world->DestroyBody(body_);
-		body_ = nullptr;
 	}
 
 } // Namespace zombie.
