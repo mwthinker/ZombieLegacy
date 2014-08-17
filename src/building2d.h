@@ -29,8 +29,6 @@ namespace zombie {
 		mw::Sprite leftWall_, rightWall_, roof_;
 	};
 
-
-
 } // Namespace zombie.
 
 #endif // BUILDING2D_H

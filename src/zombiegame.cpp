@@ -14,6 +14,7 @@
 #include "tree2D.h"
 #include "gun.h"
 #include "missilelauncher2d.h"
+#include "gamedataentry.h"
 
 #include <mw/exception.h>
 
@@ -46,6 +47,85 @@ namespace zombie {
 			}
 		}
 
+		Missile2D loadMissile2D(GameInterface* gameInterface, GameDataEntry& entry, float damage, float range) {
+			float mass = entry.getFloat("range");
+			float width = entry.getFloat("width");
+			float length = entry.getFloat("length");
+			Animation animation = entry.getAnimation("animation");
+			mw::Sound moveSound = entry.getSound("moveSound");
+			float damageRadius = entry.getFloat("damageRadius");
+			float deathTime = entry.getFloat("deathTime");
+			float speed = entry.getFloat("speed");
+
+			return Missile2D(animation, *gameInterface, width, length, mass, speed, deathTime, damage, damageRadius);
+		}
+
+		Weapon2D loadWeapon2D(GameInterface* gameInterface, GameDataEntry& entry) {
+			mw::Sprite symbolImage = entry.getSprite("symbolImage");
+
+			float timeBetweenShots = entry.getFloat("timeBetweenShots");
+			int clipSize = entry.getInt("clipSize");
+
+			mw::Sound shoot = entry.getSound("shootSound");
+			mw::Sound reload = entry.getSound("reloadSound");
+			Animation animation = entry.getAnimation("moveAnimation");
+			float size = entry.getFloat("size");
+			Position grip;
+			grip.x = entry.getFloat("moveImageGripX");
+			grip.y = entry.getFloat("moveImageGripY");
+			
+			GameDataEntry projectile = entry.getChildEntry("projectile");
+			float damage = projectile.getFloat("damage");
+			float range = projectile.getFloat("range");
+
+			if (projectile.isAttributeEqual("type", "missile")) {
+				auto missile = loadMissile2D(gameInterface, projectile, damage, range);
+				auto missileLauncher = std::make_shared<MissileLauncher2D>(missile, clipSize, timeBetweenShots, range, shoot, reload);
+				return Weapon2D(missileLauncher, symbolImage, animation, size, grip);;
+			} else {
+				return Weapon2D(std::make_shared<Gun>(damage, timeBetweenShots, range, clipSize, shoot, reload), symbolImage, animation, size, grip);
+			}
+		}
+		
+		std::unique_ptr<Unit2D> loadUnit(GameInterface* gameInterface, GameDataEntry& entry, bool infected, std::map<std::string, Weapon2D>& weapons) {
+			float mass = entry.getFloat("mass");
+			float radius = entry.getFloat("radius");
+			float life = entry.getFloat("life");
+			float walkingSpeed = entry.getFloat("walkingSpeed");
+			float runningSpeed = entry.getFloat("runningSpeed");
+			float stamina = entry.getFloat("stamina");
+			Animation moveA = entry.getAnimation("moveAnimation");
+			Position grip;
+			grip.x = entry.getFloat("moveImageGripX");
+			grip.y = entry.getFloat("moveImageGripY");			
+			std::string weaponName = entry.getString("weapon");
+			return std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapons[weaponName].clone(), moveA, grip));
+		}
+
+		std::unique_ptr<Car2D> loadCar(GameDataEntry& entry) {
+			Animation animation = entry.getAnimation("moveAnimation");
+			float mass = entry.getFloat("mass");
+			float width = entry.getFloat("width");
+			float length = entry.getFloat("length");
+			float life = entry.getFloat("life");
+			return std::unique_ptr<Car2D>(new Car2D(mass, life, width, length, animation));
+		}
+
+		std::shared_ptr<Explosion> loadExplosion(GameDataEntry& entry) {
+			mw::Texture particle = entry.getTexture("particleImage");
+			mw::Sprite shockwave = entry.getSprite("shockwaveImage");
+			mw::Sprite emitter = entry.getSprite("emitterImage");
+			mw::Sound sound = entry.getSound("shockwaveImage");
+			return std::make_shared<Explosion>(particle, shockwave, emitter, sound);
+		}
+
+		std::shared_ptr<Fog> loadFog(GameDataEntry& entry) {
+			mw::Texture fog = entry.getTexture("image");
+			float radius = entry.getFloat("radius");
+			mw::Color color = entry.getColor("color");
+			return std::make_shared<Fog>(fog, radius, color);
+		}
+
 	}
 
 	ZombieGame::ZombieGame(const GameData& gameData) : engine_(*this, gameData.getTimeStepMS(), gameData.getImpulseThreshold()), gameData_(gameData) {
@@ -67,10 +147,33 @@ namespace zombie {
 		nbrUnits_ = 0;
 
 		unitMaxLimit_ = gameData.getUnitLimit();
-		gameData.load(*this);		
+		gameData.load(*this);
 
 		innerSpawnRadius_ = gameData.getInnerSpawnRadius();
 		outerSpawnRadius_ = gameData.getOuterSpawnRadius();
+
+		// Load Weapons.
+		gameData.getEntry("weapons").iterateChilds("weapon", [&](GameDataEntry entry) {
+			std::string weaponName = entry.getString("name");
+			weapons_[weaponName] = zombie::loadWeapon2D(this, entry);
+			return true;
+		});
+		
+		human_ = zombie::loadUnit(this, gameData.getEntry("human"), false, weapons_);
+		zombie_ = zombie::loadUnit(this, gameData.getEntry("zombie"), true, weapons_);
+		car_ = zombie::loadCar(gameData.getEntry("car"));
+		fog_ = zombie::loadFog(gameData.getEntry("fog"));
+		explosion_ = zombie::loadExplosion(gameData.getEntry("explosion"));
+
+		humanInjured_ = gameData.getEntry("human").getAnimation("injuredAnimation");
+		humanDie_ = gameData.getEntry("human").getAnimation("dieAnimation");
+		human_->setDieSound(gameData.getEntry("human").getSound("dieSound"));
+		human_->setHitSound(gameData.getEntry("human").getSound("hitSound"));
+
+		zombieInjured_ = gameData.getEntry("zombie").getAnimation("injuredAnimation");
+		zombieDie_ = gameData.getEntry("zombie").getAnimation("dieAnimation");
+		zombie_->setDieSound(gameData.getEntry("zombie").getSound("dieSound"));
+		zombie_->setHitSound(gameData.getEntry("zombie").getSound("hitSound"));
 
 		// Add human to engine.
 		{
@@ -237,15 +340,6 @@ namespace zombie {
 	}
 
 	// Implements the data interface.
-	void ZombieGame::loadExplosion(const mw::Texture& particle, const mw::Sprite& shockwave, const mw::Sprite& emitter, const mw::Sound& sound) {
-		explosion_ = std::make_shared<Explosion>(particle, shockwave, emitter, sound);
-	}
-
-	void ZombieGame::loadFog(const mw::Texture& fog, float radius, const mw::Color& color) {
-		fog_ = std::make_shared<Fog>(fog, radius, color);
-		graphicHeaven_.push_back(fog_);
-	}
-
 	void ZombieGame::loadTree(const Position& position) {
 		engine_.add(new Tree2D(position, tree_));
 	}
@@ -258,44 +352,12 @@ namespace zombie {
 		engine_.add(new Building2D(corners, wall_, wall_, wall_));
 	}
 
-	void ZombieGame::loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, Position grip, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) {
-		zombie_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, true, weapons_[weapon].clone(), moveA, grip));
-		zombie_->setDieSound(die);
-		zombie_->setHitSound(hitSound);
-		zombieInjured_ = injuredA;
-		zombieDie_ = dieA;
-	}
-
-	void ZombieGame::loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina, const Animation& moveA, Position grip, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) {
-		human_ = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, false, weapons_[weapon].clone(), moveA, grip));
-		human_->setDieSound(die);
-		human_->setHitSound(hitSound);
-		humanInjured_ = injuredA;
-		humanDie_ = dieA;
-	}
-
-	void ZombieGame::loadCar(float mass, float width, float length, float life, const Animation& animation) {
-		car_ = std::unique_ptr<Car2D>(new Car2D(mass, life, width, length, animation));
-	}
-
 	void ZombieGame::loadRoad(const std::vector<Position>& road) {
 		terrain_.addRoad(road);
 	}	
 
 	void ZombieGame::loadWater(const std::vector<Position>& corners) {
 		terrain_.addWater(corners);
-	}
-
-	void ZombieGame::loadGun(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, const Animation& animation, float size, Position grip, const mw::Sound& shoot, const mw::Sound& reload) {		
-		weapons_[name] = Weapon2D(std::make_shared<Gun>(damage, timeBetweenShots, range, clipSize, shoot, reload), symbol, animation, size, grip);
-	}
-
-	void ZombieGame::loadMissile(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol,
-		const Animation& animation, float size, Position grip, const mw::Sound& shoot, const mw::Sound& reload,
-		float mass, float width, float length, const Animation& projectileAnimation, const mw::Sound& moveSound, float damageRadius, float deathTime, float speed) {
-		Missile2D missile(projectileAnimation, *this, width, length, mass, speed, deathTime, damage, damageRadius);
-		auto missileLauncher = std::make_shared<MissileLauncher2D>(missile, clipSize, timeBetweenShots, range, shoot, reload);
-		weapons_[name] = Weapon2D(missileLauncher, symbol, animation, size, grip);
 	}
 
 } // Namespace zombie.

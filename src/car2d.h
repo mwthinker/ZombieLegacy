@@ -23,6 +23,7 @@ namespace zombie {
 			State state = getState();
 			state.position_ = alpha * state.position_ + (1.f - alpha) * previousState().position_;
 
+			glColor3d(1, 1, 1);
 			glPushMatrix();
 			glTranslate2f(state.position_);
 			glRotated(state.angle_ * 180 / PI, 0, 0, 1);

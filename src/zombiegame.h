@@ -94,37 +94,17 @@ namespace zombie {
 		// End of the GameInterface.
 
 		// Implements the DataInterface.
-		void loadExplosion(const mw::Texture& particle, const mw::Sprite& shockwave, const mw::Sprite& emitter, const mw::Sound& sound) override;
-
-		void loadFog(const mw::Texture& fog, float radius, const mw::Color& color) override;
-
 		void loadTree(const Position& position) override;
 		
 		void loadSpawningPoint(const Position& position) override;
 
 		void loadBuilding(const std::vector<Position>& corners) override;
 
-		void loadZombie(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina,
-			const Animation& moveA, Position grip, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) override;
-
-		void loadHuman(float mass, float radius, float life, float walkingSpeed, float runningSpeed, float stamina,
-			const Animation& moveA, Position grip, const Animation& injuredA, const Animation& dieA, const mw::Sound& die, const mw::Sound& hitSound, std::string weapon) override;
-
-		void loadCar(float mass, float width, float length, float life, const Animation& animation) override;
-
 		void loadRoad(const std::vector<Position>& road) override;
 
 		void loadWater(const std::vector<Position>& positions) override;
 
-		void loadGun(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol, 
-			const Animation& animation, float size, Position grip, const mw::Sound& shoot, const mw::Sound& reload) override;
-
-		void loadMissile(std::string name, float damage, float timeBetweenShots, float range, int clipSize, const mw::Sprite& symbol,
-			const Animation& animation, float size, Position grip, const mw::Sound& shoot, const mw::Sound& reload,
-			float mass, float width, float length, const Animation& projectileAnimation, const mw::Sound& moveSound, float damageRadius, float deathTime, float speed) override;
-
 		// End of the DataInterface.
-
 		float innerSpawnRadius_;
 		float outerSpawnRadius_;
 		float scale_;

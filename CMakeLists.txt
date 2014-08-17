@@ -33,6 +33,7 @@ set(SOURCES_ZOMBIE
 	src/explosion.h
 	src/gamedata.cpp
 	src/gamedata.h
+	src/gamedataentry.h
 	src/gameinterface.h
 	src/graphic.h
 	src/graphicanimation.h
