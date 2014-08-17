@@ -58,7 +58,7 @@ namespace zombie {
 				glPopMatrix();
 				glRotatef(angle);
 				glTranslate2f(grip_);
-				getWeapon()->draw();
+				getWeapon()->draw(timeStep);
 				glPopMatrix();
 			}
 		}

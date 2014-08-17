@@ -52,20 +52,16 @@ namespace zombie {
 		}
 
 		// Draw the weapon symbol.
-		virtual void drawSymbol() {
-		}
+		virtual void drawSymbol(float timeStep) = 0;
 
 		// Draw the weapon. The function will be called when the physical object is drawn.
-		virtual void draw() {
-		}
+		virtual void draw(float timeStep) = 0;
 
 		float getRange() const {
 			return weaponInterface_->getRange();
 		}
 
-		virtual WeaponPtr clone() const {
-			return std::make_shared<Weapon>(*this);
-		}
+		virtual WeaponPtr clone() const = 0;
 
 		// Should be called by the zombieEngine.
 		virtual void init(b2World* world_, GameInterface* gameInterface) {

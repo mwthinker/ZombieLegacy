@@ -13,12 +13,14 @@ endif (MSVC)
 
 # Source files.
 set(SOURCES_ZOMBIE
-	src/animation.h
+	src/animation.cpp
+	src/animation.h	
 	src/auxiliary.cpp
 	src/auxiliary.h
 	src/box2ddef.h
 	src/building.h
-	src/building2d.h	
+	src/building2d.cpp
+	src/building2d.h
 	src/car.cpp
 	src/car.h
 	src/car2d.h

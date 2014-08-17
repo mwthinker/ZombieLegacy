@@ -5,6 +5,8 @@
 #include "animation.h"
 #include "weapon.h"
 
+#include "mw/color.h"
+
 #include <vector>
 #include <string>
 

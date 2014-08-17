@@ -23,15 +23,15 @@ namespace zombie {
 			Weapon(weaponInterface), symbol_(symbol), animation_(animation), grip_(grip), size_(size) {
 		}
 
-		void drawSymbol() override {
+		void drawSymbol(float timeStep) override {
 			symbol_.draw();
 		}
 
-		void draw() override {
+		void draw(float timeStep) override {
 			glPushMatrix();
 			glTranslate2f(-grip_);
 			glScale2f(size_);
-			animation_.draw(0);
+			animation_.draw(timeStep);
 			glPopMatrix();
 		}
 

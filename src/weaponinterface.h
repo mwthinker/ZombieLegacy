@@ -1,13 +1,14 @@
 #ifndef WEAPONINTERFACE_H
 #define WEAPONINTERFACE_H
 
-#include "state.h"
 #include "box2ddef.h"
-#include "gameinterface.h"
 
 #include <memory>
 
 namespace zombie {
+
+	class Unit;
+	class GameInterface;
 
 	class WeaponInterface;
 	typedef std::shared_ptr<WeaponInterface> WeaponInterfacePtr;
@@ -15,14 +16,11 @@ namespace zombie {
 	// Describes a Weapon and is responsible of shooting.
 	class WeaponInterface {
 	public:
-		virtual void pullTrigger(Unit& unit, float time) {
-		}
+		virtual void pullTrigger(Unit& unit, float time) = 0;
 
-		virtual void releaseTrigger(Unit& unit, float time) {
-		}
+		virtual void releaseTrigger(Unit& unit, float time) = 0;
 		
-		virtual void reload(float time) {
-		}
+		virtual void reload(float time) = 0;
 
 		virtual float getRange() const = 0;
 
@@ -30,7 +28,7 @@ namespace zombie {
 
 		virtual int getBulletsInWeapon() const = 0;
 
-		// Should be called by ZombieEngine.
+		// Must be called by ZombieEngine.
 		virtual void initEngine(b2World* world_, GameInterface* gameInterface) {
 		}
 

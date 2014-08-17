@@ -15,10 +15,8 @@
 #include "gun.h"
 #include "missilelauncher2d.h"
 
-// External.
 #include <mw/exception.h>
 
-// Stl.
 #include <cmath>
 #include <sstream>
 
@@ -79,7 +77,7 @@ namespace zombie {
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
 			Unit* human = new Unit2D(*human_);
 			engine_.setHuman(keyboard_, state, human);
-			viewPosition_ = human->getPosition();
+			viewPosition_ = state.position_;
 			refViewPosition_ = viewPosition_;
 			++nbrUnits_;
 		}
