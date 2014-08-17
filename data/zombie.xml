@@ -122,8 +122,8 @@
     <car>
         <moveAnimation>
             <frame>
-                <image>images/jeep.png</image>
-                <bodyWidth>130</bodyWidth>
+                <image>images/car.png</image>
+                <bodyWidth>256</bodyWidth>
             </frame>
         </moveAnimation>
         <mass>10</mass>

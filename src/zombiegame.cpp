@@ -163,6 +163,7 @@ namespace zombie {
 		zombie_ = zombie::loadUnit(this, gameData.getEntry("zombie"), true, weapons_);
 		car_ = zombie::loadCar(gameData.getEntry("car"));
 		fog_ = zombie::loadFog(gameData.getEntry("fog"));
+		graphicHeaven_.push_back(fog_);
 		explosion_ = zombie::loadExplosion(gameData.getEntry("explosion"));
 
 		humanInjured_ = gameData.getEntry("human").getAnimation("injuredAnimation");

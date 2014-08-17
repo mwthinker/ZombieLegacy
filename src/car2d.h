@@ -26,8 +26,7 @@ namespace zombie {
 			glColor3d(1, 1, 1);
 			glPushMatrix();
 			glTranslate2f(state.position_);
-			glRotated(state.angle_ * 180 / PI, 0, 0, 1);
-			glRotated(270, 0, 0, 1);
+			glRotatef(state.angle_ * 180 / PI);
 			glScaled(getWidth(), getWidth(), 1);
 			animation_.draw(timeStep);
 			glPopMatrix();
