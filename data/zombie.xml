@@ -89,7 +89,7 @@
             <symbolImage>images/handgun.png</symbolImage>
             <timeBetweenShots>0.3</timeBetweenShots>
 			<clipSize>1000000</clipSize>
-            <shootSound>sounds/handgunShoot.wav</shootSound>
+            <shootSound>sounds/launch.wav</shootSound>
             <reloadSound>sounds/handgunReload.wav</reloadSound>
             <moveAnimation>
                 <frame>
@@ -123,7 +123,7 @@
         <moveAnimation>
             <frame>
                 <image>images/car.png</image>
-                <bodyWidth>256</bodyWidth>
+                <bodyWidth>120</bodyWidth>
             </frame>
         </moveAnimation>
         <mass>10</mass>
