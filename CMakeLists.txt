@@ -27,7 +27,6 @@ set(SOURCES_ZOMBIE
 	src/closestraycastcallback.h
 	src/contactlistener.h
 	src/contactlistener.cpp
-	src/datainterface.h
 	src/device.h
 	src/driver.h
 	src/explosion.h

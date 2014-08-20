@@ -1,6 +1,7 @@
 #include "zombiewindow.h"
 #include "zombiegame.h"
 #include "gamedata.h"
+#include "gamedataentry.h"
 
 #include <gui/borderlayout.h>
 #include <gui/horizontallayout.h>
@@ -113,7 +114,7 @@ namespace zombie {
 		auto panel = std::make_shared<gui::Panel>();
 		add(panel, gui::BorderLayout::CENTER);
 		panel->setLayout(std::make_shared<gui::VerticalLayout>());
-		panel->setBackground(gameData_.getMenuBackgroundImage());
+		panel->setBackground(gameData_.getEntry("menu").getSprite("backGroundImage"));
 		mw::Font font = gameData_.getDefaultFont(20);
 
 		auto text = std::make_shared<gui::Label>("Zombie", gameData_.getDefaultFont(60));
@@ -129,19 +130,19 @@ namespace zombie {
 
 		auto customGame = createButton("Custom game", font);
 		customGame->addActionListener([&](gui::Component&) {
-			gameData_.getMenuChoiceSound().play();
+			gameData_.getEntry("menu").getSound("soundChoice").play();
 		});
 		panel->addToGroup(customGame);
 
 		auto highScore = createButton("Highscore", font);
 		highScore->addActionListener([&](gui::Component&) {
-			gameData_.getMenuChoiceSound().play();
+			gameData_.getEntry("menu").getSound("soundChoice").play();
 		});
 		panel->addToGroup(highScore);
 
 		auto quit = createButton("Quit", font);
 		quit->addActionListener([&](gui::Component&) {
-			gameData_.getMenuChoiceSound().play();
+			gameData_.getEntry("menu").getSound("soundChoice").play();
 			Window::quit();
 		});
 		panel->addToGroup(quit);

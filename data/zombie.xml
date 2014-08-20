@@ -39,7 +39,7 @@
         <backGroundImage>images/menu.jpg</backGroundImage>
     </menu>
     <music>
-        <switch>off</switch>
+        <switch>1</switch>
         <track>sounds/ZombieTime_v2.mp3</track>
     </music>
     <buildings>

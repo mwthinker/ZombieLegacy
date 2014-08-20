@@ -7,6 +7,8 @@
 #include <mw/sound.h>
 #include <mw/texture.h>
 #include <mw/font.h>
+#include <mw/color.h>
+#include <mw/music.h>
 
 #include <tinyxml2.h>
 
@@ -26,14 +28,18 @@ namespace zombie {
 		bool isAttributeEqual(std::string name, std::string value) const;
 		bool isAttributeEqual(std::string tagName, std::string name, std::string value) const;
 
+		bool getBool(std::string tagName) const;
 		float getFloat(std::string tagName) const;
 		int getInt(std::string tagName) const;
 		mw::Sound getSound(std::string tagName) const;
+		mw::Music getMusic(std::string tagName) const;
+
 		Animation getAnimation(std::string tagName) const;
 		mw::Sprite getSprite(std::string tagName) const;
 		mw::Texture getTexture(std::string tagName) const;
 		std::string getString(std::string tagName) const;
 		mw::Color getColor(std::string tagName) const;
+		Position getPosition(std::string tagName) const;
 
 		GameDataEntry getChildEntry(std::string tagName) const;
 

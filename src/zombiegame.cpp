@@ -124,11 +124,13 @@ namespace zombie {
 			float radius = entry.getFloat("radius");
 			mw::Color color = entry.getColor("color");
 			return std::make_shared<Fog>(fog, radius, color);
-		}
+		}		
 
 	}
 
-	ZombieGame::ZombieGame(const GameData& gameData) : engine_(*this, gameData.getTimeStepMS(), gameData.getImpulseThreshold()), gameData_(gameData) {
+	ZombieGame::ZombieGame(const GameData& gameData) : engine_(*this, 
+		gameData.getEntry("settings").getInt("timeStepMS"),
+		gameData.getEntry("settings").getFloat("impulseThreshold")), gameData_(gameData) {
 		keyboard_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT,
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
 		clipsize_ = 0;
@@ -142,15 +144,20 @@ namespace zombie {
 			keyboard_->eventUpdate(keyEvent);
 		});
 
-		tree_ = gameData.getTreeImage();
-		wall_ = gameData.getWallImage();
+		if (gameData.getEntry("music").getBool("switch")) {
+			music_ = gameData.getEntry("music").getMusic("track");
+			music_.play(-1);
+		}
+		
+		tree_ = gameData.getEntry("tree").getSprite("image");
+		wall_ = gameData.getEntry("buildings").getSprite("wallImage");
 		nbrUnits_ = 0;
 
-		unitMaxLimit_ = gameData.getUnitLimit();
-		gameData.load(*this);
+		unitMaxLimit_ = gameData.getEntry("settings").getInt("unitLimit");
 
-		innerSpawnRadius_ = gameData.getInnerSpawnRadius();
-		outerSpawnRadius_ = gameData.getOuterSpawnRadius();
+		innerSpawnRadius_ = gameData.getEntry("settings").getFloat("innerSpawnRadius");
+		outerSpawnRadius_ = gameData.getEntry("settings").getFloat("outerSpawnRadius");
+		loadTerrain();
 
 		// Load Weapons.
 		gameData.getEntry("weapons").iterateChilds("weapon", [&](GameDataEntry entry) {
@@ -187,7 +194,8 @@ namespace zombie {
 		}
 
 		// Add zombies to engine.
-		for (int i = 0; i < gameData.getUnitLevel(); ++i) {
+		int unitLevel = gameData.getEntry("settings").getInt("unitLevel");
+		for (int i = 0; i < unitLevel; ++i) {
 			Unit* zombie = new Unit2D(*zombie_);
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
 			engine_.add(state, zombie);
@@ -340,25 +348,40 @@ namespace zombie {
 		graphicHeaven_.push_back(std::make_shared<Explosion>(position, 0.f, *explosion_));
 	}
 
-	// Implements the data interface.
-	void ZombieGame::loadTree(const Position& position) {
-		engine_.add(new Tree2D(position, tree_));
-	}
-
-	void ZombieGame::loadSpawningPoint(const Position& position) {
-		spawningPoints_.push_back(position);
-	}
-
-	void ZombieGame::loadBuilding(const std::vector<Position>& corners) {
-		engine_.add(new Building2D(corners, wall_, wall_, wall_));
-	}
-
-	void ZombieGame::loadRoad(const std::vector<Position>& road) {
-		terrain_.addRoad(road);
-	}	
-
-	void ZombieGame::loadWater(const std::vector<Position>& corners) {
-		terrain_.addWater(corners);
+	void ZombieGame::loadTerrain() {
+		auto mapEntry = gameData_.getMapEntry();
+		std::string name = mapEntry.getString("name");
+		mapEntry.getChildEntry("objects").iterateChilds("object", [&](GameDataEntry entry) {
+			std::stringstream stream(entry.getString("geom"));
+			if (entry.isAttributeEqual("type", "building")) {
+				std::string word;
+				if (stream >> word) { // Assume "POLYGON"
+					engine_.add(new Building2D(loadPolygon(stream.str()), wall_, wall_, wall_));
+				}
+			} else if (entry.isAttributeEqual("type", "water")) {
+				std::string word;
+				if (stream >> word) { // Assume "POLYGON"
+					terrain_.addWater(loadPolygon(stream.str()));
+				}
+			} else if (entry.isAttributeEqual("type", "road")) {
+				std::string word;
+				if (stream >> word) { // Assume "POLYGON"
+					terrain_.addRoad(loadPolygon(stream.str()));
+				}
+			} else if (entry.isAttributeEqual("type", "tree")) {
+				std::string word;
+				if (stream >> word) { // Assume "POINT"
+					engine_.add(new Tree2D(loadPoint(stream.str()), tree_));
+				}
+			} else if (entry.isAttributeEqual("type", "spawningpoint")) {
+				std::string word;
+				if (stream >> word) { // Assume "POINT"
+					Point point;
+					spawningPoints_.push_back(loadPoint(stream.str()));
+				}
+			}
+			return true;
+		});
 	}
 
 } // Namespace zombie.

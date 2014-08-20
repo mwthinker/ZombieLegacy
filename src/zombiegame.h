@@ -6,7 +6,6 @@
 #include "device.h"
 #include "gamedata.h"
 #include "graphic.h"
-#include "datainterface.h"
 #include "terrain2d.h"
 #include "explosion.h"
 #include "fog.h"
@@ -34,7 +33,7 @@ namespace zombie {
 	// It also handle all game events triggered by the game engine,
 	// e.g. what happens when a unit dies. All graphics and sound is
 	// started here.
-	class ZombieGame : public GameInterface, public DataInterface, public gui::Component {
+	class ZombieGame : public GameInterface, public gui::Component {
 	public:
 		ZombieGame(const GameData& gameData);
 		~ZombieGame();
@@ -93,18 +92,8 @@ namespace zombie {
 
 		// End of the GameInterface.
 
-		// Implements the DataInterface.
-		void loadTree(const Position& position) override;
+		void loadTerrain();
 		
-		void loadSpawningPoint(const Position& position) override;
-
-		void loadBuilding(const std::vector<Position>& corners) override;
-
-		void loadRoad(const std::vector<Position>& road) override;
-
-		void loadWater(const std::vector<Position>& positions) override;
-
-		// End of the DataInterface.
 		float innerSpawnRadius_;
 		float outerSpawnRadius_;
 		float scale_;
@@ -120,6 +109,7 @@ namespace zombie {
 		Animation zombieDie_;
 		mw::Sprite tree_;
 		mw::Sprite wall_;
+		mw::Music music_;
 
 		Position viewPosition_;
 		Position refViewPosition_;
