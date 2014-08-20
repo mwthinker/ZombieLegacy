@@ -166,8 +166,8 @@ namespace zombie {
 		int index = line.find("(");
 		int index2 = line.rfind(")");
 
-		// New line is the string between "((" and "))".
-		line = line.substr(index + 2, index2 - index - 2);
+		// New line is the string between "(" and ")".
+		line = line.substr(index + 1, index2 - index - 1);
 
 		Point point;
 		std::stringstream stream(line);
