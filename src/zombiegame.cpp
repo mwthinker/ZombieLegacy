@@ -115,7 +115,7 @@ namespace zombie {
 			mw::Texture particle = entry.getTexture("particleImage");
 			mw::Sprite shockwave = entry.getSprite("shockwaveImage");
 			mw::Sprite emitter = entry.getSprite("emitterImage");
-			mw::Sound sound = entry.getSound("shockwaveImage");
+			mw::Sound sound = entry.getSound("sound");
 			return std::make_shared<Explosion>(particle, shockwave, emitter, sound);
 		}
 

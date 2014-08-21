@@ -36,12 +36,16 @@ namespace zombie {
 		Explosion(const Position position, float angle, const Explosion& explosion) : particleEngine_(explosion.particleEngine_), shockWave_(explosion.shockWave_), emitter_(explosion.emitter_) {
 			position_ = position;
 			angle_ = angle;
-			time_ = explosion.time_;
+			time_ = 0;
 			delay_ = explosion.delay_;
 			sound_ = explosion.sound_;
 		}		
 
 		void draw(float deltaTime) override {
+			if (time_ < deltaTime) {
+				sound_.play();
+			}
+
 			time_ += deltaTime;
 			glPushMatrix();
 			glTranslate2f(position_);

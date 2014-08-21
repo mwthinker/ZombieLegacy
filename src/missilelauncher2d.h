@@ -14,7 +14,8 @@ namespace zombie {
 	public:
 		MissileLauncher2D(const Missile2D& missile, int clipSize, float timeBetweenShots,
 			float range, mw::Sound shot = mw::Sound(), mw::Sound reload = mw::Sound())
-			: MissileLauncher(clipSize, timeBetweenShots, range), missile_(missile) {
+			: MissileLauncher(clipSize, timeBetweenShots, range), missile_(missile),
+			shot_(shot), reload_(reload) {
 
 		}
 
@@ -25,13 +26,13 @@ namespace zombie {
 	protected:
 		Missile2D* shot() override {
 			mw::Sound sound = shot_;
-			shot_.play();
+			sound.play();
 			return new Missile2D(missile_);
 		}
 		
 		void reload() override {
-			mw::Sound sound = shot_;
-			reload_.play();
+			mw::Sound sound = reload_;
+			sound.play();
 		}
 
 	private:

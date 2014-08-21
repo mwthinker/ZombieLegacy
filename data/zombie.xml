@@ -11,7 +11,7 @@
         <shockwaveImage>images/shockwave.png</shockwaveImage>
         <particleImage>images/fireBall.png</particleImage>
         <emitterImage>images/trail.png</emitterImage>
-        <sound/>
+        <sound>sounds/explosion.wav</sound>
     </explosion>
     <fog>
         <image>images/fog.png</image>
