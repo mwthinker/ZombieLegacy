@@ -41,7 +41,7 @@
     <music>
         <switch>1</switch>
         <track>sounds/ZombieTime_v2.mp3</track>
-		<volume>0.5</volume>
+        <volume>0.5</volume>
     </music>
     <buildings>
         <hitSound>sounds/buildingHit.wav</hitSound>
@@ -61,35 +61,35 @@
                     <bodyWidth>320</bodyWidth>
                 </frame>
             </moveAnimation>
-			<size>0.5</size>
+            <size>0.5</size>
             <moveImageGripX>-0.1525</moveImageGripX>
-            <moveImageGripY>-0.0825</moveImageGripY>
-			<projectile type="bullet">
-				<damage>60</damage>
-				<range>10</range>
-			</projectile>
+            <moveImageGripY>0.0825</moveImageGripY>
+            <projectile type="bullet">
+                <damage>60</damage>
+                <range>10</range>
+            </projectile>
         </weapon>
         <weapon>
             <name>ZombieFist</name>
             <symbolImage>images/ZombieFist.png</symbolImage>
-            <timeBetweenShots>0.3</timeBetweenShots>			
+            <timeBetweenShots>0.3</timeBetweenShots>
             <clipSize>1000000</clipSize>
             <shootSound>sounds/ZombieFist.wav</shootSound>
             <reloadSound>sounds/ZombieReload.wav</reloadSound>
             <moveAnimation/>
             <size>1</size>
-			<moveImageGripX>0</moveImageGripX>
+            <moveImageGripX>0</moveImageGripX>
             <moveImageGripY>0</moveImageGripY>
-			<projectile type="bullet">
-				<damage>10</damage>
-				<range>1</range>
-			</projectile>
+            <projectile type="bullet">
+                <damage>10</damage>
+                <range>1</range>
+            </projectile>
         </weapon>
-		<weapon>
+        <weapon>
             <name>MissileLauncher</name>
             <symbolImage>images/handgun.png</symbolImage>
             <timeBetweenShots>0.3</timeBetweenShots>
-			<clipSize>1000000</clipSize>
+            <clipSize>1000000</clipSize>
             <shootSound>sounds/launch.wav</shootSound>
             <reloadSound>sounds/handgunReload.wav</reloadSound>
             <moveAnimation>
@@ -98,26 +98,26 @@
                     <bodyWidth>320</bodyWidth>
                 </frame>
             </moveAnimation>
-			<size>0.5</size>			
-            <moveImageGripX>-0.1525</moveImageGripX>
-            <moveImageGripY>-0.0825</moveImageGripY>
-			<projectile type="missile">
-				<mass>100</mass>
-				<width>1</width>
-				<length>2</length>
-				<animation>
-					<frame>
-						<image>images/projectile.png</image>
-						<bodyWidth>128</bodyWidth>
-					</frame>
-				</animation>
-				<moveSound>sounds/aaa.wav</moveSound>				
-				<damageRadius>60</damageRadius>
-				<damage>60</damage>
-				<range>10</range>
-				<deathTime>10</deathTime>
-				<speed>15</speed>
-			</projectile>
+            <size>1.1</size>
+            <moveImageGripX>0.1025</moveImageGripX>
+            <moveImageGripY>-0.0525</moveImageGripY>
+            <projectile type="missile">
+                <mass>100</mass>
+                <width>1</width>
+                <length>2</length>
+                <animation>
+                    <frame>
+                        <image>images/projectile.png</image>
+                        <bodyWidth>128</bodyWidth>
+                    </frame>
+                </animation>
+                <moveSound>sounds/aaa.wav</moveSound>
+                <damageRadius>60</damageRadius>
+                <damage>60</damage>
+                <range>10</range>
+                <deathTime>10</deathTime>
+                <speed>15</speed>
+            </projectile>
         </weapon>
     </weapons>
     <car>
