@@ -146,6 +146,7 @@ namespace zombie {
 
 		if (gameData.getEntry("music").getBool("switch")) {
 			music_ = gameData.getEntry("music").getMusic("track");
+			music_.setVolume(gameData.getEntry("music").getFloat("volume"));
 			music_.play(-1);
 		}
 		

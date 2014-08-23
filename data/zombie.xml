@@ -41,6 +41,7 @@
     <music>
         <switch>1</switch>
         <track>sounds/ZombieTime_v2.mp3</track>
+		<volume>0.5</volume>
     </music>
     <buildings>
         <hitSound>sounds/buildingHit.wav</hitSound>
