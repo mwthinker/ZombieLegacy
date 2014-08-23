@@ -353,33 +353,17 @@ namespace zombie {
 		auto mapEntry = gameData_.getMapEntry();
 		std::string name = mapEntry.getString("name");
 		mapEntry.getChildEntry("objects").iterateChilds("object", [&](GameDataEntry entry) {
-			std::stringstream stream(entry.getString("geom"));
+			std::string geom(entry.getString("geom"));
 			if (entry.isAttributeEqual("type", "building")) {
-				std::string word;
-				if (stream >> word) { // Assume "POLYGON"
-					engine_.add(new Building2D(loadPolygon(stream.str()), wall_, wall_, wall_));
-				}
+				engine_.add(new Building2D(loadPolygon(geom), wall_, wall_, wall_));
 			} else if (entry.isAttributeEqual("type", "water")) {
-				std::string word;
-				if (stream >> word) { // Assume "POLYGON"
-					terrain_.addWater(loadPolygon(stream.str()));
-				}
+				terrain_.addWater(loadPolygon(geom));
 			} else if (entry.isAttributeEqual("type", "road")) {
-				std::string word;
-				if (stream >> word) { // Assume "POLYGON"
-					terrain_.addRoad(loadPolygon(stream.str()));
-				}
+				terrain_.addRoad(loadPolygon(geom));
 			} else if (entry.isAttributeEqual("type", "tree")) {
-				std::string word;
-				if (stream >> word) { // Assume "POINT"
-					engine_.add(new Tree2D(loadPoint(stream.str()), tree_));
-				}
-			} else if (entry.isAttributeEqual("type", "spawningpoint")) {
-				std::string word;
-				if (stream >> word) { // Assume "POINT"
-					Point point;
-					spawningPoints_.push_back(loadPoint(stream.str()));
-				}
+				engine_.add(new Tree2D(loadPoint(geom), tree_));
+			} else if (entry.isAttributeEqual("type", "spawningpoint")) {			
+				spawningPoints_.push_back(loadPoint(geom));
 			}
 			return true;
 		});

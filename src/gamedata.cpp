@@ -163,39 +163,43 @@ namespace zombie {
 	} // Anonymous namespace.
 
 	Point loadPoint(std::string line) {
-		int index = line.find("(");
-		int index2 = line.rfind(")");
-
-		// New line is the string between "(" and ")".
-		line = line.substr(index + 1, index2 - index - 1);
-
-		Point point;
 		std::stringstream stream(line);
-		std::vector<Point> points;
+		
+		std::string word;
+		stream >> word;
+		assert(word == "POINT");
+
+		char chr;
+		stream >> chr;
+		assert(chr=='(');
+		Point point;
 		stream >> point.x;
 		stream >> point.y;
 		return point;
 	}
 
 	std::vector<Point> loadPolygon(std::string line) {
-		int index = line.find("((");
-		int index2 = line.rfind("))");
+		std::stringstream stream(line);
+		std::string word;
 
-		// New line is the string between "((" and "))".
-		line = line.substr(index + 2, index2 - index - 2);
+		stream >> word;
+		assert(word == "POLYGON");
 
-		// Replace all ',' (comma) with whitespace.
-		for (char& chr : line) {
-			if (chr == ',') {
-				chr = ' ';
-			}
-		}
+		char paranthes;
+		stream >> paranthes;
+		assert(paranthes == '(');
+		stream >> paranthes;
+		assert(paranthes == '(');
 
 		Point point;
-		std::stringstream stream(line);
 		std::vector<Point> points;
+				
 		while (stream >> point.x && stream >> point.y) {
 			points.push_back(point);
+			char comma;
+			if (!(stream >> comma)) { 
+				break;
+			}
 		}
 		points.pop_back();
 		return points;

@@ -17,14 +17,15 @@
 
 namespace zombie {
 
-	class WeaponItem2D;
-
 	// Takes a string as input and returns the points.
-	// The string "((x1 y1, x2 y2, ...))" the input should be defined
-	// as ((...). The last point is assumed to be the same as the first, therefore
-	// the last point will not be returned.
+	// The string "POLYGON ((x1 y1, x2 y2, ...))" the input should be defined
+	// as "POLYGON ((...))". The last point is assumed to be the same as the first, therefore
+	// the last point will not be includeded in the returned vector.
 	std::vector<Point> loadPolygon(std::string line);
 
+	// Takes a string as input and returns the point.
+	// The string "POINT (x y)" the input should be defined
+	// as "POINT (...)".
 	Point loadPoint(std::string line);
 
 	class GameData {
