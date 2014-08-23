@@ -106,8 +106,8 @@
 				<length>2</length>
 				<animation>
 					<frame>
-						<image>images/bazooka.png</image>
-						<bodyWidth>130</bodyWidth>
+						<image>images/projectile.png</image>
+						<bodyWidth>128</bodyWidth>
 					</frame>
 				</animation>
 				<moveSound>sounds/aaa.wav</moveSound>				
