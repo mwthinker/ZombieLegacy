@@ -196,7 +196,7 @@ namespace zombie {
 
 		// Add zombies to engine.
 		int unitLevel = gameData.getEntry("settings").getInt("unitLevel");
-		for (int i = 0; i < unitLevel; ++i) {
+		for (int i = 0; i < 0; ++i) {
 			Unit* zombie = new Unit2D(*zombie_);
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
 			engine_.add(state, zombie);
@@ -220,8 +220,9 @@ namespace zombie {
 		Position diff = unit.getPosition() - human.getPosition();
 		if (diff.LengthSquared() > outerSpawnRadius_*outerSpawnRadius_) {
 			// Move to new postion and direction.
-			float angle = 2 * PI * random();
-			unit.getBody()->SetTransform(generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_), angle);
+			Position spawnPoint = generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_);
+			float angle = calculateAnglePointToPoint(spawnPoint, human.getPosition());
+			unit.getBody()->SetTransform(spawnPoint, angle);			
 		}
 	}
 
@@ -279,7 +280,8 @@ namespace zombie {
 				// Reduce spawnPeriod gradually
 				float angle = 2 * PI * random();
 				State state(generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_), ORIGO, angle);
-				engine_.add(state, new Unit2D(*zombie_));
+				Unit2D* unit = new Unit2D(*zombie_);
+				engine_.add(state, unit);
 				++nbrUnits_;
 			}
 		}

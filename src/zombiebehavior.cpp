@@ -11,9 +11,10 @@ namespace zombie {
 	ZombieBehavior::ZombieBehavior(Unit* unit) : Player(unit) {
 		findNewTargetTime_ = random() * 3;
 		timeToUpdateAngleDirection_ = random() * 1;
-		targetAngle_ = random() * PI * 2;
+		//targetAngle_ = random() * PI * 2;
 		unit_ = unit;
 		assert(unit_); // Null not allowed.
+		targetAngle_ = unit->getDirection();
 	}
 
 	ZombieBehavior::~ZombieBehavior() {
@@ -53,7 +54,7 @@ namespace zombie {
 					input.shoot_ = true;
 				}
 			} else {
-				targetAngle_ += (random() - 0.5) * 2 * PI * 2 * 0.1;
+				targetAngle_ += 0; // (random() - 0.5) * 2 * PI * 2 * 0.1;
 				forward_ = random() > 0.25;
 			}
 		}
