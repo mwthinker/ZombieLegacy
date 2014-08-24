@@ -276,7 +276,7 @@ namespace zombie {
 		if (engine_.getTime() - lastSpawnTime_ > spawnPeriod_) {
 			lastSpawnTime_ = engine_.getTime();
 
-			if (unitMaxLimit_ > nbrUnits_) {
+			if (unitMaxLimit_ > engine_.getNbrUnits()) {
 				// Reduce spawnPeriod gradually
 				//float angle = 2 * PI * random();
 				Position spawnPoint = generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_);

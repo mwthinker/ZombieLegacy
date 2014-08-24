@@ -65,7 +65,7 @@ namespace zombie {
 		}
 
 		int getNbrUnits() {
-			return nbrUnits_;
+			return engine_.getNbrUnits();
 		}
 
 	private:

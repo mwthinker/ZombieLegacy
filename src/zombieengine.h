@@ -95,6 +95,10 @@ namespace zombie {
 			return impulseThreshold_;
 		}
 
+		int getNbrUnits() {
+			return units_.size();
+		}
+
 	private:
 		// Updates the game time by (msDeltaTime).
 		void updatePhysics(float timeStep);
