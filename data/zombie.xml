@@ -27,11 +27,11 @@
     <settings>
         <map>map.xml</map>
         <unitLevel>50</unitLevel>
-        <unitLimit>70</unitLimit>
+        <unitLimit>125</unitLimit>
         <impulseThreshold>2</impulseThreshold>
         <timeStepMS>17</timeStepMS>
-        <innerSpawnRadius>15.0</innerSpawnRadius>
-        <outerSpawnRadius>18.0</outerSpawnRadius>
+        <innerSpawnRadius>7.0</innerSpawnRadius>
+        <outerSpawnRadius>12.0</outerSpawnRadius>
     </settings>
     <menu>
         <soundHighlited>sounds/handgunReload.wav</soundHighlited>
