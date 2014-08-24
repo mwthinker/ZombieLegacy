@@ -54,7 +54,7 @@ namespace zombie {
 					input.shoot_ = true;
 				}
 			} else {
-				targetAngle_ += 0; // (random() - 0.5) * 2 * PI * 2 * 0.1;
+				targetAngle_ +=  (random() - 0.5) * 2 * PI * 2 * 0.05;
 				forward_ = random() > 0.25;
 			}
 		}
