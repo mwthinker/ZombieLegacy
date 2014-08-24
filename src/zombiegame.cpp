@@ -278,8 +278,10 @@ namespace zombie {
 
 			if (unitMaxLimit_ > nbrUnits_) {
 				// Reduce spawnPeriod gradually
-				float angle = 2 * PI * random();
-				State state(generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_), ORIGO, angle);
+				//float angle = 2 * PI * random();
+				Position spawnPoint = generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_);
+				float angle = calculateAnglePointToPoint(spawnPoint, human.getPosition());
+				State state(spawnPoint, ORIGO, angle);
 				Unit2D* unit = new Unit2D(*zombie_);
 				engine_.add(state, unit);
 				++nbrUnits_;
