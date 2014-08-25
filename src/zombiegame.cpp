@@ -316,6 +316,7 @@ namespace zombie {
 	void ZombieGame::collision(float impulse, Unit& unit) {
 		unit.updateHealthPoint(-60 * impulse * engine_.getTimeStepMS() / 0.016f);
 		if (unit.isDead()) {
+			++zombiesKilled_;
 			if (unit.isInfected()) {
 				graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieDie_));
 			} else {

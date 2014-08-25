@@ -119,6 +119,7 @@ namespace zombie {
 	}
 
 	Unit::~Unit() {
+		// Update kill count here instead?
 	}
 
 	void Unit::updatePhysics(float time, float timeStep, Input input) {
