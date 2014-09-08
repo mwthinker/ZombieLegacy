@@ -125,7 +125,7 @@ namespace zombie {
 
 		std::list<std::shared_ptr<Graphic>> graphicGround_;
 		std::list<std::shared_ptr<Graphic>> graphicMiddle_;
-		std::list<std::shared_ptr<Graphic>> graphicHeaven_;
+		std::list<std::shared_ptr<Graphic>> graphicSky_;
 		std::vector<Position> spawningPoints_;
 		std::map<std::string, Weapon2D> weapons_;
 
