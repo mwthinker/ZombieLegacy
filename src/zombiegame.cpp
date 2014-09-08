@@ -369,6 +369,8 @@ namespace zombie {
 				engine_.add(new Tree2D(loadPoint(geom), tree_));
 			} else if (entry.isAttributeEqual("type", "spawningpoint")) {			
 				spawningPoints_.push_back(loadPoint(geom));
+			} else if (entry.isAttributeEqual("type", "carSpawningpoint")) {
+				//carSpawningPoints_.push_back(loadPoint(geom));
 			}
 			return true;
 		});

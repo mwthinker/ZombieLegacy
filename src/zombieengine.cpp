@@ -4,6 +4,7 @@
 #include "car.h"
 #include "tree.h"
 #include "building.h"
+#include "building2d.h"
 #include "weaponitem.h"
 #include "input.h"
 #include "zombiebehavior.h"
@@ -145,6 +146,13 @@ namespace zombie {
 		for (b2Body* b = world_.GetBodyList(); b; b = b->GetNext()) {
 			Object* ob = static_cast<Object*>(b->GetUserData());
 			ob->draw(accumulator_, timeStep_);
+		}
+		// Draw roofs last.
+		for (b2Body* b = world_.GetBodyList(); b; b = b->GetNext()) {
+			//Building2D bu = static_cast<Building2D>(ob);
+			if (1) { // is building	
+				// ob.drawRoofs();
+			}
 		}
 	}
 
