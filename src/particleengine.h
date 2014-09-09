@@ -37,7 +37,7 @@ namespace zombie {
 
 		void draw(float deltaTime) {
 			time_ += deltaTime;
-
+			/*
 			// Enable 2D textures and point sprites
 			glEnable(GL_TEXTURE_2D);
 			glEnable(GL_BLEND);
@@ -67,6 +67,7 @@ namespace zombie {
 			}
 			glDisable(GL_BLEND);
 			glDisable(GL_TEXTURE_2D);
+			*/
 		}
 
 		bool isFinnish() const {

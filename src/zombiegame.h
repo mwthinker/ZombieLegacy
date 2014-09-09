@@ -68,6 +68,8 @@ namespace zombie {
 			return engine_.getNbrUnits();
 		}
 
+		void init(gui::WindowMatrixPtr wptr);
+
 	private:
 		// Implements the GameInterface.
 		void updateEachCycle(Unit& unit, Unit& human) override;
@@ -101,7 +103,7 @@ namespace zombie {
 		float spawnPeriod_;
 
 		std::shared_ptr<Explosion> explosion_;
-		std::shared_ptr<Fog> fog_;
+		//std::shared_ptr<Fog> fog_;
 		
 		Animation humanInjured_;
 		Animation humanDie_;

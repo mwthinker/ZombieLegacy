@@ -41,21 +41,23 @@ namespace zombie {
 			sound_ = explosion.sound_;
 		}		
 
-		void draw(float deltaTime) override {
+		void draw(float deltaTime, gui::WindowMatrixPtr wPtr) override {
 			if (time_ < deltaTime) {
 				sound_.play();
 			}
 
 			time_ += deltaTime;
+			/*
 			glPushMatrix();
 			glTranslate2f(position_);
 			glRotatef(angle_);
+			*/
 			shockWave_.draw(deltaTime);
 			//emitter_.draw(deltaTime);
 			if (time_ > delay_) {
 				particleEngine_.draw(deltaTime);
 			}
-			glPopMatrix();
+			//glPopMatrix();
 		}
 
 		bool toBeRemoved() const {

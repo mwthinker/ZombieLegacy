@@ -4,6 +4,7 @@
 #include "box2ddef.h"
 
 #include <mw/opengl.h>
+#include <gui/windowmatrix.h>
 
 #include <vector>
 
@@ -22,7 +23,8 @@ namespace zombie {
 			lakes_.push_back(water);
 		}
 
-		void draw(float time) {
+		void draw(float time, gui::WindowMatrixPtr wPtr) {
+			/*
 			glBegin(GL_TRIANGLES);
 
 			glColor3d(0.1, 0.1, 0.1);
@@ -41,6 +43,7 @@ namespace zombie {
 			}
 
 			glEnd();
+			*/
 		}
 
 	private:

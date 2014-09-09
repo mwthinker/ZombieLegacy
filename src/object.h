@@ -3,6 +3,8 @@
 
 #include "box2ddef.h"
 
+#include <gui/windowmatrix.h>
+
 #include <cassert>
 
 namespace zombie {
@@ -47,8 +49,17 @@ namespace zombie {
 			humanPosition_ = position;
 		}
 
+		inline gui::WindowMatrixPtr getWindowMatrix() const {
+			return wPtr_;
+		}
+
+		inline void setWindowMatrix(const gui::WindowMatrixPtr& wPtr) {
+			wPtr_ = wPtr;
+		}
+
 	private:
 		Position humanPosition_;
+		gui::WindowMatrixPtr wPtr_;
 	};
 
 } // Namespace zombie.

@@ -26,12 +26,14 @@ namespace zombie {
 		void draw(float deltaTime) {
 			time_ += deltaTime;
 			if (time_ < expansionTime_) {
+				/*
 				color_.alpha_ = 1 - time_ / expansionTime_;
 				color_.glColor4f();
 				glPushMatrix();
 				glScale2f(radiusSpeed_ * time_);
 				sprite_.draw();
 				glPopMatrix();
+				*/
 			}
 		}
 

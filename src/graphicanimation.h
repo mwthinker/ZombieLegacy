@@ -18,14 +18,14 @@ namespace zombie {
 			animation_.setLooping(false);
 		}
 
-		void draw(float deltaTime) override {
-			glPushMatrix();
-			glTranslate2f(position_);
+		void draw(float deltaTime, gui::WindowMatrixPtr wPtr) override {
+			wPtr->useShader();
+			wPtr->setColor(1, 1, 1);
+			mw::Matrix44 old = wPtr->getModel();
+			wPtr->setModel(old * mw::getTranslateMatrix(position_.x, position_.y) * mw::getRotateMatrix(angle_, 0, 0, 1));
 			//glScale2f(2 * getRadius());
-			glRotated(angle_ * 180 / PI, 0, 0, 1);
-			glColor3d(1, 1, 1);
-			animation_.draw(deltaTime);
-			glPopMatrix();
+			animation_.draw(deltaTime, wPtr);
+			wPtr->setModel(old);
 		}
 
 		bool toBeRemoved() const override {

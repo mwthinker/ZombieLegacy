@@ -14,6 +14,7 @@
 
 namespace zombie {
 
+	/*
 	class Fog : public Graphic {
 	public:
 		Fog(const mw::Texture& fog, float radius, const mw::Color& color);
@@ -32,6 +33,7 @@ namespace zombie {
 		Position center_;
 		mw::Color color_;
 	};
+	*/
 
 } // Namespace zombie.
 

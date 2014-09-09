@@ -55,7 +55,7 @@ namespace zombie {
 		virtual void drawSymbol(float timeStep) = 0;
 
 		// Draw the weapon. The function will be called when the physical object is drawn.
-		virtual void draw(float timeStep) = 0;
+		virtual void draw(float timeStep, const gui::WindowMatrixPtr& wPtr) = 0;
 
 		float getRange() const {
 			return weaponInterface_->getRange();

@@ -46,20 +46,19 @@ namespace zombie {
 				// Draw body.
 				float worldScale = 2 * getRadius();
 				Position worldPosition = getPosition();
-				float angle = getDirection() * 180 / PI;
-
-				glColor3d(1, 1, 1);
-				glPushMatrix();
-				glTranslate2f(worldPosition);
-				glPushMatrix();
-				glScale2f(worldScale);
-				glRotatef(angle);
-				animation_.draw(timeStep);
-				glPopMatrix();
-				glRotatef(angle);
-				glTranslate2f(grip_);
-				getWeapon()->draw(timeStep);
-				glPopMatrix();
+				float angle = getDirection();
+				auto wPtr = getWindowMatrix();
+				wPtr->useShader();
+				wPtr->setColor(1, 1, 1);
+				mw::Matrix44 old = wPtr->getModel();
+				wPtr->setModel(old * mw::getTranslateMatrix(worldPosition.x, worldPosition.y));
+				mw::Matrix44 old2 = wPtr->getModel();
+				wPtr->setModel(old2 * mw::getScaleMatrix(worldScale, worldScale) * mw::getRotateMatrix(getDirection(), 0, 0, 1));
+				animation_.draw(timeStep, wPtr);
+				wPtr->setModel(old2);
+				wPtr->setModel(old2 * mw::getRotateMatrix(getDirection(), 0, 0, 1) * mw::getScaleMatrix(grip_.x, grip_.y));
+				getWeapon()->draw(timeStep, wPtr);
+				wPtr->setModel(old);
 			}
 		}
 

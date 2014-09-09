@@ -26,19 +26,7 @@ namespace zombie {
 
 	static int intSign(double a) {
 		return a < 0 ? -1 : 1;
-	}
-
-	inline void glTranslate2f(b2Vec2 vec) {
-		::glTranslatef(vec.x, vec.y, 0.0);
-	}
-		
-	inline void glScale2f(float scale) {
-		::glScalef(scale, scale, 1.f);
-	}
-
-	inline void glRotatef(float angle) {
-		::glRotatef(angle, 0, 0, 1);
-	}
+	}	
 
 	static Position directionVector(float angle) {
 		return Position(std::cos(angle), std::sin(angle));

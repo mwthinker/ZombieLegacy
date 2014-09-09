@@ -4,6 +4,7 @@
 #include "box2ddef.h"
 
 #include <mw/sprite.h>
+#include <gui/windowmatrix.h>
 
 #include <vector>
 
@@ -20,7 +21,7 @@ namespace zombie {
 		// Add a frame and point it to the current sprite sheet.
 		void add(const mw::Sprite& sprite, float bodyWidth, float time = 1.f);
 
-		void draw(float deltaTime);
+		void draw(float deltaTime, gui::WindowMatrixPtr wPtr);
 
 		inline void setSpeed(float speed) {
 			speed_ = speed;

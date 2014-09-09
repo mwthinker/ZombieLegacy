@@ -27,12 +27,13 @@ namespace zombie {
 			symbol_.draw();
 		}
 
-		void draw(float timeStep) override {
-			glPushMatrix();
-			glTranslate2f(-grip_);
-			glScale2f(size_);
-			animation_.draw(timeStep);
-			glPopMatrix();
+		void draw(float timeStep, const gui::WindowMatrixPtr& wPtr) override {
+			wPtr->useShader();
+			wPtr->setColor(1, 1, 1);
+			mw::Matrix44 old = wPtr->getModel();
+			wPtr->setModel(old * mw::getTranslateMatrix(-grip_.x, -grip_.y) * mw::getScaleMatrix(size_, size_));
+			animation_.draw(timeStep, wPtr);
+			wPtr->setModel(old);
 		}
 
 		WeaponPtr clone() const override {

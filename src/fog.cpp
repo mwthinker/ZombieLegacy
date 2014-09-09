@@ -9,6 +9,8 @@
 
 #include <array>
 
+/*
+
 namespace zombie {
 
 	namespace {
@@ -62,3 +64,5 @@ namespace zombie {
 	}
 
 } // Namespace zombie.
+
+*/

@@ -29,7 +29,7 @@ namespace zombie {
 		frames_.push_back(Frame(sprite, bodyWidth, time));
 	}
 
-	void Animation::draw(float deltaTime) {
+	void Animation::draw(float deltaTime, gui::WindowMatrixPtr wPtr) {
 		time_ += deltaTime * speed_;
 		if (reset_) {
 			reset_ = false;
@@ -53,10 +53,12 @@ namespace zombie {
 
 			Frame& frame = frames_[index_];
 
-			glPushMatrix();
-			glScalef(frame.sprite_.getWidth() / frame.bodyWidth_, frame.sprite_.getHeight() / frame.bodyWidth_, 1);
+			wPtr->useShader();
+			wPtr->setColor(1, 1, 1);
+			mw::Matrix44 old = wPtr->getModel();
+			wPtr->setModel(old * mw::getScaleMatrix(frame.sprite_.getWidth() / frame.bodyWidth_, frame.sprite_.getHeight() / frame.bodyWidth_));
 			frame.sprite_.draw();
-			glPopMatrix();
+			wPtr->setModel(old);
 		}
 	}
 

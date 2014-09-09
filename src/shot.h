@@ -21,10 +21,11 @@ namespace zombie {
 			angle_ = calculateAnglePointToPoint(startPoint, endPoint) * 180 / PI; // RAD -> DEG.
 		}
 
-		void draw(float deltaTime) override {
+		void draw(float deltaTime, gui::WindowMatrixPtr wPtr) override {
             time_ += deltaTime;
 			position_ += deltaTime * speed_ * direction_;
 
+			/*
             glPushMatrix();
             glColor3d(1,1,1);
 			glTranslate2f(position_);
@@ -37,6 +38,7 @@ namespace zombie {
 			glVertex2f(0, 0.02f);
             glEnd();
             glPopMatrix();
+			*/
         }
 
 		bool toBeRemoved() const override {

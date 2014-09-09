@@ -23,12 +23,13 @@ namespace zombie {
 			State state = getState();
 			state.position_ = alpha * state.position_ + (1.f - alpha) * previousState().position_;
 
-			glPushMatrix();
-			glTranslate2f(state.position_);
-			glRotated(state.angle_ * 180 / PI, 0, 0, 1);
-			glScaled(getWidth(), getWidth(), 1);
-			animation_.draw(timeStep);
-			glPopMatrix();
+			auto wPtr = getWindowMatrix();
+			wPtr->useShader();
+			wPtr->setColor(1, 1, 1);
+			mw::Matrix44 old = wPtr->getModel();
+			wPtr->setModel(old * mw::getTranslateMatrix(state.position_.x, state.position_.y) * mw::getRotateMatrix(state.angle_, 0, 0, 1) * mw::getScaleMatrix(getWidth(), getWidth()));
+			animation_.draw(timeStep, wPtr);
+			wPtr->setModel(old);
 		}
 
 	private:

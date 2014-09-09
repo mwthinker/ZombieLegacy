@@ -17,14 +17,14 @@ namespace zombie {
 		}
 
 		void draw(float accumulator, float timeStep) override {
+			auto wPtr = getWindowMatrix();
+			mw::Matrix44 old = wPtr->getModel();
+			wPtr->useShader();
+			wPtr->setColor(1, 1, 1);
 			// Draw body.
-			glPushMatrix();
-			glTranslate2f(getPosition());
-			glScale2f(2 * getRadius());
-			glRotated(getAngle() * 180 / PI, 0, 0, 1);
-			glColor3d(1, 1, 1);
+			wPtr->setModel(old * mw::getTranslateMatrix(getPosition().x, getPosition().y) * mw::getScaleMatrix(2 * getRadius(), 2 * getRadius()) * mw::getRotateMatrix(getAngle(), 0, 0, 1));
 			tree_.draw();
-			glPopMatrix();
+			wPtr->setModel(old);
 		}
 
 	private:
