@@ -51,8 +51,7 @@ namespace zombie {
 
 	} // Anonymous namespace.
 
-	ZombieWindow::ZombieWindow(GameData& gameData) : gui::Frame(gameData.getWindowWidth(), gameData.getWindowHeight(), true, "Zombie", "images/1.png"), gameData_(gameData) {
-		SDL_SetWindowPosition(mw::Window::getSdlWindow(), gameData.getWindowXPosition(), gameData.getWindowYPosition());
+	ZombieWindow::ZombieWindow(GameData& gameData) : gui::Frame(gameData.getWindowXPosition(), gameData.getWindowYPosition(), gameData.getWindowWidth(), gameData.getWindowHeight(), true, "Zombie", "images/1.png"), gameData_(gameData) {
 		SDL_SetWindowMinimumSize(mw::Window::getSdlWindow(), 400, 400);
 		if (gameData.isWindowMaximized()) {
 			SDL_MaximizeWindow(mw::Window::getSdlWindow());
@@ -86,8 +85,6 @@ namespace zombie {
 					break;
 			}
 		});
-
-		
 
 		zombieGame_ = std::make_shared<ZombieGame>(gameData);
 		// Always react on key events!
