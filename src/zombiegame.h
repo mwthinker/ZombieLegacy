@@ -102,7 +102,7 @@ namespace zombie {
 		float lastSpawnTime_;
 		float spawnPeriod_;
 
-		std::shared_ptr<Explosion> explosion_;
+		ExplosionProperties explosionProperties_;
 		//std::shared_ptr<Fog> fog_;
 		
 		Animation humanInjured_;

@@ -1,68 +1,80 @@
+#include "fog.h"
 #include "box2ddef.h"
 #include "auxiliary.h"
-#include "particleengine.h"
-#include "fog.h"
 
 #include <mw/opengl.h>
 #include <mw/color.h>
 #include <mw/sprite.h>
 
-#include <array>
-
-/*
+#include <gui/windowmatrix.h>
 
 namespace zombie {
 
 	namespace {
 
-		void drawInversCircel(float radius, int num_segments) {
-			float theta = 2 * PI / num_segments;
+		void drawInversCircel(float radius, gui::WindowMatrixPtr mPtr) {
+			const int num_segments = 10;
+
+			float theta = 2 * PI / 30;
 			float c = std::cos(theta);
 			float s = std::sin(theta);
-			float t;
 
 			float x = radius;// Start at angle = 0
 			float y = 0;
 
-			glBegin(GL_TRIANGLE_STRIP);
+			GLfloat triangleStrip[(num_segments + 1) * 4];
+			mPtr->useShader();
+
 			for (int i = 0; i < num_segments + 1; i++) {
-				glVertex2f(x, y);
-				glVertex2f(x * 100, y * 100);
+				triangleStrip[i * 4 + 0] = x;
+				triangleStrip[i * 4 + 1] = y;
+				triangleStrip[i * 4 + 2] = x * 10;
+				triangleStrip[i * 4 + 3] = y * 10;
 
 				//apply the rotation matrix
-				t = x;
+				float t = x;
 				x = c * x - s * y;
 				y = s * t + c * y;
 			}
-			glEnd();
+
+			mPtr->setTexture(false);
+			mPtr->setVertexPosition(2, triangleStrip);
+			mPtr->glDrawArrays(GL_TRIANGLE_STRIP, 0, (num_segments + 1) * 4);
 		}
 
-	}
+	} // Anonymous namespace.
 
-	Fog::Fog(const mw::Texture& fog, float radius, const mw::Color& color) : fog_(fog, radius, radius, 0.1f, 0.4f, 2.f, 5.f, 0.5f, 2.f) {
-		radius_ = radius;
-		color_ = color;
-		fog_.setColor(color_.red_, color_.green_, color_.blue_);
+	Fog::Fog(const FogProperties& fogProperties) : fog_(*this, fogProperties.particle_) {
+		radius_ = fogProperties.radius_;
+
 		fog_.setBlend(false);
+		fog_.setLoop(true);
+		speed_ = fogProperties.speed_;
+		particleSize_ = fogProperties.particleSize_;
 	}
 
-	void Fog::update(Position center) {
-		center_ = center;
+	void Fog::draw(float deltaTime, gui::WindowMatrixPtr mPtr) {
+		mw::Matrix44 m = mPtr->getProjection() * mPtr->getModel();
+		fog_.draw(deltaTime, m);
+		m = m * mw::getRotateMatrix(3 * PI / 2, 0, 0, 1);
+		fog_.draw(deltaTime, m);
+		m = m * mw::getRotateMatrix(3 * PI / 2, 0, 0, 1);
+		fog_.draw(deltaTime, m);
+		drawInversCircel(radius_, mPtr);
 	}
 
-	void Fog::draw(float deltaTime) {
-		glPushMatrix();
-		glTranslate2f(center_);
-		fog_.draw(deltaTime);
-		glRotatef(120);
-		fog_.draw(deltaTime);
-		glRotatef(120);
-		fog_.draw(deltaTime);
-		color_.glColor4f();
-		drawInversCircel(radius_, 20);
-		glPopMatrix();
+	void Fog::init(Particle& particle) {
+		particle.pos_ = ZERO;
+		float phi = random(0, 2 * PI);
+		particle.vel_ = speed_ * Position(std::sin(phi), std::cos(phi));
+		particle.particleSize_ = particleSize_;
+		particle.alive = true;
+		particle.lifeTime_ = 0;
+		particle.angle_ = random(0, 2 * PI);
+	}
+
+	void Fog::update(float deltaTime, Particle& particle) {
+
 	}
 
 } // Namespace zombie.
-
-*/

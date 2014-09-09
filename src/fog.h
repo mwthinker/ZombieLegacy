@@ -4,36 +4,51 @@
 #include "box2ddef.h"
 #include "auxiliary.h"
 #include "particleengine.h"
-#include "graphic.h"
 
 #include <mw/opengl.h>
 #include <mw/color.h>
 #include <mw/sprite.h>
 
+#include <gui/windowmatrix.h>
+
 #include <array>
 
 namespace zombie {
 
-	/*
-	class Fog : public Graphic {
-	public:
-		Fog(const mw::Texture& fog, float radius, const mw::Color& color);
-
-		void draw(float deltaTime);
-
-		inline bool toBeRemoved() const {
-			return false;
+	struct FogProperties {
+		FogProperties() {
 		}
 
-		void update(Position center);
+		FogProperties(float radius, float speed, float particleSize, mw::Texture particle) :
+			radius_(radius),
+			speed_(speed),
+			particleSize_(particleSize),
+			particle_(particle) {
+		}
+
+		float radius_;
+		float speed_;
+		float particleSize_;
+		mw::Color color_;
+		mw::Texture particle_;
+	};
+
+	class Fog {
+	public:
+		Fog(const FogProperties& fogProperties);
+
+		void draw(float deltaTime, gui::WindowMatrixPtr mPtr);
+
+		void init(Particle& particle);
+
+		void update(float deltaTime, Particle& particle);
 
 	private:
-		ParticleEngine<1000> fog_;
+		ParticleEngine<1000, Fog> fog_;
 		float radius_;
-		Position center_;
-		mw::Color color_;
+		float speed_;
+		float particleSize_;
 	};
-	*/
 
 } // Namespace zombie.
 

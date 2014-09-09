@@ -33,7 +33,6 @@ set(SOURCES_ZOMBIE
 	src/contactlistener.cpp
 	src/device.h
 	src/driver.h
-	src/explosion.h
 	src/gamedata.cpp
 	src/gamedata.h
 	src/gamedataentry.h
@@ -58,17 +57,17 @@ set(SOURCES_ZOMBIE
 	src/object.h
 	src/player.cpp
 	src/player.h
-	src/state.h
+	src/shot.h
+	src/state.h	
+	src/survivorbehavior.cpp
+	src/survivorbehavior.h
 	src/terrain2d.cpp
 	src/terrain2d.h
 	src/tree.h
 	src/tree2d.h
-	src/shot.h
-	src/survivorbehavior.cpp
-	src/survivorbehavior.h
 	src/unit.cpp
 	src/unit.h
-	src/unit2d.h
+	src/unit2d.h	
 	src/weapon.h
 	src/weapon2d.h
 	src/weaponinterface.h
@@ -86,11 +85,17 @@ set(SOURCES_ZOMBIE
 # Source files.
 set(SOURCES_EFFECT
 	src/emitter.h
+	src/explosion.cpp
 	src/explosion.h
-	src/fog.h
 	src/fog.cpp
+	src/fog.h
+	src/particle.h
+	src/particleengine.cpp
 	src/particleengine.h
 	src/shockwave.h
+	src/splash.h
+	src/water.cpp
+	src/water.h
 )
 # End of source files.
 

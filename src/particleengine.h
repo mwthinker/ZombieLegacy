@@ -3,148 +3,213 @@
 
 #include "box2ddef.h"
 #include "auxiliary.h"
+#include "particle.h"
 
 #include <mw/opengl.h>
 #include <mw/color.h>
 #include <mw/sprite.h>
+#include <mw/shader.h>
 
 #include <memory>
 #include <array>
 
 namespace zombie {
 
-	template <int MAX_PARTICLES>
+	class ParticleShader {
+	public:
+		ParticleShader() {
+			if (nbrInstances < 1) {
+				shader = std::make_shared<mw::Shader>();
+				shader->bindAttribute("aPos");
+				shader->bindAttribute("aTex");
+				shader->bindAttribute("aColor");
+				shader->bindAttribute("aAngle");
+				shader->loadAndLinkFromFile("particle.ver.glsl", "particle.fra.glsl");
+			}
+			++nbrInstances;
+		}
+
+		~ParticleShader() {
+			--nbrInstances;
+		}
+
+		void glUseProgram() {
+			shader->glUseProgram();
+		}
+
+		void setUniformColor(const mw::Color& color) {
+			mw::glUniform4f(shader->getUniformLocation("uColor"), color.red_, color.green_, color.blue_, color.alpha_);
+		}
+
+		void setUniformMatrix(const mw::Matrix44& matrix) {
+			mw::glUniformMatrix4fv(shader->getUniformLocation("uMat"), 1, false, matrix.data());
+		}
+
+		void setVertices(int dim, const GLvoid* data) {
+			mw::glEnableVertexAttribArray(shader->getAttributeLocation("aPos"));
+			mw::glVertexAttribPointer(shader->getAttributeLocation("aPos"), dim, GL_FLOAT, GL_FALSE, 0, data);
+		}
+
+		void setTexCoords(int dim, const GLvoid* data) {
+			mw::glEnableVertexAttribArray(shader->getAttributeLocation("aTex"));
+			mw::glVertexAttribPointer(shader->getAttributeLocation("aTex"), dim, GL_FLOAT, GL_FALSE, 0, data);
+		}
+
+		void setAngles(int dim, const GLvoid* data) {
+			mw::glEnableVertexAttribArray(shader->getAttributeLocation("aAngle"));
+			mw::glVertexAttribPointer(shader->getAttributeLocation("aAngle"), dim, GL_FLOAT, GL_FALSE, 0, data);
+		}
+		
+	private:
+		static mw::ShaderPtr shader;
+
+		static int nbrInstances;
+	};
+
+	template <int MAX_PARTICLES, class Emitter>
 	class ParticleEngine {
 	public:
-		ParticleEngine(const mw::Texture& texture, float minSpawnRadius, float maxSpawnRadius, float minSpeed, float maxSpeed, float minTimeLife, float maxTimeLife, float minSize, float maxSize) {
-			texture_ = texture;
-			minSpawnRadius_ = minSpawnRadius;
-			maxSpawnRadius_ = maxSpawnRadius;
-			minSpeed_ = minSpeed;
-			maxSpeed_ = maxSpeed;
-			minTimeLife_ = minTimeLife;
-			maxTimeLife_ = maxTimeLife;
-			minSize_ = minSize;
-			maxSize_ = maxSize;
-			restart();
-			loop_ = true;
-			addColor_ = true;
-		}
+		ParticleEngine(Emitter& emitter, const mw::Texture& texture);
 
 		void setLoop(bool loop) {
 			loop_ = loop;
 		}
 
-		void draw(float deltaTime) {
-			time_ += deltaTime;
-			/*
-			// Enable 2D textures and point sprites
-			glEnable(GL_TEXTURE_2D);
-			glEnable(GL_BLEND);
-
-			// Add colors.
-			if (addColor_) {
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-			} else {
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			}
-			texture_.bind();
-
-			for (auto& particle : particles_) {
-				// Is the particle alive?			
-				if (particle.timeLeftAlive_ > 0) {
-					// Update the position and draw it.
-					particle.update(deltaTime);
-					color_.alpha_ = particle.timeLeftAlive_ / minTimeLife_;
-					color_.glColor4f();
-					draw(particle);
-				} else {
-					if (loop_) {
-						// Replace the particle.
-						particle = Particle(minSpawnRadius_, maxSpawnRadius_, minSpeed_, maxSpeed_, minTimeLife_, maxTimeLife_, minSize_, maxSize_);
-					}
-				}
-			}
-			glDisable(GL_BLEND);
-			glDisable(GL_TEXTURE_2D);
-			*/
-		}
-
-		bool isFinnish() const {
-			return time_ > maxTimeLife_;
-		}
+		void draw(float deltaTime, const mw::Matrix44& matrix);
 
 		void restart() {
 			time_ = 0;
 			for (auto& particle : particles_) {
-				particle = Particle(minSpawnRadius_, maxSpawnRadius_, minSpeed_, maxSpeed_, minTimeLife_, maxTimeLife_, minSize_, maxSize_);
+				emitter_.init(particle);
 			}
 		}
 
-		void setColor(float red, float green, float blue) {
-			color_.red_ = red;
-			color_.green_ = green;
-			color_.blue_ = blue;
+		void setColor(const mw::Color& color) {
+			color_ = color;
 		}
 
 		void setBlend(bool addColor) {
 			addColor_ = addColor;
 		}
 
-	private:
-		class Particle {
-		public:
-			Particle() {
-			}
-
-			Particle(float minSpawnRadius, float maxSpawnRadius, float minSpeed, float maxSpeed, float minTimeLife, float maxTimeLife, float minSize, float maxSize) {
-				timeLeftAlive_ = random(minTimeLife, maxTimeLife);
-				float angle = random(0, 2 * PI);
-				position_ = random(minSpawnRadius, maxSpawnRadius) * Position(std::cos(angle), std::sin(angle));
-				angle = random(0, 2 * PI);
-				velocity_ = random(minSpeed, maxSpeed) * Velocity(std::cos(angle), std::sin(angle));
-				angle_ = angle;
-				particleSize_ = random(minSize, maxSize);
-			}
-
-			void update(float deltaTime) {
-				timeLeftAlive_ -= deltaTime;
-
-				// Update the position.
-				position_ += deltaTime * velocity_;
-			}
-
-			Position position_;
-			Velocity velocity_;
-			float timeLeftAlive_;
-			float particleSize_;
-			float angle_;
-		};
-
-		void draw(const Particle& p) {
-			glPushMatrix();
-			glRotatef(p.angle_ * 180 / PI);
-			glBegin(GL_QUADS);
-			glTexCoord2f(0, 0);
-			glVertex2f(p.position_.x - p.particleSize_*0.5f, p.position_.y - p.particleSize_*0.5f);
-			glTexCoord2f(1, 0);
-			glVertex2f(p.position_.x + p.particleSize_*0.5f, p.position_.y - p.particleSize_*0.5f);
-			glTexCoord2f(1, 1);
-			glVertex2f(p.position_.x + p.particleSize_*0.5f, p.position_.y + p.particleSize_*0.5f);
-			glTexCoord2f(0, 1);
-			glVertex2f(p.position_.x - p.particleSize_*0.5f, p.position_.y + p.particleSize_*0.5f);
-			glEnd();
-			glPopMatrix();
+		double getTime() const {
+			return time_;
 		}
 
+	private:
+		void setAttributes(const Particle& particle, int index, GLfloat aPos[], GLfloat aTex[], GLfloat aAngle[]);
+
+		ParticleShader shader_;
 		std::array<Particle, MAX_PARTICLES> particles_;
+		Emitter& emitter_;
 		mw::Texture texture_;
 		mw::Color color_;
-		float time_;
-		float minSpawnRadius_, maxSpawnRadius_, minSpeed_, maxSpeed_, minTimeLife_, maxTimeLife_, minSize_, maxSize_;
+
+		mw::Matrix44 uColor_;
+
+		double time_;
 		bool loop_;
 		bool addColor_;
 	};
+
+	template <int MAX_PARTICLES, class Emitter>
+	ParticleEngine<MAX_PARTICLES, Emitter>::ParticleEngine(Emitter& emitter, const mw::Texture& texture) : emitter_(emitter) {
+		texture_ = texture;
+		loop_ = true;
+		addColor_ = true;
+
+		restart();
+	}
+
+	template <int MAX_PARTICLES, class Emitter>
+	void ParticleEngine<MAX_PARTICLES, Emitter>::draw(float deltaTime, const mw::Matrix44& matrix) {
+		time_ += deltaTime;
+
+		GLfloat aPos[MAX_PARTICLES * 6 * 2]; // 2 triangle per particle. I.e. (3 * 2) * 2 = 12.
+		GLfloat aTex[MAX_PARTICLES * 6 * 2]; // 2 per vertex.
+		GLfloat aAngle[MAX_PARTICLES * 6]; // 1 per vertex.
+
+		int index = 0;
+		for (auto& particle : particles_) {
+			// Is the particle alive?
+			if (particle.alive) {
+				// Update the position and draw it.
+				setAttributes(particle, index, aPos, aTex, aAngle);
+				++index;
+				emitter_.update(deltaTime, particle);
+			} else {
+				if (loop_) {
+					// Replace the particle.
+					emitter_.init(particle);
+				}
+			}
+		}
+
+		// Enable 2D textures and point sprites
+		mw::glEnable(GL_TEXTURE_2D);
+		mw::glEnable(GL_BLEND);
+
+		// Add colors.
+		if (addColor_) {
+			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		} else {
+			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		}
+
+		shader_.glUseProgram();
+		texture_.bind();
+		shader_.setUniformColor(color_);
+		shader_.setUniformMatrix(matrix);		
+		
+		shader_.setVertices(2, aPos);
+		shader_.setTexCoords(2, aTex);
+		shader_.setAngles(2, aAngle);
+
+		mw::glDrawArrays(GL_TRIANGLES, 0, index * 6);
+
+		mw::glDisable(GL_BLEND);
+		mw::glDisable(GL_TEXTURE_2D);
+	}
+
+	template <int MAX_PARTICLES, class Emitter>
+	void ParticleEngine<MAX_PARTICLES, Emitter>::setAttributes(const Particle& particle, int index, GLfloat aPos[], GLfloat aTex[], GLfloat aAngle[]) {
+		// 1:st triangle.
+		aPos[12 * index + 0] = particle.pos_.x - particle.particleSize_*0.5f;
+		aTex[12 * index + 0] = 0;
+		aPos[12 * index + 1] = particle.pos_.y - particle.particleSize_*0.5f;
+		aTex[12 * index + 1] = 0;
+
+		aPos[12 * index + 2] = particle.pos_.x + particle.particleSize_*0.5f;
+		aTex[12 * index + 2] = 1;
+		aPos[12 * index + 3] = particle.pos_.y - particle.particleSize_*0.5f;
+		aTex[12 * index + 3] = 0;
+
+		aPos[12 * index + 4] = particle.pos_.x - particle.particleSize_*0.5f;
+		aTex[12 * index + 4] = 0;
+		aPos[12 * index + 5] = particle.pos_.y + particle.particleSize_*0.5f;;
+		aTex[12 * index + 5] = 1;
+
+		// 2:nd triangle.
+		aPos[12 * index + 6] = particle.pos_.x - particle.particleSize_*0.5f;
+		aTex[12 * index + 6] = 0;
+		aPos[12 * index + 7] = particle.pos_.y + particle.particleSize_*0.5f;;
+		aTex[12 * index + 7] = 1;
+
+		aPos[12 * index + 8] = particle.pos_.x + particle.particleSize_*0.5f;
+		aTex[12 * index + 8] = 1;
+		aPos[12 * index + 9] = particle.pos_.y - particle.particleSize_*0.5f;
+		aTex[12 * index + 9] = 0;
+
+		aPos[12 * index + 10] = particle.pos_.x + particle.particleSize_*0.5f;
+		aTex[12 * index + 10] = 1;
+		aPos[12 * index + 11] = particle.pos_.y + particle.particleSize_*0.5f;;
+		aTex[12 * index + 11] = 1;
+
+		// Angles for 6 verteces.
+		for (int i = 0; i < 6; ++i) {
+			aAngle[index + i] = particle.angle_;
+		}
+	}
 
 } // Namespace zombie.
 

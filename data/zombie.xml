@@ -8,9 +8,10 @@
         <maximized>0</maximized>
     </window>
     <explosion>
-        <shockwaveImage>images/shockwave.png</shockwaveImage>
+		<timeDelay>0.3</timeDelay>
+		<speed>1</speed>
+		<blastRadius>0.5</blastRadius>
         <particleImage>images/fireBall.png</particleImage>
-        <emitterImage>images/trail.png</emitterImage>
         <sound>sounds/explosion.wav</sound>
     </explosion>
     <fog>
@@ -112,7 +113,7 @@
                     </frame>
                 </animation>
                 <moveSound>sounds/aaa.wav</moveSound>
-                <damageRadius>60</damageRadius>
+                <damageRadius>1</damageRadius>
                 <damage>60</damage>
                 <range>10</range>
                 <deathTime>10</deathTime>

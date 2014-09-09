@@ -115,12 +115,14 @@ namespace zombie {
 			return std::unique_ptr<Car2D>(new Car2D(mass, life, width, length, animation));
 		}
 
-		std::shared_ptr<Explosion> loadExplosion(GameDataEntry& entry) {
-			mw::Texture particle = entry.getTexture("particleImage");
-			mw::Sprite shockwave = entry.getSprite("shockwaveImage");
-			mw::Sprite emitter = entry.getSprite("emitterImage");
-			mw::Sound sound = entry.getSound("sound");
-			return std::make_shared<Explosion>(particle, shockwave, emitter, sound);
+		ExplosionProperties loadExplosion(GameDataEntry& entry) {
+			ExplosionProperties explosionProperties;
+			explosionProperties.delay_ = entry.getFloat("timeDelay");
+			explosionProperties.speed_ = entry.getFloat("speed");
+			explosionProperties.blastRadius_ = entry.getFloat("blastRadius");
+			explosionProperties.particle_ = entry.getTexture("particleImage");
+			explosionProperties.sound_ = entry.getSound("sound");
+			return explosionProperties;
 		}
 
 		/*
@@ -185,7 +187,7 @@ namespace zombie {
 		car_ = zombie::loadCar(gameData_.getEntry("car"));
 		//fog_ = zombie::loadFog(gameData.getEntry("fog"));
 		//graphicSky_.push_back(fog_);
-		explosion_ = zombie::loadExplosion(gameData_.getEntry("explosion"));
+		explosionProperties_ = zombie::loadExplosion(gameData_.getEntry("explosion"));
 
 		humanInjured_ = gameData_.getEntry("human").getAnimation("injuredAnimation");
 		humanDie_ = gameData_.getEntry("human").getAnimation("dieAnimation");
@@ -361,14 +363,16 @@ namespace zombie {
 		if (unit.isInfected()) {
 			graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
 			// Temporary, just for fun!
-			graphicSky_.push_back(std::make_shared<Explosion>(hitPosition, unit.getDirection(), *explosion_));
+			graphicSky_.push_back(std::make_shared<Explosion>(hitPosition, explosionProperties_));
 		} else {
 			graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanInjured_));
 		}
 	}
 
 	void ZombieGame::explosion(Position position, float explosionRadius) {
-		graphicSky_.push_back(std::make_shared<Explosion>(position, 0.f, *explosion_));
+		auto tmp = explosionProperties_;
+		tmp.blastRadius_ = explosionRadius;
+		graphicSky_.push_back(std::make_shared<Explosion>(position, tmp));
 	}
 
 	void ZombieGame::loadTerrain() {
