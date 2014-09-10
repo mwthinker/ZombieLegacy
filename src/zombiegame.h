@@ -122,8 +122,6 @@ namespace zombie {
 		Position viewPosition_;
 		Position refViewPosition_;
 
-		ZombieEngine engine_;
-
 		DevicePtr keyboard_;
 		const GameData& gameData_;
 
@@ -147,6 +145,8 @@ namespace zombie {
 
 		std::vector<Unit2D> units_;
 		std::vector<Car2D> cars_;
+
+		ZombieEngine engine_; // Must be destroyed first in order to remove box2d stuff.
 	};
 
 } // Namespace zombie.
