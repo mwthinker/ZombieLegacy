@@ -133,6 +133,10 @@ namespace zombie {
 			return explosionProperties;
 		}
 
+		Water loadWater(GameDataEntry& entry) {
+			return Water(entry.getTexture("seeFloorImage"));
+		}
+
 		/*
 		std::shared_ptr<Fog> loadFog(GameDataEntry& entry) {
 			mw::Texture fog = entry.getTexture("image");
@@ -149,7 +153,9 @@ namespace zombie {
 		gameData.getEntry("settings").getFloat("impulseThreshold")), gameData_(gameData),
 		human_(loadUnit(this, "human", gameData, false)),
 		zombie_(loadUnit(this, "zombie", gameData_, true)),
-		car_(zombie::loadCar(gameData_.getEntry("car")))
+		car_(zombie::loadCar(gameData_.getEntry("car"))),
+		water_(loadWater(gameData.getEntry("water")))
+
 		{
 
 		init();
@@ -284,22 +290,27 @@ namespace zombie {
 		// Game is started?
 		if (engine_.isStarted()) {
 			terrain_.draw(deltaTime / 1000.f, wPtr);
+			water_.drawSeeFloor(deltaTime / 1000.f, wPtr);
 			drawGraphicList(graphicGround_, deltaTime / 1000.f, wPtr);
 			engine_.update(deltaTime / 1000.f, getWindowMatrixPtr());
 			drawGraphicList(graphicMiddle_, deltaTime / 1000.f, wPtr);
-			drawGraphicList(graphicSky_, deltaTime / 1000.f, wPtr);
+			water_.drawWaves(wPtr->getProjection() * wPtr->getModel());
+			drawGraphicList(graphicSky_, deltaTime / 1000.f, wPtr);			
 
 			removeDeadGraphicObjects(graphicGround_);
 			removeDeadGraphicObjects(graphicMiddle_);
 			removeDeadGraphicObjects(graphicSky_);
 		} else {
+			water_.drawSeeFloor(0, wPtr);
 			terrain_.draw(0, wPtr);
 			drawGraphicList(graphicGround_, 0, wPtr);
 			engine_.update(0, getWindowMatrixPtr());
 			drawGraphicList(graphicMiddle_, 0, wPtr);
+			water_.drawWaves(wPtr->getProjection() * wPtr->getModel());
 			drawGraphicList(graphicSky_, 0, wPtr);
 		}
 
+		wPtr->useShader();
 		wPtr->setModel(old);
 		
 		State state = engine_.getHumanState();
@@ -409,7 +420,8 @@ namespace zombie {
 			if (entry.isAttributeEqual("type", "building")) {
 				engine_.add(new Building2D(loadPolygon(geom), wall_, wall_, wall_));
 			} else if (entry.isAttributeEqual("type", "water")) {
-				terrain_.addWater(loadPolygon(geom));
+				auto triangle = loadPolygon(geom);
+				water_.addTriangle(triangle[0], triangle[1], triangle[2]);
 			} else if (entry.isAttributeEqual("type", "road")) {
 				terrain_.addRoad(loadPolygon(geom));
 			} else if (entry.isAttributeEqual("type", "tree")) {

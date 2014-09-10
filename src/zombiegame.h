@@ -13,6 +13,7 @@
 #include "weaponinterface.h"
 #include "unit2d.h"
 #include "car2d.h"
+#include "water.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
@@ -136,6 +137,8 @@ namespace zombie {
 		std::map<std::string, Weapon2D> weapons_;
 
 		Terrain2D terrain_;
+		Water water_;
+
 		int zombiesKilled_;
 		int unitMaxLimit_;
 		int nbrUnits_;

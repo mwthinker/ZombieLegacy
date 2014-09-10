@@ -12,9 +12,6 @@
 
 namespace zombie {
 
-	Water::Triangle::Triangle(Position p1, Position p2, Position p3) : p1_(p1), p2_(p2), p3_(p3) {
-	}
-
 	Water::CircularWave::CircularWave(float amplitude, Position center, float waveLength, float speed) {
 		amplitude_ = amplitude;
 		center_ = center;
@@ -28,36 +25,26 @@ namespace zombie {
 		waterShader_->bindAttribute("aPos");
 		waterShader_->bindAttribute("aTex");
 		waterShader_->loadAndLinkFromFile("water.ver.glsl", "water.fra.glsl");
+		size_ = 100;
 	}
 
 	void Water::addTriangle(Position p1, Position p2, Position p3) {
-		triangles_.emplace_back(p1, p2, p3);
+		aPos_.push_back(p1.x);
+		aPos_.push_back(p1.y);
+		aPos_.push_back(p2.x);
+		aPos_.push_back(p2.y);
+		aPos_.push_back(p3.x);
+		aPos_.push_back(p3.y);
+		aTex_.push_back(0);
+		aTex_.push_back(0);
+		aTex_.push_back((p2.x - p1.x) / size_);
+		aTex_.push_back((p2.y - p1.y) / size_);
+		aTex_.push_back((p3.x - p1.x) / size_);
+		aTex_.push_back((p3.y - p1.y) / size_);
 	}
 
-	void Water::draw(float deltaTime, gui::WindowMatrixPtr wp) {
+	void Water::drawSeeFloor(float deltaTime, gui::WindowMatrixPtr wp) {
 		time_ += deltaTime;
-
-		float size = 100.f;
-
-		// Triangles.
-		GLfloat aPos[400];
-		GLfloat aTex[400];
-		int index = 0;
-		for (auto& triangle : triangles_) {
-			aPos[index * 6 + 0] = triangle.p1_.x;
-			aPos[index * 6 + 1] = triangle.p1_.y;
-			aPos[index * 6 + 2] = triangle.p2_.x;
-			aPos[index * 6 + 3] = triangle.p2_.y;
-			aPos[index * 6 + 4] = triangle.p3_.x;
-			aPos[index * 6 + 5] = triangle.p3_.y;
-			aTex[index * 6 + 0] = 0;
-			aTex[index * 6 + 1] = 0;
-			aTex[index * 6 + 2] = (triangle.p2_.x - triangle.p1_.x) / size;
-			aTex[index * 6 + 3] = (triangle.p2_.y - triangle.p1_.y) / size;
-			aTex[index * 6 + 4] = (triangle.p3_.x - triangle.p1_.x) / size;
-			aTex[index * 6 + 5] = (triangle.p3_.y - triangle.p1_.y) / size;
-			++index;
-		}
 
 		// Draw see floor.
 		mw::glEnable(GL_TEXTURE_2D);
@@ -65,29 +52,28 @@ namespace zombie {
 		wp->useShader();
 		wp->setColor(1, 1, 1);
 		wp->setTexture(true);
-		wp->setTexturePosition(2, aTex);
-		wp->setVertexPosition(2, aPos);
+		wp->setTexturePosition(2, aTex_.data());
+		wp->setVertexPosition(2, aPos_.data());
 		wp->setColor(0.3f, 0.3f, 0.3f);
-		wp->glDrawArrays(GL_TRIANGLES, 0, index * 3);
+		wp->glDrawArrays(GL_TRIANGLES, 0, aPos_.size() / 3); // Three vertex per triangle.
 		mw::glDisable(GL_TEXTURE_2D);
+	}
 
+	void Water::drawWaves(const mw::Matrix44& matrix) {
 		// Draw waves.
 		waterShader_->glUseProgram();
-		mw::Matrix44 m = wp->getProjection() * wp->getModel();
-		mw::glUniformMatrix4fv(waterShader_->getUniformLocation("uMat"), 1, false, m.data());
+		mw::glUniformMatrix4fv(waterShader_->getUniformLocation("uMat"), 1, false, matrix.data());
 		mw::glUniform1f(waterShader_->getUniformLocation("uTime"), time_);
 
 		mw::glEnableVertexAttribArray(waterShader_->getAttributeLocation("aTex"));
-		mw::glVertexAttribPointer(waterShader_->getAttributeLocation("aTex"), 2, GL_FLOAT, GL_FALSE, 0, aTex);
+		mw::glVertexAttribPointer(waterShader_->getAttributeLocation("aTex"), 2, GL_FLOAT, GL_FALSE, 0, aTex_.data());
 		mw::glEnableVertexAttribArray(waterShader_->getAttributeLocation("aPos"));
-		mw::glVertexAttribPointer(waterShader_->getAttributeLocation("aPos"), 2, GL_FLOAT, GL_FALSE, 0, aPos);
+		mw::glVertexAttribPointer(waterShader_->getAttributeLocation("aPos"), 2, GL_FLOAT, GL_FALSE, 0, aPos_.data());
 
 		mw::glEnable(GL_BLEND);
 		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		mw::glDrawArrays(GL_TRIANGLES, 0, index * 3); // 3 vertices for every loop.
-
+		mw::glDrawArrays(GL_TRIANGLES, 0, aPos_.size() / 3); // 3 vertices for every loop.
 		mw::glDisable(GL_BLEND);
-		wp->useShader();
 	}
 
 } // Namespace zombie.

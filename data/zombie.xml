@@ -7,6 +7,9 @@
         <positionY>50</positionY>
         <maximized>0</maximized>
     </window>
+	<water>
+		<seeFloorImage>images/seeFloor.png</seeFloorImage>
+	</water>
     <explosion>
 		<timeDelay>0.3</timeDelay>
 		<speed>1</speed>

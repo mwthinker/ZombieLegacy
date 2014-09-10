@@ -21,7 +21,9 @@ namespace zombie {
 
 		void addTriangle(Position p1, Position p2, Position p3);
 
-		void draw(float deltaTime, gui::WindowMatrixPtr wp);
+		void drawSeeFloor(float deltaTime, gui::WindowMatrixPtr wp);
+
+		void drawWaves(const mw::Matrix44& matrix);
 
 	private:
 		struct CircularWave {
@@ -33,19 +35,15 @@ namespace zombie {
 			float speed_;
 		};
 
-		struct Triangle {
-			Triangle(Position p1, Position p2, Position p3);
+		mw::ShaderPtr waterShader_;		
 
-			Position p1_, p2_, p3_;
-		};
-
-		mw::ShaderPtr waterShader_;
-
-		std::vector<Triangle> triangles_;
+		std::vector<GLfloat> aPos_;
+		std::vector<GLfloat> aTex_;
 		mw::Texture seeFloor_;
 
 		float time_;
 		mw::Sprite water_;
+		float size_;
 	};
 
 } // Namespace zombie.
