@@ -11,7 +11,7 @@ namespace zombie {
 		WeaponItem2D(float x, float y, const WeaponPtr& weapon) : WeaponItem(x, y, weapon) {
 		}
 
-		void draw(float accumulator, float timeStep) override {
+		void draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr) override {
 			/*
 			const WeaponObject* wOb = static_cast<const WeaponObject*>(ob);
 			Position p = wOb->getPosition();

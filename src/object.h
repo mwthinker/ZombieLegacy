@@ -20,9 +20,11 @@ namespace zombie {
 		}
 
 		// Return the body for the object. Use with care!
+		// Return a nullpntr if the object not belongs to the world.
 		virtual b2Body* getBody() const = 0;
 
-		void destroyBody();
+		// Destroys the body. I.e. the body in no more a part of the box2d world.
+		virtual void destroyBody() = 0;
 
 		// Update the object. The "time" parameter is the current game time and the "timeStep" is 
 		// the length of the time to be simulated in the updated call.
@@ -39,7 +41,7 @@ namespace zombie {
 		}
 
 		// Draw the object in world coordinates.
-		virtual void draw(float accumulator, float timeStep) = 0;
+		virtual void draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr) = 0;
 
 		inline Position humanPosition() const {
 			return humanPosition_;
@@ -49,17 +51,9 @@ namespace zombie {
 			humanPosition_ = position;
 		}
 
-		inline gui::WindowMatrixPtr getWindowMatrix() const {
-			return wPtr_;
-		}
-
-		inline void setWindowMatrix(const gui::WindowMatrixPtr& wPtr) {
-			wPtr_ = wPtr;
-		}
 
 	private:
 		Position humanPosition_;
-		gui::WindowMatrixPtr wPtr_;
 	};
 
 } // Namespace zombie.

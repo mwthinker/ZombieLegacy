@@ -41,7 +41,7 @@ namespace zombie {
 		mw::Color getColor(std::string tagName) const;
 		Position getPosition(std::string tagName) const;
 
-		GameDataEntry getChildEntry(std::string tagName) const;
+		GameDataEntry getChildEntry(std::string tagName) const;		
 
 		void iterateChilds(std::string tagName, const std::function<bool(GameDataEntry)>& next) const;
 

@@ -67,7 +67,8 @@ set(SOURCES_ZOMBIE
 	src/tree2d.h
 	src/unit.cpp
 	src/unit.h
-	src/unit2d.h	
+	src/unit2d.cpp
+	src/unit2d.h
 	src/weapon.h
 	src/weapon2d.h
 	src/weaponinterface.h

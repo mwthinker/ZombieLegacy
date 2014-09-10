@@ -40,6 +40,16 @@ namespace zombie {
 
 		State previousState() const;
 
+		void destroyBody() override {
+			if (body_ != nullptr) {
+				b2World* world = body_->GetWorld();
+				if (world != nullptr) {
+					world->DestroyBody(body_);
+				}
+				body_ = nullptr;
+			}
+		}
+
 	private:
 		void explode();
 

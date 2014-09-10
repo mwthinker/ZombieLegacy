@@ -36,6 +36,8 @@ namespace zombie {
 
 		virtual void explosion(Position position, float explosionRadius) = 0;
 
+		virtual void removedFromWorld(Unit& unit) = 0;
+
 	protected:
 		~GameInterface() {
 		}

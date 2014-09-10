@@ -149,7 +149,6 @@ namespace zombie {
 		setCurrentPanel(playFrameIndex_);
 
 		add(zombieGame_, gui::BorderLayout::CENTER);
-		zombieGame_->init(getCurrentPanel()->getWindowMatrixPtr());
 		auto panel = std::make_shared<gui::Panel>();
 		panel->setPreferredSize(100, 50);
 		add(panel, gui::BorderLayout::SOUTH);

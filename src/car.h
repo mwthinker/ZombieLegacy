@@ -81,6 +81,16 @@ namespace zombie {
 			return eventSignal_.connect(callback);
 		}
 
+		void destroyBody() override {
+			if (body_ != nullptr) {
+				b2World* world = body_->GetWorld();
+				if (world != nullptr) {
+					world->DestroyBody(body_);
+				}
+				body_ = nullptr;
+			}
+		}
+
 	protected:
 		inline State previousState() const {
 			return previousState_;

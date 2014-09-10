@@ -11,6 +11,8 @@
 #include "fog.h"
 #include "weaponeffect.h"
 #include "weaponinterface.h"
+#include "unit2d.h"
+#include "car2d.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
@@ -21,11 +23,10 @@
 #include <map>
 #include <memory>
 #include <list>
+#include <vector>
 
 namespace zombie {
-
-	class Unit2D;
-	class Car2D;
+		
 	class Weapon2D;
 
 	// Responsible of loading map, units and initiate all
@@ -66,11 +67,11 @@ namespace zombie {
 
 		int getNbrUnits() {
 			return engine_.getNbrUnits();
-		}
-
-		void init(gui::WindowMatrixPtr wptr);
+		}		
 
 	private:
+		void init();
+
 		// Implements the GameInterface.
 		void updateEachCycle(Unit& unit, Unit& human) override;
 
@@ -92,7 +93,12 @@ namespace zombie {
 
 		void explosion(Position position, float explosionRadius) override;
 
+		void removedFromWorld(Unit& unit) override;
+
 		// End of the GameInterface.
+
+		Unit2D* createUnit(Unit2D& unit);
+		Car2D* createCar(Car2D& car);
 
 		void loadTerrain();
 		
@@ -121,9 +127,9 @@ namespace zombie {
 		DevicePtr keyboard_;
 		const GameData& gameData_;
 
-		std::unique_ptr<Unit2D> human_;
-		std::unique_ptr<Unit2D> zombie_;
-		std::unique_ptr<Car2D> car_;
+		Unit2D human_;
+		Unit2D zombie_;
+		Car2D car_;
 
 		std::list<std::shared_ptr<Graphic>> graphicGround_;
 		std::list<std::shared_ptr<Graphic>> graphicMiddle_;
@@ -138,6 +144,9 @@ namespace zombie {
 		float health_;
 		int bulletsInWeapon_;
 		int clipsize_;
+
+		std::vector<Unit2D> units_;
+		std::vector<Car2D> cars_;
 	};
 
 } // Namespace zombie.

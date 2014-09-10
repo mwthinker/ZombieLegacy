@@ -14,7 +14,7 @@ namespace zombie {
 		Building2D(const std::vector<Position>& corners,
 			const mw::Sprite& rightWall, const mw::Sprite& leftWall, const mw::Sprite& roof);
 
-		void draw(float accumulator, float timeStep) override;
+		void draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr) override;
 
 		void drawLeftWall(const mw::Sprite& wall);
 

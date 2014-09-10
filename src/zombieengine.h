@@ -38,7 +38,7 @@ namespace zombie {
 
 		// Draws the graphic and (deltaTime) should be the time past 
 		// from the previous call to this funtion.
-		void update(float deltaTime);
+		void update(float deltaTime, gui::WindowMatrixPtr wPtr);
 
 		// Add a human player to the game.
 		void setHuman(DevicePtr device, State states, Unit* unit);

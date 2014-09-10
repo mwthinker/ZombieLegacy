@@ -47,7 +47,7 @@ namespace zombie {
 			}
 		}
 
-		Missile2D loadMissile2D(gui::WindowMatrixPtr wPtr, GameInterface* gameInterface, GameDataEntry& entry, float damage, float range) {
+		Missile2D loadMissile2D(GameInterface* gameInterface, GameDataEntry& entry, float damage, float range) {
 			float mass = entry.getFloat("range");
 			float width = entry.getFloat("width");
 			float length = entry.getFloat("length");
@@ -57,12 +57,10 @@ namespace zombie {
 			float deathTime = entry.getFloat("deathTime");
 			float speed = entry.getFloat("speed");
 
-			Missile2D missile(animation, *gameInterface, width, length, mass, speed, deathTime, damage, damageRadius);
-			missile.setWindowMatrix(wPtr);
-			return missile;
+			return Missile2D(animation, *gameInterface, width, length, mass, speed, deathTime, damage, damageRadius);
 		}
 
-		Weapon2D loadWeapon2D(gui::WindowMatrixPtr wPtr, GameInterface* gameInterface, GameDataEntry& entry) {
+		Weapon2D loadWeapon2D(GameInterface* gameInterface, GameDataEntry& entry) {
 			mw::Sprite symbolImage = entry.getSprite("symbolImage");
 
 			float timeBetweenShots = entry.getFloat("timeBetweenShots");
@@ -81,7 +79,7 @@ namespace zombie {
 			float range = projectile.getFloat("range");
 
 			if (projectile.isAttributeEqual("type", "missile")) {
-				auto missile = loadMissile2D(wPtr, gameInterface, projectile, damage, range);
+				auto missile = loadMissile2D(gameInterface, projectile, damage, range);
 				auto missileLauncher = std::make_shared<MissileLauncher2D>(missile, clipSize, timeBetweenShots, range, shoot, reload);
 				return Weapon2D(missileLauncher, symbolImage, animation, size, grip);;
 			} else {
@@ -89,7 +87,8 @@ namespace zombie {
 			}
 		}
 		
-		std::unique_ptr<Unit2D> loadUnit(gui::WindowMatrixPtr wPtr, GameInterface* gameInterface, GameDataEntry& entry, bool infected, std::map<std::string, Weapon2D>& weapons) {
+		Unit2D loadUnit(GameInterface* gameInterface, std::string nameEntry, const GameData& gameData, bool infected) {
+			GameDataEntry entry = gameData.getEntry(nameEntry);
 			float mass = entry.getFloat("mass");
 			float radius = entry.getFloat("radius");
 			float life = entry.getFloat("life");
@@ -99,20 +98,29 @@ namespace zombie {
 			Animation moveA = entry.getAnimation("moveAnimation");
 			Position grip;
 			grip.x = entry.getFloat("moveImageGripX");
-			grip.y = entry.getFloat("moveImageGripY");			
+			grip.y = entry.getFloat("moveImageGripY");
 			std::string weaponName = entry.getString("weapon");
-			auto unit = std::unique_ptr<Unit2D>(new Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapons[weaponName].clone(), moveA, grip));
-			unit->setWindowMatrix(wPtr);
-			return unit;
+						
+			std::shared_ptr<Weapon> weapon;
+			gameData.getEntry("weapons").iterateChilds("weapon", [&](GameDataEntry entry) {
+				std::string name = entry.getString("name");
+				if (name == weaponName) {
+					weapon = loadWeapon2D(gameInterface, entry).clone();
+					return false;
+				}
+				return true;
+			});
+			
+			return Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapon, moveA, grip);
 		}
 
-		std::unique_ptr<Car2D> loadCar(GameDataEntry& entry) {
+		Car2D loadCar(GameDataEntry& entry) {
 			Animation animation = entry.getAnimation("moveAnimation");
 			float mass = entry.getFloat("mass");
 			float width = entry.getFloat("width");
 			float length = entry.getFloat("length");
 			float life = entry.getFloat("life");
-			return std::unique_ptr<Car2D>(new Car2D(mass, life, width, length, animation));
+			return Car2D(mass, life, width, length, animation);
 		}
 
 		ExplosionProperties loadExplosion(GameDataEntry& entry) {
@@ -136,18 +144,25 @@ namespace zombie {
 
 	}
 
-	ZombieGame::ZombieGame(const GameData& gameData) : engine_(*this, 
+	ZombieGame::ZombieGame(const GameData& gameData) : engine_(*this,
 		gameData.getEntry("settings").getInt("timeStepMS"),
-		gameData.getEntry("settings").getFloat("impulseThreshold")), gameData_(gameData) {		
+		gameData.getEntry("settings").getFloat("impulseThreshold")), gameData_(gameData),
+		human_(loadUnit(this, "human", gameData, false)),
+		zombie_(loadUnit(this, "zombie", gameData_, true)),
+		car_(zombie::loadCar(gameData_.getEntry("car")))
+		{
+
+		init();
 	}
 
 	ZombieGame::~ZombieGame() {
 	}
 
-	void ZombieGame::init(gui::WindowMatrixPtr wptr) {
+	void ZombieGame::init() {
 		keyboard_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT,
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));
-
+		units_.reserve(200);
+		cars_.reserve(40);
 		clipsize_ = 0;
 		bulletsInWeapon_ = 0;
 		health_ = 0;
@@ -178,33 +193,28 @@ namespace zombie {
 		// Load Weapons.
 		gameData_.getEntry("weapons").iterateChilds("weapon", [&](GameDataEntry entry) {
 			std::string weaponName = entry.getString("name");
-			weapons_[weaponName] = zombie::loadWeapon2D(wptr, this, entry);
+			weapons_[weaponName] = zombie::loadWeapon2D(this, entry);
 			return true;
 		});
-
-		human_ = zombie::loadUnit(wptr, this, gameData_.getEntry("human"), false, weapons_);
-		zombie_ = zombie::loadUnit(wptr, this, gameData_.getEntry("zombie"), true, weapons_);
-		car_ = zombie::loadCar(gameData_.getEntry("car"));
+		
 		//fog_ = zombie::loadFog(gameData.getEntry("fog"));
 		//graphicSky_.push_back(fog_);
 		explosionProperties_ = zombie::loadExplosion(gameData_.getEntry("explosion"));
 
 		humanInjured_ = gameData_.getEntry("human").getAnimation("injuredAnimation");
 		humanDie_ = gameData_.getEntry("human").getAnimation("dieAnimation");
-		human_->setDieSound(gameData_.getEntry("human").getSound("dieSound"));
-		human_->setHitSound(gameData_.getEntry("human").getSound("hitSound"));
+		human_.setDieSound(gameData_.getEntry("human").getSound("dieSound"));
+		human_.setHitSound(gameData_.getEntry("human").getSound("hitSound"));
 
 		zombieInjured_ = gameData_.getEntry("zombie").getAnimation("injuredAnimation");
 		zombieDie_ = gameData_.getEntry("zombie").getAnimation("dieAnimation");
-		zombie_->setDieSound(gameData_.getEntry("zombie").getSound("dieSound"));
-		zombie_->setHitSound(gameData_.getEntry("zombie").getSound("hitSound"));
+		zombie_.setDieSound(gameData_.getEntry("zombie").getSound("dieSound"));
+		zombie_.setHitSound(gameData_.getEntry("zombie").getSound("hitSound"));
 
 		// Add human to engine.
 		{
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
-			Unit* human = new Unit2D(*human_);
-			human->setWindowMatrix(wptr);
-			engine_.setHuman(keyboard_, state, human);
+			engine_.setHuman(keyboard_, state, createUnit(human_));
 			viewPosition_ = state.position_;
 			refViewPosition_ = viewPosition_;
 			++nbrUnits_;
@@ -213,25 +223,31 @@ namespace zombie {
 		// Add zombies to engine.
 		int unitLevel = gameData_.getEntry("settings").getInt("unitLevel");
 		for (int i = 0; i < 0; ++i) {
-			Unit* zombie = new Unit2D(*zombie_);
-			zombie->setWindowMatrix(wptr);
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
-			engine_.add(state, zombie);
+			engine_.add(state, createUnit(zombie_));
 			++nbrUnits_;
 		}
-
+	
 		// Add cars to engine.
 		for (int i = 0; i < 1; ++i) {
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
-			Car* car = new Car2D(*car_);
-			car->setWindowMatrix(wptr);
-			engine_.add(state, car);
+			engine_.add(state, createCar(car_));
 		}
 
 		setBackgroundColor(0, 0.1f, 0);
 		zombiesKilled_ = 0;
 	}
 
+	Unit2D* ZombieGame::createUnit(Unit2D& unit) {
+		units_.emplace_back(unit);
+		return &units_[units_.size() - 1];
+	}
+	
+	Car2D* ZombieGame::createCar(Car2D& car) {
+		cars_.emplace_back(car);
+		return &cars_[units_.size() - 1];
+	}
+	
 	void ZombieGame::updateEachCycle(Unit& unit, Unit& human) {
 		Position diff = unit.getPosition() - human.getPosition();
 		if (diff.LengthSquared() > outerSpawnRadius_*outerSpawnRadius_) {
@@ -269,7 +285,7 @@ namespace zombie {
 		if (engine_.isStarted()) {
 			terrain_.draw(deltaTime / 1000.f, wPtr);
 			drawGraphicList(graphicGround_, deltaTime / 1000.f, wPtr);
-			engine_.update(deltaTime / 1000.f);
+			engine_.update(deltaTime / 1000.f, getWindowMatrixPtr());
 			drawGraphicList(graphicMiddle_, deltaTime / 1000.f, wPtr);
 			drawGraphicList(graphicSky_, deltaTime / 1000.f, wPtr);
 
@@ -279,7 +295,7 @@ namespace zombie {
 		} else {
 			terrain_.draw(0, wPtr);
 			drawGraphicList(graphicGround_, 0, wPtr);
-			engine_.update(0);
+			engine_.update(0, getWindowMatrixPtr());
 			drawGraphicList(graphicMiddle_, 0, wPtr);
 			drawGraphicList(graphicSky_, 0, wPtr);
 		}
@@ -300,9 +316,16 @@ namespace zombie {
 				Position spawnPoint = generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_);
 				float angle = calculateAnglePointToPoint(spawnPoint, human.getPosition());
 				State state(spawnPoint, ORIGO, angle);
-				Unit2D* unit = new Unit2D(*zombie_);
-				unit->setWindowMatrix(getWindowMatrixPtr());
-				engine_.add(state, unit);
+				if (units_.size() < unitMaxLimit_) {
+					engine_.add(state, createUnit(zombie_));
+				} else {
+					for (auto& unit : units_) {
+						if (unit.getBody() != nullptr) {
+							unit = zombie_;
+							engine_.add(state, &unit);
+						}
+					}
+				}
 				++nbrUnits_;
 			}
 		}
@@ -375,15 +398,16 @@ namespace zombie {
 		graphicSky_.push_back(std::make_shared<Explosion>(position, tmp));
 	}
 
+	void ZombieGame::removedFromWorld(Unit& unit) {
+	}
+
 	void ZombieGame::loadTerrain() {
 		auto mapEntry = gameData_.getMapEntry();
 		std::string name = mapEntry.getString("name");
 		mapEntry.getChildEntry("objects").iterateChilds("object", [&](GameDataEntry entry) {
 			std::string geom(entry.getString("geom"));
 			if (entry.isAttributeEqual("type", "building")) {
-				auto building = new Building2D(loadPolygon(geom), wall_, wall_, wall_);
-				building->setWindowMatrix(getWindowMatrixPtr());
-				engine_.add(building);
+				engine_.add(new Building2D(loadPolygon(geom), wall_, wall_, wall_));
 			} else if (entry.isAttributeEqual("type", "water")) {
 				terrain_.addWater(loadPolygon(geom));
 			} else if (entry.isAttributeEqual("type", "road")) {

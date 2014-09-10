@@ -16,8 +16,7 @@ namespace zombie {
 		Tree2D(const Position& position, const mw::Sprite& tree) : Tree(position), tree_(tree) {
 		}
 
-		void draw(float accumulator, float timeStep) override {
-			auto wPtr = getWindowMatrix();
+		void draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr) override {
 			mw::Matrix44 old = wPtr->getModel();
 			wPtr->useShader();
 			wPtr->setColor(1, 1, 1);

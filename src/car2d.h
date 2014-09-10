@@ -16,14 +16,13 @@ namespace zombie {
 		}
 
 		// Draws the car.
-		void draw(float accumulator, float timeStep) override {
+		void draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr) override {
 			// Draw body.
 			const float alpha = accumulator / timeStep;
 
 			State state = getState();
 			state.position_ = alpha * state.position_ + (1.f - alpha) * previousState().position_;
 
-			auto wPtr = getWindowMatrix();
 			wPtr->useShader();
 			wPtr->setColor(1, 1, 1);
 			mw::Matrix44 old = wPtr->getModel();

@@ -83,6 +83,16 @@ namespace zombie {
 
 		b2Body* getBody() const override;
 
+		void destroyBody() override {
+			if (body_ != nullptr) {
+				b2World* world = body_->GetWorld();
+				if (world != nullptr) {
+					world->DestroyBody(body_);
+				}
+				body_ = nullptr;
+			}
+		}
+
 	private:
 		// Properties
 		float viewDistance_;

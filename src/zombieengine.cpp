@@ -42,7 +42,8 @@ namespace zombie {
 		}
 
 		for (Object* ob : removeObjects) {
-			delete ob;
+			ob->destroyBody();
+			// Make sure memory is deleted in zombieGame. TODO!!
 		}
 	}
 
@@ -94,6 +95,7 @@ namespace zombie {
 
 	void ZombieEngine::removeGarbage() {
 		if (human_ != nullptr && human_->toBeRemoved()) {
+			human_->destroyBody();
 			human_ = nullptr;
 		}
 
@@ -110,12 +112,11 @@ namespace zombie {
 		// Remove units in a safe way. I.e. No risk of removing a unit in current use.
 		for (Object* object : garbageObjects_) {
 			object->destroyBody();
-			delete object;
 		}
 		garbageObjects_.clear();
 	}
 
-	void ZombieEngine::update(float frameTime) {
+	void ZombieEngine::update(float frameTime, gui::WindowMatrixPtr wPtr) {
 		if (frameTime > 0.25) {
 			// To avoid spiral of death.
 			frameTime = 0.25;
@@ -145,7 +146,7 @@ namespace zombie {
 		// Draw all objects.
 		for (b2Body* b = world_.GetBodyList(); b; b = b->GetNext()) {
 			Object* ob = static_cast<Object*>(b->GetUserData());
-			ob->draw(accumulator_, timeStep_);
+			ob->draw(accumulator_, timeStep_, wPtr);
 		}
 		// Draw roofs last.
 		for (b2Body* b = world_.GetBodyList(); b; b = b->GetNext()) {

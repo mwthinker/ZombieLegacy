@@ -16,13 +16,12 @@ namespace zombie {
 			roof_.setDrawFunction(std::bind(&Building2D::drawGTAstyle, this, roof_));
 		}
 
-		void Building2D::draw(float accumulator, float timeStep) {
+		void Building2D::draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr) {
 			auto& corners = getCorners();
 			mw::glEnable(GL_BLEND);
 			mw::glEnable(GL_TEXTURE_2D);
 			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			
-			auto wPtr = getWindowMatrix();
+
 			wPtr->setColor(1, 1, 1);
 			//leftWall_.draw();
 			//rightWall_.draw();
