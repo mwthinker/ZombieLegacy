@@ -43,9 +43,9 @@ namespace zombie {
 		std::shared_ptr<gui::Button> createButton(std::string str, const mw::Font& font) {
 			auto button = std::make_shared<gui::Button>(str, font);
 			button->setAutoSizeToFitText(true);			
-			button->setHoverColor(0.7f, 0, 0);
-			button->setFocusColor(0.8f, 0, 0);
-			button->setPushColor(0.9f, 0, 0);
+			button->setHoverColor(0.7f, 0, 0, 0.5);
+			button->setFocusColor(0.8f, 0, 0, 0.5);
+			button->setPushColor(0.9f, 0, 0, 0.5);
 			return button;
 		}
 
@@ -149,10 +149,10 @@ namespace zombie {
 		setCurrentPanel(playFrameIndex_);
 
 		add(zombieGame_, gui::BorderLayout::CENTER);
-		auto panel = std::make_shared<gui::Panel>();
-		panel->setPreferredSize(100, 50);
-		add(panel, gui::BorderLayout::SOUTH);
-		panel->setBackgroundColor(0, 0, 0);
+		gamePanel_ = std::make_shared<gui::Panel>();
+		gamePanel_->setPreferredSize(100, 50);
+		add(gamePanel_, gui::BorderLayout::SOUTH);
+		gamePanel_->setBackgroundColor(0, 0, 0);
 		mw::Font font = gameData_.getDefaultFont(15);
 
 		//panel->add(createButton("Button", font));
@@ -160,33 +160,45 @@ namespace zombie {
 		label2_ = std::make_shared<gui::Label>("Health: ?", font);
 		label3_ = std::make_shared<gui::Label>("Ammo: ?", font);
 		label4_ = std::make_shared<gui::Label>("Live units: ?", font);
+		fps_ = std::make_shared<gui::Label>("Fps: ", font);
 		label1_->setTextColor(1,0,0);
 		label2_->setTextColor(1, 0, 0);
 		label3_->setTextColor(1, 0, 0);
 		label4_->setTextColor(1, 0, 0);
-		panel->add(label1_);
-		panel->add(label2_);
-		panel->add(label3_);
-		panel->add(label4_);
+		fps_->setTextColor(1, 0, 0);
+		gamePanel_->add(label1_);
+		gamePanel_->add(label2_);
+		gamePanel_->add(label3_);
+		gamePanel_->add(label4_);
+		gamePanel_->add(fps_);
 		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
 			std::stringstream stream;
-			stream << "Kill count: " << zombieGame_->getZombiesKilled() << "    ";
+			stream << "Kill count: " << zombieGame_->getZombiesKilled();
 			label1_->setText(stream.str());
+			gamePanel_->validate();
 		});
 		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
 			std::stringstream stream;
-			stream << "Health: " << zombieGame_->getHealth() << "/100     ";
+			stream << "Health: " << zombieGame_->getHealth() << "/100";
 			label2_->setText(stream.str());
+			gamePanel_->validate();
 		});
 		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
 			std::stringstream stream;
-			stream << "Ammo: " << zombieGame_->getBulletsInWeapon() << "/" << zombieGame_->getClipSize() << "     ";
+			stream << "Ammo: " << zombieGame_->getBulletsInWeapon() << "/" << zombieGame_->getClipSize();
 			label3_->setText(stream.str());
+			gamePanel_->validate();
 		});
 		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
 			std::stringstream stream;
 			stream << "Live units: " << zombieGame_->getNbrUnits();
 			label4_->setText(stream.str());
+			gamePanel_->validate();
+		});
+		addUpdateListener([&](gui::Frame& frame, Uint32 deltaTime) {
+			std::stringstream stream;
+			stream << "Fps: " << zombieGame_->getFps();
+			fps_->setText(stream.str());
 		});
 	}
 

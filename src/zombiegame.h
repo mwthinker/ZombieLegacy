@@ -68,7 +68,9 @@ namespace zombie {
 
 		int getNbrUnits() {
 			return engine_.getNbrUnits();
-		}		
+		}
+
+		float getFps() const;
 
 	private:
 		void init();
@@ -148,6 +150,9 @@ namespace zombie {
 
 		std::vector<Unit2D> units_;
 		std::vector<Car2D> cars_;
+		int frame_;
+		float fps_;
+		float lastFramTime_;
 
 		ZombieEngine engine_; // Must be destroyed first in order to remove box2d stuff.
 	};

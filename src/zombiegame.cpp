@@ -55,7 +55,10 @@ namespace zombie {
 		human_(loadUnit(this, "human", gameData, false)),
 		zombie_(loadUnit(this, "zombie", gameData_, true)),
 		car_(zombie::loadCar(gameData_.getEntry("car"))),
-		water_(loadWater(gameData.getEntry("water")))
+		water_(loadWater(gameData.getEntry("water"))),
+		frame_(0),
+		fps_(60),
+		lastFramTime_(0)
 
 		{
 
@@ -171,6 +174,14 @@ namespace zombie {
 	}
 
 	void ZombieGame::draw(Uint32 deltaTime) {
+		++frame_;
+		lastFramTime_ += deltaTime;
+		if (frame_ == 60) {
+			fps_ = frame_ / lastFramTime_ * 1000;
+			frame_ = 0;
+			lastFramTime_ = 0;
+		}
+
 		gui::Component::draw(deltaTime);
 		
 		viewPosition_ += 10 * deltaTime/1000.f * (refViewPosition_ - viewPosition_);
@@ -334,6 +345,10 @@ namespace zombie {
 			}
 			return true;
 		});
+	}
+
+	float ZombieGame::getFps() const {
+		return fps_;
 	}
 
 } // Namespace zombie.

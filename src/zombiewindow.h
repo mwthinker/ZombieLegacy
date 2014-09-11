@@ -31,8 +31,10 @@ namespace zombie {
         int highscoreFrameIndex_;
 
 		std::shared_ptr<ZombieGame> zombieGame_;
+		std::shared_ptr<gui::Panel> gamePanel_;
 		GameData& gameData_;
 		std::shared_ptr<gui::Label> label1_,label2_,label3_,label4_;
+		std::shared_ptr<gui::Label> fps_;
 	};
 
 } // Namespace zombie.
