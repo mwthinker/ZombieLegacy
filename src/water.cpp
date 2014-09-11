@@ -1,7 +1,7 @@
 #include "water.h"
-
 #include "box2ddef.h"
 #include "auxiliary.h"
+#include "gamedataentry.h"
 
 #include <mw/opengl.h>
 #include <mw/color.h>
@@ -74,6 +74,10 @@ namespace zombie {
 		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		mw::glDrawArrays(GL_TRIANGLES, 0, aPos_.size() / 3); // 3 vertices for every loop.
 		mw::glDisable(GL_BLEND);
+	}
+
+	Water loadWater(GameDataEntry& entry) {
+		return Water(entry.getTexture("seeFloorImage"));
 	}
 
 } // Namespace zombie.

@@ -25,7 +25,7 @@ namespace zombie {
 
 	namespace {
 
-		// Returns a random postion between the defined outer and inner circle centered in position.
+		// Return a random postion between the defined outer and inner circle centered in position.
 		Position generatePosition(Position position, float innerRadius, float outerRadius) {
 			float angle = random(0, 2.f*PI);
 			return position + (innerRadius + (outerRadius - innerRadius) * random()) * Position(std::cos(angle), std::sin(angle));
@@ -46,105 +46,6 @@ namespace zombie {
 				ob->draw(deltaTime, wPtr);
 			}
 		}
-
-		Missile2D loadMissile2D(GameInterface* gameInterface, GameDataEntry& entry, float damage, float range) {
-			float mass = entry.getFloat("range");
-			float width = entry.getFloat("width");
-			float length = entry.getFloat("length");
-			Animation animation = entry.getAnimation("animation");
-			mw::Sound moveSound = entry.getSound("moveSound");
-			float damageRadius = entry.getFloat("damageRadius");
-			float deathTime = entry.getFloat("deathTime");
-			float speed = entry.getFloat("speed");
-
-			return Missile2D(animation, *gameInterface, width, length, mass, speed, deathTime, damage, damageRadius);
-		}
-
-		Weapon2D loadWeapon2D(GameInterface* gameInterface, GameDataEntry& entry) {
-			mw::Sprite symbolImage = entry.getSprite("symbolImage");
-
-			float timeBetweenShots = entry.getFloat("timeBetweenShots");
-			int clipSize = entry.getInt("clipSize");
-
-			mw::Sound shoot = entry.getSound("shootSound");
-			mw::Sound reload = entry.getSound("reloadSound");
-			Animation animation = entry.getAnimation("moveAnimation");
-			float size = entry.getFloat("size");
-			Position grip;
-			grip.x = entry.getFloat("moveImageGripX");
-			grip.y = entry.getFloat("moveImageGripY");
-			
-			GameDataEntry projectile = entry.getChildEntry("projectile");
-			float damage = projectile.getFloat("damage");
-			float range = projectile.getFloat("range");
-
-			if (projectile.isAttributeEqual("type", "missile")) {
-				auto missile = loadMissile2D(gameInterface, projectile, damage, range);
-				auto missileLauncher = std::make_shared<MissileLauncher2D>(missile, clipSize, timeBetweenShots, range, shoot, reload);
-				return Weapon2D(missileLauncher, symbolImage, animation, size, grip);;
-			} else {
-				return Weapon2D(std::make_shared<Gun>(damage, timeBetweenShots, range, clipSize, shoot, reload), symbolImage, animation, size, grip);
-			}
-		}
-		
-		Unit2D loadUnit(GameInterface* gameInterface, std::string nameEntry, const GameData& gameData, bool infected) {
-			GameDataEntry entry = gameData.getEntry(nameEntry);
-			float mass = entry.getFloat("mass");
-			float radius = entry.getFloat("radius");
-			float life = entry.getFloat("life");
-			float walkingSpeed = entry.getFloat("walkingSpeed");
-			float runningSpeed = entry.getFloat("runningSpeed");
-			float stamina = entry.getFloat("stamina");
-			Animation moveA = entry.getAnimation("moveAnimation");
-			Position grip;
-			grip.x = entry.getFloat("moveImageGripX");
-			grip.y = entry.getFloat("moveImageGripY");
-			std::string weaponName = entry.getString("weapon");
-						
-			std::shared_ptr<Weapon> weapon;
-			gameData.getEntry("weapons").iterateChilds("weapon", [&](GameDataEntry entry) {
-				std::string name = entry.getString("name");
-				if (name == weaponName) {
-					weapon = loadWeapon2D(gameInterface, entry).clone();
-					return false;
-				}
-				return true;
-			});
-			
-			return Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapon, moveA, grip);
-		}
-
-		Car2D loadCar(GameDataEntry& entry) {
-			Animation animation = entry.getAnimation("moveAnimation");
-			float mass = entry.getFloat("mass");
-			float width = entry.getFloat("width");
-			float length = entry.getFloat("length");
-			float life = entry.getFloat("life");
-			return Car2D(mass, life, width, length, animation);
-		}
-
-		ExplosionProperties loadExplosion(GameDataEntry& entry) {
-			ExplosionProperties explosionProperties;
-			explosionProperties.delay_ = entry.getFloat("timeDelay");
-			explosionProperties.speed_ = entry.getFloat("speed");
-			explosionProperties.blastRadius_ = entry.getFloat("blastRadius");
-			explosionProperties.particle_ = entry.getTexture("particleImage");
-			explosionProperties.sound_ = entry.getSound("sound");
-			return explosionProperties;
-		}
-
-		Water loadWater(GameDataEntry& entry) {
-			return Water(entry.getTexture("seeFloorImage"));
-		}
-
-		/*
-		std::shared_ptr<Fog> loadFog(GameDataEntry& entry) {
-			mw::Texture fog = entry.getTexture("image");
-			float radius = entry.getFloat("radius");
-			mw::Color color = entry.getColor("color");
-			return std::make_shared<Fog>(fog, radius, color);
-		}
-		*/
 
 	}
 
@@ -327,7 +228,7 @@ namespace zombie {
 				Position spawnPoint = generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_);
 				float angle = calculateAnglePointToPoint(spawnPoint, human.getPosition());
 				State state(spawnPoint, ORIGO, angle);
-				if (units_.size() < unitMaxLimit_) {
+				if ((int) units_.size() < unitMaxLimit_) {
 					engine_.add(state, createUnit(zombie_));
 				} else {
 					for (auto& unit : units_) {

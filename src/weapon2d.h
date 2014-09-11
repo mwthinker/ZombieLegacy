@@ -3,7 +3,7 @@
 
 #include "weapon.h"
 #include "animation.h"
-#include "auxiliary.h"
+#include "weaponinterface.h"
 
 #include <mw/sprite.h>
 #include <mw/sound.h>
@@ -11,34 +11,23 @@
 #include <memory>
 
 namespace zombie {
-	
+
+	class GameInterface;
+	class GameDataEntry;	
+
 	// Describes a Weapon and is responsible of shooting.
 	class Weapon2D : public Weapon {
 	public:
-		Weapon2D() {
-		}
+		Weapon2D();
 
 		Weapon2D(const WeaponInterfacePtr& weaponInterface, mw::Sprite symbol,
-			Animation animation, float size, Position grip) : 
-			Weapon(weaponInterface), symbol_(symbol), animation_(animation), grip_(grip), size_(size) {
-		}
+			Animation animation, float size, Position grip);
 
-		void drawSymbol(float timeStep) override {
-			symbol_.draw();
-		}
+		void drawSymbol(float timeStep) override;
 
-		void draw(float timeStep, const gui::WindowMatrixPtr& wPtr) override {
-			wPtr->useShader();
-			wPtr->setColor(1, 1, 1);
-			mw::Matrix44 old = wPtr->getModel();
-			wPtr->setModel(old * mw::getTranslateMatrix(-grip_.x, -grip_.y) * mw::getScaleMatrix(size_, size_));
-			animation_.draw(timeStep, wPtr);
-			wPtr->setModel(old);
-		}
+		void draw(float timeStep, const gui::WindowMatrixPtr& wPtr) override;
 
-		WeaponPtr clone() const override {
-			return std::make_shared<Weapon2D>(*this);
-		}
+		WeaponPtr clone() const override;
 
 	private:
 		mw::Sprite symbol_;
@@ -46,6 +35,8 @@ namespace zombie {
 		float size_;
 		Position grip_;
 	};
+
+	Weapon2D loadWeapon2D(GameInterface* gameInterface, GameDataEntry& entry);
 
 } // Namespace zombie.
 

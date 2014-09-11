@@ -2,6 +2,7 @@
 #include "box2ddef.h"
 #include "auxiliary.h"
 #include "graphic.h"
+#include "gamedataentry.h"
 
 #include <mw/opengl.h>
 #include <mw/color.h>
@@ -109,6 +110,16 @@ namespace zombie {
 		if (particle.lifeTime_ > getTimeDuration()) {
 			particle.alive = false;
 		}
+	}
+
+	ExplosionProperties loadExplosion(GameDataEntry& entry) {
+		ExplosionProperties explosionProperties;
+		explosionProperties.delay_ = entry.getFloat("timeDelay");
+		explosionProperties.speed_ = entry.getFloat("speed");
+		explosionProperties.blastRadius_ = entry.getFloat("blastRadius");
+		explosionProperties.particle_ = entry.getTexture("particleImage");
+		explosionProperties.sound_ = entry.getSound("sound");
+		return explosionProperties;
 	}
 
 } // Namespace zombie.

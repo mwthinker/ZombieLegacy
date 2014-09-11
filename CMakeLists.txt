@@ -27,6 +27,7 @@ set(SOURCES_ZOMBIE
 	src/building2d.h
 	src/car.cpp
 	src/car.h
+	src/car2d.cpp
 	src/car2d.h
 	src/closestraycastcallback.h
 	src/contactlistener.h
@@ -51,6 +52,7 @@ set(SOURCES_ZOMBIE
 	src/missilelauncher2d.h
 	src/missile.cpp
 	src/missile.h
+	src/missile2d.cpp
 	src/missile2d.h
 	src/movingobject.h
 	src/object.cpp
@@ -70,7 +72,8 @@ set(SOURCES_ZOMBIE
 	src/unit2d.cpp
 	src/unit2d.h
 	src/weapon.h
-	src/weapon2d.h
+	src/weapon2d.cpp
+	src/weapon2d.h	
 	src/weaponinterface.h
 	src/weaponitem.h
 	src/weaponitem2d.h

@@ -1,6 +1,7 @@
 #include "unit2d.h"
 #include "animation.h"
 #include "auxiliary.h"
+#include "weapon2d.h"
 
 #include <mw/sound.h>
 
@@ -71,6 +72,33 @@ namespace zombie {
 				hit_.play();
 				break;
 		}
+	}
+
+	Unit2D loadUnit(GameInterface* gameInterface, std::string nameEntry, const GameData& gameData, bool infected) {
+		GameDataEntry entry = gameData.getEntry(nameEntry);
+		float mass = entry.getFloat("mass");
+		float radius = entry.getFloat("radius");
+		float life = entry.getFloat("life");
+		float walkingSpeed = entry.getFloat("walkingSpeed");
+		float runningSpeed = entry.getFloat("runningSpeed");
+		float stamina = entry.getFloat("stamina");
+		Animation moveA = entry.getAnimation("moveAnimation");
+		Position grip;
+		grip.x = entry.getFloat("moveImageGripX");
+		grip.y = entry.getFloat("moveImageGripY");
+		std::string weaponName = entry.getString("weapon");
+
+		std::shared_ptr<Weapon> weapon;
+		gameData.getEntry("weapons").iterateChilds("weapon", [&](GameDataEntry entry) {
+			std::string name = entry.getString("name");
+			if (name == weaponName) {
+				weapon = loadWeapon2D(gameInterface, entry).clone();
+				return false;
+			}
+			return true;
+		});
+
+		return Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapon, moveA, grip);
 	}
 
 } // Namespace zombie.

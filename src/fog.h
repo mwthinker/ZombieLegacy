@@ -50,6 +50,15 @@ namespace zombie {
 		float particleSize_;
 	};
 
+	/*
+	std::shared_ptr<Fog> loadFog(GameDataEntry& entry) {
+	mw::Texture fog = entry.getTexture("image");
+	float radius = entry.getFloat("radius");
+	mw::Color color = entry.getColor("color");
+	return std::make_shared<Fog>(fog, radius, color);
+	}
+	*/
+
 } // Namespace zombie.
 
 #endif // FOG_H

@@ -5,6 +5,8 @@
 #include "state.h"
 #include "gameinterface.h"
 
+#include <gui/windowmatrix.h>
+
 #include <memory>
 
 namespace zombie {

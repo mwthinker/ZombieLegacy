@@ -15,6 +15,8 @@
 
 namespace zombie {
 
+	class GameDataEntry;
+
 	class Water {
 	public:
 		Water(const mw::Texture& seeFloor);
@@ -45,6 +47,8 @@ namespace zombie {
 		mw::Sprite water_;
 		float size_;
 	};
+
+	Water loadWater(GameDataEntry& entry);
 
 } // Namespace zombie.
 
