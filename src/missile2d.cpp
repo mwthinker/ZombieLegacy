@@ -27,14 +27,14 @@ namespace zombie {
 		}
 
 	Missile2D loadMissile2D(GameInterface* gameInterface, GameDataEntry& entry, float damage, float range) {
-		float mass = entry.getFloat("range");
-		float width = entry.getFloat("width");
-		float length = entry.getFloat("length");
-		Animation animation = entry.getAnimation("animation");
-		mw::Sound moveSound = entry.getSound("moveSound");
-		float damageRadius = entry.getFloat("damageRadius");
-		float deathTime = entry.getFloat("deathTime");
-		float speed = entry.getFloat("speed");
+		float mass = entry.getChildEntry("range").getFloat();
+		float width = entry.getChildEntry("width").getFloat();
+		float length = entry.getChildEntry("length").getFloat();
+		Animation animation = entry.getChildEntry("animation").getAnimation();
+		mw::Sound moveSound = entry.getChildEntry("moveSound").getSound();
+		float damageRadius = entry.getChildEntry("damageRadius").getFloat();
+		float deathTime = entry.getChildEntry("deathTime").getFloat();
+		float speed = entry.getChildEntry("speed").getFloat();
 
 		return Missile2D(animation, *gameInterface, width, length, mass, speed, deathTime, damage, damageRadius);
 	}

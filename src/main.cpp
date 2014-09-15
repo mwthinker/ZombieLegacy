@@ -1,12 +1,12 @@
 #include "zombiewindow.h"
-#include "gamedata.h"
+#include "gamedataentry.h"
 
 int main (int argc, char** argv) {
 
 	// Load game data.
-	zombie::GameData gameData("zombie.xml");
+	zombie::GameDataEntry gameDataEntry("zombie.xml");
 
-	zombie::ZombieWindow zombieWindow(gameData);
+	zombie::ZombieWindow zombieWindow(gameDataEntry.getChildEntry("zombieGame"));
 	zombie::ZombieWindow::startLoop();
 
     return 0;

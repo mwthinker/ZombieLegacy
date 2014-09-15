@@ -74,29 +74,30 @@ namespace zombie {
 		}
 	}
 
-	Unit2D loadUnit(GameInterface* gameInterface, std::string nameEntry, const GameData& gameData, bool infected) {
-		GameDataEntry entry = gameData.getEntry(nameEntry);
-		float mass = entry.getFloat("mass");
-		float radius = entry.getFloat("radius");
-		float life = entry.getFloat("life");
-		float walkingSpeed = entry.getFloat("walkingSpeed");
-		float runningSpeed = entry.getFloat("runningSpeed");
-		float stamina = entry.getFloat("stamina");
-		Animation moveA = entry.getAnimation("moveAnimation");
+	Unit2D loadUnit(GameInterface* gameInterface, std::string unitTag, GameDataEntry zombieGameEntry, bool infected) {
+		GameDataEntry entry = zombieGameEntry.getChildEntry(unitTag);
+		float mass = entry.getChildEntry("mass").getFloat();
+		float radius = entry.getChildEntry("radius").getFloat();
+		float life = entry.getChildEntry("life").getFloat();
+		float walkingSpeed = entry.getChildEntry("walkingSpeed").getFloat();
+		float runningSpeed = entry.getChildEntry("runningSpeed").getFloat();
+		float stamina = entry.getChildEntry("stamina").getFloat();
+		Animation moveA = entry.getChildEntry("moveAnimation").getAnimation();
 		Position grip;
-		grip.x = entry.getFloat("moveImageGripX");
-		grip.y = entry.getFloat("moveImageGripY");
-		std::string weaponName = entry.getString("weapon");
+		grip.x = entry.getChildEntry("moveImageGripX").getFloat();
+		grip.y = entry.getChildEntry("moveImageGripY").getFloat();
+		std::string weaponName = entry.getChildEntry("weapon").getString();
 
 		std::shared_ptr<Weapon> weapon;
-		gameData.getEntry("weapons").iterateChilds("weapon", [&](GameDataEntry entry) {
-			std::string name = entry.getString("name");
+		auto weaponEntry = zombieGameEntry.getEntry("weapons weapon");
+		while (weaponEntry.hasData()) {
+			std::string name = weaponEntry.getChildEntry("name").getString();
 			if (name == weaponName) {
-				weapon = loadWeapon2D(gameInterface, entry).clone();
-				return false;
+				weapon = loadWeapon2D(gameInterface, weaponEntry).clone();
+				break;
 			}
-			return true;
-		});
+			weaponEntry = weaponEntry.getSibling("weapon");
+		}
 
 		return Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapon, moveA, grip);
 	}

@@ -4,7 +4,7 @@
 #include "zombieengine.h"
 #include "gameinterface.h"
 #include "device.h"
-#include "gamedata.h"
+#include "gamedataentry.h"
 #include "graphic.h"
 #include "terrain2d.h"
 #include "explosion.h"
@@ -37,7 +37,7 @@ namespace zombie {
 	// started here.
 	class ZombieGame : public GameInterface, public gui::Component {
 	public:
-		ZombieGame(const GameData& gameData);
+		ZombieGame(GameDataEntry zombieEntry);
 		~ZombieGame();
 
 		// Start the game.
@@ -126,7 +126,7 @@ namespace zombie {
 		Position refViewPosition_;
 
 		DevicePtr keyboard_;
-		const GameData& gameData_;
+		GameDataEntry zombieEntry_;
 
 		Unit2D human_;
 		Unit2D zombie_;
@@ -136,7 +136,6 @@ namespace zombie {
 		std::list<std::shared_ptr<Graphic>> graphicMiddle_;
 		std::list<std::shared_ptr<Graphic>> graphicSky_;
 		std::vector<Position> spawningPoints_;
-		std::map<std::string, Weapon2D> weapons_;
 
 		Terrain2D terrain_;
 		Water water_;

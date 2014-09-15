@@ -10,46 +10,70 @@
 #include <mw/color.h>
 #include <mw/music.h>
 
-#include <tinyxml2.h>
+#include <xml/dataentry.h>
 
 #include <string>
 #include <functional>
 
 namespace zombie {
 
-	class GameData;
+	// Takes a string as input and returns the points.
+	// The string "POLYGON ((x1 y1, x2 y2, ...))" the input should be defined
+	// as "POLYGON ((...))". The last point is assumed to be the same as the first, therefore
+	// the last point will not be includeded in the returned vector.
+	std::vector<Point> loadPolygon(std::string line);
 
-	class GameDataEntry {
+	// Takes a string as input and returns the point.
+	// The string "POINT (x y)" the input should be defined
+	// as "POINT (...)".
+	Point loadPoint(std::string line);
+
+	class GameDataEntry : public xml::DataEntry {
 	public:
-		friend class GameData;
+		GameDataEntry(std::string fileName);
 
-		GameDataEntry(const GameDataEntry& GameDataEntry);
+		GameDataEntry getEntry(std::string tagNames) const;
 
-		bool isAttributeEqual(std::string name, std::string value) const;
-		bool isAttributeEqual(std::string tagName, std::string name, std::string value) const;
+		GameDataEntry getChildEntry(std::string tagName) const;
 
-		bool getBool(std::string tagName) const;
-		float getFloat(std::string tagName) const;
-		int getInt(std::string tagName) const;
-		mw::Sound getSound(std::string tagName) const;
-		mw::Music getMusic(std::string tagName) const;
-
-		Animation getAnimation(std::string tagName) const;
-		mw::Sprite getSprite(std::string tagName) const;
-		mw::Texture getTexture(std::string tagName) const;
-		std::string getString(std::string tagName) const;
-		mw::Color getColor(std::string tagName) const;
-		Position getPosition(std::string tagName) const;
-
-		GameDataEntry getChildEntry(std::string tagName) const;		
-
-		void iterateChilds(std::string tagName, const std::function<bool(GameDataEntry)>& next) const;
+		GameDataEntry getSibling(std::string siblingName) const;
+		
+		mw::Font getFont(int size) const;
+		mw::Sound getSound() const;
+		mw::Music getMusic() const;
+		Animation getAnimation() const;
+		mw::Sprite getSprite() const;
+		mw::Texture getTexture() const;
+		mw::Color getColor() const;
+		Position getPosition() const;
 
 	private:
-		GameDataEntry(const GameData& gameData, tinyxml2::XMLConstHandle tag);
+		class GameData {
+		public:
+			mw::Sprite extractSprite(GameDataEntry entry) const;
 
-		tinyxml2::XMLConstHandle tag_;
-		const GameData& gameData_;
+			Animation extractAnimation(GameDataEntry entry) const;
+
+			mw::Sound extractSound(GameDataEntry entry) const;
+
+			mw::Music extractMusic(GameDataEntry entry) const;
+
+			void loadFrame(GameDataEntry, Animation& animation) const;
+
+			mw::Font loadFont(std::string file, unsigned int fontSize) const;
+			mw::Sound loadSound(std::string file) const;
+			mw::Texture loadTexture(std::string file) const;
+			mw::Music loadMusic(std::string file) const;
+
+			mutable std::map<std::string, mw::Texture> textures_;
+			mutable std::map<std::string, mw::Sound> sounds_;
+			mutable std::map<std::string, mw::Font> fonts_;
+			mutable std::map<std::string, mw::Music> musics_;
+		};
+
+		GameDataEntry(const GameDataEntry& g, xml::DataEntry e);
+		
+		std::shared_ptr<GameData> gameData_;
 	};
 
 } // Namespace zombie.

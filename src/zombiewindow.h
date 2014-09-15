@@ -1,6 +1,8 @@
 #ifndef ZOMBIEWINDOW_H
 #define ZOMBIEWINDOW_H
 
+#include "gamedataentry.h"
+
 #include <gui/frame.h>
 #include <gui/label.h>
 
@@ -14,7 +16,7 @@ namespace zombie {
 
 	class ZombieWindow : public gui::Frame {
 	public:
-		ZombieWindow(GameData& gameData);
+		ZombieWindow(GameDataEntry gameDataEntry);
 
 		~ZombieWindow() {
 		}
@@ -32,7 +34,7 @@ namespace zombie {
 
 		std::shared_ptr<ZombieGame> zombieGame_;
 		std::shared_ptr<gui::Panel> gamePanel_;
-		GameData& gameData_;
+		GameDataEntry zombieEntry_;
 		std::shared_ptr<gui::Label> label1_,label2_,label3_,label4_;
 		std::shared_ptr<gui::Label> fps_;
 	};

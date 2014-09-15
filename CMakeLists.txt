@@ -34,8 +34,7 @@ set(SOURCES_ZOMBIE
 	src/contactlistener.cpp
 	src/device.h
 	src/driver.h
-	src/gamedata.cpp
-	src/gamedata.h
+	src/gamedataentry.cpp
 	src/gamedataentry.h
 	src/gameinterface.h
 	src/graphic.h
@@ -108,9 +107,9 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
+add_subdirectory(DataEntry)
 add_subdirectory(SdlGui)
 add_subdirectory(Box2D)
-add_subdirectory(TinyXML2)
 
 file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
 
@@ -121,9 +120,9 @@ include_directories(${SDL2_INCLUDE_DIRS}
 	SdlGui/src
 	SdlGui/MwLibrary2/src
 	SdlGui/Signal/src
-	Spark/src
+	DataEntry/src
+	DataEntry/TinyXML2/src
 	"."
-	TinyXML2/src
 )
 
 if (WIN32)
@@ -143,6 +142,7 @@ target_link_libraries(Zombie
 	SdlGui
 	MwLibrary2
 	Signal
+	DataEntry
 	TinyXML2
 	${SDL2_LIBRARIES}
 	${SDL2_TTF_LIBRARIES}

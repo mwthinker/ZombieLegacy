@@ -3,6 +3,7 @@
 
 #include "box2ddef.h"
 #include "auxiliary.h"
+#include "gamedataentry.h"
 
 #include <mw/opengl.h>
 #include <mw/color.h>
@@ -48,7 +49,7 @@ namespace zombie {
 		float size_;
 	};
 
-	Water loadWater(GameDataEntry& entry);
+	Water loadWater(GameDataEntry entry);
 
 } // Namespace zombie.
 

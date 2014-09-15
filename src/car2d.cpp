@@ -28,11 +28,11 @@ namespace zombie {
 	}
 
 	Car2D loadCar(GameDataEntry& entry) {
-		Animation animation = entry.getAnimation("moveAnimation");
-		float mass = entry.getFloat("mass");
-		float width = entry.getFloat("width");
-		float length = entry.getFloat("length");
-		float life = entry.getFloat("life");
+		Animation animation = entry.getChildEntry("moveAnimation").getAnimation();
+		float mass = entry.getChildEntry("mass").getFloat();
+		float width = entry.getChildEntry("width").getFloat();
+		float length = entry.getChildEntry("length").getFloat();
+		float life = entry.getChildEntry("life").getFloat();
 		return Car2D(mass, life, width, length, animation);
 	}
 	

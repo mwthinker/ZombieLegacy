@@ -41,22 +41,22 @@ namespace zombie {
 	}
 
 	Weapon2D loadWeapon2D(GameInterface* gameInterface, GameDataEntry& entry) {
-		mw::Sprite symbolImage = entry.getSprite("symbolImage");
+		mw::Sprite symbolImage = entry.getChildEntry("symbolImage").getSprite();
 
-		float timeBetweenShots = entry.getFloat("timeBetweenShots");
-		int clipSize = entry.getInt("clipSize");
+		float timeBetweenShots = entry.getChildEntry("timeBetweenShots").getFloat();
+		int clipSize = entry.getChildEntry("clipSize").getInt();
 
-		mw::Sound shoot = entry.getSound("shootSound");
-		mw::Sound reload = entry.getSound("reloadSound");
-		Animation animation = entry.getAnimation("moveAnimation");
-		float size = entry.getFloat("size");
+		mw::Sound shoot = entry.getChildEntry("shootSound").getSound();
+		mw::Sound reload = entry.getChildEntry("reloadSound").getSound();
+		Animation animation = entry.getChildEntry("moveAnimation").getAnimation();
+		float size = entry.getChildEntry("size").getFloat();
 		Position grip;
-		grip.x = entry.getFloat("moveImageGripX");
-		grip.y = entry.getFloat("moveImageGripY");
+		grip.x = entry.getChildEntry("moveImageGripX").getFloat();
+		grip.y = entry.getChildEntry("moveImageGripY").getFloat();
 
 		GameDataEntry projectile = entry.getChildEntry("projectile");
-		float damage = projectile.getFloat("damage");
-		float range = projectile.getFloat("range");
+		float damage = projectile.getChildEntry("damage").getFloat();
+		float range = projectile.getChildEntry("range").getFloat();
 
 		if (projectile.isAttributeEqual("type", "missile")) {
 			auto missile = loadMissile2D(gameInterface, projectile, damage, range);

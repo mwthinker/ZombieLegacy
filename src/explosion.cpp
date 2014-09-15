@@ -114,11 +114,11 @@ namespace zombie {
 
 	ExplosionProperties loadExplosion(GameDataEntry& entry) {
 		ExplosionProperties explosionProperties;
-		explosionProperties.delay_ = entry.getFloat("timeDelay");
-		explosionProperties.speed_ = entry.getFloat("speed");
-		explosionProperties.blastRadius_ = entry.getFloat("blastRadius");
-		explosionProperties.particle_ = entry.getTexture("particleImage");
-		explosionProperties.sound_ = entry.getSound("sound");
+		explosionProperties.delay_ = entry.getChildEntry("timeDelay").getFloat();
+		explosionProperties.speed_ = entry.getChildEntry("speed").getFloat();
+		explosionProperties.blastRadius_ = entry.getChildEntry("blastRadius").getFloat();
+		explosionProperties.particle_ = entry.getChildEntry("particleImage").getTexture();
+		explosionProperties.sound_ = entry.getChildEntry("sound").getSound();
 		return explosionProperties;
 	}
 

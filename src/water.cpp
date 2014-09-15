@@ -76,8 +76,8 @@ namespace zombie {
 		mw::glDisable(GL_BLEND);
 	}
 
-	Water loadWater(GameDataEntry& entry) {
-		return Water(entry.getTexture("seeFloorImage"));
+	Water loadWater(GameDataEntry entry) {
+		return Water(entry.getChildEntry("seeFloorImage").getTexture());
 	}
 
 } // Namespace zombie.

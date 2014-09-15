@@ -49,13 +49,13 @@ namespace zombie {
 
 	}
 
-	ZombieGame::ZombieGame(const GameData& gameData) : engine_(*this,
-		gameData.getEntry("settings").getInt("timeStepMS"),
-		gameData.getEntry("settings").getFloat("impulseThreshold")), gameData_(gameData),
-		human_(loadUnit(this, "human", gameData, false)),
-		zombie_(loadUnit(this, "zombie", gameData_, true)),
-		car_(zombie::loadCar(gameData_.getEntry("car"))),
-		water_(loadWater(gameData.getEntry("water"))),
+	ZombieGame::ZombieGame(GameDataEntry zombieEntry) : engine_(*this,
+		zombieEntry.getEntry("settings timeStepMS").getInt(),
+		zombieEntry.getEntry("settings impulseThreshold").getFloat()), zombieEntry_(zombieEntry),
+		human_(loadUnit(this, "human", zombieEntry, false)),
+		zombie_(loadUnit(this, "zombie", zombieEntry, true)),
+		car_(zombie::loadCar(zombieEntry.getEntry("car"))),
+		water_(loadWater(zombieEntry.getEntry("water"))),
 		frame_(0),
 		fps_(60),
 		lastFramTime_(0)
@@ -66,6 +66,7 @@ namespace zombie {
 	}
 
 	ZombieGame::~ZombieGame() {
+		zombieEntry_.save();
 	}
 
 	void ZombieGame::init() {
@@ -84,42 +85,35 @@ namespace zombie {
 			keyboard_->eventUpdate(keyEvent);
 		});
 
-		if (gameData_.getEntry("music").getBool("switch")) {
-			music_ = gameData_.getEntry("music").getMusic("track");
-			music_.setVolume(gameData_.getEntry("music").getFloat("volume"));
+		if (zombieEntry_.getEntry("music switch").getBool()) {
+			music_ = zombieEntry_.getEntry("music track").getMusic();
+			music_.setVolume(zombieEntry_.getEntry("music volume").getFloat());
 			music_.play(-1);
 		}
 
-		tree_ = gameData_.getEntry("tree").getSprite("image");
-		wall_ = gameData_.getEntry("buildings").getSprite("wallImage");
+		tree_ = zombieEntry_.getEntry("tree image").getSprite();
+		wall_ = zombieEntry_.getEntry("buildings wallImage").getSprite();
 		nbrUnits_ = 0;
 
-		unitMaxLimit_ = gameData_.getEntry("settings").getInt("unitLimit");
+		unitMaxLimit_ = zombieEntry_.getEntry("settings unitLimit").getInt();
 
-		innerSpawnRadius_ = gameData_.getEntry("settings").getFloat("innerSpawnRadius");
-		outerSpawnRadius_ = gameData_.getEntry("settings").getFloat("outerSpawnRadius");
+		innerSpawnRadius_ = zombieEntry_.getEntry("settings innerSpawnRadius").getFloat();
+		outerSpawnRadius_ = zombieEntry_.getEntry("settings outerSpawnRadius").getFloat();
 		loadTerrain();
-
-		// Load Weapons.
-		gameData_.getEntry("weapons").iterateChilds("weapon", [&](GameDataEntry entry) {
-			std::string weaponName = entry.getString("name");
-			weapons_[weaponName] = zombie::loadWeapon2D(this, entry);
-			return true;
-		});
 		
 		//fog_ = zombie::loadFog(gameData.getEntry("fog"));
 		//graphicSky_.push_back(fog_);
-		explosionProperties_ = zombie::loadExplosion(gameData_.getEntry("explosion"));
+		explosionProperties_ = zombie::loadExplosion(zombieEntry_.getEntry("explosion"));
 
-		humanInjured_ = gameData_.getEntry("human").getAnimation("injuredAnimation");
-		humanDie_ = gameData_.getEntry("human").getAnimation("dieAnimation");
-		human_.setDieSound(gameData_.getEntry("human").getSound("dieSound"));
-		human_.setHitSound(gameData_.getEntry("human").getSound("hitSound"));
+		humanInjured_ = zombieEntry_.getEntry("human injuredAnimation").getAnimation();
+		humanDie_ = zombieEntry_.getEntry("human dieAnimation").getAnimation();
+		human_.setDieSound(zombieEntry_.getEntry("human dieSound").getSound());
+		human_.setHitSound(zombieEntry_.getEntry("human hitSound").getSound());
 
-		zombieInjured_ = gameData_.getEntry("zombie").getAnimation("injuredAnimation");
-		zombieDie_ = gameData_.getEntry("zombie").getAnimation("dieAnimation");
-		zombie_.setDieSound(gameData_.getEntry("zombie").getSound("dieSound"));
-		zombie_.setHitSound(gameData_.getEntry("zombie").getSound("hitSound"));
+		zombieInjured_ = zombieEntry_.getEntry("zombie injuredAnimation").getAnimation();
+		zombieDie_ = zombieEntry_.getEntry("zombie dieAnimation").getAnimation();
+		zombie_.setDieSound(zombieEntry_.getEntry("zombie dieSound").getSound());
+		zombie_.setHitSound(zombieEntry_.getEntry("zombie hitSound").getSound());
 
 		// Add human to engine.
 		{
@@ -131,7 +125,7 @@ namespace zombie {
 		}
 
 		// Add zombies to engine.
-		int unitLevel = gameData_.getEntry("settings").getInt("unitLevel");
+		int unitLevel = zombieEntry_.getEntry("settings unitLevel").getInt();
 		for (int i = 0; i < 0; ++i) {
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
 			engine_.add(state, createUnit(zombie_));
@@ -325,10 +319,10 @@ namespace zombie {
 	}
 
 	void ZombieGame::loadTerrain() {
-		auto mapEntry = gameData_.getMapEntry();
-		std::string name = mapEntry.getString("name");
-		mapEntry.getChildEntry("objects").iterateChilds("object", [&](GameDataEntry entry) {
-			std::string geom(entry.getString("geom"));
+		auto entry = GameDataEntry(zombieEntry_.getEntry("settings map").getString());
+		entry = entry.getEntry("map objects object");
+		while (entry.hasData()) {
+			std::string geom(entry.getChildEntry("geom").getString());
 			if (entry.isAttributeEqual("type", "building")) {
 				engine_.add(new Building2D(loadPolygon(geom), wall_, wall_, wall_));
 			} else if (entry.isAttributeEqual("type", "water")) {
@@ -338,13 +332,13 @@ namespace zombie {
 				terrain_.addRoad(loadPolygon(geom));
 			} else if (entry.isAttributeEqual("type", "tree")) {
 				engine_.add(new Tree2D(loadPoint(geom), tree_));
-			} else if (entry.isAttributeEqual("type", "spawningpoint")) {			
+			} else if (entry.isAttributeEqual("type", "spawningpoint")) {
 				spawningPoints_.push_back(loadPoint(geom));
 			} else if (entry.isAttributeEqual("type", "carSpawningpoint")) {
 				//carSpawningPoints_.push_back(loadPoint(geom));
 			}
-			return true;
-		});
+			entry = entry.getSibling("object");
+		}
 	}
 
 	float ZombieGame::getFps() const {

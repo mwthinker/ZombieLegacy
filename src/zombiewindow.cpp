@@ -1,6 +1,5 @@
 #include "zombiewindow.h"
 #include "zombiegame.h"
-#include "gamedata.h"
 #include "gamedataentry.h"
 
 #include <gui/borderlayout.h>
@@ -51,9 +50,15 @@ namespace zombie {
 
 	} // Anonymous namespace.
 
-	ZombieWindow::ZombieWindow(GameData& gameData) : gui::Frame(gameData.getWindowXPosition(), gameData.getWindowYPosition(), gameData.getWindowWidth(), gameData.getWindowHeight(), true, "Zombie", "images/1.png"), gameData_(gameData) {
+	ZombieWindow::ZombieWindow(GameDataEntry zombieEntry) : 
+		gui::Frame(zombieEntry.getEntry("window positionX").getInt(), 
+			zombieEntry.getEntry("window positionY").getInt(),
+			zombieEntry.getEntry("window width").getInt(),
+			zombieEntry.getEntry("window height").getInt(),
+			true, "Zombie", "images/1.png"), zombieEntry_(zombieEntry) {
+
 		SDL_SetWindowMinimumSize(mw::Window::getSdlWindow(), 400, 400);
-		if (gameData.isWindowMaximized()) {
+		if (zombieEntry_.getEntry("window maximized").getBool()) {
 			SDL_MaximizeWindow(mw::Window::getSdlWindow());
 		}
 
@@ -64,7 +69,8 @@ namespace zombie {
 						case SDL_WINDOWEVENT_RESIZED:
 							if (!(SDL_GetWindowFlags(mw::Window::getSdlWindow()) & SDL_WINDOW_MAXIMIZED)) {
 								// The Window's is not maximized. Save size!
-								gameData.setWindowSize(sdlEvent.window.data1, sdlEvent.window.data2);
+								zombieEntry_.getChildEntry("window").getChildEntry("width").setInt(sdlEvent.window.data1);
+								zombieEntry_.getChildEntry("window").getChildEntry("height").setInt(sdlEvent.window.data2);
 							}
 							break;
 						case SDL_WINDOWEVENT_MOVED:
@@ -72,21 +78,22 @@ namespace zombie {
 								// The Window's is not maximized. Save position!
 								int x, y;
 								SDL_GetWindowPosition(mw::Window::getSdlWindow(), &x, &y);
-								gameData.setWindowPosition(x, y);
+								zombieEntry_.getChildEntry("window").getChildEntry("positionX").setInt(x);
+								zombieEntry_.getChildEntry("window").getChildEntry("positionY").setInt(y);
 							}
 							break;
 						case SDL_WINDOWEVENT_MAXIMIZED:
-							gameData.setWindowMaximized(true);
+							zombieEntry_.getChildEntry("window").getChildEntry("maximized").setBool(true);
 							break;
 						case SDL_WINDOWEVENT_RESTORED:
-							gameData.setWindowMaximized(false);
+							zombieEntry_.getChildEntry("window").getChildEntry("maximized").setBool(false);
 							break;
 					}
 					break;
 			}
 		});
 
-		zombieGame_ = std::make_shared<ZombieGame>(gameData);
+		zombieGame_ = std::make_shared<ZombieGame>(zombieEntry_);
 		// Always react on key events!
 		zombieGame_->setGrabFocus(true);
 
@@ -111,10 +118,10 @@ namespace zombie {
 		auto panel = std::make_shared<gui::Panel>();
 		add(panel, gui::BorderLayout::CENTER);
 		panel->setLayout(std::make_shared<gui::VerticalLayout>());
-		panel->setBackground(gameData_.getEntry("menu").getSprite("backGroundImage"));
-		mw::Font font = gameData_.getDefaultFont(20);
+		panel->setBackground(zombieEntry_.getEntry("menu backGroundImage").getSprite());
+		mw::Font font = zombieEntry_.getEntry("interface font").getFont(20);
 
-		auto text = std::make_shared<gui::Label>("Zombie", gameData_.getDefaultFont(60));
+		auto text = std::make_shared<gui::Label>("Zombie", zombieEntry_.getEntry("interface font").getFont(60));
 		text->setTextColor(1, 1, 1);
 		panel->addToGroup(text);
 
@@ -127,19 +134,19 @@ namespace zombie {
 
 		auto customGame = createButton("Custom game", font);
 		customGame->addActionListener([&](gui::Component&) {
-			gameData_.getEntry("menu").getSound("soundChoice").play();
+			zombieEntry_.getEntry("menu soundChoice").getSound().play();
 		});
 		panel->addToGroup(customGame);
 
 		auto highScore = createButton("Highscore", font);
 		highScore->addActionListener([&](gui::Component&) {
-			gameData_.getEntry("menu").getSound("soundChoice").play();
+			zombieEntry_.getEntry("menu soundChoice").getSound().play();
 		});
 		panel->addToGroup(highScore);
 
 		auto quit = createButton("Quit", font);
 		quit->addActionListener([&](gui::Component&) {
-			gameData_.getEntry("menu").getSound("soundChoice").play();
+			zombieEntry_.getEntry("menu soundChoice").getSound().play();
 			Window::quit();
 		});
 		panel->addToGroup(quit);
@@ -153,7 +160,7 @@ namespace zombie {
 		gamePanel_->setPreferredSize(100, 50);
 		add(gamePanel_, gui::BorderLayout::SOUTH);
 		gamePanel_->setBackgroundColor(0, 0, 0);
-		mw::Font font = gameData_.getDefaultFont(15);
+		mw::Font font = zombieEntry_.getEntry("interface font").getFont(15);
 
 		//panel->add(createButton("Button", font));
 		label1_ = std::make_shared<gui::Label>("Kill count: 0", font);
