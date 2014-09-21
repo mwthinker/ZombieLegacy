@@ -22,7 +22,7 @@ namespace zombie {
 			wPtr->useShader();
 			wPtr->setColor(1, 1, 1);
 			mw::Matrix44 old = wPtr->getModel();
-			wPtr->setModel(old * mw::getTranslateMatrix(position_.x, position_.y) * mw::getRotateMatrix(angle_, 0, 0, 1));
+			wPtr->setModel(old * mw::getTranslateMatrix44(position_.x, position_.y) * mw::getRotateMatrix44(angle_, 0, 0, 1));
 			//glScale2f(2 * getRadius());
 			animation_.draw(deltaTime, wPtr);
 			wPtr->setModel(old);

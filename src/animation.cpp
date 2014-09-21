@@ -56,7 +56,7 @@ namespace zombie {
 			wPtr->useShader();
 			wPtr->setColor(1, 1, 1);
 			mw::Matrix44 old = wPtr->getModel();
-			wPtr->setModel(old * mw::getScaleMatrix(frame.sprite_.getWidth() / frame.bodyWidth_, frame.sprite_.getHeight() / frame.bodyWidth_));
+			wPtr->setModel(old * mw::getScaleMatrix44(frame.sprite_.getWidth() / frame.bodyWidth_, frame.sprite_.getHeight() / frame.bodyWidth_));
 			frame.sprite_.draw();
 			wPtr->setModel(old);
 		}

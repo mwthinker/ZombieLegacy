@@ -31,7 +31,7 @@ namespace zombie {
 		wPtr->useShader();
 		wPtr->setColor(1, 1, 1);
 		mw::Matrix44 old = wPtr->getModel();
-		wPtr->setModel(old * mw::getTranslateMatrix(-grip_.x, -grip_.y) * mw::getScaleMatrix(size_, size_));
+		wPtr->setModel(old * mw::getTranslateMatrix44(-grip_.x, -grip_.y) * mw::getScaleMatrix44(size_, size_));
 		animation_.draw(timeStep, wPtr);
 		wPtr->setModel(old);
 	}

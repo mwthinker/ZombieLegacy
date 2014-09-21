@@ -21,7 +21,7 @@ namespace zombie {
 			wPtr->useShader();
 			wPtr->setColor(1, 1, 1);
 			// Draw body.
-			wPtr->setModel(old * mw::getTranslateMatrix(getPosition().x, getPosition().y) * mw::getScaleMatrix(2 * getRadius(), 2 * getRadius()) * mw::getRotateMatrix(getAngle(), 0, 0, 1));
+			wPtr->setModel(old * mw::getTranslateMatrix44(getPosition().x, getPosition().y) * mw::getScaleMatrix44(2 * getRadius(), 2 * getRadius()) * mw::getRotateMatrix44(getAngle(), 0, 0, 1));
 			tree_.draw();
 			wPtr->setModel(old);
 		}

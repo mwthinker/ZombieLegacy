@@ -46,12 +46,12 @@ namespace zombie {
 			wPtr->useShader();
 			wPtr->setColor(1, 1, 1);
 			mw::Matrix44 old = wPtr->getModel();
-			wPtr->setModel(old * mw::getTranslateMatrix(worldPosition.x, worldPosition.y));
+			wPtr->setModel(old * mw::getTranslateMatrix44(worldPosition.x, worldPosition.y));
 			mw::Matrix44 old2 = wPtr->getModel();
-			wPtr->setModel(old2 * mw::getScaleMatrix(worldScale, worldScale) * mw::getRotateMatrix(getDirection(), 0, 0, 1));
+			wPtr->setModel(old2 * mw::getScaleMatrix44(worldScale, worldScale) * mw::getRotateMatrix44(getDirection(), 0, 0, 1));
 			animation_.draw(timeStep, wPtr);
 			wPtr->setModel(old2);
-			wPtr->setModel(old2 * mw::getRotateMatrix(getDirection(), 0, 0, 1) * mw::getScaleMatrix(grip_.x, grip_.y));
+			wPtr->setModel(old2 * mw::getRotateMatrix44(getDirection(), 0, 0, 1) * mw::getScaleMatrix44(grip_.x, grip_.y));
 			getWeapon()->draw(timeStep, wPtr);
 			wPtr->setModel(old);
 		}

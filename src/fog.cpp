@@ -56,9 +56,9 @@ namespace zombie {
 	void Fog::draw(float deltaTime, gui::WindowMatrixPtr mPtr) {
 		mw::Matrix44 m = mPtr->getProjection() * mPtr->getModel();
 		fog_.draw(deltaTime, m);
-		m = m * mw::getRotateMatrix(3 * PI / 2, 0, 0, 1);
+		m = m * mw::getRotateMatrix44(3 * PI / 2, 0, 0, 1);
 		fog_.draw(deltaTime, m);
-		m = m * mw::getRotateMatrix(3 * PI / 2, 0, 0, 1);
+		m = m * mw::getRotateMatrix44(3 * PI / 2, 0, 0, 1);
 		fog_.draw(deltaTime, m);
 		drawInversCircel(radius_, mPtr);
 	}

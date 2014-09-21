@@ -80,6 +80,7 @@ namespace zombie {
 
 	MovingObject* ZombieBehavior::findUninfectedTarget(Position position, const std::list<MovingObject*>& units) const {
 		MovingObject* target(nullptr);
+		/*
 		double distant = 100;
 		for (MovingObject* unit : units) {
 			// Not infected?
@@ -92,6 +93,7 @@ namespace zombie {
 				}
 			}
 		}
+		*/
 		return target;
 	}
 

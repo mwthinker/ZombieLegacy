@@ -10,30 +10,24 @@ namespace zombie {
 			: Building(corners), leftWall_(leftWall), rightWall_(rightWall), roof_(roof) {
 			
 			height_ = 2 + random() * 3;
-			leftWall_.setDrawFunction(std::bind(&Building2D::drawLeftWall, this, leftWall_));
-			rightWall_.setDrawFunction(std::bind(&Building2D::drawRightWall, this, rightWall_));
-			//roof_.setDrawFunction(std::bind(&Building2D::drawRoof, this, roof_));
-			roof_.setDrawFunction(std::bind(&Building2D::drawGTAstyle, this, roof_));
 		}
 
 		void Building2D::draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr) {
 			auto& corners = getCorners();
 			mw::glEnable(GL_BLEND);
-			mw::glEnable(GL_TEXTURE_2D);
 			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 			wPtr->setColor(1, 1, 1);
 			//leftWall_.draw();
 			//rightWall_.draw();
 			roof_.draw();
-			mw::glDisable(GL_TEXTURE_2D);
 			mw::glDisable(GL_BLEND);
 		}
 
 		void Building2D::drawLeftWall(const mw::Sprite& wall) {
 			const mw::Texture& texture = wall.getTexture();
 			auto& corners = getCorners();
-			wall.bind();
+			wall.bindTexture();
 			/*
 			glBegin(GL_QUADS);
 			glTexCoord2f(wall.getX() / texture.getWidth(), wall.getY() / texture.getHeight());

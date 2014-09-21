@@ -158,7 +158,7 @@ namespace zombie {
 			// Move to new postion and direction.
 			Position spawnPoint = generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_);
 			float angle = calculateAnglePointToPoint(spawnPoint, human.getPosition());
-			unit.getBody()->SetTransform(spawnPoint, angle);			
+			unit.getBody()->SetTransform(spawnPoint, angle);
 		}
 	}
 
@@ -191,7 +191,7 @@ namespace zombie {
 		mw::Matrix44 old = wPtr->getModel();
 
 		gui::Dimension dim = getSize();
-		wPtr->setModel(old * mw::getTranslateMatrix(dim.width_*0.5f, dim.height_*0.5f) * mw::getScaleMatrix(50 * scale_, 50 * scale_) * mw::getTranslateMatrix(-viewPosition_.x, -viewPosition_.y));
+		wPtr->setModel(old * mw::getTranslateMatrix44(dim.width_*0.5f, dim.height_*0.5f) * mw::getScaleMatrix44(50 * scale_, 50 * scale_) * mw::getTranslateMatrix44(-viewPosition_.x, -viewPosition_.y));
 
 		// Game is started?
 		if (engine_.isStarted()) {

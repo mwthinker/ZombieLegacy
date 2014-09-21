@@ -9,21 +9,21 @@
 #include <mw/color.h>
 #include <mw/sprite.h>
 #include <mw/shader.h>
+#include <mw/vertexbufferobject.h>
+
 #include <gui/windowmatrix.h>
 
 #include <iostream>
 #include <vector>
 
-namespace zombie {
-
-	class GameDataEntry;
+namespace zombie {	
 
 	class Water {
 	public:
 		Water(const mw::Texture& seeFloor);
 
 		void addTriangle(Position p1, Position p2, Position p3);
-
+		
 		void drawSeeFloor(float deltaTime, gui::WindowMatrixPtr wp);
 
 		void drawWaves(const mw::Matrix44& matrix);
@@ -38,11 +38,13 @@ namespace zombie {
 			float speed_;
 		};
 
-		mw::ShaderPtr waterShader_;		
+		mw::ShaderPtr waterShader_;
+		mw::VertexBufferObject vbo_;
 
 		std::vector<GLfloat> aPos_;
 		std::vector<GLfloat> aTex_;
 		mw::Texture seeFloor_;
+		int numberVertices_;
 
 		float time_;
 		mw::Sprite water_;

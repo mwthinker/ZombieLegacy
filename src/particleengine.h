@@ -146,7 +146,6 @@ namespace zombie {
 		}
 
 		// Enable 2D textures and point sprites
-		mw::glEnable(GL_TEXTURE_2D);
 		mw::glEnable(GL_BLEND);
 
 		// Add colors.
@@ -157,7 +156,7 @@ namespace zombie {
 		}
 
 		shader_.glUseProgram();
-		texture_.bind();
+		texture_.bindTexture();
 		shader_.setUniformColor(color_);
 		shader_.setUniformMatrix(matrix);		
 		
@@ -168,7 +167,6 @@ namespace zombie {
 		mw::glDrawArrays(GL_TRIANGLES, 0, index * 6);
 
 		mw::glDisable(GL_BLEND);
-		mw::glDisable(GL_TEXTURE_2D);
 	}
 
 	template <int MAX_PARTICLES, class Emitter>
