@@ -195,8 +195,8 @@ namespace zombie {
 
 		// Game is started?
 		if (engine_.isStarted()) {
-			terrain_.draw(deltaTime / 1000.f, wPtr);
 			water_.drawSeeFloor(deltaTime / 1000.f, wPtr);
+			terrain_.draw(deltaTime / 1000.f, wPtr);			
 			drawGraphicList(graphicGround_, deltaTime / 1000.f, wPtr);
 			engine_.update(deltaTime / 1000.f, getWindowMatrixPtr());
 			drawGraphicList(graphicMiddle_, deltaTime / 1000.f, wPtr);

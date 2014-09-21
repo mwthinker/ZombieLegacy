@@ -7,7 +7,7 @@ int main (int argc, char** argv) {
 	zombie::GameDataEntry gameDataEntry("zombie.xml");
 
 	zombie::ZombieWindow zombieWindow(gameDataEntry.getChildEntry("zombieGame"));
-	zombie::ZombieWindow::startLoop();
+	zombieWindow.startLoop();
 
     return 0;
 }
