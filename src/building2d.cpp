@@ -16,11 +16,13 @@ namespace zombie {
 			auto& corners = getCorners();
 			mw::glEnable(GL_BLEND);
 			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+			wPtr->useShader();
 			wPtr->setColor(1, 1, 1);
+			wPtr->setTexture(true);
 			//leftWall_.draw();
 			//rightWall_.draw();
-			roof_.draw();
+			//roof_.draw();
+			drawRoof(wPtr, roof_);
 			mw::glDisable(GL_BLEND);
 		}
 
@@ -64,7 +66,34 @@ namespace zombie {
 			*/
 		}
 
-		void Building2D::drawRoof(const mw::Sprite& roof) {
+		void Building2D::drawRoof(gui::WindowMatrixPtr wPtr, const mw::Sprite& roof) {
+			mw::glEnable(GL_BLEND);
+			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			const mw::Texture& texture = roof.getTexture();
+			// Centered square in ORIGO.
+			texture.bindTexture();
+			auto& corners = getCorners();
+			GLfloat aVertices[] = {
+				corners[0].x, corners[0].y,
+				corners[1].x, corners[1].y,
+				corners[3].x, corners[3].y,
+				corners[2].x, corners[2].y};
+			
+			// Map the sprite out from the texture.
+			GLfloat aTexCoord[] = {
+				roof.getX() / texture.getWidth(), roof.getY() / texture.getHeight(),
+				(roof.getX() + roof.getWidth()) / texture.getWidth(), roof.getY() / texture.getHeight(),
+				roof.getX() / texture.getWidth(), (roof.getY() + roof.getHeight()) / texture.getHeight(),
+				(roof.getX() + roof.getWidth()) / texture.getWidth(), (roof.getY() + roof.getHeight()) / texture.getHeight()};
+						
+			// Load the vertex data
+			wPtr->setTexturePosition(2, aTexCoord);
+			wPtr->setVertexPosition(2, aVertices);
+
+			// Upload the attributes and draw the sprite.
+			mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+			mw::glDisable(GL_BLEND);
+
 			/*
 			const mw::Texture& texture = roof.getTexture();
 			auto& corners = getCorners();
