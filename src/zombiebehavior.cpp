@@ -24,7 +24,7 @@ namespace zombie {
 
 	void ZombieBehavior::updatePhysics(float time, float deltaTime) {
 		Input input;
-
+		/*
 		if (time > findNewTargetTime_) {
 			findNewTargetTime_ = random() * 3 + time;
 
@@ -37,7 +37,7 @@ namespace zombie {
 				targetUpdate(target);
 			}
 		}
-
+		*/
 		if (time > timeToUpdateAngleDirection_) {
 			timeToUpdateAngleDirection_ = random() * 1 + time;
 

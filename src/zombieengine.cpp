@@ -70,13 +70,12 @@ namespace zombie {
 			for (b2Body* b = world_.GetBodyList(); b; b = b->GetNext()) {
 				Object* ob = static_cast<Object*>(b->GetUserData());
 				ob->update(time_, timeStep);
-				ob->setHumanPosition(humanState_.position_);
 				if (ob->toBeRemoved()) {
 					remove(ob);
 				}
 			}
 
-			// Signal the gameInterface for all units that died.
+			// Signal the gameInterface if a unit has died.
 			for (Unit* unit : units_) {
 				if (unit->isDead()) {
 					gameInterface_.unitDied(*unit);
@@ -147,13 +146,6 @@ namespace zombie {
 		for (b2Body* b = world_.GetBodyList(); b; b = b->GetNext()) {
 			Object* ob = static_cast<Object*>(b->GetUserData());
 			ob->draw(accumulator_, timeStep_, wPtr);
-		}
-		// Draw roofs last.
-		for (b2Body* b = world_.GetBodyList(); b; b = b->GetNext()) {
-			//Building2D bu = static_cast<Building2D>(ob);
-			if (1) { // is building	
-				// ob.drawRoofs();
-			}
 		}
 	}
 

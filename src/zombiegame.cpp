@@ -196,7 +196,7 @@ namespace zombie {
 		// Game is started?
 		if (engine_.isStarted()) {
 			water_.drawSeeFloor(deltaTime / 1000.f, wPtr);
-			terrain_.draw(deltaTime / 1000.f, wPtr);			
+			terrain_.draw(deltaTime / 1000.f, wPtr);
 			drawGraphicList(graphicGround_, deltaTime / 1000.f, wPtr);
 			engine_.update(deltaTime / 1000.f, getWindowMatrixPtr());
 			drawGraphicList(graphicMiddle_, deltaTime / 1000.f, wPtr);
@@ -324,7 +324,8 @@ namespace zombie {
 		while (entry.hasData()) {
 			std::string geom(entry.getChildEntry("geom").getString());
 			if (entry.isAttributeEqual("type", "building")) {
-				engine_.add(new Building2D(loadPolygon(geom), wall_, wall_, wall_));
+				auto v = loadPolygon(geom);
+				engine_.add(new Building2D(v[0], v[1], v[2], v[3], wall_, wall_, wall_));
 			} else if (entry.isAttributeEqual("type", "water")) {
 				auto triangle = loadPolygon(geom);
 				water_.addTriangle(triangle[0], triangle[1], triangle[2]);

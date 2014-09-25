@@ -4,21 +4,28 @@
 #include "object.h"
 
 #include <limits>
+#include <array>
+#include <cmath>
 
 namespace zombie {
 
 	class Building : public Object {
 	public:
-		Building(const std::vector<Position>& corners) : corners_(corners) {
-			init();
+		Building(Position p1, Position p2, Position p3, Position p4) : corners_({p1, p2, p3, p4}) {
+			body_ = nullptr;
 		}
 
 		void createBody(b2World* world) {
+			Position center = 0.5f * (corners_[0] + corners_[2]);
+			float w = (corners_[0] - corners_[1]).Length();
+			float h = (corners_[2] - corners_[1]).Length();
+			float angle = std::atan2(corners_[1].y - corners_[0].y, corners_[1].x - corners_[0].x);
+
 			// Create body.
 			{
 				b2BodyDef bodyDef;
 				bodyDef.fixedRotation = true;
-				bodyDef.position.Set(position_.x, position_.y);
+				bodyDef.position = center;
 
 				body_ = world->CreateBody(&bodyDef);
 				body_->SetUserData(this);
@@ -26,38 +33,15 @@ namespace zombie {
 
 			// Create fixture to body.
 			{
-				unsigned int size = corners_.size();
+				b2PolygonShape box;
+				box.SetAsBox(w*0.5f, h*0.5f, ZERO, angle); // Expected parameters is half the side.
 
-				// Create polygon.
-				b2Vec2 vertices[b2_maxPolygonVertices];
-				unsigned int count = 0;
-				// Save global vertex points to local shape coordinates.
-				for (; count < size && count < b2_maxPolygonVertices; ++count) {
-					vertices[count] = body_->GetLocalPoint(corners_[count]);
-				}
-
-				b2PolygonShape shape;
-				shape.Set(vertices, count);
-
-				b2Fixture* fixture = body_->CreateFixture(&shape, 0.f);
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &box;				
+				fixtureDef.friction = 0.3f;
+				b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
 				fixture->SetUserData(this);
 			}
-		}
-
-		const std::vector<Position>& getCorners() const {
-			return corners_;
-		}
-
-		bool isInside(float x, float y) const {
-			return isPointInPolygon(x,y);
-		}
-
-		float getRadius() const {
-			return radius_;
-		}
-
-		Position getPosition() const {
-			return position_;
 		}
 
 		b2Body* getBody() const override {
@@ -74,49 +58,14 @@ namespace zombie {
 			}
 		}
 
-	protected:
-		void init() {
-			body_ = nullptr;
-
-			float xLeft = std::numeric_limits<float>::max();
-			float xRight = -xLeft;
-			float yUp = -xLeft;
-			float yDown = xLeft;
-
-			for (Position p : corners_) {
-				xRight = std::max(xRight,p.x);
-				yUp = std::max(yUp,p.y);
-				xLeft = std::min(xLeft,p.x);
-				yDown = std::min(yDown,p.y);
-			}
-
-			position_ = Position((xLeft + xRight)/2,(yDown + yUp)/2);
-			radius_ = (position_ - Position(xLeft,yDown)).Length();
+		const std::array<Position, 4>& getCorners() const {
+			return corners_;
 		}
 
 	private:
-		bool isPointInPolygon(float x, float y) const {
-			int polySides = corners_.size();
-			int j = polySides-1;
-			bool oddNodes = false;
-
-			for (int i = 0; i < polySides; i++) {
-				Position pi = corners_[i];
-				Position pj = corners_[j];
-				if ( (pi.y < y && pj.y >= y || pj.y < y && pi.y >= y) &&  (pi.x <= x || pj.x <= x) ) {
-					if (pi.x +(y - pi.y)/(pj.y - pi.y)*(pj.x - pi.x) < x) {
-						oddNodes =! oddNodes;
-					}
-				}
-				j=i;
-			}
-
-			return oddNodes;
-		}
-
-		Position position_;
+		const std::array<Position, 4> corners_;
 		float radius_;
-		std::vector<Position> corners_;
+		float length_, width_;
 
 		b2Body* body_;
 	};

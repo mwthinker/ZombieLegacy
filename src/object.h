@@ -12,9 +12,6 @@ namespace zombie {
 	// Represent a physical object inside the "zombie world".
 	class Object {
 	public:
-		Object() : humanPosition_(ZERO) {
-		}
-		
 		// Must call destroyBody() before destructor is called.
 		virtual ~Object() {
 		}
@@ -42,18 +39,6 @@ namespace zombie {
 
 		// Draw the object in world coordinates.
 		virtual void draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr) = 0;
-
-		inline Position humanPosition() const {
-			return humanPosition_;
-		}
-
-		inline void setHumanPosition(const Position& position) {
-			humanPosition_ = position;
-		}
-
-
-	private:
-		Position humanPosition_;
 	};
 
 } // Namespace zombie.

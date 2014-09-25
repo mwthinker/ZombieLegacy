@@ -5,15 +5,14 @@
 
 namespace zombie {
 
-		Building2D::Building2D(const std::vector<Position>& corners,
+		Building2D::Building2D(Position p1, Position p2, Position p3, Position p4,
 			const mw::Sprite& rightWall, const mw::Sprite& leftWall, const mw::Sprite& roof)
-			: Building(corners), leftWall_(leftWall), rightWall_(rightWall), roof_(roof) {
+			: Building(p1, p2, p3, p4), leftWall_(leftWall), rightWall_(rightWall), roof_(roof) {
 			
 			height_ = 2 + random() * 3;
 		}
 
 		void Building2D::draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr) {
-			auto& corners = getCorners();
 			mw::glEnable(GL_BLEND);
 			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			wPtr->useShader();
@@ -28,7 +27,6 @@ namespace zombie {
 
 		void Building2D::drawLeftWall(const mw::Sprite& wall) {
 			const mw::Texture& texture = wall.getTexture();
-			auto& corners = getCorners();
 			wall.bindTexture();
 			/*
 			glBegin(GL_QUADS);
@@ -72,7 +70,8 @@ namespace zombie {
 			const mw::Texture& texture = roof.getTexture();
 			// Centered square in ORIGO.
 			texture.bindTexture();
-			auto& corners = getCorners();
+
+			const auto& corners = getCorners();
 			GLfloat aVertices[] = {
 				corners[0].x, corners[0].y,
 				corners[1].x, corners[1].y,
@@ -114,7 +113,7 @@ namespace zombie {
 		void Building2D::drawGTAstyle(const mw::Sprite& s) {
 			float c = 0.1f;
 			const mw::Texture& texture = s.getTexture();
-			auto& corners = getCorners();
+			const auto& corners = getCorners();
 			/*
 			// RIGHT WALL
 			s.bind();
