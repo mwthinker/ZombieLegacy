@@ -115,7 +115,7 @@ namespace zombie {
 		garbageObjects_.clear();
 	}
 
-	void ZombieEngine::update(float frameTime, gui::WindowMatrixPtr wPtr) {
+	void ZombieEngine::update(float frameTime, const GameShader& gameShader) {
 		if (frameTime > 0.25) {
 			// To avoid spiral of death.
 			frameTime = 0.25;
@@ -145,7 +145,7 @@ namespace zombie {
 		// Draw all objects.
 		for (b2Body* b = world_.GetBodyList(); b; b = b->GetNext()) {
 			Object* ob = static_cast<Object*>(b->GetUserData());
-			ob->draw(accumulator_, timeStep_, wPtr);
+			ob->draw(accumulator_, timeStep_, gameShader);
 		}
 	}
 

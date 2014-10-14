@@ -21,10 +21,9 @@ namespace zombie {
 
 	Water::Water(const mw::Texture& seeFloor) : seeFloor_(seeFloor) {
 		time_ = 0.0;
-		waterShader_ = std::make_shared<mw::Shader>();
-		waterShader_->bindAttribute("aPos");
-		waterShader_->bindAttribute("aTex");
-		waterShader_->loadAndLinkFromFile("water.ver.glsl", "water.fra.glsl");
+		waterShader_.bindAttribute("aPos");
+		waterShader_.bindAttribute("aTex");
+		waterShader_.loadAndLinkFromFile("water.ver.glsl", "water.fra.glsl");
 		size_ = 100;
 		numberVertices_ = 0;
 	}
@@ -45,7 +44,7 @@ namespace zombie {
 		numberVertices_ += 3;
 	}
 
-	void Water::drawSeeFloor(float deltaTime, gui::WindowMatrixPtr wp) {
+	void Water::drawSeeFloor(float deltaTime) {
 		time_ += deltaTime;
 		
 		if (vbo_.getSize() == 0) {
@@ -59,6 +58,7 @@ namespace zombie {
 		vbo_.bindBuffer();
 		
 		seeFloor_.bindTexture();
+		/*
 		wp->useShader();
 		wp->setColor(1, 1, 1);
 		wp->setTexture(true);
@@ -68,6 +68,7 @@ namespace zombie {
 		wp->glDrawArrays(GL_TRIANGLES, 0, numberVertices_);
 		wp->setColor(1, 1, 1);
 		vbo_.unbindBuffer();
+		*/
 	}
 
 	void Water::drawWaves(const mw::Matrix44& matrix) {
@@ -79,15 +80,15 @@ namespace zombie {
 		}
 
 		// Draw waves.
-		waterShader_->glUseProgram();
+		waterShader_.glUseProgram();
 		vbo_.bindBuffer();
-		mw::glUniformMatrix4fv(waterShader_->getUniformLocation("uMat"), 1, false, matrix.data());
-		mw::glUniform1f(waterShader_->getUniformLocation("uTime"), time_);
+		mw::glUniformMatrix4fv(waterShader_.getUniformLocation("uMat"), 1, false, matrix.data());
+		mw::glUniform1f(waterShader_.getUniformLocation("uTime"), time_);
 
-		mw::glEnableVertexAttribArray(waterShader_->getAttributeLocation("aPos"));
-		mw::glVertexAttribPointer(waterShader_->getAttributeLocation("aPos"), 2, GL_FLOAT, GL_FALSE, 0, (const void*) 0);
-		mw::glEnableVertexAttribArray(waterShader_->getAttributeLocation("aTex"));
-		mw::glVertexAttribPointer(waterShader_->getAttributeLocation("aTex"), 2, GL_FLOAT, GL_FALSE, 0, (const void*) (vbo_.getSize() / 2));
+		mw::glEnableVertexAttribArray(waterShader_.getAttributeLocation("aPos"));
+		mw::glVertexAttribPointer(waterShader_.getAttributeLocation("aPos"), 2, GL_FLOAT, GL_FALSE, 0, (const void*) 0);
+		mw::glEnableVertexAttribArray(waterShader_.getAttributeLocation("aTex"));
+		mw::glVertexAttribPointer(waterShader_.getAttributeLocation("aTex"), 2, GL_FLOAT, GL_FALSE, 0, (const void*) (vbo_.getSize() / 2));
 
 		mw::glEnable(GL_BLEND);
 		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

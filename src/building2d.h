@@ -14,13 +14,13 @@ namespace zombie {
 		Building2D(Position p1, Position p2, Position p3, Position p4,
 			const mw::Sprite& rightWall, const mw::Sprite& leftWall, const mw::Sprite& roof);
 
-		void draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr) override;
+		void draw(float accumulator, float timeStep, const GameShader& gameShader) override;
 
 		void drawLeftWall(const mw::Sprite& wall);
 
 		void drawRightWall(const mw::Sprite& wall);
 
-		void drawRoof(gui::WindowMatrixPtr wPtr, const mw::Sprite& roof);
+		void drawRoof(const mw::Sprite& roof);
 
 		void drawGTAstyle(const mw::Sprite& s);
 

@@ -39,7 +39,7 @@ namespace zombie {
 	public:
 		Explosion(Position position, const ExplosionProperties& exPr);
 
-		void draw(float deltaTime, gui::WindowMatrixPtr wPtr) override;
+		void draw(float deltaTime) override;
 
 		float getTimeDuration() const;
 

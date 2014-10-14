@@ -25,7 +25,7 @@ namespace zombie {
 
 		void setHitSound(const mw::Sound& sound);
 
-		void draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr) override;
+		void draw(float accumulator, float timeStep, const GameShader& gameShader) override;
 
 		void eventHandler(Unit* unit, Unit::UnitEvent unitEvent);
 

@@ -2,9 +2,9 @@
 #define ANIMATION_H
 
 #include "box2ddef.h"
+#include "gameshader.h"
 
 #include <mw/sprite.h>
-#include <gui/windowmatrix.h>
 
 #include <vector>
 
@@ -20,8 +20,8 @@ namespace zombie {
 
 		// Add a frame and point it to the current sprite sheet.
 		void add(const mw::Sprite& sprite, float bodyWidth, float time = 1.f);
-
-		void draw(float deltaTime, gui::WindowMatrixPtr wPtr);
+		
+		void draw(float deltaTime, float x, float y, const GameShader& shader);
 
 		inline void setSpeed(float speed) {
 			speed_ = speed;
@@ -55,6 +55,8 @@ namespace zombie {
 			float time_;
 			float bodyWidth_;
 		};
+
+		void drawSprite(const mw::Sprite& sprite, const GameShader& shader, float x, float y, float width, float height) const;
 		
 		float lastTime_;
 		bool reset_;

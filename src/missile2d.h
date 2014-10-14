@@ -15,7 +15,7 @@ namespace zombie {
 		Missile2D(const Animation& animation, GameInterface& gameInterface, float width, float length,
 			float mass, float speed, float explodeTime, float damage, float explosionRadius);
 
-		void draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr);
+		void draw(float accumulator, float timeStep, const GameShader& gameShader);
 
 	private:
 		Animation animation_;

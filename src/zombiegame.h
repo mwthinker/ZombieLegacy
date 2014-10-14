@@ -14,6 +14,7 @@
 #include "unit2d.h"
 #include "car2d.h"
 #include "water.h"
+#include "gameshader.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
@@ -50,6 +51,7 @@ namespace zombie {
 
 		void zoom(float scale);
 
+	private:
 		int getZombiesKilled() const {
 			return zombiesKilled_;
 		}
@@ -72,7 +74,6 @@ namespace zombie {
 
 		float getFps() const;
 
-	private:
 		void init();
 
 		// Implements the GameInterface.
@@ -154,6 +155,7 @@ namespace zombie {
 		float lastFramTime_;
 
 		ZombieEngine engine_; // Must be destroyed first in order to remove box2d stuff.
+		GameShader gameShader_;
 	};
 
 } // Namespace zombie.

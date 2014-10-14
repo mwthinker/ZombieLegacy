@@ -12,7 +12,7 @@ namespace zombie {
 
 	namespace {
 
-		void drawInversCircel(float radius, gui::WindowMatrixPtr mPtr) {
+		void drawInversCircel(float radius) {
 			const int num_segments = 10;
 
 			float theta = 2 * PI / 30;
@@ -23,7 +23,6 @@ namespace zombie {
 			float y = 0;
 
 			GLfloat triangleStrip[(num_segments + 1) * 4];
-			mPtr->useShader();
 
 			for (int i = 0; i < num_segments + 1; i++) {
 				triangleStrip[i * 4 + 0] = x;
@@ -37,9 +36,9 @@ namespace zombie {
 				y = s * t + c * y;
 			}
 
-			mPtr->setTexture(false);
-			mPtr->setVertexPosition(2, triangleStrip);
-			mPtr->glDrawArrays(GL_TRIANGLE_STRIP, 0, (num_segments + 1) * 4);
+			//mPtr->setTexture(false);
+			//mPtr->setVertexPosition(2, triangleStrip);
+			//mPtr->glDrawArrays(GL_TRIANGLE_STRIP, 0, (num_segments + 1) * 4);
 		}
 
 	} // Anonymous namespace.
@@ -53,14 +52,16 @@ namespace zombie {
 		particleSize_ = fogProperties.particleSize_;
 	}
 
-	void Fog::draw(float deltaTime, gui::WindowMatrixPtr mPtr) {
-		mw::Matrix44 m = mPtr->getProjection() * mPtr->getModel();
+	void Fog::draw(float deltaTime) {
+		//mw::Matrix44 m = mPtr->getProjection() * mPtr->getModel();
+		/*
 		fog_.draw(deltaTime, m);
 		m = m * mw::getRotateMatrix44(3 * PI / 2, 0, 0, 1);
 		fog_.draw(deltaTime, m);
 		m = m * mw::getRotateMatrix44(3 * PI / 2, 0, 0, 1);
 		fog_.draw(deltaTime, m);
 		drawInversCircel(radius_, mPtr);
+		*/
 	}
 
 	void Fog::init(Particle& particle) {

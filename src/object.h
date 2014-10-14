@@ -2,8 +2,7 @@
 #define OBJECT_H
 
 #include "box2ddef.h"
-
-#include <gui/windowmatrix.h>
+#include "gameshader.h"
 
 #include <cassert>
 
@@ -38,7 +37,7 @@ namespace zombie {
 		}
 
 		// Draw the object in world coordinates.
-		virtual void draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr) = 0;
+		virtual void draw(float accumulator, float timeStep, const GameShader& gameShader) = 0;
 	};
 
 } // Namespace zombie.

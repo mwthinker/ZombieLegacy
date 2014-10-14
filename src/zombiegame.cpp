@@ -41,9 +41,9 @@ namespace zombie {
 			});
 		}
 
-		void drawGraphicList(std::list<std::shared_ptr<Graphic>>& list, float deltaTime, gui::WindowMatrixPtr wPtr) {
+		void drawGraphicList(std::list<std::shared_ptr<Graphic>>& list, float deltaTime) {
 			for (auto ob : list) {
-				ob->draw(deltaTime, wPtr);
+				ob->draw(deltaTime);
 			}
 		}
 
@@ -58,7 +58,8 @@ namespace zombie {
 		water_(loadWater(zombieEntry.getEntry("water"))),
 		frame_(0),
 		fps_(60),
-		lastFramTime_(0)
+		lastFramTime_(0),
+		gameShader_("gameshader.ver.glsl", "gameshader.ver.glsl")
 
 		{
 
@@ -185,9 +186,9 @@ namespace zombie {
 		}
 		*/
 
-		// Draw map centered around first human player.
-		auto wPtr = getWindowMatrixPtr();
-		wPtr->useShader();
+		// Draw map centered around first human player.		
+		/*
+		Ptr->useShader();
 		mw::Matrix44 old = wPtr->getModel();
 
 		gui::Dimension dim = getSize();
@@ -218,7 +219,7 @@ namespace zombie {
 
 		wPtr->useShader();
 		wPtr->setModel(old);
-		
+		*/
 		State state = engine_.getHumanState();
 		refViewPosition_ = state.position_ + 0.5 * state.velocity_;
 	}
@@ -302,8 +303,6 @@ namespace zombie {
 		graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
 		if (unit.isInfected()) {
 			graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
-			// Temporary, just for fun!
-			graphicSky_.push_back(std::make_shared<Explosion>(hitPosition, explosionProperties_));
 		} else {
 			graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanInjured_));
 		}

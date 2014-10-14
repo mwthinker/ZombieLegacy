@@ -4,6 +4,7 @@
 #include "weapon.h"
 #include "animation.h"
 #include "weaponinterface.h"
+#include "gameshader.h"
 
 #include <mw/sprite.h>
 #include <mw/sound.h>
@@ -25,7 +26,7 @@ namespace zombie {
 
 		void drawSymbol(float timeStep) override;
 
-		void draw(float timeStep, const gui::WindowMatrixPtr& wPtr) override;
+		void draw(float timeStep, float x, float y, const GameShader& shader) override;
 
 		WeaponPtr clone() const override;
 

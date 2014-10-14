@@ -14,7 +14,7 @@ namespace zombie {
 		Car2D(float mass, float life, float width, float length, const Animation& animation);
 
 		// Draws the car.
-		void draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr) override;
+		void draw(float accumulator, float timeStep, const GameShader& gameShader) override;
 
 	private:
 		Animation animation_;

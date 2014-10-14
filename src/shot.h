@@ -21,7 +21,7 @@ namespace zombie {
 			angle_ = calculateAnglePointToPoint(startPoint, endPoint) * 180 / PI; // RAD -> DEG.
 		}
 
-		void draw(float deltaTime, gui::WindowMatrixPtr wPtr) override {
+		void draw(float deltaTime) override {
             time_ += deltaTime;
 			position_ += deltaTime * speed_ * direction_;
 

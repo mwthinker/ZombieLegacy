@@ -4,6 +4,6 @@ namespace zombie {
 
 	int ParticleShader::nbrInstances = 0;
 
-	mw::ShaderPtr ParticleShader::shader = nullptr;
+	mw::Shader ParticleShader::shader;
 
 } // Namespace zombie.

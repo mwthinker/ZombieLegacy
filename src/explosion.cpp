@@ -46,7 +46,7 @@ namespace zombie {
 		particleEngine_.setColor(mw::Color(1, 1, 1, 1));
 	}
 
-	void Explosion::draw(float deltaTime, gui::WindowMatrixPtr wPtr) {
+	void Explosion::draw(float deltaTime) {
 		if (time_ < deltaTime) {
 			// Only called one time!
 			sound_.play();
@@ -54,7 +54,7 @@ namespace zombie {
 		time_ += deltaTime;
 
 		if (time_ > delay_) {
-			particleEngine_.draw(deltaTime, wPtr->getProjection() * wPtr->getModel());
+			//particleEngine_.draw(deltaTime, wPtr->getProjection() * wPtr->getModel());
 		}
 	}
 

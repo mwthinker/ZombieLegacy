@@ -23,7 +23,7 @@ namespace zombie {
 			lakes_.push_back(water);
 		}
 
-		void draw(float time, gui::WindowMatrixPtr wPtr) {
+		void draw(float time) {
 			/*
 			glBegin(GL_TRIANGLES);
 

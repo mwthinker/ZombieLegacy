@@ -18,7 +18,8 @@ namespace zombie {
 			animation_.setLooping(false);
 		}
 
-		void draw(float deltaTime, gui::WindowMatrixPtr wPtr) override {
+		void draw(float deltaTime) override {
+			/*
 			wPtr->useShader();
 			wPtr->setColor(1, 1, 1);
 			mw::Matrix44 old = wPtr->getModel();
@@ -26,6 +27,7 @@ namespace zombie {
 			//glScale2f(2 * getRadius());
 			animation_.draw(deltaTime, wPtr);
 			wPtr->setModel(old);
+			*/
 		}
 
 		bool toBeRemoved() const override {

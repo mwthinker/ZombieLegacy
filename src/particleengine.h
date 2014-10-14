@@ -10,7 +10,6 @@
 #include <mw/sprite.h>
 #include <mw/shader.h>
 
-#include <memory>
 #include <array>
 
 namespace zombie {
@@ -19,12 +18,11 @@ namespace zombie {
 	public:
 		ParticleShader() {
 			if (nbrInstances < 1) {
-				shader = std::make_shared<mw::Shader>();
-				shader->bindAttribute("aPos");
-				shader->bindAttribute("aTex");
-				shader->bindAttribute("aColor");
-				shader->bindAttribute("aAngle");
-				shader->loadAndLinkFromFile("particle.ver.glsl", "particle.fra.glsl");
+				shader.bindAttribute("aPos");
+				shader.bindAttribute("aTex");
+				shader.bindAttribute("aColor");
+				shader.bindAttribute("aAngle");
+				shader.loadAndLinkFromFile("particle.ver.glsl", "particle.fra.glsl");
 			}
 			++nbrInstances;
 		}
@@ -34,34 +32,34 @@ namespace zombie {
 		}
 
 		void glUseProgram() {
-			shader->glUseProgram();
+			shader.glUseProgram();
 		}
 
 		void setUniformColor(const mw::Color& color) {
-			mw::glUniform4f(shader->getUniformLocation("uColor"), color.red_, color.green_, color.blue_, color.alpha_);
+			mw::glUniform4f(shader.getUniformLocation("uColor"), color.red_, color.green_, color.blue_, color.alpha_);
 		}
 
 		void setUniformMatrix(const mw::Matrix44& matrix) {
-			mw::glUniformMatrix4fv(shader->getUniformLocation("uMat"), 1, false, matrix.data());
+			mw::glUniformMatrix4fv(shader.getUniformLocation("uMat"), 1, false, matrix.data());
 		}
 
 		void setVertices(int dim, const GLvoid* data) {
-			mw::glEnableVertexAttribArray(shader->getAttributeLocation("aPos"));
-			mw::glVertexAttribPointer(shader->getAttributeLocation("aPos"), dim, GL_FLOAT, GL_FALSE, 0, data);
+			mw::glEnableVertexAttribArray(shader.getAttributeLocation("aPos"));
+			mw::glVertexAttribPointer(shader.getAttributeLocation("aPos"), dim, GL_FLOAT, GL_FALSE, 0, data);
 		}
 
 		void setTexCoords(int dim, const GLvoid* data) {
-			mw::glEnableVertexAttribArray(shader->getAttributeLocation("aTex"));
-			mw::glVertexAttribPointer(shader->getAttributeLocation("aTex"), dim, GL_FLOAT, GL_FALSE, 0, data);
+			mw::glEnableVertexAttribArray(shader.getAttributeLocation("aTex"));
+			mw::glVertexAttribPointer(shader.getAttributeLocation("aTex"), dim, GL_FLOAT, GL_FALSE, 0, data);
 		}
 
 		void setAngles(int dim, const GLvoid* data) {
-			mw::glEnableVertexAttribArray(shader->getAttributeLocation("aAngle"));
-			mw::glVertexAttribPointer(shader->getAttributeLocation("aAngle"), dim, GL_FLOAT, GL_FALSE, 0, data);
+			mw::glEnableVertexAttribArray(shader.getAttributeLocation("aAngle"));
+			mw::glVertexAttribPointer(shader.getAttributeLocation("aAngle"), dim, GL_FLOAT, GL_FALSE, 0, data);
 		}
 		
 	private:
-		static mw::ShaderPtr shader;
+		static mw::Shader shader;
 
 		static int nbrInstances;
 	};

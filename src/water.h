@@ -24,7 +24,7 @@ namespace zombie {
 
 		void addTriangle(Position p1, Position p2, Position p3);
 		
-		void drawSeeFloor(float deltaTime, gui::WindowMatrixPtr wp);
+		void drawSeeFloor(float deltaTime);
 
 		void drawWaves(const mw::Matrix44& matrix);
 
@@ -38,7 +38,7 @@ namespace zombie {
 			float speed_;
 		};
 
-		mw::ShaderPtr waterShader_;
+		mw::Shader waterShader_;
 		mw::VertexBufferObject vbo_;
 
 		std::vector<GLfloat> aPos_;

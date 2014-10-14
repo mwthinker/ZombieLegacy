@@ -37,7 +37,7 @@ namespace zombie {
 	public:
 		Fog(const FogProperties& fogProperties);
 
-		void draw(float deltaTime, gui::WindowMatrixPtr mPtr);
+		void draw(float deltaTime);
 
 		void init(Particle& particle);
 

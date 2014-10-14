@@ -4,8 +4,7 @@
 #include "weaponinterface.h"
 #include "state.h"
 #include "gameinterface.h"
-
-#include <gui/windowmatrix.h>
+#include "gameshader.h"
 
 #include <memory>
 
@@ -57,7 +56,7 @@ namespace zombie {
 		virtual void drawSymbol(float timeStep) = 0;
 
 		// Draw the weapon. The function will be called when the physical object is drawn.
-		virtual void draw(float timeStep, const gui::WindowMatrixPtr& wPtr) = 0;
+		virtual void draw(float timeStep, float x, float y, const GameShader& shader) = 0;
 
 		float getRange() const {
 			return weaponInterface_->getRange();

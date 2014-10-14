@@ -12,16 +12,17 @@ namespace zombie {
 			height_ = 2 + random() * 3;
 		}
 
-		void Building2D::draw(float accumulator, float timeStep, gui::WindowMatrixPtr wPtr) {
+		void Building2D::draw(float accumulator, float timeStep, const GameShader& gameShader) {
 			mw::glEnable(GL_BLEND);
 			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			wPtr->useShader();
-			wPtr->setColor(1, 1, 1);
-			wPtr->setTexture(true);
+			//wPtr->useShader();
+			//wPtr->setColor(1, 1, 1);
+			//wPtr->setTexture(true);
+			
 			//leftWall_.draw();
 			//rightWall_.draw();
 			//roof_.draw();
-			drawRoof(wPtr, roof_);
+			//drawRoof(wPtr, roof_);
 			mw::glDisable(GL_BLEND);
 		}
 
@@ -64,7 +65,7 @@ namespace zombie {
 			*/
 		}
 
-		void Building2D::drawRoof(gui::WindowMatrixPtr wPtr, const mw::Sprite& roof) {
+		void Building2D::drawRoof( const mw::Sprite& roof) {
 			mw::glEnable(GL_BLEND);
 			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			const mw::Texture& texture = roof.getTexture();
@@ -86,8 +87,8 @@ namespace zombie {
 				(roof.getX() + roof.getWidth()) / texture.getWidth(), (roof.getY() + roof.getHeight()) / texture.getHeight()};
 						
 			// Load the vertex data
-			wPtr->setTexturePosition(2, aTexCoord);
-			wPtr->setVertexPosition(2, aVertices);
+			//wPtr->setTexturePosition(2, aTexCoord);
+			//wPtr->setVertexPosition(2, aVertices);
 
 			// Upload the attributes and draw the sprite.
 			mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

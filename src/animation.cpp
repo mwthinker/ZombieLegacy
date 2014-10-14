@@ -29,7 +29,7 @@ namespace zombie {
 		frames_.push_back(Frame(sprite, bodyWidth, time));
 	}
 
-	void Animation::draw(float deltaTime, gui::WindowMatrixPtr wPtr) {
+	void Animation::draw(float deltaTime, float x, float y, const GameShader& shader) {
 		time_ += deltaTime * speed_;
 		if (reset_) {
 			reset_ = false;
@@ -51,14 +51,45 @@ namespace zombie {
 				lastTime_ = time_; // Frame updated.
 			}
 
-			Frame& frame = frames_[index_];
+			Frame& frame = frames_[index_];			
+			
+			drawSprite(frame.sprite_, shader, x, y, frame.bodyWidth_, frame.bodyWidth_);
+			//wPtr->setModel(old * mw::getScaleMatrix44(frame.sprite_.getWidth() / frame.bodyWidth_, frame.sprite_.getHeight() / frame.bodyWidth_));
+		}
+	}
 
-			wPtr->useShader();
-			wPtr->setColor(1, 1, 1);
-			mw::Matrix44 old = wPtr->getModel();
-			wPtr->setModel(old * mw::getScaleMatrix44(frame.sprite_.getWidth() / frame.bodyWidth_, frame.sprite_.getHeight() / frame.bodyWidth_));
-			frame.sprite_.draw();
-			wPtr->setModel(old);
+	void Animation::drawSprite(const mw::Sprite& sprite, const GameShader& shader, float x, float y, float width, float height) const {
+		const auto& texture = sprite.getTexture();
+		texture.bindTexture();
+		if (texture.isValid()) {
+			mw::glEnable(GL_BLEND);
+			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			// Centered square in ORIGO.
+			GLfloat aVertices[] = {
+				x + -0.5f * width, y + -0.5f * height,
+				x + 0.5f * width,  y + -0.5f * height,
+				x + -0.5f * width, y + 0.5f * height,
+				x + 0.5f * width, y + 0.5f * height};
+
+			// Map the sprite out from the texture.
+			GLfloat aTexCoord[] = {
+				sprite.getX() / texture.getWidth(), sprite.getY() / texture.getHeight(),
+				(sprite.getX() + sprite.getWidth()) / texture.getWidth(), sprite.getX() / texture.getHeight(),
+				sprite.getX() / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight(),
+				(sprite.getX() + sprite.getWidth()) / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight()};
+
+			// Use the program object
+			shader.setGlTextureU(true);
+
+			// Load the vertex data
+			shader.setGlVer2dCoordsA(aVertices);
+			shader.setGlTexCoordsA(aTexCoord);
+
+			// Upload the attributes and draw the sprite.
+			mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+			mw::glDisable(GL_BLEND);
+			mw::checkGlError();
 		}
 	}
 
