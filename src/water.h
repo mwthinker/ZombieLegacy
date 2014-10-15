@@ -4,14 +4,13 @@
 #include "box2ddef.h"
 #include "auxiliary.h"
 #include "gamedataentry.h"
+#include "gameshader.h"
 
 #include <mw/opengl.h>
 #include <mw/color.h>
 #include <mw/sprite.h>
 #include <mw/shader.h>
 #include <mw/vertexbufferobject.h>
-
-#include <gui/windowmatrix.h>
 
 #include <iostream>
 #include <vector>
@@ -24,7 +23,7 @@ namespace zombie {
 
 		void addTriangle(Position p1, Position p2, Position p3);
 		
-		void drawSeeFloor(float deltaTime);
+		void drawSeeFloor(float deltaTime, const GameShader& shader);
 
 		void drawWaves(const mw::Matrix44& matrix);
 

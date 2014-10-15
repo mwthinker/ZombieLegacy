@@ -2,18 +2,18 @@
 <zombieGame>
     <window>
         <width>1000</width>
-        <height>1000</height>
-        <positionX>577</positionX>
-        <positionY>50</positionY>
+        <height>930</height>
+        <positionX>581</positionX>
+        <positionY>56</positionY>
         <maximized>0</maximized>
     </window>
-	<water>
-		<seeFloorImage>images/seeFloor.png</seeFloorImage>
-	</water>
+    <water>
+        <seeFloorImage>images/seeFloor.png</seeFloorImage>
+    </water>
     <explosion>
-		<timeDelay>0.3</timeDelay>
-		<speed>1</speed>
-		<blastRadius>0.5</blastRadius>
+        <timeDelay>0.3</timeDelay>
+        <speed>1</speed>
+        <blastRadius>0.5</blastRadius>
         <particleImage>images/fireBall.png</particleImage>
         <sound>sounds/explosion.wav</sound>
     </explosion>
@@ -128,7 +128,7 @@
         <moveAnimation>
             <frame>
                 <image>images/car.png</image>
-                <bodyWidth>120</bodyWidth>
+                <bodyWidth>256</bodyWidth>
             </frame>
         </moveAnimation>
         <mass>10</mass>

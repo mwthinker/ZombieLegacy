@@ -44,7 +44,7 @@ namespace zombie {
 		numberVertices_ += 3;
 	}
 
-	void Water::drawSeeFloor(float deltaTime) {
+	void Water::drawSeeFloor(float deltaTime, const GameShader& shader) {
 		time_ += deltaTime;
 		
 		if (vbo_.getSize() == 0) {

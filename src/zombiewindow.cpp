@@ -113,6 +113,10 @@ namespace zombie {
 		zombieGame_->addKeyListener(std::bind(&handleKeyboard, std::placeholders::_1, std::placeholders::_2));
 	}
 
+	ZombieWindow::~ZombieWindow() {
+		zombieEntry_.save();
+	}
+
 	void ZombieWindow::initMenuFrame() {
 		setCurrentPanel(menuFrameIndex_);
 		auto panel = std::make_shared<gui::Panel>();

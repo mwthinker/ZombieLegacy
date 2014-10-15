@@ -18,7 +18,7 @@ namespace zombie {
 			animation_.setLooping(false);
 		}
 
-		void draw(float deltaTime) override {
+		void draw(float deltaTime, const GameShader& shader) override {
 			/*
 			wPtr->useShader();
 			wPtr->setColor(1, 1, 1);

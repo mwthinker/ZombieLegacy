@@ -22,7 +22,7 @@ namespace zombie {
 			//leftWall_.draw();
 			//rightWall_.draw();
 			//roof_.draw();
-			//drawRoof(wPtr, roof_);
+			drawRoof(roof_, gameShader);
 			mw::glDisable(GL_BLEND);
 		}
 
@@ -65,9 +65,7 @@ namespace zombie {
 			*/
 		}
 
-		void Building2D::drawRoof( const mw::Sprite& roof) {
-			mw::glEnable(GL_BLEND);
-			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		void Building2D::drawRoof(const mw::Sprite& roof, const GameShader& gameShader) {
 			const mw::Texture& texture = roof.getTexture();
 			// Centered square in ORIGO.
 			texture.bindTexture();
@@ -86,13 +84,15 @@ namespace zombie {
 				roof.getX() / texture.getWidth(), (roof.getY() + roof.getHeight()) / texture.getHeight(),
 				(roof.getX() + roof.getWidth()) / texture.getWidth(), (roof.getY() + roof.getHeight()) / texture.getHeight()};
 						
-			// Load the vertex data
-			//wPtr->setTexturePosition(2, aTexCoord);
-			//wPtr->setVertexPosition(2, aVertices);
+			// Load the vertex data.
+			gameShader.setGlTextureU(true);
+			gameShader.setGlPositionU(ZERO);
+			gameShader.setGlAngleU(0);
+			gameShader.setGlVer2dCoordsA(aVertices);
+			gameShader.setGlTexCoordsA(aTexCoord);
 
 			// Upload the attributes and draw the sprite.
 			mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-			mw::glDisable(GL_BLEND);
 
 			/*
 			const mw::Texture& texture = roof.getTexture();

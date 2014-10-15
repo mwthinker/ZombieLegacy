@@ -15,11 +15,17 @@ varying vec2 vTex;
 
 void main() {
 	// Column-major order.
-	mat2 rotation = mat2(cos(uAngle), sin(uAngle),
-						-sin(uAngle), cos(uAngle));
+	mat3 rot = mat3(cos(uAngle), sin(uAngle), 0,
+					-sin(uAngle), cos(uAngle), 0,
+					0, 0, 1);
 	
-	vec2 pos = uPos + rotation * aVer - uCenterPos;
+	mat3 tra = mat3(1, 0, 0,
+					0, 1, 0,					
+					uPos.x - uCenterPos.x, uPos.y - uCenterPos.y, 1);
 	
-	gl_Position = uProj * uModel * vec4(aPos, 0, 1);
+	vec3 pos = tra * rot * vec3(aVer, 1);
+	
+	
+	gl_Position = uProj * uModel * vec4(pos, 1);
 	vTex = aTex;
 }

@@ -46,7 +46,7 @@ namespace zombie {
 		particleEngine_.setColor(mw::Color(1, 1, 1, 1));
 	}
 
-	void Explosion::draw(float deltaTime) {
+	void Explosion::draw(float deltaTime, const GameShader& shader) {
 		if (time_ < deltaTime) {
 			// Only called one time!
 			sound_.play();

@@ -20,7 +20,7 @@ namespace zombie {
 
 		void drawRightWall(const mw::Sprite& wall);
 
-		void drawRoof(const mw::Sprite& roof);
+		void drawRoof(const mw::Sprite& roof, const GameShader& gameShader);
 
 		void drawGTAstyle(const mw::Sprite& s);
 

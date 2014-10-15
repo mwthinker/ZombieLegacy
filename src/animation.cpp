@@ -29,7 +29,7 @@ namespace zombie {
 		frames_.push_back(Frame(sprite, bodyWidth, time));
 	}
 
-	void Animation::draw(float deltaTime, float x, float y, const GameShader& shader) {
+	void Animation::draw(float deltaTime, float x, float y, float w, float h, const GameShader& shader) {
 		time_ += deltaTime * speed_;
 		if (reset_) {
 			reset_ = false;
@@ -51,10 +51,8 @@ namespace zombie {
 				lastTime_ = time_; // Frame updated.
 			}
 
-			Frame& frame = frames_[index_];			
-			
-			drawSprite(frame.sprite_, shader, x, y, frame.bodyWidth_, frame.bodyWidth_);
-			//wPtr->setModel(old * mw::getScaleMatrix44(frame.sprite_.getWidth() / frame.bodyWidth_, frame.sprite_.getHeight() / frame.bodyWidth_));
+			Frame& frame = frames_[index_];
+			drawSprite(frame.sprite_, shader, x, y, w * frame.sprite_.getWidth() / frame.bodyWidth_, h * frame.sprite_.getHeight() / frame.bodyWidth_);
 		}
 	}
 
@@ -75,14 +73,14 @@ namespace zombie {
 			// Map the sprite out from the texture.
 			GLfloat aTexCoord[] = {
 				sprite.getX() / texture.getWidth(), sprite.getY() / texture.getHeight(),
-				(sprite.getX() + sprite.getWidth()) / texture.getWidth(), sprite.getX() / texture.getHeight(),
+				(sprite.getX() + sprite.getWidth()) / texture.getWidth(), sprite.getY() / texture.getHeight(),
 				sprite.getX() / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight(),
 				(sprite.getX() + sprite.getWidth()) / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight()};
 
-			// Use the program object
+			// Use the program object.
 			shader.setGlTextureU(true);
 
-			// Load the vertex data
+			// Load the vertex data.
 			shader.setGlVer2dCoordsA(aVertices);
 			shader.setGlTexCoordsA(aTexCoord);
 

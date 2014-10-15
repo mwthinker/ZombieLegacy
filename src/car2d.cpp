@@ -19,12 +19,10 @@ namespace zombie {
 		State state = getState();
 		state.position_ = alpha * state.position_ + (1.f - alpha) * previousState().position_;
 
-		//wPtr->useShader();
-		//wPtr->setColor(1, 1, 1);
-		//mw::Matrix44 old = wPtr->getModel();
-		//wPtr->setModel(old * mw::getTranslateMatrix44(state.position_.x, state.position_.y) * mw::getRotateMatrix44(state.angle_, 0, 0, 1) * mw::getScaleMatrix44(getWidth(), getWidth()));
-		//animation_.draw(timeStep, wPtr);
-		//wPtr->setModel(old);
+		gameShader.setGlColorU(1, 1, 1);
+		gameShader.setGlPositionU(getPosition());
+		gameShader.setGlAngleU(getDirection());
+		animation_.draw(timeStep, 0, 0, getLength(), getLength(), gameShader);
 	}
 
 	Car2D loadCar(GameDataEntry& entry) {

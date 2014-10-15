@@ -41,9 +41,9 @@ namespace zombie {
 			});
 		}
 
-		void drawGraphicList(std::list<std::shared_ptr<Graphic>>& list, float deltaTime) {
-			for (auto ob : list) {
-				ob->draw(deltaTime);
+		void drawGraphicList(std::list<std::shared_ptr<Graphic>>& list, float deltaTime, const GameShader& shader) {
+			for (auto& ob : list) {
+				ob->draw(deltaTime, shader);
 			}
 		}
 
@@ -59,7 +59,7 @@ namespace zombie {
 		frame_(0),
 		fps_(60),
 		lastFramTime_(0),
-		gameShader_("gameshader.ver.glsl", "gameshader.ver.glsl")
+		gameShader_("gameshader.ver.glsl", "gameshader.fra.glsl")
 
 		{
 
@@ -187,39 +187,40 @@ namespace zombie {
 		*/
 
 		// Draw map centered around first human player.		
-		/*
-		Ptr->useShader();
-		mw::Matrix44 old = wPtr->getModel();
+		gameShader_.useGlShader();
 
 		gui::Dimension dim = getSize();
-		wPtr->setModel(old * mw::getTranslateMatrix44(dim.width_*0.5f, dim.height_*0.5f) * mw::getScaleMatrix44(50 * scale_, 50 * scale_) * mw::getTranslateMatrix44(-viewPosition_.x, -viewPosition_.y));
+		mw::Matrix44 matrix = getModelMatrix();
+		mw::translate2D(matrix, dim.width_*0.5f, dim.height_*0.5f);
+		mw::scale2D(matrix, 50 * scale_, 50 * scale_);
+		
+		gameShader_.setGlProjectionMatrixU(getProjectionMatrix());
+		gameShader_.setGlModelMatrixU(matrix);
+		gameShader_.setGlCenterPositionU(viewPosition_);
 
 		// Game is started?
 		if (engine_.isStarted()) {
-			water_.drawSeeFloor(deltaTime / 1000.f, wPtr);
-			terrain_.draw(deltaTime / 1000.f, wPtr);
-			drawGraphicList(graphicGround_, deltaTime / 1000.f, wPtr);
-			engine_.update(deltaTime / 1000.f, getWindowMatrixPtr());
-			drawGraphicList(graphicMiddle_, deltaTime / 1000.f, wPtr);
-			water_.drawWaves(wPtr->getProjection() * wPtr->getModel());
-			drawGraphicList(graphicSky_, deltaTime / 1000.f, wPtr);			
+			//water_.drawSeeFloor(deltaTime / 1000.f, gameShader_);
+			//terrain_.draw(deltaTime / 1000.f, gameShader_);
+			//drawGraphicList(graphicGround_, deltaTime / 1000.f, gameShader_);
+			engine_.update(deltaTime / 1000.f, gameShader_);
+			//drawGraphicList(graphicMiddle_, deltaTime / 1000.f, gameShader_);
+			//water_.drawWaves(wPtr->getProjection() * wPtr->getModel());
+			//drawGraphicList(graphicSky_, deltaTime / 1000.f, gameShader_);
 
 			removeDeadGraphicObjects(graphicGround_);
 			removeDeadGraphicObjects(graphicMiddle_);
 			removeDeadGraphicObjects(graphicSky_);
 		} else {
-			water_.drawSeeFloor(0, wPtr);
-			terrain_.draw(0, wPtr);
-			drawGraphicList(graphicGround_, 0, wPtr);
-			engine_.update(0, getWindowMatrixPtr());
-			drawGraphicList(graphicMiddle_, 0, wPtr);
-			water_.drawWaves(wPtr->getProjection() * wPtr->getModel());
-			drawGraphicList(graphicSky_, 0, wPtr);
+			//water_.drawSeeFloor(0, gameShader_);
+			//terrain_.draw(0, gameShader_);
+			//drawGraphicList(graphicGround_, 0, gameShader_);
+			engine_.update(0, gameShader_);
+			//drawGraphicList(graphicMiddle_, 0, gameShader_);
+			//water_.drawWaves(wPtr->getProjection() * wPtr->getModel());
+			//drawGraphicList(graphicSky_, 0, gameShader_);
 		}
 
-		wPtr->useShader();
-		wPtr->setModel(old);
-		*/
 		State state = engine_.getHumanState();
 		refViewPosition_ = state.position_ + 0.5 * state.velocity_;
 	}

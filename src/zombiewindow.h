@@ -18,8 +18,7 @@ namespace zombie {
 	public:
 		ZombieWindow(GameDataEntry gameDataEntry);
 
-		~ZombieWindow() {
-		}
+		~ZombieWindow();
 
 	private:
         void initMenuFrame();

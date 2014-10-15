@@ -21,7 +21,7 @@ namespace zombie {
 		// Add a frame and point it to the current sprite sheet.
 		void add(const mw::Sprite& sprite, float bodyWidth, float time = 1.f);
 		
-		void draw(float deltaTime, float x, float y, const GameShader& shader);
+		void draw(float deltaTime, float x, float y, float w, float h, const GameShader& shader);
 
 		inline void setSpeed(float speed) {
 			speed_ = speed;

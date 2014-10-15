@@ -39,7 +39,7 @@ namespace zombie {
 	public:
 		Explosion(Position position, const ExplosionProperties& exPr);
 
-		void draw(float deltaTime) override;
+		void draw(float deltaTime, const GameShader& shader) override;
 
 		float getTimeDuration() const;
 

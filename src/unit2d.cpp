@@ -40,23 +40,14 @@ namespace zombie {
 	void Unit2D::draw(float accumulator, float timeStep, const GameShader& gameShader) {
 		if (isActive()) {
 			// Draw body.
-			float worldScale = 2 * getRadius();
-			Position worldPosition = getPosition();
-			
-			gameShader.setGlColorU(1, 1, 1);
-			gameShader.setGlPositionU(worldPosition);
-			gameShader.setGlAngleU(getDirection());
-			gameShader.setGlTextureU(true);
-			animation_.draw(timeStep, 0, 0, gameShader);
-			getWeapon()->draw(timeStep, grip_.x, grip_.y, gameShader);
+			//float worldScale = 2 * getRadius();
+			float angle = getDirection();
 
-			//mw::Matrix44 old2 = wPtr->getModel();
-			//wPtr->setModel(old2 * mw::getScaleMatrix44(worldScale, worldScale) * mw::getRotateMatrix44(getDirection(), 0, 0, 1));
-			//animation_.draw(timeStep, wPtr);
-			//wPtr->setModel(old2);
-			//wPtr->setModel(old2 * mw::getRotateMatrix44(getDirection(), 0, 0, 1) * mw::getScaleMatrix44(grip_.x, grip_.y));
-			//getWeapon()->draw(timeStep, wPtr);
-			//wPtr->setModel(old);
+			gameShader.setGlColorU(1, 1, 1);
+			gameShader.setGlPositionU(getPosition());
+			gameShader.setGlAngleU(getDirection());
+			animation_.draw(timeStep, 0, 0, getRadius() * 2, getRadius() * 2, gameShader);
+			getWeapon()->draw(timeStep, grip_.x, grip_.y, gameShader);
 		}
 	}
 

@@ -2,15 +2,15 @@
 #define GRAPHIC_H
 
 #include "box2ddef.h"
+#include "gameshader.h"
 
-#include <gui/windowmatrix.h>
 #include <mw/sprite.h>
 
 namespace zombie {
 
 	class Graphic {
 	public:
-		virtual void draw(float deltaTime) = 0;
+		virtual void draw(float deltaTime, const GameShader& gameShader) = 0;
 
 		virtual bool toBeRemoved() const = 0;		
 

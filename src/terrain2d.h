@@ -23,7 +23,7 @@ namespace zombie {
 			lakes_.push_back(water);
 		}
 
-		void draw(float time) {
+		void draw(float time, const GameShader& shader) {
 			/*
 			glBegin(GL_TRIANGLES);
 

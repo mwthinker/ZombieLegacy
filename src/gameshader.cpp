@@ -11,6 +11,7 @@ namespace zombie {
 		uModelIndex_ = -1;
 		uCenterPosIndex_ = -1;
 		uPosIndex_ = -1;
+		uAngleIndex_ = -1;
 
 		// Collect the fragment buffer uniforms indexes.
 		uColorIndex_ = -1;
@@ -33,7 +34,7 @@ namespace zombie {
 		uModelIndex_ = shader_.getUniformLocation("uModel");
 		uCenterPosIndex_ = shader_.getUniformLocation("uCenterPos");
 		uPosIndex_ = shader_.getUniformLocation("uPos");
-		uAngleIndex_ = shader_.getAttributeLocation("uAngle");
+		uAngleIndex_ = shader_.getUniformLocation("uAngle");
 		
 		// Collect the fragment buffer uniforms indexes.
 		uColorIndex_ = shader_.getUniformLocation("uColor");
