@@ -28,11 +28,7 @@ namespace zombie {
 	}
 
 	void Weapon2D::draw(float timeStep, float x, float y, const GameShader& shader) {
-		//wPtr->setColor(1, 1, 1);
-		//mw::Matrix44 old = wPtr->getModel();
-		//wPtr->setModel(old * mw::getTranslateMatrix44(-grip_.x, -grip_.y) * mw::getScaleMatrix44(size_, size_));
-		//animation_.draw(timeStep, wPtr);
-		//wPtr->setModel(old);
+		animation_.draw(timeStep, x + grip_.x, y + grip_.y, size_, size_, shader);
 	}
 
 	WeaponPtr Weapon2D::clone() const {

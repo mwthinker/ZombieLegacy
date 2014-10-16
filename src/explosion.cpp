@@ -54,7 +54,7 @@ namespace zombie {
 		time_ += deltaTime;
 
 		if (time_ > delay_) {
-			//particleEngine_.draw(deltaTime, wPtr->getProjection() * wPtr->getModel());
+			particleEngine_.draw(deltaTime,  mw::I_44);
 		}
 	}
 
