@@ -40,7 +40,7 @@
     <menu>
         <soundHighlited>sounds/handgunReload.wav</soundHighlited>
         <soundChoice>sounds/handgunShoot.wav</soundChoice>
-        <backGroundImage>images/menu.jpg</backGroundImage>
+        <backGroundImage>images/menu.png</backGroundImage>
     </menu>
     <music>
         <switch>1</switch>
@@ -98,8 +98,8 @@
             <reloadSound>sounds/handgunReload.wav</reloadSound>
             <moveAnimation>
                 <frame>
-                    <image x="0" y="0" w="256" h="256">images/bazooka.png</image>
-                    <bodyWidth>320</bodyWidth>
+                    <image>images/bazooka.png</image>
+                    <bodyWidth>128</bodyWidth>
                 </frame>
             </moveAnimation>
             <size>1.1</size>

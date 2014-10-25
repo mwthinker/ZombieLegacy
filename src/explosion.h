@@ -70,4 +70,3 @@ namespace zombie {
 } // Namespace zombie.
 
 #endif // EXPLOSION_H
-

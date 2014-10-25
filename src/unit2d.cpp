@@ -42,7 +42,7 @@ namespace zombie {
 			// Draw body.
 			//float worldScale = 2 * getRadius();
 			float angle = getDirection();
-
+			
 			gameShader.setGlColorU(1, 1, 1);
 			gameShader.setGlPositionU(getPosition());
 			gameShader.setGlAngleU(getDirection());
