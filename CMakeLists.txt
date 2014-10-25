@@ -163,6 +163,10 @@ if (WIN32)
 	)
 
 	set(DLL_FILES
+		"$ENV{DLL_FOLDER}\\d3dcompiler_43.dll"
+		"$ENV{DLL_FOLDER}\\d3dcompiler_46.dll"
+		"$ENV{DLL_FOLDER}\\libEGL.dll"
+		"$ENV{DLL_FOLDER}\\libGLESv2.dll"
 		"$ENV{DLL_FOLDER}\\libFLAC-8.dll"
 		"$ENV{DLL_FOLDER}\\libfreetype-6.dll"
 		"$ENV{DLL_FOLDER}\\libjpeg-9.dll"
