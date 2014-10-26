@@ -196,34 +196,34 @@ namespace zombie {
 
 		water_.updateShaderModelMatrix(matrix);
 		water_.updateShaderProjectionMatrix(getProjectionMatrix());
+		water_.updateShaderCenterPosition(viewPosition_);
 
 		gameShader_.useGlShader();
 		gameShader_.setGlProjectionMatrixU(getProjectionMatrix());
 		gameShader_.setGlModelMatrixU(matrix);
+		gameShader_.setGlCenterPositionU(viewPosition_);
 		
 		// Game is started?
 		if (engine_.isStarted()) {
 			water_.drawSeeFloor(deltaTime / 1000.f, gameShader_);
-			gameShader_.setGlCenterPositionU(viewPosition_);
-			//terrain_.draw(deltaTime / 1000.f, gameShader_);
-			//drawGraphicList(graphicGround_, deltaTime / 1000.f, gameShader_);
+			terrain_.draw(deltaTime / 1000.f, gameShader_);
+			drawGraphicList(graphicGround_, deltaTime / 1000.f, gameShader_);
 			engine_.update(deltaTime / 1000.f, gameShader_);
-			//drawGraphicList(graphicMiddle_, deltaTime / 1000.f, gameShader_);
+			drawGraphicList(graphicMiddle_, deltaTime / 1000.f, gameShader_);
 			water_.drawWaves();
-			//drawGraphicList(graphicSky_, deltaTime / 1000.f, gameShader_);
+			drawGraphicList(graphicSky_, deltaTime / 1000.f, gameShader_);
 
 			removeDeadGraphicObjects(graphicGround_);
 			removeDeadGraphicObjects(graphicMiddle_);
 			removeDeadGraphicObjects(graphicSky_);
 		} else {
 			water_.drawSeeFloor(0, gameShader_);
-			gameShader_.setGlCenterPositionU(viewPosition_);
-			//terrain_.draw(0, gameShader_);
-			//drawGraphicList(graphicGround_, 0, gameShader_);
+			terrain_.draw(0, gameShader_);
+			drawGraphicList(graphicGround_, 0, gameShader_);
 			engine_.update(0, gameShader_);
-			//drawGraphicList(graphicMiddle_, 0, gameShader_);
+			drawGraphicList(graphicMiddle_, 0, gameShader_);
 			water_.drawWaves();
-			//drawGraphicList(graphicSky_, 0, gameShader_);
+			drawGraphicList(graphicSky_, 0, gameShader_);
 		}
 
 		State state = engine_.getHumanState();
@@ -335,7 +335,8 @@ namespace zombie {
 				auto triangle = loadPolygon(geom);
 				water_.addTriangle(triangle[0], triangle[1], triangle[2]);
 			} else if (entry.isAttributeEqual("type", "road")) {
-				terrain_.addRoad(loadPolygon(geom));
+				auto triangle = loadPolygon(geom);
+				terrain_.addRoad(triangle[0], triangle[1], triangle[2]);
 			} else if (entry.isAttributeEqual("type", "tree")) {
 				engine_.add(new Tree2D(loadPoint(geom), tree_));
 			} else if (entry.isAttributeEqual("type", "spawningpoint")) {

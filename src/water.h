@@ -29,6 +29,7 @@ namespace zombie {
 
 		void updateShaderProjectionMatrix(const mw::Matrix44& proj);
 		void updateShaderModelMatrix(const mw::Matrix44& model);
+		void updateShaderCenterPosition(Position position);
 
 	private:
 		struct CircularWave {
@@ -43,7 +44,10 @@ namespace zombie {
 		mw::Shader waterShader_;
 		int uProjIndex_;
 		int uModelIndex_;
+		int uPosIndex_;
 		int uTimeIndex_;
+		int aPosIndex_;
+		int aTexIndex_;
 
 		mw::VertexBufferObject vbo_;
 

@@ -4,7 +4,8 @@
 #include "box2ddef.h"
 
 #include <mw/opengl.h>
-#include <gui/windowmatrix.h>
+#include <mw/shader.h>
+#include <mw/vertexbufferobject.h>
 
 #include <vector>
 
@@ -12,46 +13,39 @@ namespace zombie {
 
 	class Terrain2D {
 	public:
-		Terrain2D() {
+		Terrain2D() : 
+			numberVertices_(0) {
+			
 		}
 
-		void addRoad(const std::vector<Position>& road) {
-			roads_.push_back(road);
-		}
-
-		void addWater(const std::vector<Position>& water) {
-			lakes_.push_back(water);
+		void addRoad(Position p1, Position p2, Position p3) {
+			roads_.push_back(p1.x); roads_.push_back(p1.y);
+			roads_.push_back(p2.x); roads_.push_back(p2.y);
+			roads_.push_back(p3.x); roads_.push_back(p3.y);
+			++numberVertices_;
 		}
 
 		void draw(float time, const GameShader& shader) {
-			/*
-			glBegin(GL_TRIANGLES);
-
-			glColor3d(0.1, 0.1, 0.1);
-			for (const Road& road : roads_) {
-				glColor3d(0.1, 0.1, 0.1);
-				for (unsigned int i = 0; i < 3 && i < road.size(); ++i) {
-					glVertex2d(road[i].x, road[i].y);
-				}
+			if (vboRoads_.getSize() == 0) {
+				vboRoads_.bindBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * roads_.size() + 100, roads_.data(), GL_STATIC_DRAW);
+				roads_.clear();
 			}
 
-			glColor3d(0, 0, 0.3);
-			for (const Water& water : lakes_) {
-				for (unsigned int i = 0; i < 3 && i < water.size(); ++i) {
-					glVertex2d(water[i].x, water[i].y);
-				}
-			}
+			vboRoads_.bindBuffer();
+			
+			shader.setGlTextureU(false);
+			shader.setGlVer2dCoordsA((const void*) 0);
+			shader.setGlColorU(0.1f, 0.1f, 0.1f);
+			mw::glDrawArrays(GL_TRIANGLES, 0, numberVertices_);
 
-			glEnd();
-			*/
+			vboRoads_.unbindBuffer();
 		}
 
 	private:
-		typedef std::vector<Position> Road;
-		typedef std::vector<Position> Water;
+		mw::VertexBufferObject vboRoads_;
+		int numberVertices_;
 
-		std::vector<Road> roads_;
-		std::vector<Water> lakes_;
+		std::vector<GLfloat> roads_;
 	};
 
 } // Namespace zombie.
