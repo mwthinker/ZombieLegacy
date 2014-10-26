@@ -25,7 +25,10 @@ namespace zombie {
 		
 		void drawSeeFloor(float deltaTime, const GameShader& shader);
 
-		void drawWaves(const mw::Matrix44& matrix);
+		void drawWaves();
+
+		void updateShaderProjectionMatrix(const mw::Matrix44& proj);
+		void updateShaderModelMatrix(const mw::Matrix44& model);
 
 	private:
 		struct CircularWave {
@@ -38,6 +41,10 @@ namespace zombie {
 		};
 
 		mw::Shader waterShader_;
+		int uProjIndex_;
+		int uModelIndex_;
+		int uTimeIndex_;
+
 		mw::VertexBufferObject vbo_;
 
 		std::vector<GLfloat> aPos_;

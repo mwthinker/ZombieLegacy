@@ -2,13 +2,14 @@
 
 precision mediump float;
 
-uniform mat4 uMat;
+uniform mat4 uProj;
+uniform mat4 uModel;
 
-attribute vec4 aPos;
+attribute vec2 aPos;
 
-varying vec4 vPos;
+varying vec2 vPos;
 
 void main() {
-	gl_Position = uMat * aPos;
+	gl_Position = uProj * uModel * vec4(aPos, 0, 1);
 	vPos = aPos;
 }

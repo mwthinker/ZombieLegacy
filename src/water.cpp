@@ -26,6 +26,11 @@ namespace zombie {
 		waterShader_.loadAndLinkFromFile("water.ver.glsl", "water.fra.glsl");
 		size_ = 100;
 		numberVertices_ = 0;
+
+		waterShader_.glUseProgram();
+		uProjIndex_ = waterShader_.getUniformLocation("uProj");
+		uModelIndex_ = waterShader_.getUniformLocation("uModel");
+		uTimeIndex_ = waterShader_.getUniformLocation("uTime");
 	}
 
 	void Water::addTriangle(Position p1, Position p2, Position p3) {
@@ -53,37 +58,34 @@ namespace zombie {
 			aPos_.clear();
 			aTex_.clear();
 		}
-				
+		
+		shader.useGlShader();
+		shader.setGlCenterPositionU(ZERO);
+		shader.setGlTextureU(true);
+		shader.setGlColorU(1, 1, 1);
+
 		// Draw see floor.
 		vbo_.bindBuffer();
 		
 		seeFloor_.bindTexture();
-		/*
-		wp->useShader();
-		wp->setColor(1, 1, 1);
-		wp->setTexture(true);
-		wp->setVertexPosition(2, (const void*) 0);
-		wp->setTexturePosition(2, (const void*) (vbo_.getSize() / 2));
-		wp->setColor(0.3f, 0.3f, 0.3f);
-		wp->glDrawArrays(GL_TRIANGLES, 0, numberVertices_);
-		wp->setColor(1, 1, 1);
+		shader.setGlVer2dCoordsA((const void*) 0);
+		shader.setGlTexCoordsA((const void*) (vbo_.getSize() / 2));
+		mw::glDrawArrays(GL_TRIANGLES, 0, numberVertices_);
+		
 		vbo_.unbindBuffer();
-		*/
 	}
 
-	void Water::drawWaves(const mw::Matrix44& matrix) {
+	void Water::drawWaves() {
 		if (vbo_.getSize() == 0) {
 			aPos_.insert(aPos_.end(), aTex_.begin(), aTex_.end());
 			vbo_.bindBufferData(GL_ARRAY_BUFFER, aPos_.size(), aPos_.data(), GL_STATIC_DRAW);
 			aPos_.clear();
 			aTex_.clear();
 		}
-
 		// Draw waves.
 		waterShader_.glUseProgram();
 		vbo_.bindBuffer();
-		mw::glUniformMatrix4fv(waterShader_.getUniformLocation("uMat"), 1, false, matrix.data());
-		mw::glUniform1f(waterShader_.getUniformLocation("uTime"), time_);
+		mw::glUniform1f(uTimeIndex_, time_);
 
 		mw::glEnableVertexAttribArray(waterShader_.getAttributeLocation("aPos"));
 		mw::glVertexAttribPointer(waterShader_.getAttributeLocation("aPos"), 2, GL_FLOAT, GL_FALSE, 0, (const void*) 0);
@@ -96,6 +98,16 @@ namespace zombie {
 		mw::glDisable(GL_BLEND);
 		
 		vbo_.unbindBuffer();
+	}
+
+	void Water::updateShaderProjectionMatrix(const mw::Matrix44& proj) {
+		waterShader_.glUseProgram();
+		mw::glUniformMatrix4fv(uProjIndex_, 1, false, proj.data());
+	}
+
+	void Water::updateShaderModelMatrix(const mw::Matrix44& model) {
+		waterShader_.glUseProgram();
+		mw::glUniformMatrix4fv(uModelIndex_, 1, false, model.data());
 	}
 
 	Water loadWater(GameDataEntry entry) {

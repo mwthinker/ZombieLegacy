@@ -186,38 +186,43 @@ namespace zombie {
 		}
 		*/
 
-		// Draw map centered around first human player.		
-		gameShader_.useGlShader();
+		
 
+		// Draw map centered around first human player.
 		gui::Dimension dim = getSize();
 		mw::Matrix44 matrix = getModelMatrix();
 		mw::translate2D(matrix, dim.width_*0.5f, dim.height_*0.5f);
-		mw::scale2D(matrix, 50 * scale_, 50 * scale_);
-		
+		mw::scale2D(matrix, 50 * scale_, 50 * scale_);		
+
+		water_.updateShaderModelMatrix(matrix);
+		water_.updateShaderProjectionMatrix(getProjectionMatrix());
+
+		gameShader_.useGlShader();
 		gameShader_.setGlProjectionMatrixU(getProjectionMatrix());
 		gameShader_.setGlModelMatrixU(matrix);
-		gameShader_.setGlCenterPositionU(viewPosition_);
-
+		
 		// Game is started?
 		if (engine_.isStarted()) {
-			//water_.drawSeeFloor(deltaTime / 1000.f, gameShader_);
+			water_.drawSeeFloor(deltaTime / 1000.f, gameShader_);
+			gameShader_.setGlCenterPositionU(viewPosition_);
 			//terrain_.draw(deltaTime / 1000.f, gameShader_);
 			//drawGraphicList(graphicGround_, deltaTime / 1000.f, gameShader_);
 			engine_.update(deltaTime / 1000.f, gameShader_);
 			//drawGraphicList(graphicMiddle_, deltaTime / 1000.f, gameShader_);
-			//water_.drawWaves(wPtr->getProjection() * wPtr->getModel());
+			water_.drawWaves();
 			//drawGraphicList(graphicSky_, deltaTime / 1000.f, gameShader_);
 
 			removeDeadGraphicObjects(graphicGround_);
 			removeDeadGraphicObjects(graphicMiddle_);
 			removeDeadGraphicObjects(graphicSky_);
 		} else {
-			//water_.drawSeeFloor(0, gameShader_);
+			water_.drawSeeFloor(0, gameShader_);
+			gameShader_.setGlCenterPositionU(viewPosition_);
 			//terrain_.draw(0, gameShader_);
 			//drawGraphicList(graphicGround_, 0, gameShader_);
 			engine_.update(0, gameShader_);
 			//drawGraphicList(graphicMiddle_, 0, gameShader_);
-			//water_.drawWaves(wPtr->getProjection() * wPtr->getModel());
+			water_.drawWaves();
 			//drawGraphicList(graphicSky_, 0, gameShader_);
 		}
 
