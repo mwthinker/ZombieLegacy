@@ -52,9 +52,11 @@ namespace zombie {
 			sound_.play();
 		}
 		time_ += deltaTime;
-
+		
 		if (time_ > delay_) {
-			particleEngine_.draw(deltaTime,  mw::I_44);
+			shader.useGlShader();
+			shader.setGlPositionU(ZERO);
+			particleEngine_.draw(deltaTime, shader);
 		}
 	}
 
@@ -80,7 +82,6 @@ namespace zombie {
 		particle.particleSize_ = particleSize_*0.8f;
 		particle.alive = true;
 		particle.lifeTime_ = 0;
-		particle.angle_ = 0;
 	}
 
 	void Explosion::update(float deltaTime, Particle& particle) {

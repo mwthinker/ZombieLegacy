@@ -14,7 +14,6 @@ namespace zombie {
 		bool alive;
 		float lifeTime_;
 		float particleSize_;
-		float angle_;
 	};
 
 } // Namespace zombie.

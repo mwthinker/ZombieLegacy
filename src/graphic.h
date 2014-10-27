@@ -1,10 +1,7 @@
 #ifndef GRAPHIC_H
 #define GRAPHIC_H
 
-#include "box2ddef.h"
 #include "gameshader.h"
-
-#include <mw/sprite.h>
 
 namespace zombie {
 

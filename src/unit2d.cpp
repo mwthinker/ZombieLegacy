@@ -40,13 +40,14 @@ namespace zombie {
 	void Unit2D::draw(float accumulator, float timeStep, const GameShader& gameShader) {
 		if (isActive()) {
 			// Draw body.
-			//float worldScale = 2 * getRadius();
+			float diameter = 2 * getRadius();
 			float angle = getDirection();
 			
+			gameShader.useGlShader();
 			gameShader.setGlColorU(1, 1, 1);
 			gameShader.setGlPositionU(getPosition());
 			gameShader.setGlAngleU(getDirection());
-			animation_.draw(timeStep, 0, 0, getRadius() * 2, getRadius() * 2, gameShader);
+			animation_.draw(timeStep, 0, 0, diameter, diameter, gameShader);
 			getWeapon()->draw(timeStep, grip_.x, grip_.y, gameShader);
 		}
 	}

@@ -60,7 +60,7 @@ namespace zombie {
 		float particleSize_;
 		float blastRadius_;
 
-		ParticleEngine<500, Explosion> particleEngine_;
+		ParticleEngine<250, Explosion> particleEngine_;
 		float delay_;
 		mw::Sound sound_;
 	};

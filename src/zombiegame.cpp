@@ -35,13 +35,13 @@ namespace zombie {
 			return positions[randomInt(0, positions.size() - 1)];
 		}
 
-		void removeDeadGraphicObjects(std::list<std::shared_ptr<Graphic>>& list) {
+		inline void removeDeadGraphicObjects(std::list<std::shared_ptr<Graphic>>& list) {
 			list.remove_if([](const std::shared_ptr<Graphic>& ob) {
 				return ob->toBeRemoved();
 			});
 		}
 
-		void drawGraphicList(std::list<std::shared_ptr<Graphic>>& list, float deltaTime, const GameShader& shader) {
+		inline void drawGraphicList(std::list<std::shared_ptr<Graphic>>& list, float deltaTime, const GameShader& shader) {
 			for (auto& ob : list) {
 				ob->draw(deltaTime, shader);
 			}

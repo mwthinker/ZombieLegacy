@@ -71,7 +71,6 @@ namespace zombie {
 		particle.particleSize_ = particleSize_;
 		particle.alive = true;
 		particle.lifeTime_ = 0;
-		particle.angle_ = random(0, 2 * PI);
 	}
 
 	void Fog::update(float deltaTime, Particle& particle) {

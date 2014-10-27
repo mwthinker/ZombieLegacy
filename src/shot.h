@@ -57,4 +57,3 @@ namespace zombie {
 } // Namespace zombie.
 
 #endif // SHOT_H
-

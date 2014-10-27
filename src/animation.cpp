@@ -58,8 +58,8 @@ namespace zombie {
 
 	void Animation::drawSprite(const mw::Sprite& sprite, const GameShader& shader, float x, float y, float width, float height) const {
 		const auto& texture = sprite.getTexture();
-		texture.bindTexture();
 		if (texture.isValid()) {
+			texture.bindTexture();
 			mw::glEnable(GL_BLEND);
 			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

@@ -44,6 +44,8 @@ namespace zombie {
 			b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
 			fixture->SetUserData(this);
 		}
+
+		previousState_ = getState();
 	}
 
 	void Missile::collision(float impulse) {
