@@ -11,10 +11,12 @@ namespace zombie {
 
 	class Building2D : public Building {
 	public:
+		Building2D();
+
 		Building2D(Position p1, Position p2, Position p3, Position p4,
 			const mw::Sprite& rightWall, const mw::Sprite& leftWall, const mw::Sprite& roof);
 
-		void draw(float accumulator, float timeStep, const GameShader& gameShader) override;
+		void draw(float accumulator, float timeStep, const GameShader& gameShader);
 
 		void drawLeftWall(const mw::Sprite& wall);
 

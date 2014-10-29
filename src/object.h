@@ -22,23 +22,10 @@ namespace zombie {
 		// Destroys the body. I.e. the body in no more a part of the box2d world.
 		virtual void destroyBody() = 0;
 
-		// Update the object. The "time" parameter is the current game time and the "timeStep" is 
-		// the length of the time to be simulated in the updated call.
-		inline virtual void update(float time, float timeStep) {
-		}
-		
-		// Return whether when the game engine should remove the object or if it should continue to exist.
-		virtual bool toBeRemoved() const {
-			return false;
-		}
-
 		// Is called when a collision occurs.
 		virtual void collision(float impulse) {
 		}
-
-		// Draw the object in world coordinates.
-		virtual void draw(float accumulator, float timeStep, const GameShader& gameShader) = 0;
-	};
+	};	
 
 } // Namespace zombie.
 

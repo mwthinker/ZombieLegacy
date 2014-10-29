@@ -61,10 +61,6 @@ namespace zombie {
 		}
 	}
 
-	bool Missile::toBeRemoved() const {
-		return exploded_;
-	}
-
 	b2Body* Missile::getBody() const {
 		return body_;
 	}

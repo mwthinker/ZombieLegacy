@@ -60,6 +60,8 @@ namespace zombie {
 		shader.useGlShader();
 		shader.setGlTextureU(true);
 		shader.setGlColorU(1, 1, 1);
+		shader.setGlAngleU(0);
+		shader.setGlPositionU(ZERO);
 
 		// Draw see floor.
 		vbo_.bindBuffer();

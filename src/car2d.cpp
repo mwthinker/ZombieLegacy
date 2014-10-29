@@ -7,6 +7,11 @@
 
 namespace zombie {
 
+	Car2D::Car2D() : 
+		Car(1, 1, 1, 1) {
+
+	}
+
 	Car2D::Car2D(float mass, float life, float width, float length, const Animation& animation) :
 		Car(mass, life, width, length), animation_(animation) {
 	}

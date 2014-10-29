@@ -20,11 +20,9 @@ namespace zombie {
 
 		void createBody(b2World* world, Position position, float angle);
 
-		void update(float time, float timeStep) override final;
+		void update(float time, float timeStep);
 
 		void collision(float impulse) override final;
-
-		bool toBeRemoved() const override final;
 		
 		b2Body* getBody() const override final;
 

@@ -27,16 +27,16 @@ namespace zombie {
 
 		void createBody(b2World* world, State state);
 
-		Driver* getDriver() const;
-		void setDriver(Driver* driver);
+		Unit* getDriver() const;
+		void setDriver(Unit* driver);
 
-		void updatePhysics(float time, float timeStep, Input input) override;
+		void updatePhysics(float time, float timeStept);
 
 		void applySpin(float impulse) {
 			body_->ApplyAngularImpulse(impulse);
 		}
 
-		State getState() const override;
+		State getState() const;
 
 		float getWidth() const {
 			return width_;
@@ -56,17 +56,13 @@ namespace zombie {
 			return body_;
 		}
 
-		WeaponPtr getWeapon() const override {
-			return nullptr;
-		}
-
-		float getDirection() const override {
+		float getDirection() const {
 			return body_->GetAngle();
 		}
 
 		bool isInfected() const override {
-			// When no driver the car is seen as infected and therefore ignored by the zombies.
-			return player_ == nullptr;
+			// No driver, the car is seen as infected and therefore ignored by the zombies.
+			return driver_ == nullptr;
 		}
 
 		float getViewDistance() const override {
@@ -123,6 +119,7 @@ namespace zombie {
 		float wheelDelta_;
 
 		State previousState_;
+		Unit* driver_;
 	};
 
 } // Namespace zombie.

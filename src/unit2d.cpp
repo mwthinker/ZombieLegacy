@@ -7,6 +7,11 @@
 
 namespace zombie {
 
+	Unit2D::Unit2D() :
+		Unit(1, 1, 1, 1, 1, false, nullptr) {
+		
+	}
+
 	Unit2D::Unit2D(float mass, float radius, float life, float walkingSpeed,
 		float runningSpeed, bool isInfected, const WeaponPtr& weapon, const Animation& animation, Position grip) :
 		Unit(mass, radius, life, walkingSpeed, runningSpeed, isInfected, weapon), animation_(animation), grip_(grip) {
@@ -24,6 +29,7 @@ namespace zombie {
 	Unit2D& Unit2D::operator=(const Unit2D& unit) {
 		Unit::operator=(unit);
 		animation_ = unit.animation_;
+		addEventHandler(std::bind(&Unit2D::eventHandler, this, this, std::placeholders::_2));
 		die_ = unit.die_;
 		hit_ = unit.hit_;
 		return *this;

@@ -3,7 +3,6 @@
 #include "input.h"
 #include "state.h"
 #include "unit.h"
-#include "driver.h"
 #include "unit.h"
 #include "building.h"
 
@@ -72,15 +71,16 @@ namespace zombie {
 		}
 	}
 
-	Driver* Car::getDriver() const {
-		return static_cast<Driver*>(player_);
+	Unit* Car::getDriver() const {
+		return driver_;
 	}
 
-	void Car::setDriver(Driver* driver) {
-		player_ = driver;
+	void Car::setDriver(Unit* driver) {
+		driver_ = driver;
 	}
 
-	void Car::updatePhysics(float time, float timeStep, Input input) {
+	void Car::updatePhysics(float time, float timeStep) {
+		Input input = getInput();
 		previousState_ = getState();
 		b2Vec2 force = getDirectionVector();
 

@@ -8,13 +8,12 @@
 #include "graphic.h"
 #include "terrain2d.h"
 #include "explosion.h"
-#include "fog.h"
-#include "weaponeffect.h"
-#include "weaponinterface.h"
 #include "unit2d.h"
 #include "car2d.h"
+#include "building2d.h"
 #include "water.h"
 #include "gameshader.h"
+#include "player.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
@@ -28,8 +27,48 @@
 #include <vector>
 
 namespace zombie {
-		
-	class Weapon2D;
+
+	template <class E, int _size>
+	class Array {
+	public:
+		Array() : size_(0) {
+		}
+
+		inline E* create(const E& e) {
+			return &(data_[size_++] = e);
+		}
+
+		inline typename std::array<E, _size>::iterator begin() {
+			return data_.begin();
+		}
+
+		inline typename std::array<E, _size>::iterator end() {
+			return data_.end();
+		}
+
+		inline typename std::array<E, _size>::const_iterator begin() const {
+			return data_.cbegin();
+		}
+
+		inline typename std::array<E, _size>::const_iterator end() const {
+			return data_.cend();
+		}
+
+		inline int size() const {
+			return size_;
+		}
+
+		inline int getMaxSize() const {
+			return data_.size();
+		}
+
+		E& operator[](int index) {
+			return data_[index];
+		}
+
+		std::array<E, _size> data_;
+		int size_;
+	};
 
 	// Responsible of loading map, units and initiate all
 	// game related things and to start the game engine.
@@ -52,6 +91,12 @@ namespace zombie {
 		void zoom(float scale);
 
 	private:
+		void updateGame(float deltaTime);
+
+		void makeGameStep();
+
+		void drawGame(float deltaTime);
+
 		int getZombiesKilled() const {
 			return zombiesKilled_;
 		}
@@ -66,23 +111,13 @@ namespace zombie {
 
 		int getBulletsInWeapon() {
 			return bulletsInWeapon_;
-		}
-
-		int getNbrUnits() {
-			return engine_.getNbrUnits();
-		}
+		}		
 
 		float getFps() const;
 
 		void init();
 
 		// Implements the GameInterface.
-		void updateEachCycle(Unit& unit, Unit& human) override;
-
-		void updateEachCycle(Unit& human) override;
-
-		void humanDied(Unit& unit) override;
-
 		void unitDied(Unit& unit) override;
 
 		void collision(float impulse, Unit& unit) override;
@@ -98,11 +133,7 @@ namespace zombie {
 		void explosion(Position position, float explosionRadius) override;
 
 		void removedFromWorld(Unit& unit) override;
-
 		// End of the GameInterface.
-
-		Unit2D* createUnit(Unit2D& unit);
-		Car2D* createCar(Car2D& car);
 
 		void loadTerrain();
 		
@@ -113,7 +144,6 @@ namespace zombie {
 		float spawnPeriod_;
 
 		ExplosionProperties explosionProperties_;
-		//std::shared_ptr<Fog> fog_;
 		
 		Animation humanInjured_;
 		Animation humanDie_;
@@ -128,9 +158,7 @@ namespace zombie {
 
 		DevicePtr keyboard_;
 		GameDataEntry zombieEntry_;
-
-		Unit2D human_;
-		Unit2D zombie_;
+		
 		Car2D car_;
 
 		std::list<std::shared_ptr<Graphic>> graphicGround_;
@@ -148,14 +176,24 @@ namespace zombie {
 		int bulletsInWeapon_;
 		int clipsize_;
 
-		std::vector<Unit2D> units_;
-		std::vector<Car2D> cars_;
+		Array<Unit2D, 100> units_;
+		Array<Car2D, 20> cars_;
+		Array<Building2D, 100> buildings_;
+		std::vector<std::unique_ptr<Player>> players_;
+
 		int frame_;
 		float fps_;
 		float lastFramTime_;
 
-		ZombieEngine engine_; // Must be destroyed first in order to remove box2d stuff.
+		ZombieEngine engine_;
 		GameShader gameShader_;
+		bool started_;
+		
+		State humanState_;
+
+		// Fix timestep.
+		float timeStep_;
+		float accumulator_;
 	};
 
 } // Namespace zombie.

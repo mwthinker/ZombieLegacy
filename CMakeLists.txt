@@ -33,7 +33,6 @@ set(SOURCES_ZOMBIE
 	src/contactlistener.h
 	src/contactlistener.cpp
 	src/device.h
-	src/driver.h
 	src/gamedataentry.cpp
 	src/gamedataentry.h
 	src/gameinterface.h
@@ -58,7 +57,6 @@ set(SOURCES_ZOMBIE
 	src/movingobject.h
 	src/object.cpp
 	src/object.h
-	src/player.cpp
 	src/player.h
 	src/shot.h
 	src/state.h	

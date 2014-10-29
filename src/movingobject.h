@@ -5,7 +5,6 @@
 #include "input.h"
 #include "weapon.h"
 #include "state.h"
-#include "player.h"
 
 #include <mw/signal.h>
 
@@ -18,39 +17,13 @@ namespace zombie {
 	// Represent a moving object inside the "zombie world".
 	class MovingObject : public Object {
 	public:
-		friend class Player;
-
-		MovingObject() : player_(nullptr) {
+		inline void setInput(Input input) {
+			input_ = input;
 		}
 
-		virtual ~MovingObject() {
-			delete player_;
+		inline Input getInput() const {
+			return input_;
 		}
-
-		// Should not be derived by anyone.
-		void update(float time, float timeStep) override final {
-			if (player_ != nullptr) {
-				// Player decides what to do!
-				player_->updatePhysics(time, timeStep);
-			} else {
-				// Default input.
-				updatePhysics(time, timeStep, Input());
-			}
-			updateListener_(this);
-		}
-
-		// Simulates the physics at time (time) one time step (timeStep) ahead.
-		// Based on the input given.
-		virtual void updatePhysics(float time, float timeStep, Input input) = 0;
-
-		// Returns the current weapon.
-		virtual WeaponPtr getWeapon() const = 0;
-
-		// Return the objects forward direction in radians.
-		virtual float getDirection() const = 0;
-
-		// Return the current state.
-		virtual State getState() const = 0;
 
 		// Returns true if the object is infected.
 		virtual bool isInfected() const = 0;
@@ -80,11 +53,6 @@ namespace zombie {
 			return objectsSeen_;
 		}
 
-		// Return the corresponding player, may return nullptr.
-		Player* getPlayer() const {
-			return player_;
-		}
-
 		// Should only be called by the game engine.
 		void addSeenObject(MovingObject* object) {
 			objectsSeen_.push_back(object);
@@ -103,16 +71,9 @@ namespace zombie {
 			return getBody()->IsActive();
 		}
 
-		mw::signals::Connection addUpdateHandler(mw::Signal<MovingObject*>::Callback callback) {
-			return updateListener_.connect(callback);
-		}
-
-	protected:
-		Player* player_;
-		mw::Signal<MovingObject*> updateListener_;
-
 	private:
 		std::list<MovingObject*> objectsSeen_;
+		Input input_;
 	};
 
 } // Namespace zombie.

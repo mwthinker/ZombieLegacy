@@ -6,7 +6,7 @@
 
 namespace zombie {
 
-	SurvivorBehavior::SurvivorBehavior(Unit* unit) : Player(unit) {
+	SurvivorBehavior::SurvivorBehavior(Unit* unit) {
 		findNewTargetTime_ = random() * 3;
 		target_ = nullptr;
 		unit_ = unit;
@@ -16,12 +16,12 @@ namespace zombie {
 	SurvivorBehavior::~SurvivorBehavior() {
 	}
 
-	void SurvivorBehavior::updatePhysics(float time, float deltaTime) {
+	void SurvivorBehavior::updateInput(float time, float deltaTime) {
 		Input input;
 		// extract information from memory
 		// analyze situation - enviroment and units when neccesarry
 		// make decision on what activity to perform
-		unit_->updatePhysics(time, deltaTime, input);
+		//unit_->updatePhysics(time, deltaTime, input);
 	}
 
 	Unit* SurvivorBehavior::findUninfectedTarget(Position position, const std::vector<Unit*>& units) const {			

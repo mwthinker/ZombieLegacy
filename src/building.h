@@ -63,7 +63,7 @@ namespace zombie {
 		}
 
 	private:
-		const std::array<Position, 4> corners_;
+		std::array<Position, 4> corners_;
 		float radius_;
 		float length_, width_;
 

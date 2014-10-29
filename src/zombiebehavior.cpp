@@ -8,7 +8,7 @@
 
 namespace zombie {
 
-	ZombieBehavior::ZombieBehavior(Unit* unit) : Player(unit) {
+	ZombieBehavior::ZombieBehavior(Unit* unit) {
 		findNewTargetTime_ = random() * 3;
 		timeToUpdateAngleDirection_ = random() * 1;
 		//targetAngle_ = random() * PI * 2;
@@ -22,7 +22,7 @@ namespace zombie {
 		targetConnection_.disconnect();
 	}
 
-	void ZombieBehavior::updatePhysics(float time, float deltaTime) {
+	void ZombieBehavior::updateInput(float time, float deltaTime) {
 		Input input;
 		/*
 		if (time > findNewTargetTime_) {
@@ -71,7 +71,7 @@ namespace zombie {
 		}
 
 		input.forward_ = forward_;
-		unit_->updatePhysics(time, deltaTime, input);
+		unit_->setInput(input);
 	}
 
 	MovingObject* ZombieBehavior::getMovingObject() const {

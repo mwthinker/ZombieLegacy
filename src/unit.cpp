@@ -121,8 +121,9 @@ namespace zombie {
 	Unit::~Unit() {
 	}
 
-	void Unit::updatePhysics(float time, float timeStep, Input input) {
+	void Unit::updatePhysics(float time, float timeStep) {
 		if (!isDead()) {
+			Input input = getInput();
 			float angle = getDirection();
 			Force move = Vec3(std::cos(angle), std::sin(angle));
 

@@ -16,7 +16,7 @@ namespace zombie {
 		Tree2D(const Position& position, const mw::Sprite& tree) : Tree(position), tree_(tree) {
 		}
 
-		void draw(float accumulator, float timeStep, const GameShader& gameShader) override {
+		void draw(float accumulator, float timeStep, const GameShader& gameShader) {
 			gameShader.setGlColorU(1, 1, 1);
 			gameShader.setGlTextureU(true);
 			gameShader.setGlPositionU(position_);

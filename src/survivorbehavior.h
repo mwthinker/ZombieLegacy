@@ -2,23 +2,22 @@
 #define SURVIVORBEHAVIOR_H
 
 #include "input.h"
-#include "player.h"
 #include "box2ddef.h"
+#include "unit.h"
+#include "player.h"
 
 #include <vector>
 
 namespace zombie {
-
-	class Unit;
 
 	class SurvivorBehavior : public Player {
 	public:
 		SurvivorBehavior(Unit* unit);
 		~SurvivorBehavior();
 		
-		void updatePhysics(float time, float deltaTime) override;
+		void updateInput(float time, float deltaTime) override;
 
-		MovingObject* getMovingObject() const override;
+		MovingObject* getMovingObject() const;
 
 	private:
 		Unit* findUninfectedTarget(Position position, const std::vector<Unit*>& units) const;

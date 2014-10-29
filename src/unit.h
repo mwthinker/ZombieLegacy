@@ -21,7 +21,12 @@ namespace zombie {
 	class Unit : public MovingObject {
 	public:
 		enum UnitEvent {
-			DIE, INJURED, WALK, STANDSTILL, RUN, ACTION
+			DIE,
+			INJURED,
+			WALK,
+			STANDSTILL,
+			RUN,
+			ACTION
 		};
 
 		Unit(float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const WeaponPtr& weapon);
@@ -32,9 +37,9 @@ namespace zombie {
 
 		void createBody(b2World* world, State state);
 		
-		void updatePhysics(float time, float timeStep, Input input) override;
+		void updatePhysics(float time, float timeStep);
 
-		State getState() const override;
+		State getState() const;
 
 		// Return the view distance.
 		float getViewDistance() const;
@@ -67,7 +72,7 @@ namespace zombie {
 			return isInfected_;
 		}
 
-		WeaponPtr getWeapon() const override {
+		WeaponPtr getWeapon() const {
 			return weapon_;
 		}
 
