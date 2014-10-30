@@ -30,20 +30,11 @@ namespace zombie {
 
 	} // Anonymous namespace.
 
-	Explosion::Explosion(Position position, const ExplosionProperties& exPr) :
-		position_(position),
-		time_(0),
-		delay_(exPr.delay_),
-		sound_(exPr.sound_),
-		speed_(exPr.speed_),
-		blastRadius_(exPr.blastRadius_),
-		lifeTime_(exPr.blastRadius_ / exPr.speed_),
-		particleSize_(exPr.blastRadius_ * 0.3f),
-		particleEngine_(*this, exPr.particle_) {
-
+	Explosion::Explosion() : lifeTime_(-10000), particleEngine_(*this, ExplosionProperties().particle_) {
 		particleEngine_.setLoop(false);
 		particleEngine_.setBlend(true);
-		particleEngine_.setColor(mw::Color(1, 1, 1, 1));
+		particleEngine_.setColor(mw::Color(1, 1, 1));
+		time_ = 0;
 	}
 
 	void Explosion::draw(float deltaTime, const GameShader& shader) {
@@ -68,10 +59,17 @@ namespace zombie {
 		return time_ > getTimeDuration();
 	}
 
-	void Explosion::restart() {
-		particleEngine_.restart();
+	void Explosion::restart(Position position, const ExplosionProperties& exPr) {
+		position_ = position;
 		time_ = 0;
-	}
+		delay_ = exPr.delay_;
+		sound_ = exPr.sound_;
+		speed_ = exPr.speed_;
+		blastRadius_ = exPr.blastRadius_;
+		lifeTime_ = exPr.blastRadius_ / exPr.speed_;
+		particleSize_ = exPr.blastRadius_ * 0.3f;
+		particleEngine_.restart(exPr.particle_);
+	}	
 
 	void Explosion::init(Particle& particle) {
 		particle.pos_ = position_;
@@ -89,7 +87,7 @@ namespace zombie {
 		particle.pos_ += deltaTime * particle.vel_;
 
 		static mw::Color colors[] = {
-			mw::Color(1, 1, 1, 1),
+			mw::Color(1, 1, 1),
 			mw::Color(1, 0.5, 0.5, 1.0f),
 			mw::Color(0.5, 0.5, 0.5, 0.3f),
 			mw::Color(0.5, 0.5, 0.5, 0.0f)

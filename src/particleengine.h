@@ -26,7 +26,8 @@ namespace zombie {
 
 		void draw(float deltaTime, const GameShader& shader);
 
-		void restart() {
+		void restart(const mw::Texture& texture) {
+			texture_ = texture;
 			time_ = 0;
 			for (auto& particle : particles_) {
 				emitter_.init(particle);
@@ -62,11 +63,10 @@ namespace zombie {
 
 	template <int MAX_PARTICLES, class Emitter>
 	ParticleEngine<MAX_PARTICLES, Emitter>::ParticleEngine(Emitter& emitter, const mw::Texture& texture) : emitter_(emitter) {
-		texture_ = texture;
 		loop_ = true;
 		addColor_ = true;
 
-		restart();
+		restart(texture);
 	}
 
 	template <int MAX_PARTICLES, class Emitter>

@@ -283,6 +283,12 @@ namespace zombie {
 		
 		drawGraphicList(graphicMiddle_, deltaTime, gameShader_);
 		water_.drawWaves();
+		for (auto& explosion : explosions_) {
+			if (!explosion.toBeRemoved()) {
+				explosion.draw(deltaTime, gameShader_);
+			}
+		}
+
 		drawGraphicList(graphicSky_, deltaTime, gameShader_);
 
 		removeDeadGraphicObjects(graphicGround_);
@@ -381,7 +387,14 @@ namespace zombie {
 	void ZombieGame::explosion(Position position, float explosionRadius) {
 		auto tmp = explosionProperties_;
 		tmp.blastRadius_ = explosionRadius;
-		graphicSky_.push_back(std::make_shared<Explosion>(position, tmp));
+		int index = -1;
+		for (auto& explosion : explosions_) {
+			if (explosion.toBeRemoved()) {
+				explosion.restart(position, tmp);
+				// Only draw one explosion!
+				break;
+			}
+		}
 	}
 
 	void ZombieGame::removedFromWorld(Unit& unit) {

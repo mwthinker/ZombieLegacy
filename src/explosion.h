@@ -35,21 +35,21 @@ namespace zombie {
 		float delay_;
 	};
 
-	class Explosion : public Graphic {
+	class Explosion {
 	public:
-		Explosion(Position position, const ExplosionProperties& exPr);
+		Explosion();
 
-		void draw(float deltaTime, const GameShader& shader) override;
+		void draw(float deltaTime, const GameShader& shader);
 
 		float getTimeDuration() const;
 
 		bool toBeRemoved() const;
 
-		void restart();
-
-		void init(Particle& particle);
+		void restart(Position position, const ExplosionProperties& exPr);
 
 		void update(float deltaTime, Particle& particle);
+
+		void init(Particle& particle);
 
 	private:
 		float time_;
@@ -60,7 +60,7 @@ namespace zombie {
 		float particleSize_;
 		float blastRadius_;
 
-		ParticleEngine<250, Explosion> particleEngine_;
+		ParticleEngine<200, Explosion> particleEngine_;
 		float delay_;
 		mw::Sound sound_;
 	};

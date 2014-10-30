@@ -180,6 +180,7 @@ namespace zombie {
 		Array<Car2D, 20> cars_;
 		Array<Building2D, 100> buildings_;
 		std::vector<std::unique_ptr<Player>> players_;
+		Array<Explosion, 10> explosions_;
 
 		int frame_;
 		float fps_;
