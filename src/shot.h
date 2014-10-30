@@ -2,14 +2,13 @@
 #define SHOT_H
 
 #include "box2ddef.h"
-#include "graphic.h"
 #include "auxiliary.h"
 
 #include <mw/opengl.h>
 
 namespace zombie {
 
-	class Shot : public Graphic {
+	class Shot {
 	public:
 		Shot(Position startPoint, Position endPoint) {
 			speed_ = 25.f;
@@ -21,7 +20,7 @@ namespace zombie {
 			angle_ = calculateAnglePointToPoint(startPoint, endPoint) * 180 / PI; // RAD -> DEG.
 		}
 
-		void draw(float deltaTime, const GameShader& shader) override {
+		void draw(float deltaTime, const GameShader& shader) {
             time_ += deltaTime;
 			position_ += deltaTime * speed_ * direction_;
 
@@ -41,7 +40,7 @@ namespace zombie {
 			*/
         }
 
-		bool toBeRemoved() const override {
+		bool toBeRemoved() const {
             return time_ > duration_;
 		}
 

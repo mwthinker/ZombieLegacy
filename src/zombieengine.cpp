@@ -75,7 +75,7 @@ namespace zombie {
 			if (Car* car = dynamic_cast<Car*>(ob)) {
 				// Car is empty?
 				if (car->getDriver() == nullptr) {
-					// The player is able to drive?					
+					// The player is able to drive?
 					car->setDriver(unit);
 					unit->setActive(false);
 				}

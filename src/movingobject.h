@@ -2,29 +2,14 @@
 #define MOVINGOBJECT_H
 
 #include "object.h"
-#include "input.h"
-#include "weapon.h"
-#include "state.h"
-
-#include <mw/signal.h>
 
 #include <list>
-#include <vector>
-#include <algorithm>
 
 namespace zombie {
 
 	// Represent a moving object inside the "zombie world".
 	class MovingObject : public Object {
 	public:
-		inline void setInput(Input input) {
-			input_ = input;
-		}
-
-		inline Input getInput() const {
-			return input_;
-		}
-
 		// Returns true if the object is infected.
 		virtual bool isInfected() const = 0;
 
@@ -43,7 +28,7 @@ namespace zombie {
 		virtual bool isDead() const = 0;
 
 		// Remove dead objects.
-		virtual bool toBeRemoved() const final {
+		bool toBeRemoved() const {
 			return isDead();
 		}
 
@@ -73,7 +58,6 @@ namespace zombie {
 
 	private:
 		std::list<MovingObject*> objectsSeen_;
-		Input input_;
 	};
 
 } // Namespace zombie.

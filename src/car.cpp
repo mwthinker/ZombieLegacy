@@ -3,7 +3,6 @@
 #include "input.h"
 #include "state.h"
 #include "unit.h"
-#include "unit.h"
 #include "building.h"
 
 #include <cmath>
@@ -19,6 +18,7 @@ namespace zombie {
 		steeringAngle_ = 0.0f;
 		wheelDelta_ = 0.4f;
 		mass_ = mass;
+		driver_ = nullptr;
 	}
 
 	Car::~Car() {
@@ -80,7 +80,10 @@ namespace zombie {
 	}
 
 	void Car::updatePhysics(float time, float timeStep) {
-		Input input = getInput();
+		Input input;
+		if (driver_ != nullptr) {
+			input = driver_->getInput();
+		}
 		previousState_ = getState();
 		b2Vec2 force = getDirectionVector();
 

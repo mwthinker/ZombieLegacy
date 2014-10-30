@@ -38,7 +38,6 @@ set(SOURCES_ZOMBIE
 	src/gameinterface.h
 	src/gameshader.cpp
 	src/gameshader.h
-	src/graphic.h
 	src/graphicanimation.h
 	src/gun.cpp
 	src/gun.h

@@ -3,7 +3,6 @@
 
 #include "box2ddef.h"
 #include "auxiliary.h"
-#include "graphic.h"
 #include "particleengine.h"
 
 #include <mw/opengl.h>

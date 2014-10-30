@@ -98,6 +98,14 @@ namespace zombie {
 			}
 		}
 
+		inline void setInput(Input input) {
+			input_ = input;
+		}
+
+		inline Input getInput() const {
+			return input_;
+		}
+
 	private:
 		// Properties
 		float viewDistance_;
@@ -120,6 +128,7 @@ namespace zombie {
 		mw::Signal<Unit*, UnitEvent> eventSignal_;
 
 		b2Body* body_;
+		Input input_;
 		Input lastInput_;
 	};
 

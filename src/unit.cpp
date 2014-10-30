@@ -10,7 +10,10 @@
 
 namespace zombie {
 
-	Unit::Unit(float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const WeaponPtr& weapon) : weapon_(weapon) {
+	Unit::Unit(float mass, float radius, float life,
+		float walkingSpeed, float runningSpeed, bool infected,
+		const WeaponPtr& weapon) : weapon_(weapon) {
+
 		isInfected_ = infected;
 
 		// Properties
@@ -260,6 +263,6 @@ namespace zombie {
 
 	b2Body* Unit::getBody() const {
 		return body_;
-	}
+	}	
 
 } // Namespace zombie.

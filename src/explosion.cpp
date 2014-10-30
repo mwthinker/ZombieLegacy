@@ -1,7 +1,6 @@
 #include "explosion.h"
 #include "box2ddef.h"
 #include "auxiliary.h"
-#include "graphic.h"
 #include "gamedataentry.h"
 
 #include <mw/opengl.h>

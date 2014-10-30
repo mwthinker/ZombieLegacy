@@ -5,7 +5,6 @@
 #include "gameinterface.h"
 #include "device.h"
 #include "gamedataentry.h"
-#include "graphic.h"
 #include "terrain2d.h"
 #include "explosion.h"
 #include "unit2d.h"
@@ -157,13 +156,8 @@ namespace zombie {
 		Position refViewPosition_;
 
 		DevicePtr keyboard_;
-		GameDataEntry zombieEntry_;
-		
-		Car2D car_;
+		GameDataEntry zombieEntry_;		
 
-		std::list<std::shared_ptr<Graphic>> graphicGround_;
-		std::list<std::shared_ptr<Graphic>> graphicMiddle_;
-		std::list<std::shared_ptr<Graphic>> graphicSky_;
 		std::vector<Position> spawningPoints_;
 
 		Terrain2D terrain_;

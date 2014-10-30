@@ -37,25 +37,12 @@ namespace zombie {
 			return positions[randomInt(0, positions.size() - 1)];
 		}
 
-		inline void removeDeadGraphicObjects(std::list<std::shared_ptr<Graphic>>& list) {
-			list.remove_if([](const std::shared_ptr<Graphic>& ob) {
-				return ob->toBeRemoved();
-			});
-		}
-
-		inline void drawGraphicList(std::list<std::shared_ptr<Graphic>>& list, float deltaTime, const GameShader& shader) {
-			for (auto& ob : list) {
-				ob->draw(deltaTime, shader);
-			}
-		}
-
 	}
 
 	ZombieGame::ZombieGame(GameDataEntry zombieEntry) : engine_(*this,
 		zombieEntry.getEntry("settings impulseThreshold").getFloat()), zombieEntry_(zombieEntry),
 		//human_(loadUnit(this, "human", zombieEntry, false)),
 		//zombie_(loadUnit(this, "zombie", zombieEntry, true)),
-		car_(zombie::loadCar(zombieEntry.getEntry("car"))),
 		water_(loadWater(zombieEntry.getEntry("water"))),
 		frame_(0),
 		fps_(60),
@@ -139,9 +126,10 @@ namespace zombie {
 		}
 	
 		// Add cars to engine.
+		Car2D car(zombie::loadCar(zombieEntry_.getEntry("car")));
 		for (int i = 0; i < 1 && i < units_.getMaxSize(); ++i) {
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
-			engine_.add(state, cars_.create(car_));
+			engine_.add(state, cars_.create(car));
 		}
 
 		setBackgroundColor(0, 0.1f, 0);
@@ -261,7 +249,6 @@ namespace zombie {
 		
 		water_.drawSeeFloor(deltaTime, gameShader_);
 		terrain_.draw(deltaTime, gameShader_);
-		drawGraphicList(graphicGround_, deltaTime, gameShader_);
 				
 		for (Car2D& car : cars_) {
 			if (car.getBody() != nullptr && !car.isDead()) {
@@ -281,19 +268,12 @@ namespace zombie {
 			}
 		}
 		
-		drawGraphicList(graphicMiddle_, deltaTime, gameShader_);
 		water_.drawWaves();
 		for (auto& explosion : explosions_) {
 			if (!explosion.toBeRemoved()) {
 				explosion.draw(deltaTime, gameShader_);
 			}
 		}
-
-		drawGraphicList(graphicSky_, deltaTime, gameShader_);
-
-		removeDeadGraphicObjects(graphicGround_);
-		removeDeadGraphicObjects(graphicMiddle_);
-		removeDeadGraphicObjects(graphicSky_);
 	}
 
 	/*
@@ -334,9 +314,9 @@ namespace zombie {
 		--nbrUnits_;
 		if (unit.isInfected()) {
 			++zombiesKilled_;
-			graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieDie_));
+			//graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieDie_));
 		} else {
-			graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanDie_));
+			//graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanDie_));
 		}
 	}
 
@@ -354,15 +334,15 @@ namespace zombie {
 		if (unit.isDead()) {
 			++zombiesKilled_;
 			if (unit.isInfected()) {
-				graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieDie_));
+				//graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieDie_));
 			} else {
-				graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanDie_));
+				//graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanDie_));
 			}
 		} else {
 			if (unit.isInfected()) {
-				graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
+				//graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
 			} else {
-				graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanInjured_));
+				//graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanInjured_));
 			}
 		}
 	}
@@ -371,16 +351,16 @@ namespace zombie {
 	}
 
 	void ZombieGame::shotMissed(Position startPosition, Position hitPosition) {
-		graphicMiddle_.push_back(std::make_shared<Shot>(startPosition, hitPosition));
+		//graphicMiddle_.push_back(std::make_shared<Shot>(startPosition, hitPosition));
 	}
 
 	void ZombieGame::shotHit(Position startPosition, Position hitPosition, Unit& unit) {
-		graphicMiddle_.push_back(std::make_shared<Shot>(startPosition, hitPosition));
-		graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
+		//graphicMiddle_.push_back(std::make_shared<Shot>(startPosition, hitPosition));
+		//graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
 		if (unit.isInfected()) {
-			graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
+			//graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
 		} else {
-			graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanInjured_));
+			//graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), humanInjured_));
 		}
 	}
 

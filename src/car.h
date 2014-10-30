@@ -10,6 +10,8 @@
 
 namespace zombie {
 
+	class Unit;
+
 	// Defines the property of a car. The car has 4 wheels but is simulated as having 
 	// one front wheel and one backwheel in order to simlify the math.
 	class Car : public MovingObject {

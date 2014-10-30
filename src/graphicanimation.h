@@ -2,7 +2,6 @@
 #define GRAPHICANIMATION_H
 
 #include "box2ddef.h"
-#include "graphic.h"
 #include "animation.h"
 #include "auxiliary.h"
 
@@ -10,7 +9,7 @@
 
 namespace zombie {
 
-	class GraphicAnimation : public Graphic {
+	class GraphicAnimation {
 	public:
 		GraphicAnimation(Position position, float angle, const Animation& animation) : animation_(animation) {
 			position_ = position;
@@ -18,7 +17,7 @@ namespace zombie {
 			animation_.setLooping(false);
 		}
 
-		void draw(float deltaTime, const GameShader& shader) override {
+		void draw(float deltaTime, const GameShader& shader) {
 			/*
 			wPtr->useShader();
 			wPtr->setColor(1, 1, 1);
@@ -30,7 +29,7 @@ namespace zombie {
 			*/
 		}
 
-		bool toBeRemoved() const override {
+		bool toBeRemoved() const {
 			return animation_.isEnded();
 		}
 	
