@@ -30,10 +30,11 @@ namespace zombie {
 		// Add a car to the game.
 		void add(State state, Car* car);
 		
-		// Add a generic object.
+		// Add a generic object, is inactive by default.
 		template <class Ob>
-		void add(Ob* object) {
+		void add(Ob* object, bool active = false) {
 			object->createBody(&world_);
+			object->setActive(active);
 		}
 
 		// Get the current game time.

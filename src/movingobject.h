@@ -48,14 +48,6 @@ namespace zombie {
 			objectsSeen_.remove(object);
 		}
 
-		void setActive(bool active) {
-			getBody()->SetActive(active);
-		}
-
-		bool isActive() const {
-			return getBody()->IsActive();
-		}
-
 	private:
 		std::list<MovingObject*> objectsSeen_;
 	};

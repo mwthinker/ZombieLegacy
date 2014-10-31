@@ -17,11 +17,11 @@
 #include "humanplayer.h"
 #include "zombiebehavior.h"
 
+#include <mw/opengl.h>
 #include <mw/exception.h>
 
 #include <cmath>
 #include <sstream>
-#include <array>
 
 namespace zombie {
 

@@ -54,11 +54,11 @@ namespace zombie {
 		float range = projectile.getChildEntry("range").getFloat();
 
 		if (projectile.isAttributeEqual("type", "missile")) {
-			auto missile = loadMissile2D(gameInterface, projectile, damage, range);
-			auto missileLauncher = std::make_shared<MissileLauncher2D>(missile, clipSize, timeBetweenShots, range, shoot, reload);
+			auto missileLauncher = std::make_shared<MissileLauncher2D>(clipSize, timeBetweenShots, range, shoot, reload);
 			return Weapon2D(missileLauncher, symbolImage, animation, size, grip);
 		} else {
-			return Weapon2D(std::make_shared<Gun>(damage, timeBetweenShots, range, clipSize, shoot, reload), symbolImage, animation, size, grip);
+			auto gun = std::make_shared<Gun>(damage, timeBetweenShots, range, clipSize, shoot, reload);
+			return Weapon2D(gun, symbolImage, animation, size, grip);
 		}
 	}
 	

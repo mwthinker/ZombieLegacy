@@ -25,6 +25,14 @@ namespace zombie {
 		// Is called when a collision occurs.
 		virtual void collision(float impulse) {
 		}
+
+		void setActive(bool active) {
+			getBody()->SetActive(active);
+		}
+
+		bool isActive() const {
+			return getBody()->IsActive();
+		}
 	};	
 
 } // Namespace zombie.

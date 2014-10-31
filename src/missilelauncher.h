@@ -5,13 +5,14 @@
 #include "state.h"
 #include "missile.h"
 #include "weaponinterface.h"
+#include "missile.h"
 
 namespace zombie {
 
 	class MissileLauncher : public WeaponInterface {
 	public:
-		MissileLauncher(int clipSize, float timeBetweenShots,
-			float range);
+		MissileLauncher(int clipSize, 
+			float timeBetweenShots, float range);
 
 		void pullTrigger(Unit& unit, float time) override final;
 
@@ -28,10 +29,6 @@ namespace zombie {
 		void initEngine(b2World* world, GameInterface* gameInterface) override final;
 
 	protected:
-		// Is called when a new missile is launched. The missile returned is
-		// used as the project tile. The ownership takes over by the box2d world.
-		virtual Missile* shot() = 0;
-		
 		// Is called when reloading.
 		virtual void reload() {
 		}

@@ -18,7 +18,8 @@ add_definitions(-DMW_OPENGLES2)
 # Source files.
 set(SOURCES_ZOMBIE
 	src/animation.cpp
-	src/animation.h	
+	src/animation.h
+	src/array.h
 	src/auxiliary.cpp
 	src/auxiliary.h
 	src/box2ddef.h

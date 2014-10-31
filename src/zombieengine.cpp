@@ -1,15 +1,11 @@
 #include "zombieengine.h"
+#include "box2ddef.h"
 #include "gameinterface.h"
 #include "unit.h"
 #include "car.h"
 #include "weaponitem.h"
-#include "input.h"
 #include "humanplayer.h"
-#include "box2ddef.h"
 #include "closestraycastcallback.h"
-
-#include <vector>
-#include <string>
 
 namespace zombie {
 

@@ -8,6 +8,7 @@ namespace zombie {
 	class Unit;
 	class Car;
 	class Building;
+	struct MissileProperties;
 
 	class GameInterface {
 	public:
@@ -25,6 +26,9 @@ namespace zombie {
 		virtual void shotHit(Position startPosition, Position hitPosition, Unit& unit) = 0;
 
 		virtual void explosion(Position position, float explosionRadius) = 0;
+
+		virtual void weaponShot(Unit& shooter) {
+		};
 
 		virtual void removedFromWorld(Unit& unit) = 0;
 

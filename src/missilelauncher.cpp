@@ -1,13 +1,15 @@
 #include "missilelauncher.h"
 #include "unit.h"
 #include "auxiliary.h"
+#include "gameinterface.h"
 
 #include <cassert>
 
 namespace zombie {
 	
-	MissileLauncher::MissileLauncher(int clipSize, float timeBetweenShots,
-		float range) {
+	MissileLauncher::MissileLauncher(int clipSize,
+		float timeBetweenShots, float range) {
+		
 		clipSize_ = clipSize;
 		timeBetweenShots_ = timeBetweenShots;
 		range_ = range;
@@ -20,9 +22,8 @@ namespace zombie {
 			if (bulletsInWeapon_ > 0) {
 				lastShotTime_ = time;
 				--bulletsInWeapon_;
-				Missile* missile = shot();
-				assert(missile != nullptr);
-				missile->createBody(unit.getBody()->GetWorld(), unit.getPosition() + (unit.getRadius() + missile->getLength() * 0.5f) * directionVector(unit.getDirection()), unit.getDirection());
+				gameInterface_->weaponShot(unit);
+				//missile->createBody(unit.getBody()->GetWorld(), unit.getPosition() + (unit.getRadius() + missile->getLength() * 0.5f) * directionVector(unit.getDirection()), unit.getDirection());
 				// The missile now belongs to the box2d world.
 			}
 		}

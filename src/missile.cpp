@@ -6,7 +6,7 @@
 
 namespace zombie {
 
-	Missile::Missile(GameInterface& gameInterface, float width, float length, float mass, float speed,
+	Missile::Missile(GameInterface* gameInterface, float width, float length, float mass, float speed,
 		float explodeTime, float damage, float explosionRadius) : gameInterface_(gameInterface) {
 		
 		speed_ = speed;
@@ -116,7 +116,7 @@ namespace zombie {
 			}
 		}
 		exploded_ = true;
-		gameInterface_.explosion(position, explosionRadius_);
+		gameInterface_->explosion(position, explosionRadius_);
 	}
 
 } // Namespace zombie.

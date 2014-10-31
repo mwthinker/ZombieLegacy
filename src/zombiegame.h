@@ -10,9 +10,11 @@
 #include "unit2d.h"
 #include "car2d.h"
 #include "building2d.h"
-#include "water.h"
+#include "missile2d.h"
 #include "gameshader.h"
+#include "water.h"
 #include "player.h"
+#include "array.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
@@ -20,54 +22,10 @@
 
 #include <gui/component.h>
 
-#include <map>
 #include <memory>
-#include <list>
 #include <vector>
 
 namespace zombie {
-
-	template <class E, int _size>
-	class Array {
-	public:
-		Array() : size_(0) {
-		}
-
-		inline E* create(const E& e) {
-			return &(data_[size_++] = e);
-		}
-
-		inline typename std::array<E, _size>::iterator begin() {
-			return data_.begin();
-		}
-
-		inline typename std::array<E, _size>::iterator end() {
-			return data_.end();
-		}
-
-		inline typename std::array<E, _size>::const_iterator begin() const {
-			return data_.cbegin();
-		}
-
-		inline typename std::array<E, _size>::const_iterator end() const {
-			return data_.cend();
-		}
-
-		inline int size() const {
-			return size_;
-		}
-
-		inline int getMaxSize() const {
-			return data_.size();
-		}
-
-		E& operator[](int index) {
-			return data_[index];
-		}
-
-		std::array<E, _size> data_;
-		int size_;
-	};
 
 	// Responsible of loading map, units and initiate all
 	// game related things and to start the game engine.
@@ -171,6 +129,7 @@ namespace zombie {
 		int clipsize_;
 
 		Array<Unit2D, 100> units_;
+		Array<Missile2D, 10> missiles_;
 		Array<Car2D, 20> cars_;
 		Array<Building2D, 100> buildings_;
 		std::vector<std::unique_ptr<Player>> players_;
