@@ -30,8 +30,8 @@ namespace zombie {
 		body_->SetTransform(position, angle);
 
 		// Set the velocity of the states.
-		body_->SetLinearVelocity(speed_*0.1 * directionVector(angle));
-		body_->SetAngularVelocity(angle);
+		body_->SetLinearVelocity(speed_ * directionVector(angle));
+		body_->SetAngularVelocity(0);
 	}
 
 	void Missile::createBody(b2World* world) {

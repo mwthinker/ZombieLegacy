@@ -137,7 +137,7 @@ namespace zombie {
 		Array<Building2D, 100> buildings_;
 
 		std::vector<std::unique_ptr<Player>> players_;
-		Array<Explosion, 10> explosions_;
+		std::array<Explosion, 10> explosions_;
 
 		int frame_;
 		float fps_;
