@@ -27,7 +27,7 @@ namespace zombie {
 
 		virtual void explosion(Position position, float explosionRadius) = 0;
 
-		virtual void weaponShot(Unit& shooter) {
+		virtual void shot(Unit& shooter, float speed, float explodeTime, float damage, float explosionRadius) {
 		};
 
 		virtual void removedFromWorld(Unit& unit) = 0;

@@ -4,7 +4,6 @@
 #include "movingobject.h"
 #include "input.h"
 #include "state.h"
-#include "box2ddef.h"
 
 #include <mw/signal.h>
 
@@ -27,8 +26,6 @@ namespace zombie {
 		Car(const Car& car);
 		Car& operator=(const Car& car);
 
-		void createBody(b2World* world, State state);
-
 		Unit* getDriver() const;
 		void setDriver(Unit* driver);
 
@@ -39,6 +36,8 @@ namespace zombie {
 		}
 
 		State getState() const;
+
+		void setState(const State& state);
 
 		float getWidth() const {
 			return width_;
@@ -77,7 +76,15 @@ namespace zombie {
 
 		mw::signals::Connection addEventHandler(mw::Signal<Car*, CarEvent>::Callback callback) {
 			return eventSignal_.connect(callback);
+		}		
+
+	protected:
+		inline State previousState() const {
+			return previousState_;
 		}
+
+	private:
+		void createBody(b2World* world) override;
 
 		void destroyBody() override {
 			if (body_ != nullptr) {
@@ -89,12 +96,6 @@ namespace zombie {
 			}
 		}
 
-	protected:
-		inline State previousState() const {
-			return previousState_;
-		}
-
-	private:
 		void applyFriction(float frictionForwardFrontWheel, float frictionForwardBackWheel,
 			float frictionLateralFrontWheel, float frictionLateralBackWheel);
 

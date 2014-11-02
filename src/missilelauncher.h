@@ -11,8 +11,8 @@ namespace zombie {
 
 	class MissileLauncher : public WeaponInterface {
 	public:
-		MissileLauncher(int clipSize, 
-			float timeBetweenShots, float range);
+		MissileLauncher(int clipSize, float timeBetweenShots, float range,
+			float damageRadius, float damage, float deathTime, float speed);
 
 		void pullTrigger(Unit& unit, float time) override final;
 
@@ -43,6 +43,11 @@ namespace zombie {
 
 		int bulletsInWeapon_;		// The current number of bullets in the weapon.
 		float lastShotTime_;
+
+		float damageRadius_;
+		float damage_;
+		float deathTime_;
+		float speed_;
 	};
 
 } // Namespace zombie.

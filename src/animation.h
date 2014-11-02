@@ -3,10 +3,9 @@
 
 #include "box2ddef.h"
 #include "gameshader.h"
+#include "array.h"
 
 #include <mw/sprite.h>
-
-#include <vector>
 
 namespace zombie {
 
@@ -43,19 +42,19 @@ namespace zombie {
 			return end_;
 		}
 
-	private:
 		struct Frame {
 			inline Frame() {
 			}
 
 			inline Frame(mw::Sprite sprite, float bodyWidth, float time) : sprite_(sprite), bodyWidth_(bodyWidth), time_(time) {
 			}
-			
+
 			mw::Sprite sprite_;
 			float time_;
 			float bodyWidth_;
 		};
 
+	private:
 		void drawSprite(const mw::Sprite& sprite, const GameShader& shader, float x, float y, float width, float height) const;
 		
 		float lastTime_;
@@ -63,7 +62,7 @@ namespace zombie {
 		float time_;
 		float speed_;
 
-		std::vector<Frame> frames_;
+		Array<Frame, 10> frames_;
 		unsigned int index_;
 		bool loop_;
 		bool end_;

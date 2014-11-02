@@ -6,42 +6,18 @@
 #include "gamedataentry.h"
 #include "gameinterface.h"
 
+#include <mw/sound.h>
 #include <mw/opengl.h>
 
-namespace zombie {	
-
-	struct MissileProperties {
-		MissileProperties() {
-		}
-
-		MissileProperties(float width, float length, float mass, float speed,
-			float explosionTime, float explosionRadius, float damage) {
-			width_ = width;
-			length_ = length;
-			mass_ = mass;
-			speed_ = speed;
-			explosionTime_ = explosionTime;
-			explosionRadius_ = explosionRadius;
-			damage_ = damage;
-		}
-
-		Animation animation_;
-		float length_, width_;
-		float speed_;
-		float damage_;
-		float mass_;
-		float explosionRadius_;
-		float explosionTime_;
-	};
-
-	MissileProperties loadMissileProperties(GameDataEntry& entry);
+namespace zombie {
 
 	class Missile2D : public Missile {
 	public:
 		inline Missile2D() {
 		}
 
-		Missile2D(const MissileProperties& properties, GameInterface* gameInterface);
+		Missile2D(GameInterface* gameInterface, float width, float length, float mass,
+			const Animation& animation, const mw::Sound& moveSound);
 
 		void draw(float accumulator, float timeStep, const GameShader& gameShader);
 
@@ -49,6 +25,8 @@ namespace zombie {
 		Animation animation_;
 		State previousState_;
 	};
+
+	Missile2D loadMissile2D(GameInterface* gameInterface, GameDataEntry& entry);
 
 } // Namespace zombie.
 

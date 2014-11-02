@@ -7,14 +7,18 @@
 
 namespace zombie {
 	
-	MissileLauncher::MissileLauncher(int clipSize,
-		float timeBetweenShots, float range) {
+	MissileLauncher::MissileLauncher(int clipSize, float timeBetweenShots, float range,
+		float damageRadius, float damage, float deathTime, float speed) {
 		
 		clipSize_ = clipSize;
 		timeBetweenShots_ = timeBetweenShots;
 		range_ = range;
 		bulletsInWeapon_ = 1;
 		lastShotTime_ = 0.0f;
+		damageRadius_ = damageRadius;
+		damage_ = damage;
+		deathTime_ = deathTime;
+		speed_ = speed;
 	}
 
 	void MissileLauncher::pullTrigger(Unit& unit, float time) {
@@ -22,9 +26,7 @@ namespace zombie {
 			if (bulletsInWeapon_ > 0) {
 				lastShotTime_ = time;
 				--bulletsInWeapon_;
-				gameInterface_->weaponShot(unit);
-				//missile->createBody(unit.getBody()->GetWorld(), unit.getPosition() + (unit.getRadius() + missile->getLength() * 0.5f) * directionVector(unit.getDirection()), unit.getDirection());
-				// The missile now belongs to the box2d world.
+				gameInterface_->shot(unit, speed_, deathTime_, damage_, damageRadius_);
 			}
 		}
 	}

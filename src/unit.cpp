@@ -2,9 +2,6 @@
 #include "input.h"
 #include "weapon.h"
 #include "auxiliary.h"
-#include "car.h"
-#include "building.h"
-#include "box2ddef.h"
 
 #include <cmath>
 
@@ -77,12 +74,12 @@ namespace zombie {
 		return *this;
 	}
 
-	void Unit::createBody(b2World* world, State state) {
+	void Unit::createBody(b2World* world) {
 		// Box2d properties.
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_dynamicBody;
-		bodyDef.position = state.position_;
-		bodyDef.angle = state.angle_;
+		bodyDef.position = ZERO;// tate.position_;
+		bodyDef.angle = 0;// state.angle_;
 
 		body_ = world->CreateBody(&bodyDef);
 		body_->SetUserData(this);
@@ -190,19 +187,26 @@ namespace zombie {
 	}
 	
 	State Unit::getState() const {
-		State state;
-		state.angle_ = body_->GetAngle();
-		state.position_ = body_->GetPosition();
-		state.velocity_ = body_->GetLinearVelocity();
-		state.anglularVelocity_ = body_->GetAngularVelocity();
-		return state;
+		return State(body_->GetPosition(),
+					 body_->GetLinearVelocity(),
+					 body_->GetAngle(),
+					 body_->GetAngularVelocity());
+	}
+
+	void Unit::setState(const State& state) {
+		// Set the position and current angle.
+		body_->SetTransform(state.position_ - body_->GetPosition(), state.angle_ - body_->GetAngle());
+		
+		// Set the velocity of the states.
+		body_->SetAngularVelocity(state.anglularVelocity_);
+		body_->SetLinearVelocity(body_->GetLinearVelocity());
 	}
 
 	float Unit::getViewDistance() const {
 		return viewDistance_;
 	}
 
-	float Unit::smallViewDistance() {
+	float Unit::smallViewDistance() const {
 		return smallViewDistance_;
 	}
 

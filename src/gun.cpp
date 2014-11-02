@@ -7,6 +7,27 @@
 
 namespace zombie {
 
+	Weapon2D loadGun(GameInterface* gameInterface, GameDataEntry& entry) {
+		mw::Sprite symbolImage = entry.getChildEntry("symbolImage").getSprite();
+		float timeBetweenShots = entry.getChildEntry("timeBetweenShots").getFloat();
+		int clipSize = entry.getChildEntry("clipSize").getInt();
+
+		mw::Sound shoot = entry.getChildEntry("shootSound").getSound();
+		mw::Sound reload = entry.getChildEntry("reloadSound").getSound();
+		Animation animation = entry.getChildEntry("moveAnimation").getAnimation();
+		float size = entry.getChildEntry("size").getFloat();
+		Position grip;
+		grip.x = entry.getChildEntry("moveImageGripX").getFloat();
+		grip.y = entry.getChildEntry("moveImageGripY").getFloat();
+
+		GameDataEntry projectile = entry.getChildEntry("projectile");
+		float damage = projectile.getChildEntry("damage").getFloat();
+		float range = projectile.getChildEntry("range").getFloat();
+
+		auto gun = std::make_shared<Gun>(damage, timeBetweenShots, range, clipSize, shoot, reload);
+		return Weapon2D(gun, symbolImage, animation, size, grip);
+	}
+
 	namespace {
 
 		void doShotDamage(b2World& world, GameInterface& gameInterface, float damage, float angle, float range, Unit& shooter) {

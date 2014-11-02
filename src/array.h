@@ -2,54 +2,65 @@
 #define ARRAY_H
 
 #include <array>
+#include <utility>
+#include <cassert>
 
 namespace zombie {
 
-	template <class E, int _size>
+	template <class E, unsigned int SIZE>
 	class Array {
 	public:
 		inline Array() : size_(0) {
 		}
 
-		inline E* create(const E& e) {
+		template <class... Args>
+		E* emplaceBack(Args&&... args) {
+			assert(size_ < SIZE);
+			return &(data_[size_++] = E(std::forward<Args>(args)...));
+		}
+
+		inline E* pushBack(const E& e) {
+			assert(size_ < SIZE);
 			return &(data_[size_++] = e);
 		}
 
-		inline typename std::array<E, _size>::iterator begin() {
+		inline typename std::array<E, SIZE>::iterator begin() {
 			return data_.begin();
 		}
 
-		inline typename std::array<E, _size>::iterator end() {
-			return data_.end();
+		inline typename std::array<E, SIZE>::iterator end() {
+			return data_.begin() + size_;
 		}
 
-		inline typename std::array<E, _size>::const_iterator begin() const {
+		inline typename std::array<E, SIZE>::const_iterator begin() const {
 			return data_.cbegin();
 		}
 
-		inline typename std::array<E, _size>::const_iterator end() const {
-			return data_.cend();
+		inline typename std::array<E, SIZE>::const_iterator end() const {
+			return data_.cbegin() + size_;
 		}
 
-		inline int getSize() const {
+		inline unsigned int getSize() const {
 			return size_;
 		}
 
-		inline int getMaxSize() const {
+		inline unsigned int getMaxSize() const {
 			return data_.size();
 		}
 
-		inline E& operator[](int index) {
+		inline E& operator[](unsigned int index) {
+			assert(index < size_);
 			return data_[index];
 		}
 
-		inline E operator[](int index) const {
+		const E& operator[](unsigned int index) const {
+			assert(index < size_);
 			return data_[index];
 		}
 
 	private:
-		std::array<E, _size> data_;
-		int size_;
+		std::array<E, SIZE> data_;
+		unsigned int size_;
 	};
 
 } // Namespace zombie.

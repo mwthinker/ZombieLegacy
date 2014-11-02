@@ -10,8 +10,8 @@ namespace zombie {
 		State() : position_(0, 0), velocity_(0, 0), angle_(0), anglularVelocity_(0) {
 		}
 
-		State(const Position& position, const Velocity& velocity, float angle_) :
-			position_(position), velocity_(velocity), angle_(angle_), anglularVelocity_(0) {
+		State(const Position& position, const Velocity& velocity, float angle = 0, float anglularVelocity = 0) :
+			position_(position), velocity_(velocity), angle_(angle), anglularVelocity_(anglularVelocity) {
 		}
 
 		Position position_;

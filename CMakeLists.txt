@@ -50,6 +50,7 @@ set(SOURCES_ZOMBIE
 	src/missilelauncher.h
 	src/missilelauncher.cpp
 	src/missilelauncher2d.h
+	src/missilelauncher2d.cpp
 	src/missile.cpp
 	src/missile.h
 	src/missile2d.cpp

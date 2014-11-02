@@ -41,8 +41,6 @@ namespace zombie {
 
 	ZombieGame::ZombieGame(GameDataEntry zombieEntry) : engine_(*this,
 		zombieEntry.getEntry("settings impulseThreshold").getFloat()), zombieEntry_(zombieEntry),
-		//human_(loadUnit(this, "human", zombieEntry, false)),
-		//zombie_(loadUnit(this, "zombie", zombieEntry, true)),
 		water_(loadWater(zombieEntry.getEntry("water"))),
 		frame_(0),
 		fps_(60),
@@ -89,7 +87,7 @@ namespace zombie {
 
 		innerSpawnRadius_ = zombieEntry_.getEntry("settings innerSpawnRadius").getFloat();
 		outerSpawnRadius_ = zombieEntry_.getEntry("settings outerSpawnRadius").getFloat();
-		loadTerrain();		
+		loadTerrain();
 		
 		explosionProperties_ = zombie::loadExplosion(zombieEntry_.getEntry("explosion"));
 
@@ -108,8 +106,10 @@ namespace zombie {
 		// Add human to engine.
 		{
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
-			Unit* unit = units_.create(human);
-			engine_.add(state, unit);
+			Unit* unit = units_.pushBack(human);
+			engine_.add(unit);
+			unit->setActive(true);
+			unit->setAwake(true);
 			players_.push_back(std::unique_ptr<HumanPlayer>(new HumanPlayer(keyboard_, unit)));
 			viewPosition_ = state.position_;
 			refViewPosition_ = viewPosition_;
@@ -117,19 +117,30 @@ namespace zombie {
 		}
 
 		// Add zombies to engine.
-		int unitLevel = zombieEntry_.getEntry("settings unitLevel").getInt();
-		for (int i = 1; i <= unitLevel && i < units_.getMaxSize(); ++i) {
+		unsigned int unitLevel = zombieEntry_.getEntry("settings unitLevel").getInt();
+		for (unsigned int i = 1; i <= unitLevel && i < units_.getMaxSize(); ++i) {
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
-			Unit* unit = units_.create(zombie);
-			engine_.add(state, unit);
+			Unit* unit = units_.pushBack(zombie);
+			engine_.add(unit);
+			unit->setActive(true);
+			unit->setAwake(true);
 			players_.push_back(std::unique_ptr<ZombieBehavior>(new ZombieBehavior(unit)));
 		}
 	
 		// Add cars to engine.
 		Car2D car(zombie::loadCar(zombieEntry_.getEntry("car")));
-		for (int i = 0; i < 1 && i < units_.getMaxSize(); ++i) {
+		for (unsigned int i = 0; i < 1 && i < units_.getMaxSize(); ++i) {
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
-			engine_.add(state, cars_.create(car));
+			Car* c = cars_.pushBack(car);
+			engine_.add(c);
+			c->setActive(true);
+			c->setAwake(true);
+		}
+
+		// Add cars to engine.
+		Missile2D missile(loadMissile2D(this, zombieEntry_.getEntry("equipment missile")));
+		for (unsigned int i = 0; i < 10 && i < units_.getMaxSize(); ++i) {
+			engine_.add(missiles_.emplaceBack(missile));
 		}
 
 		setBackgroundColor(0, 0.1f, 0);
@@ -212,8 +223,14 @@ namespace zombie {
 		}
 		
 		for (Unit& unit : units_) {
-			if (unit.getBody() != nullptr && !unit.isDead()) {
+			if (unit.isActive()) {
 				unit.updatePhysics(time, timeStep_);
+			}
+		}
+
+		for (Missile& missile : missiles_) {
+			if (missile.isActive()) {
+				missile.updatePhysics(time, timeStep_);
 			}
 		}
 
@@ -251,20 +268,26 @@ namespace zombie {
 		terrain_.draw(deltaTime, gameShader_);
 				
 		for (Car2D& car : cars_) {
-			if (car.getBody() != nullptr && !car.isDead()) {
+			if (car.isActive()) {
 				car.draw(accumulator_, deltaTime, gameShader_);
 			}
 		}
 
 		for (Unit2D& unit : units_) {
-			if (unit.getBody() != nullptr && !unit.isDead()) {
+			if (unit.isActive()) {
 				unit.draw(accumulator_, deltaTime, gameShader_);
 			}
 		}
 
 		for (Building2D& building : buildings_) {
-			if (building.getBody() != nullptr) {
+			if (building.isActive()) {
 				building.draw(accumulator_, deltaTime, gameShader_);
+			}
+		}
+
+		for (Missile2D& missile : missiles_) {
+			if (missile.isActive()) {
+				missile.draw(accumulator_, deltaTime, gameShader_);
 			}
 		}
 		
@@ -355,8 +378,6 @@ namespace zombie {
 	}
 
 	void ZombieGame::shotHit(Position startPosition, Position hitPosition, Unit& unit) {
-		//graphicMiddle_.push_back(std::make_shared<Shot>(startPosition, hitPosition));
-		//graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
 		if (unit.isInfected()) {
 			//graphicMiddle_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieInjured_));
 		} else {
@@ -367,11 +388,21 @@ namespace zombie {
 	void ZombieGame::explosion(Position position, float explosionRadius) {
 		auto tmp = explosionProperties_;
 		tmp.blastRadius_ = explosionRadius;
-		int index = -1;
 		for (auto& explosion : explosions_) {
 			if (explosion.toBeRemoved()) {
 				explosion.restart(position, tmp);
 				// Only draw one explosion!
+				break;
+			}
+		}
+	}
+
+	void ZombieGame::shot(Unit& shooter, float speed, float explodeTime, float damage, float explosionRadius) {
+		for (auto& missile : missiles_) {
+			if (!missile.isActive()) {
+				missile.create(shooter.getPosition() + (shooter.getRadius() + missile.getLength() * 0.5f) * directionVector(shooter.getDirection()),
+					shooter.getDirection(), speed, explodeTime, damage, explosionRadius);
+				// Only send one missile.
 				break;
 			}
 		}
@@ -387,7 +418,10 @@ namespace zombie {
 			std::string geom(entry.getChildEntry("geom").getString());
 			if (entry.isAttributeEqual("type", "building")) {
 				auto v = loadPolygon(geom);
-				engine_.add(buildings_.create(Building2D(v[0], v[1], v[2], v[3], wall_, wall_, wall_)));
+				Building* b = buildings_.emplaceBack(v[0], v[1], v[2], v[3], wall_, wall_, wall_);
+				engine_.add(b);
+				b->setActive(true);
+				b->setAwake(true);
 			} else if (entry.isAttributeEqual("type", "water")) {
 				auto triangle = loadPolygon(geom);
 				water_.addTriangle(triangle[0], triangle[1], triangle[2]);

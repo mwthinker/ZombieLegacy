@@ -13,6 +13,8 @@ namespace zombie {
 	// Forward declarations.
 	class Weapon;
 	class GameInterface;
+	class Missile;
+	class Building;
 
 	// Responsible of handeling the box2d part of the simulating.
 	// I.e. hides the Box2d usage.
@@ -25,17 +27,16 @@ namespace zombie {
 		void update(float timeStep);
 
 		// Add a unit.
-		void add(State state, Unit* unit);
+		void add(Unit* unit);
 
-		// Add a car to the game.
-		void add(State state, Car* car);
+		// Add a car to the engine.
+		void add(Car* car);
+
+		// Add a generic object to the engine.
+		void add(Object* object);
 		
-		// Add a generic object, is inactive by default.
-		template <class Ob>
-		void add(Ob* object, bool active = false) {
-			object->createBody(&world_);
-			object->setActive(active);
-		}
+		// Remove the object from the world.
+		void remove(Object* object);
 
 		// Get the current game time.
 		inline float getTime() const {

@@ -5,12 +5,10 @@
 
 namespace zombie {
 
-	Missile2D::Missile2D(const MissileProperties& properties, GameInterface* gameInterface) :
-		Missile(gameInterface, properties.width_, properties.length_, properties.mass_,
-			properties.speed_, properties.explosionTime_, properties.damage_,
-			properties.explosionRadius_),
-		
-		animation_(properties.animation_) {
+	Missile2D::Missile2D(GameInterface* gameInterface, float width, float length, float mass,
+		const Animation& animation, const mw::Sound& moveSound) :
+		Missile(gameInterface, width, length, mass),
+		animation_(animation) {
 
 	}
 
@@ -27,18 +25,14 @@ namespace zombie {
 		animation_.draw(timeStep, 0, 0, getWidth(), getWidth(), gameShader);
 	}
 
-	MissileProperties loadMissileProperties(GameDataEntry& entry) {
-		float mass = entry.getChildEntry("range").getFloat();
+	Missile2D loadMissile2D(GameInterface* gameInterface, GameDataEntry& entry) {
+		float mass = entry.getChildEntry("mass").getFloat();
 		float width = entry.getChildEntry("width").getFloat();
 		float length = entry.getChildEntry("length").getFloat();
 		Animation animation = entry.getChildEntry("animation").getAnimation();
 		mw::Sound moveSound = entry.getChildEntry("moveSound").getSound();
-		float damageRadius = entry.getChildEntry("damageRadius").getFloat();
-		float damage = entry.getChildEntry("damage").getFloat();;
-		float deathTime = entry.getChildEntry("deathTime").getFloat();
-		float speed = entry.getChildEntry("speed").getFloat();
 
-		return MissileProperties(width, length, mass, speed, deathTime, damageRadius, damage);
+		return Missile2D(gameInterface, width, length, mass, animation, moveSound);
 	}
 
 } // Namespace zombie.

@@ -26,7 +26,7 @@ namespace zombie {
 
 	// Add a frame and point it to the current sprite sheet.
 	void Animation::add(const mw::Sprite& sprite, float bodyWidth, float time) {
-		frames_.push_back(Frame(sprite, bodyWidth, time));
+		frames_.emplaceBack(sprite, bodyWidth, time);
 	}
 
 	void Animation::draw(float deltaTime, float x, float y, float w, float h, const GameShader& shader) {
@@ -36,13 +36,13 @@ namespace zombie {
 			lastTime_ = time_;
 		}
 
-		if (!frames_.empty()) {
+		if (frames_.getSize() > 0) {
 			// New frame?
 			if (!end_ && time_ > frames_[index_].time_ + lastTime_) {
 				if (loop_) {
-					index_ = (1 + index_) % frames_.size();
+					index_ = (1 + index_) % frames_.getSize();
 				} else {
-					if (index_ + 1 < frames_.size()) {
+					if (index_ + 1 < frames_.getSize()) {
 						++index_;
 					} else {
 						end_ = true;

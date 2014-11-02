@@ -2,6 +2,7 @@
 #define BUILDING2D_H
 
 #include "building.h"
+#include "gameshader.h"
 
 #include <mw/sprite.h>
 

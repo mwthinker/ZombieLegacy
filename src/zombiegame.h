@@ -90,6 +90,8 @@ namespace zombie {
 		void explosion(Position position, float explosionRadius) override;
 
 		void removedFromWorld(Unit& unit) override;
+
+		void shot(Unit& shooter, float speed, float explodeTime, float damage, float explosionRadius) override;
 		// End of the GameInterface.
 
 		void loadTerrain();
@@ -128,10 +130,12 @@ namespace zombie {
 		int bulletsInWeapon_;
 		int clipsize_;
 
+		// Physical objects.
 		Array<Unit2D, 100> units_;
 		Array<Missile2D, 10> missiles_;
 		Array<Car2D, 20> cars_;
 		Array<Building2D, 100> buildings_;
+
 		std::vector<std::unique_ptr<Player>> players_;
 		Array<Explosion, 10> explosions_;
 

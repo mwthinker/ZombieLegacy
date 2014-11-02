@@ -51,79 +51,80 @@
         <hitSound>sounds/buildingHit.wav</hitSound>
         <wallImage>images/building.png</wallImage>
     </buildings>
-    <weapons>
-        <weapon>
-            <name>Handgun</name>
-            <symbolImage>images/handgun.png</symbolImage>
-            <timeBetweenShots>0.3</timeBetweenShots>
-            <clipSize>12</clipSize>
-            <shootSound>sounds/handgunShoot.wav</shootSound>
-            <reloadSound>sounds/handgunReload.wav</reloadSound>
-            <moveAnimation>
-                <frame>
-                    <image x="0" y="0" w="256" h="256">images/bazooka.png</image>
-                    <bodyWidth>320</bodyWidth>
-                </frame>
-            </moveAnimation>
-            <size>0.5</size>
-            <moveImageGripX>-0.1525</moveImageGripX>
-            <moveImageGripY>0.0825</moveImageGripY>
-            <projectile type="bullet">
-                <damage>60</damage>
-                <range>10</range>
-            </projectile>
-        </weapon>
-        <weapon>
-            <name>ZombieFist</name>
-            <symbolImage>images/ZombieFist.png</symbolImage>
-            <timeBetweenShots>0.3</timeBetweenShots>
-            <clipSize>1000000</clipSize>
-            <shootSound>sounds/ZombieFist.wav</shootSound>
-            <reloadSound>sounds/ZombieReload.wav</reloadSound>
-            <moveAnimation/>
-            <size>1</size>
-            <moveImageGripX>0</moveImageGripX>
-            <moveImageGripY>0</moveImageGripY>
-            <projectile type="bullet">
-                <damage>10</damage>
-                <range>1</range>
-            </projectile>
-        </weapon>
-        <weapon>
-            <name>MissileLauncher</name>
-            <symbolImage>images/handgun.png</symbolImage>
-            <timeBetweenShots>0.3</timeBetweenShots>
-            <clipSize>1000000</clipSize>
-            <shootSound>sounds/launch.wav</shootSound>
-            <reloadSound>sounds/handgunReload.wav</reloadSound>
-            <moveAnimation>
-                <frame>
-                    <image>images/bazooka.png</image>
-                    <bodyWidth>128</bodyWidth>
-                </frame>
-            </moveAnimation>
-            <size>1.1</size>
-            <moveImageGripX>0.1025</moveImageGripX>
-            <moveImageGripY>-0.0525</moveImageGripY>
-            <projectile type="missile">
-                <mass>100</mass>
-                <width>1</width>
-                <length>2</length>
-                <animation>
-                    <frame>
-                        <image>images/projectile.png</image>
-                        <bodyWidth>128</bodyWidth>
-                    </frame>
-                </animation>
-                <moveSound>sounds/aaa.wav</moveSound>
-                <damageRadius>1</damageRadius>
-                <damage>60</damage>
-                <range>10</range>
-                <deathTime>10</deathTime>
-                <speed>15</speed>
-            </projectile>
-        </weapon>
-    </weapons>
+    <equipment>
+		<missile>
+			<mass>100</mass>
+			<width>1</width>
+			<length>2</length>
+			<animation>
+				<frame>
+					<image>images/projectile.png</image>
+					<bodyWidth>128</bodyWidth>
+				</frame>
+			</animation>
+			<moveSound>sounds/aaa.wav</moveSound>
+		</missile>
+		<weapons>
+			<handgun projectile="bullet">
+				<symbolImage>images/handgun.png</symbolImage>
+				<timeBetweenShots>0.3</timeBetweenShots>
+				<clipSize>12</clipSize>
+				<shootSound>sounds/handgunShoot.wav</shootSound>
+				<reloadSound>sounds/handgunReload.wav</reloadSound>
+				<moveAnimation>
+					<frame>
+						<image x="0" y="0" w="256" h="256">images/bazooka.png</image>
+						<bodyWidth>320</bodyWidth>
+					</frame>
+				</moveAnimation>
+				<size>0.5</size>
+				<moveImageGripX>-0.1525</moveImageGripX>
+				<moveImageGripY>0.0825</moveImageGripY>
+				<projectile>
+					<damage>60</damage>
+					<range>10</range>
+				</projectile>
+			</handgun>
+			<zombieFist projectile="bullet">
+				<symbolImage>images/ZombieFist.png</symbolImage>
+				<timeBetweenShots>0.3</timeBetweenShots>
+				<clipSize>1000000</clipSize>
+				<shootSound>sounds/ZombieFist.wav</shootSound>
+				<reloadSound>sounds/ZombieReload.wav</reloadSound>
+				<moveAnimation/>
+				<size>1</size>
+				<moveImageGripX>0</moveImageGripX>
+				<moveImageGripY>0</moveImageGripY>
+				<projectile>
+					<damage>10</damage>
+					<range>1</range>
+				</projectile>
+			</zombieFist>
+			<missileLauncher projectile="missile">
+				<symbolImage>images/handgun.png</symbolImage>
+				<timeBetweenShots>0.3</timeBetweenShots>
+				<clipSize>1000000</clipSize>
+				<shootSound>sounds/launch.wav</shootSound>
+				<reloadSound>sounds/handgunReload.wav</reloadSound>
+				<moveAnimation>
+					<frame>
+						<image>images/bazooka.png</image>
+						<bodyWidth>128</bodyWidth>
+					</frame>
+				</moveAnimation>
+				<size>1.1</size>
+				<moveImageGripX>0.1025</moveImageGripX>
+				<moveImageGripY>-0.0525</moveImageGripY>
+				<projectile>
+					<damageRadius>1</damageRadius>
+					<damage>60</damage>
+					<range>10</range>
+					<deathTime>10</deathTime>
+					<speed>15</speed>
+				</projectile>
+			</missileLauncher>
+		</weapons>
+    </equipment>
     <car>
         <moveAnimation>
             <frame>
@@ -208,7 +209,7 @@
         <walkingSpeed>2</walkingSpeed>
         <runningSpeed>4</runningSpeed>
         <stamina>1</stamina>
-        <weapon>MissileLauncher</weapon>
+        <weapon>missileLauncher</weapon>
     </human>
     <zombie>
         <hitSound>sounds/zombieHit.wav</hitSound>
@@ -292,6 +293,6 @@
         <walkingSpeed>2</walkingSpeed>
         <runningSpeed>4</runningSpeed>
         <stamina>1</stamina>
-        <weapon>ZombieFist</weapon>
+        <weapon>zombieFist</weapon>
     </zombie>
 </zombieGame>

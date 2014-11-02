@@ -5,18 +5,10 @@
 #include "input.h"
 #include "weapon.h"
 #include "state.h"
-#include "box2ddef.h"
 
 #include <mw/signal.h>
 
-#include <functional>
-#include <list>
-
 namespace zombie {
-
-	class Car;
-	class Driver;
-	class Building;
 
 	class Unit : public MovingObject {
 	public:
@@ -35,18 +27,18 @@ namespace zombie {
 		Unit(const Unit&);
 		Unit& operator=(const Unit&);
 
-		void createBody(b2World* world, State state);
-		
 		void updatePhysics(float time, float timeStep);
 
 		State getState() const;
+
+		void setState(const State& state);
 
 		// Return the view distance.
 		float getViewDistance() const;
 
 		// Return the distance of where all things are being visible, 
 		// no matter of orientation.
-		float smallViewDistance();
+		float smallViewDistance() const;
 
 		// Return the current view direction, i.e. the unit's orientation.
 		float viewAngle() const;
@@ -86,7 +78,18 @@ namespace zombie {
 		
 		mw::signals::Connection addEventHandler(mw::Signal<Unit*, UnitEvent>::Callback);
 
+		inline void setInput(Input input) {
+			input_ = input;
+		}
+
+		inline Input getInput() const {
+			return input_;
+		}
+
 		b2Body* getBody() const override;
+
+	private:
+		void createBody(b2World* world) override;
 
 		void destroyBody() override {
 			if (body_ != nullptr) {
@@ -98,15 +101,6 @@ namespace zombie {
 			}
 		}
 
-		inline void setInput(Input input) {
-			input_ = input;
-		}
-
-		inline Input getInput() const {
-			return input_;
-		}
-
-	private:
 		// Properties
 		float viewDistance_;
 		float viewAngle_;

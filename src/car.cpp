@@ -1,9 +1,7 @@
 #include "car.h"
-#include "movingobject.h"
 #include "input.h"
 #include "state.h"
 #include "unit.h"
-#include "building.h"
 
 #include <cmath>
 
@@ -46,29 +44,6 @@ namespace zombie {
 		body_ = nullptr;
 
 		return  *this;
-	}
-
-	void Car::createBody(b2World* world, State state) {
-		// Box2d properties.
-		b2BodyDef bodyDef;
-		bodyDef.type = b2_dynamicBody;
-		bodyDef.position = state.position_;
-		bodyDef.angle = state.angle_;
-		body_ = world->CreateBody(&bodyDef);
-		body_->SetUserData(this);
-
-		// Body properties.
-		{
-			b2PolygonShape dynamicBox;
-			dynamicBox.SetAsBox(0.5f *length_, 0.5f * width_); // Expected parameters is half the side.
-
-			b2FixtureDef fixtureDef;
-			fixtureDef.shape = &dynamicBox;
-			fixtureDef.density = mass_ / (length_ * width_);
-			fixtureDef.friction = 0.3f;
-			b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
-			fixture->SetUserData(this);
-		}
 	}
 
 	Unit* Car::getDriver() const {
@@ -117,16 +92,46 @@ namespace zombie {
 	}
 
 	State Car::getState() const {
-		State state;
-		state.angle_ = body_->GetAngle();
-		state.position_ = body_->GetPosition();
-		state.velocity_ = body_->GetLinearVelocity();
-		state.anglularVelocity_ = body_->GetAngularVelocity();
-		return state;
+		return State(body_->GetPosition(),
+					 body_->GetLinearVelocity(),
+					 body_->GetAngle(),
+					 body_->GetAngularVelocity());
+	}
+
+	void Car::setState(const State& state) {
+		// Set the position and current angle.
+		body_->SetTransform(state.position_ - body_->GetPosition(), state.angle_ - body_->GetAngle());
+
+		// Set the velocity of the states.
+		body_->SetAngularVelocity(state.anglularVelocity_);
+		body_->SetLinearVelocity(body_->GetLinearVelocity());
 	}
 
 	bool Car::isInsideViewArea(Position position) const {
 		return true;
+	}
+
+	void Car::createBody(b2World* world) {
+		// Box2d properties.
+		b2BodyDef bodyDef;
+		bodyDef.type = b2_dynamicBody;
+		bodyDef.position = ZERO;//state.position_;
+		bodyDef.angle = 0;// state.angle_;
+		body_ = world->CreateBody(&bodyDef);
+		body_->SetUserData(this);
+
+		// Body properties.
+		{
+			b2PolygonShape dynamicBox;
+			dynamicBox.SetAsBox(0.5f *length_, 0.5f * width_); // Expected parameters is half the side.
+
+			b2FixtureDef fixtureDef;
+			fixtureDef.shape = &dynamicBox;
+			fixtureDef.density = mass_ / (length_ * width_);
+			fixtureDef.friction = 0.3f;
+			b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
+			fixture->SetUserData(this);
+		}
 	}
 
 	void Car::applyFriction(float frictionForwardFrontWheel, float frictionForwardBackWheel,

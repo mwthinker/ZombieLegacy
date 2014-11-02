@@ -12,18 +12,16 @@ namespace zombie {
 
 	class Missile : public Object {
 	public:
-		inline Missile() {
-		}
+		Missile::Missile();
 
-		Missile(GameInterface* gameInterface, float width, float length, float mass, float speed,
-			float explodeTime, float damage, float explosionRadius);
+		Missile(GameInterface* gameInterface, float width, float length, float mass);
 
 		virtual ~Missile() {
 		}
 
-		void createBody(b2World* world, Position position, float angle);
+		void create(Position position, float angle, float speed, float explodeTime, float damage, float explosionRadius);
 
-		void update(float time, float timeStep);
+		void updatePhysics(float time, float timeStep);
 
 		void collision(float impulse) override final;
 		
@@ -41,6 +39,9 @@ namespace zombie {
 
 		State previousState() const;
 
+	private:
+		void createBody(b2World* world) override;
+
 		void destroyBody() override {
 			if (body_ != nullptr) {
 				b2World* world = body_->GetWorld();
@@ -51,11 +52,10 @@ namespace zombie {
 			}
 		}
 
-	private:
 		void explode();
 
 		GameInterface* gameInterface_;
-		bool exploded_;
+		bool explode_;
 		
 		float damage_;
 		float explosionRadius_;

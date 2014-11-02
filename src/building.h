@@ -15,7 +15,16 @@ namespace zombie {
 			body_ = nullptr;
 		}
 
-		void createBody(b2World* world) {
+		const std::array<Position, 4>& getCorners() const {
+			return corners_;
+		}
+
+		b2Body* getBody() const override {
+			return body_;
+		}
+
+	private:
+		void createBody(b2World* world) override {
 			Position center = 0.5f * (corners_[0] + corners_[2]);
 			float w = (corners_[0] - corners_[1]).Length();
 			float h = (corners_[2] - corners_[1]).Length();
@@ -37,15 +46,11 @@ namespace zombie {
 				box.SetAsBox(w*0.5f, h*0.5f, ZERO, angle); // Expected parameters is half the side.
 
 				b2FixtureDef fixtureDef;
-				fixtureDef.shape = &box;				
+				fixtureDef.shape = &box;
 				fixtureDef.friction = 0.3f;
 				b2Fixture* fixture = body_->CreateFixture(&fixtureDef);
 				fixture->SetUserData(this);
 			}
-		}
-
-		b2Body* getBody() const override {
-			return body_;
 		}
 
 		void destroyBody() override {
@@ -56,13 +61,8 @@ namespace zombie {
 				}
 				body_ = nullptr;
 			}
-		}
+		}		
 
-		const std::array<Position, 4>& getCorners() const {
-			return corners_;
-		}
-
-	private:
 		std::array<Position, 4> corners_;
 		float radius_;
 		float length_, width_;

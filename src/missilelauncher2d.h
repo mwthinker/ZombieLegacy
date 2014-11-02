@@ -3,6 +3,8 @@
 
 #include "missilelauncher.h"
 #include "missile2d.h"
+#include "gamedataentry.h"
+#include "weapon2d.h"
 
 #include <mw/sound.h>
 
@@ -10,11 +12,14 @@
 
 namespace zombie {
 
+	Weapon2D loadMissileLauncher2D(GameInterface* gameInterface, GameDataEntry& entry);
+
 	class MissileLauncher2D : public MissileLauncher {
 	public:
-		MissileLauncher2D(int clipSize, float timeBetweenShots,
-			float range, mw::Sound shot = mw::Sound(), mw::Sound reload = mw::Sound())
-			: MissileLauncher(clipSize, timeBetweenShots, range),
+		MissileLauncher2D(int clipSize, float timeBetweenShots, float range,
+			float damageRadius, float damage, float deathTime, float speed,
+			mw::Sound shot = mw::Sound(), mw::Sound reload = mw::Sound())
+			: MissileLauncher(clipSize, timeBetweenShots, range, damageRadius, damage, deathTime, speed),
 			shot_(shot), reload_(reload) {
 
 		}

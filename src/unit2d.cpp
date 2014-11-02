@@ -2,6 +2,8 @@
 #include "animation.h"
 #include "auxiliary.h"
 #include "weapon2d.h"
+#include "missilelauncher2d.h"
+#include "gun.h"
 
 #include <mw/sound.h>
 
@@ -89,15 +91,16 @@ namespace zombie {
 		grip.y = entry.getChildEntry("moveImageGripY").getFloat();
 		std::string weaponName = entry.getChildEntry("weapon").getString();
 
+		std::string path = "equipment weapons ";
+		path += weaponName;
+		auto weaponEntry = zombieGameEntry.getEntry(path);
+		
 		std::shared_ptr<Weapon> weapon;
-		auto weaponEntry = zombieGameEntry.getEntry("weapons weapon");
-		while (weaponEntry.hasData()) {
-			std::string name = weaponEntry.getChildEntry("name").getString();
-			if (name == weaponName) {
-				weapon = loadWeapon2D(gameInterface, weaponEntry).clone();
-				break;
-			}
-			weaponEntry = weaponEntry.getSibling("weapon");
+		if (weaponEntry.isAttributeEqual("projectile", "missile")) {
+			weapon = loadMissileLauncher2D(gameInterface, weaponEntry).clone();
+		} else {
+			weapon = loadGun(gameInterface, weaponEntry).clone();
+			
 		}
 
 		return Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapon, moveA, grip);

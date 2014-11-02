@@ -37,8 +37,6 @@ namespace zombie {
 		Position grip_;
 	};
 
-	Weapon2D loadWeapon2D(GameInterface* gameInterface, GameDataEntry& entry);
-
 } // Namespace zombie.
 
 #endif // WEAPON2D_H

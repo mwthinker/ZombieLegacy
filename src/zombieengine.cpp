@@ -1,15 +1,16 @@
 #include "zombieengine.h"
 #include "box2ddef.h"
 #include "gameinterface.h"
-#include "unit.h"
-#include "car.h"
+#include "missile.h"
+#include "building.h"
 #include "weaponitem.h"
-#include "humanplayer.h"
 #include "closestraycastcallback.h"
 
 namespace zombie {
 
-	ZombieEngine::ZombieEngine(GameInterface& gameInterface, float impulseThreshold) : gameInterface_(gameInterface), world_(b2Vec2(0, 0)), contactListener_(gameInterface, impulseThreshold) {
+	ZombieEngine::ZombieEngine(GameInterface& gameInterface, float impulseThreshold) : 
+		gameInterface_(gameInterface), world_(b2Vec2(0, 0)), contactListener_(gameInterface, impulseThreshold) {
+		
 		world_.SetContactListener(&contactListener_);
 		started_ = false;
 		time_ = 0.0f;
@@ -26,15 +27,33 @@ namespace zombie {
 		time_ += timeStep;
 	}
 
-	void ZombieEngine::add(State state, Unit* unit) {
-		unit->createBody(&world_, state);
+	void ZombieEngine::add(Unit* unit) {
+		assert(dynamic_cast<Object*>(unit) != nullptr); // Test, Object type and not null.
+		(static_cast<Object*>(unit))->createBody(&world_);
+		unit->setActive(false);
+		unit->setAwake(false);
 		unit->getWeapon()->init(&world_, &gameInterface_);
 		unit->addEventHandler(std::bind(&ZombieEngine::unitEventHandler, this, unit, std::placeholders::_2));
 	}
 
-	void ZombieEngine::add(State state, Car* car) {
-		car->createBody(&world_, state);
+	void ZombieEngine::add(Car* car) {
+		assert(dynamic_cast<Object*>(car) != nullptr); // Test, Object type and not null.
+		(static_cast<Object*>(car))->createBody(&world_);
+		car->setActive(false);
+		car->setAwake(false);
 		car->addEventHandler(std::bind(&ZombieEngine::carEventHandler, this, car, std::placeholders::_2));
+	}
+
+	void ZombieEngine::add(Object* object) {
+		assert(object != nullptr);
+		object->createBody(&world_);
+		object->setActive(false);
+		object->setAwake(false);
+	}
+
+	void ZombieEngine::remove(Object* object) {
+		assert(object != nullptr);
+		object->destroyBody();
 	}
 
 	void ZombieEngine::unitEventHandler(Unit* unit, Unit::UnitEvent unitEvent) {
@@ -66,6 +85,7 @@ namespace zombie {
 
 		// Is there an object near by?
 		if (fixture != nullptr) {
+			// Safe to do, because all userdata must be a Object!
 			Object* ob = static_cast<Object*>(fixture->GetUserData());
 
 			if (Car* car = dynamic_cast<Car*>(ob)) {

@@ -6,30 +6,41 @@
 
 namespace zombie {
 
-	Missile::Missile(GameInterface* gameInterface, float width, float length, float mass, float speed,
-		float explodeTime, float damage, float explosionRadius) : gameInterface_(gameInterface) {
-		
+	Missile::Missile() : body_(nullptr) {
+	}
+
+	Missile::Missile(GameInterface* gameInterface, float width, float length, float mass) : 
+		gameInterface_(gameInterface), body_(nullptr),
+		width_(width),
+		length_(length),
+		mass_(mass) {
+
+	}
+
+	void Missile::create(Position position, float angle, float speed, float explodeTime, float damage, float explosionRadius) {
 		speed_ = speed;
 		damage_ = damage;
 		explosionRadius_ = explosionRadius;
-		width_ = width;
-		length_ = length;
-		exploded_ = false;
+		explode_ = false;
 		explodeTime_ = explodeTime;
 		time_ = 0;
-		mass_ = mass;
+		body_->SetActive(true);
+		body_->SetAwake(true);
+		// Set the position and current angle.
+		body_->SetTransform(position, angle);
 
-		body_ = nullptr;
+		// Set the velocity of the states.
+		body_->SetLinearVelocity(speed_*0.1 * directionVector(angle));
+		body_->SetAngularVelocity(angle);
 	}
 
-	void Missile::createBody(b2World* world, Position position, float angle) {
+	void Missile::createBody(b2World* world) {
 		// Box2d properties.
 		b2BodyDef bodyDef;
 		bodyDef.type = b2_dynamicBody;
-		bodyDef.position = position;
-		bodyDef.angle = angle;
+		bodyDef.position = ZERO;
+		bodyDef.angle = 0;
 		body_ = world->CreateBody(&bodyDef);
-		body_->SetLinearVelocity(speed_ * directionVector(angle));
 		body_->SetUserData(this);
 
 		// Body properties.
@@ -49,14 +60,14 @@ namespace zombie {
 	}
 
 	void Missile::collision(float impulse) {
-		explode();
+		explode_ = true;
 	}
 
-	void Missile::update(float time, float timeStep) {
+	void Missile::updatePhysics(float time, float timeStep) {
 		previousState_ = getState();
 		time_ += timeStep;
 
-		if (!exploded_ && explodeTime_ < time_) {
+		if (explode_ || explodeTime_ < time_) {
 			explode();
 		}
 	}
@@ -82,12 +93,10 @@ namespace zombie {
 	}
 
 	State Missile::getState() const {
-		State state;
-		state.angle_ = body_->GetAngle();
-		state.position_ = body_->GetPosition();
-		state.velocity_ = body_->GetLinearVelocity();
-		state.anglularVelocity_ = body_->GetAngularVelocity();
-		return state;
+		return State(body_->GetPosition(),
+			body_->GetLinearVelocity(),
+			body_->GetAngle(),
+			body_->GetAngularVelocity());
 	}
 
 	State Missile::previousState() const {
@@ -115,8 +124,10 @@ namespace zombie {
 				}
 			}
 		}
-		exploded_ = true;
+		explode_ = false;
 		gameInterface_->explosion(position, explosionRadius_);
+		body_->SetActive(false);
+		body_->SetAwake(false);
 	}
 
 } // Namespace zombie.

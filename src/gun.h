@@ -4,6 +4,8 @@
 #include "weaponinterface.h"
 #include "state.h"
 #include "box2ddef.h"
+#include "gamedataentry.h"
+#include "weapon2d.h"
 
 #include <mw/sound.h>
 
@@ -11,9 +13,12 @@
 
 namespace zombie {
 
+	Weapon2D loadGun(GameInterface* gameInterface, GameDataEntry& entry);
+
 	class Gun : public WeaponInterface {
 	public:
-		Gun(float damage, float timeBetweenShots, float range, int clipSize, mw::Sound shot = mw::Sound(), mw::Sound reload = mw::Sound());
+		Gun(float damage, float timeBetweenShots, float range, int clipSize,
+			mw::Sound shot = mw::Sound(), mw::Sound reload = mw::Sound());
 
 		void pullTrigger(Unit& unit, float time) override;
 
