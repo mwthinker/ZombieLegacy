@@ -30,8 +30,7 @@ namespace zombie {
 	private:
 		void eventHandler(int unitEvent) override;
 
-		Animation animation_;
-		Position grip_;
+		Animation animation_;		
 		mw::Sound die_;
 		mw::Sound hit_;
 	};

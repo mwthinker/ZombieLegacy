@@ -1,6 +1,8 @@
 #include "zombieengine.h"
 #include "box2ddef.h"
 #include "gameinterface.h"
+#include "unit.h"
+#include "car.h"
 #include "missile.h"
 #include "building.h"
 #include "weaponitem.h"

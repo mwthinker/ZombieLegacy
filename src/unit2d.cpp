@@ -10,18 +10,17 @@
 namespace zombie {
 
 	Unit2D::Unit2D() :
-		Unit(1, 1, 1, 1, 1, false, nullptr) {
+		Unit(1, 1, 1, 1, 1, false, ZERO, nullptr) {
 		
 	}
 
 	Unit2D::Unit2D(float mass, float radius, float life, float walkingSpeed,
 		float runningSpeed, bool isInfected, const WeaponPtr& weapon, const Animation& animation, Position grip) :
-		Unit(mass, radius, life, walkingSpeed, runningSpeed, isInfected, weapon), animation_(animation), grip_(grip) {
+		Unit(mass, radius, life, walkingSpeed, runningSpeed, isInfected, grip, weapon), animation_(animation) {
 	}
 
 	Unit2D::Unit2D(const Unit2D& unit) : Unit(unit) {
 		animation_ = unit.animation_;
-		grip_ = unit.grip_;
 		die_ = unit.die_;
 		hit_ = unit.hit_;
 	}
@@ -53,7 +52,8 @@ namespace zombie {
 			gameShader.setGlPositionU(getPosition());
 			gameShader.setGlAngleU(getDirection());
 			animation_.draw(timeStep, 0, 0, diameter, diameter, gameShader);
-			getWeapon()->draw(timeStep, grip_.x, grip_.y, gameShader);
+			Position grip = getGrip();
+			getWeapon()->draw(timeStep, grip.x, grip.y, gameShader);
 		}
 	}
 

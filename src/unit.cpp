@@ -9,7 +9,7 @@ namespace zombie {
 
 	Unit::Unit(float mass, float radius, float life,
 		float walkingSpeed, float runningSpeed, bool infected,
-		const WeaponPtr& weapon) : weapon_(weapon) {
+		Position grip, const WeaponPtr& weapon) : weapon_(weapon) {
 
 		isInfected_ = infected;
 
@@ -26,6 +26,7 @@ namespace zombie {
 
 		radius_ = radius;
 		mass_ = mass;
+		grip_ = grip;
 
 		body_ = nullptr;
 	}
@@ -47,6 +48,7 @@ namespace zombie {
 
 		radius_ = unit.radius_;
 		mass_ = unit.mass_;
+		grip_ = unit.grip_;
 
 		body_ = nullptr;
 	}
@@ -68,6 +70,7 @@ namespace zombie {
 
 		radius_ = unit.radius_;
 		mass_ = unit.mass_;
+		grip_ = unit.grip_;
 
 		body_ = nullptr;
 

@@ -2,12 +2,8 @@
 #define ZOMBIEENGINE_H
 
 #include "box2ddef.h"
-#include "unit.h"
-#include "car.h"
 #include "contactlistener.h"
 #include "actionhandler.h"
-
-#include <mw/signal.h>
 
 namespace zombie {
 
@@ -16,6 +12,9 @@ namespace zombie {
 	class GameInterface;
 	class Missile;
 	class Building;
+	class Unit;
+	class Car;
+	class Object;
 
 	// Responsible of handeling the box2d part of the simulating.
 	// I.e. hides the Box2d usage.
@@ -24,7 +23,7 @@ namespace zombie {
 		ZombieEngine(GameInterface& gameInterface, float impulseThreshold);
 		~ZombieEngine();
 
-		// Update the physical interaction.
+		// Update the box2d interaction.
 		void update(float timeStep);
 
 		// Add a unit.

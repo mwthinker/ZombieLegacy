@@ -19,7 +19,8 @@ namespace zombie {
 			ACTION
 		};
 
-		Unit(float mass, float radius, float life, float walkingSpeed, float runningSpeed, bool infected, const WeaponPtr& weapon);
+		Unit(float mass, float radius, float life, float walkingSpeed,
+			float runningSpeed, bool infected, Position grip, const WeaponPtr& weapon);
 		virtual ~Unit();
 
 		Unit(const Unit&);
@@ -84,6 +85,10 @@ namespace zombie {
 
 		b2Body* getBody() const override;
 
+		inline Position getGrip() const {
+			return grip_;
+		}
+
 	private:
 		void createBody(b2World* world) override;
 
@@ -116,6 +121,7 @@ namespace zombie {
 		bool isDead_;
 
 		WeaponPtr weapon_;
+		Position grip_;
 		bool isInfected_;
 
 		float timeLeftToRun_;
