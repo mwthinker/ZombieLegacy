@@ -5,8 +5,6 @@
 #include "input.h"
 #include "state.h"
 
-#include <mw/signal.h>
-
 namespace zombie {
 
 	class Unit;
@@ -74,16 +72,17 @@ namespace zombie {
 			return false;
 		}
 
-		mw::signals::Connection addEventHandler(mw::Signal<Car*, CarEvent>::Callback callback) {
-			return eventSignal_.connect(callback);
-		}		
-
 	protected:
 		inline State previousState() const {
 			return previousState_;
 		}
 
 	private:
+		void signal(int eventType);
+
+		virtual void eventHandler(int eventType) {
+		}
+
 		void createBody(b2World* world) override;
 
 		void destroyBody() override {
@@ -110,8 +109,6 @@ namespace zombie {
 		b2Vec2 getDirectionVector() const {
 			return body_->GetWorldVector(b2Vec2(std::cos(steeringAngle_), std::sin(steeringAngle_)));
 		}
-
-		mw::Signal<Car*, CarEvent> eventSignal_;
 
 		b2Body* body_;
 		float steeringAngle_;

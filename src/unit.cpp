@@ -132,7 +132,7 @@ namespace zombie {
 				if (input.forward_ && input.run_) {
 					timeLeftToRun_ -= timeStep;
 					move *= 2;
-					eventSignal_(this, UnitEvent::RUN);
+					signal(RUN);
 				} else if (timeLeftToRun_ < 5) {
 					timeLeftToRun_ += timeStep;
 				}
@@ -143,14 +143,14 @@ namespace zombie {
 			// Move forward or backwards.
 			if (input.forward_ && !input.backward_) {
 				body_->ApplyForceToCenter(b2Vec2(move.x, move.y));
-				eventSignal_(this, UnitEvent::WALK);
+				signal(WALK);
 			} else if (!input.forward_ && input.backward_) {
 				body_->ApplyForceToCenter(-b2Vec2(move.x, move.y));
-				eventSignal_(this, UnitEvent::WALK);
+				signal(WALK);
 			} else {
 				// In order to make the unit stop when not moving.
 				body_->ApplyForceToCenter(-body_->GetLinearVelocity());
-				eventSignal_(this, UnitEvent::STANDSTILL);
+				signal(STANDSTILL);
 			}
 
 			// Add friction.
@@ -181,7 +181,7 @@ namespace zombie {
 			}
 
 			if (input.action_) {
-				eventSignal_(this, UnitEvent::ACTION);
+				signal(ACTION);
 			}
 		}
 	}
@@ -235,10 +235,6 @@ namespace zombie {
 		return body_->GetAngle();
 	}
 
-	mw::signals::Connection Unit::addEventHandler(mw::Signal<Unit*, UnitEvent>::Callback callback) {
-		return eventSignal_.connect(callback);
-	}
-
 	float Unit::healthPoints() const {
 		return healthPoints_;
 	}
@@ -246,7 +242,7 @@ namespace zombie {
 	void Unit::updateHealthPoint(float deltaLife) {
 		if (!isDead_) {
 			healthPoints_ += deltaLife;
-			eventSignal_(this, UnitEvent::INJURED);
+			signal(INJURED);
 		}
 		if (healthPoints_ < 0) {
 			isDead_ = true;
@@ -267,6 +263,11 @@ namespace zombie {
 
 	b2Body* Unit::getBody() const {
 		return body_;
-	}	
+	}
+
+	void Unit::signal(int eventType) {
+		getActionHandler()->unitEvent(this, eventType);
+		eventHandler(eventType);
+	}
 
 } // Namespace zombie.

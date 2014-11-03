@@ -33,7 +33,7 @@ namespace zombie {
 		unit->setActive(false);
 		unit->setAwake(false);
 		unit->getWeapon()->init(&world_, &gameInterface_);
-		unit->addEventHandler(std::bind(&ZombieEngine::unitEventHandler, this, unit, std::placeholders::_2));
+		unit->setActionHandler(this);
 	}
 
 	void ZombieEngine::add(Car* car) {
@@ -41,7 +41,7 @@ namespace zombie {
 		(static_cast<Object*>(car))->createBody(&world_);
 		car->setActive(false);
 		car->setAwake(false);
-		car->addEventHandler(std::bind(&ZombieEngine::carEventHandler, this, car, std::placeholders::_2));
+		car->setActionHandler(this);
 	}
 
 	void ZombieEngine::add(Object* object) {
@@ -56,16 +56,16 @@ namespace zombie {
 		object->destroyBody();
 	}
 
-	void ZombieEngine::unitEventHandler(Unit* unit, Unit::UnitEvent unitEvent) {
-		switch (unitEvent) {
+	void ZombieEngine::unitEvent(Unit* unit, int eventType) {
+		switch (eventType) {
 			case Unit::ACTION:
 				doAction(unit);
 				break;
 		}
 	}
 
-	void ZombieEngine::carEventHandler(Car* car, Car::CarEvent carEvent) {
-		switch (carEvent) {
+	void ZombieEngine::carEvent(Car* car, int eventType) {
+		switch (eventType) {
 			case Car::ACTION:
 				doAction(car);
 				break;

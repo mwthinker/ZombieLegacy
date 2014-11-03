@@ -6,8 +6,6 @@
 #include "weapon.h"
 #include "state.h"
 
-#include <mw/signal.h>
-
 namespace zombie {
 
 	class Unit : public MovingObject {
@@ -75,8 +73,6 @@ namespace zombie {
 		Position getPosition() const override;
 
 		float getRadius() const;
-		
-		mw::signals::Connection addEventHandler(mw::Signal<Unit*, UnitEvent>::Callback);
 
 		inline void setInput(Input input) {
 			input_ = input;
@@ -101,6 +97,11 @@ namespace zombie {
 			}
 		}
 
+		void signal(int eventType);
+
+		inline virtual void eventHandler(int eventType) {
+		}
+
 		// Properties
 		float viewDistance_;
 		float viewAngle_;
@@ -118,8 +119,6 @@ namespace zombie {
 		bool isInfected_;
 
 		float timeLeftToRun_;
-		
-		mw::Signal<Unit*, UnitEvent> eventSignal_;
 
 		b2Body* body_;
 		Input input_;

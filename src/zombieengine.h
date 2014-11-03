@@ -5,6 +5,7 @@
 #include "unit.h"
 #include "car.h"
 #include "contactlistener.h"
+#include "actionhandler.h"
 
 #include <mw/signal.h>
 
@@ -18,7 +19,7 @@ namespace zombie {
 
 	// Responsible of handeling the box2d part of the simulating.
 	// I.e. hides the Box2d usage.
-	class ZombieEngine {
+	class ZombieEngine : public ActionHandler {
 	public:
 		ZombieEngine(GameInterface& gameInterface, float impulseThreshold);
 		~ZombieEngine();
@@ -48,8 +49,8 @@ namespace zombie {
 		}
 
 	private:
-		void unitEventHandler(Unit* unit, Unit::UnitEvent unitEvent);
-		void carEventHandler(Car* car, Car::CarEvent unitEvent);
+		void unitEvent(Unit* unit, int eventType) override;
+		void carEvent(Car* car, int eventType) override;
 
 		void doAction(Unit* unit);
 		void doAction(Car* unit);

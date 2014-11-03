@@ -2,6 +2,7 @@
 #define MOVINGOBJECT_H
 
 #include "object.h"
+#include "actionhandler.h"
 
 #include <list>
 
@@ -10,6 +11,9 @@ namespace zombie {
 	// Represent a moving object inside the "zombie world".
 	class MovingObject : public Object {
 	public:
+		inline MovingObject() : actionHandler_(nullptr) {
+		}
+
 		// Returns true if the object is infected.
 		virtual bool isInfected() const = 0;
 
@@ -48,8 +52,17 @@ namespace zombie {
 			objectsSeen_.remove(object);
 		}
 
+		inline void setActionHandler(ActionHandler* actionHandler) {
+			actionHandler_ = actionHandler;
+		}
+
+		inline ActionHandler* getActionHandler() const {
+			return actionHandler_;
+		}
+
 	private:
 		std::list<MovingObject*> objectsSeen_;
+		ActionHandler* actionHandler_;
 	};
 
 } // Namespace zombie.

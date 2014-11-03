@@ -84,10 +84,10 @@ namespace zombie {
 
 		applyFriction(2.0f, 2.0f, 100.0f, 100.0f);
 
-		eventSignal_(this, MOVED);
+		signal(MOVED);
 
 		if (input.action_) {
-			eventSignal_(this, ACTION);
+			signal(ACTION);
 		}
 	}
 
@@ -154,6 +154,11 @@ namespace zombie {
 		b2Vec2 forward = body_->GetWorldVector(b2Vec2(1, 0));
 		force = -frictionForwardFrontWheel * b2Dot(forward, body_->GetLinearVelocity()) * forward;
 		body_->ApplyForce(force, getFrontWheelPosition());
+	}
+
+	void Car::signal(int eventType) {
+		getActionHandler()->carEvent(this, eventType);
+		eventHandler(eventType);
 	}
 
 } // Namespace zombie.

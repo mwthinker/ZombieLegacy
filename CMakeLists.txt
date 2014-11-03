@@ -17,6 +17,7 @@ add_definitions(-DMW_OPENGLES2)
 
 # Source files.
 set(SOURCES_ZOMBIE
+	src/actionhandler.h
 	src/animation.cpp
 	src/animation.h
 	src/array.h
@@ -60,7 +61,7 @@ set(SOURCES_ZOMBIE
 	src/object.h
 	src/player.h
 	src/shot.h
-	src/state.h	
+	src/state.h
 	src/survivorbehavior.cpp
 	src/survivorbehavior.h
 	src/terrain2d.cpp

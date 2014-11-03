@@ -27,9 +27,9 @@ namespace zombie {
 
 		void draw(float accumulator, float timeStep, const GameShader& gameShader);
 
-		void eventHandler(Unit* unit, Unit::UnitEvent unitEvent);
-
 	private:
+		void eventHandler(int unitEvent) override;
+
 		Animation animation_;
 		Position grip_;
 		mw::Sound die_;
