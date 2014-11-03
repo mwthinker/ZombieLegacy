@@ -21,6 +21,7 @@ namespace zombie {
 		// Health
 		healthPoints_ = life;
 		isDead_ = false;
+		died_ = false;
 
 		timeLeftToRun_ = 5.f;
 
@@ -43,6 +44,7 @@ namespace zombie {
 		// Health
 		healthPoints_ = unit.healthPoints_;
 		isDead_ = unit.isDead_;
+		died_ = unit.died_;
 
 		timeLeftToRun_ = unit.timeLeftToRun_;
 
@@ -65,6 +67,7 @@ namespace zombie {
 		// Health
 		healthPoints_ = unit.healthPoints_;
 		isDead_ = unit.isDead_;
+		died_ = unit.died_;
 
 		timeLeftToRun_ = unit.timeLeftToRun_;
 
@@ -124,7 +127,15 @@ namespace zombie {
 	Unit::~Unit() {
 	}
 
+	// All UnitEvent is only allowed to be triggered in this function.
+	// This in order to avoid adjusting box2d valuse during a box2d step, which
+	// would cause undefined behavior.
 	void Unit::updatePhysics(float time, float timeStep) {
+		if (died_) {
+			signal(DIE);
+			isDead_ = true;
+		}
+
 		if (!isDead()) {
 			Input input = getInput();
 			float angle = getDirection();
@@ -248,7 +259,7 @@ namespace zombie {
 			signal(INJURED);
 		}
 		if (healthPoints_ < 0) {
-			isDead_ = true;
+			died_ = true;
 		}
 	}
 

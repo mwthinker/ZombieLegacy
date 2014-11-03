@@ -62,6 +62,8 @@ namespace zombie {
 		switch (eventType) {
 			case Unit::ACTION:
 				doAction(unit);
+			case Unit::DIE:
+				gameInterface_.unitDied(*unit);
 				break;
 		}
 	}

@@ -119,6 +119,7 @@ namespace zombie {
 		// Health
 		float healthPoints_;
 		bool isDead_;
+		bool died_;
 
 		WeaponPtr weapon_;
 		Position grip_;

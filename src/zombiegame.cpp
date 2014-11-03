@@ -338,6 +338,8 @@ namespace zombie {
 
 	void ZombieGame::unitDied(Unit& unit) {
 		--nbrUnits_;
+		unit.setActive(false);
+		unit.setAwake(false);
 		if (unit.isInfected()) {
 			++zombiesKilled_;
 			//graphicGround_.push_back(std::make_shared<GraphicAnimation>(unit.getPosition(), unit.getDirection(), zombieDie_));

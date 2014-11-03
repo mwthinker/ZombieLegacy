@@ -25,6 +25,9 @@ namespace zombie {
 
 		virtual void shotHit(Position startPosition, Position hitPosition, Unit& unit) = 0;
 
+		virtual void carDamaged(Car& car) {
+		}
+
 		virtual void explosion(Position position, float explosionRadius) = 0;
 
 		virtual void shot(Unit& shooter, float speed, float explodeTime, float damage, float explosionRadius) {
