@@ -49,8 +49,8 @@ namespace zombie {
 			
 			gameShader.useGlShader();
 			gameShader.setGlColorU(1, 1, 1);
-			gameShader.setGlPositionU(getPosition());
-			gameShader.setGlAngleU(getDirection());
+			gameShader.setGlGlobalPositionU(getPosition());
+			gameShader.setGlLocalAngleU(getDirection());
 			animation_.draw(timeStep, 0, 0, diameter, diameter, gameShader);
 			Position grip = getGrip();
 			getWeapon()->draw(timeStep, grip.x, grip.y, gameShader);

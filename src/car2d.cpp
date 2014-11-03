@@ -25,8 +25,8 @@ namespace zombie {
 		state.position_ = alpha * state.position_ + (1.f - alpha) * previousState().position_;
 
 		gameShader.setGlColorU(1, 1, 1);
-		gameShader.setGlPositionU(getPosition());
-		gameShader.setGlAngleU(getDirection());
+		gameShader.setGlGlobalPositionU(getPosition());
+		gameShader.setGlLocalAngleU(getDirection());
 		animation_.draw(timeStep, 0, 0, getLength(), getLength(), gameShader);
 	}
 

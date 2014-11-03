@@ -1,5 +1,5 @@
-#ifndef GAMESHADER_H
-#define GAMESHADER_H
+#ifndef WATERSHADER_H
+#define WATERSHADER_H
 
 #include "box2ddef.h"
 
@@ -10,32 +10,26 @@
 
 namespace zombie {
 
-	class GameShader {
+	class WaterShader {
 	public:
-		GameShader();
-		GameShader(std::string vShaderFile, std::string fShaderFile);
+		WaterShader();
+		WaterShader(std::string vShaderFile, std::string fShaderFile);
 
 		void useGlShader() const;
 
 		// Vertex buffer Attributes. ---------------------------
-		
 		void setGlVer2dCoordsA(const GLvoid* data) const;
-		void setGlVer2dCoordsA(GLsizei stride, const GLvoid* data) const;		
-
-		void setGlTexCoordsA(const GLvoid* data) const;
-		void setGlTexCoordsA(GLsizei stride, const GLvoid* data) const;
+		void setGlVer2dCoordsA(GLsizei stride, const GLvoid* data) const;
 
 		// Uniforms. -------------------------------------------
-
 		void setGlProjectionMatrixU(const mw::Matrix44& matrix) const;
 		void setGlModelMatrixU(const mw::Matrix44& matrix) const;
 		void setGlGlobalCenterPositionU(Position position) const;
-		void setGlGlobalPositionU(Position position) const;		
-		void setGlLocalAngleU(float angle) const;
-
+		
 		void setGlColorU(float red, float green, float blue, float alpha = 1) const;
 		void setGlColorU(const mw::Color& color) const;
-		void setGlTextureU(bool texture) const;
+
+		void setGlTimeU(float time) const;
 
 	private:
 		mw::Shader shader_;
@@ -46,13 +40,10 @@ namespace zombie {
 		int uProjIndex_;
 		int uModelIndex_;
 		int uGlobalCenterPosIndex_;
-		int uGlobalPosIndex_;
-		int uLocalAngleIndex_;
 
-		int uColorIndex_;
-		int uIsTexIndex_;
+		int uTime_;
 	};
 
 } // Namespace zombie.
 
-#endif // GAMESHADER_H
+#endif // WATERSHADER_H

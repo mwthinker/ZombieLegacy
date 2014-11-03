@@ -19,8 +19,8 @@ namespace zombie {
 		void draw(float accumulator, float timeStep, const GameShader& gameShader) {
 			gameShader.setGlColorU(1, 1, 1);
 			gameShader.setGlTextureU(true);
-			gameShader.setGlPositionU(position_);
-			gameShader.setGlAngleU(getAngle());
+			gameShader.setGlGlobalPositionU(position_);
+			gameShader.setGlLocalAngleU(getAngle());
 			//tree_.draw(position_.x, position_.y);
 			// Draw body.
 			//wPtr->setModel(old * mw::getTranslateMatrix44(getPosition().x, getPosition().y) * mw::getScaleMatrix44(2 * getRadius(), 2 * getRadius()) * mw::getRotateMatrix44(getAngle(), 0, 0, 1));

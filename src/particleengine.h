@@ -102,7 +102,7 @@ namespace zombie {
 		}
 				
 		texture_.bindTexture();
-		shader.setGlAngleU(0);
+		shader.setGlLocalAngleU(0);
 		shader.setGlColorU(color_);
 		shader.setGlTextureU(true);
 		shader.setGlVer2dCoordsA(aPos);

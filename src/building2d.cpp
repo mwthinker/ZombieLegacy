@@ -38,8 +38,9 @@ namespace zombie {
 
 		// Load the vertex data.
 		gameShader.setGlTextureU(true);
-		gameShader.setGlPositionU(ZERO);
-		gameShader.setGlAngleU(0);
+		gameShader.setGlGlobalPositionU(ZERO);
+		
+		gameShader.setGlLocalAngleU(0);
 		gameShader.setGlVer2dCoordsA(aVertices);
 		gameShader.setGlTexCoordsA(aTexCoord);
 

@@ -20,20 +20,10 @@ namespace zombie {
 	}
 
 	Water::Water(const mw::Texture& seeFloor) : seeFloor_(seeFloor) {
-		time_ = 0.0;
-		waterShader_.bindAttribute("aPos");
-		waterShader_.bindAttribute("aTex");
-		waterShader_.loadAndLinkFromFile("water.ver.glsl", "water.fra.glsl");
+		floorTime_ = 0.0;
+		waveTime_ = 0.0;
 		size_ = 100;
 		numberVertices_ = 0;
-
-		waterShader_.glUseProgram();
-		uProjIndex_ = waterShader_.getUniformLocation("uProj");
-		uModelIndex_ = waterShader_.getUniformLocation("uModel");
-		uPosIndex_ = waterShader_.getUniformLocation("uPos");
-		uTimeIndex_ = waterShader_.getUniformLocation("uTime");
-		aPosIndex_ = waterShader_.getAttributeLocation("aPos");
-		aTexIndex_ = waterShader_.getAttributeLocation("aTex");
 	}
 
 	void Water::addTriangle(Position p1, Position p2, Position p3) {
@@ -48,7 +38,7 @@ namespace zombie {
 	}
 
 	void Water::drawSeeFloor(float deltaTime, const GameShader& shader) {
-		time_ += deltaTime;
+		floorTime_ += deltaTime;
 		
 		if (vbo_.getSize() == 0) {
 			aPos_.insert(aPos_.end(), aTex_.begin(), aTex_.end());
@@ -60,8 +50,8 @@ namespace zombie {
 		shader.useGlShader();
 		shader.setGlTextureU(true);
 		shader.setGlColorU(1, 1, 1);
-		shader.setGlAngleU(0);
-		shader.setGlPositionU(ZERO);
+		shader.setGlLocalAngleU(0);
+		shader.setGlGlobalPositionU(ZERO);
 
 		// Draw see floor.
 		vbo_.bindBuffer();
@@ -74,16 +64,15 @@ namespace zombie {
 		vbo_.unbindBuffer();
 	}
 
-	void Water::drawWaves() {
-		// Draw waves.
-		waterShader_.glUseProgram();
-		vbo_.bindBuffer();
-		mw::glUniform1f(uTimeIndex_, time_);
+	void Water::drawWaves(float deltaTime, const WaterShader& shader) {
+		waveTime_ += deltaTime;
 
-		mw::glEnableVertexAttribArray(aPosIndex_);
-		mw::glVertexAttribPointer(aPosIndex_, 2, GL_FLOAT, GL_FALSE, 0, (const void*) 0);
-		mw::glEnableVertexAttribArray(aTexIndex_);
-		mw::glVertexAttribPointer(aTexIndex_, 2, GL_FLOAT, GL_FALSE, 0, (const void*) (vbo_.getSize() / 2));
+		// Draw waves.
+		shader.useGlShader();
+		vbo_.bindBuffer();
+
+		shader.setGlTimeU(waveTime_);
+		shader.setGlVer2dCoordsA((const void*) 0);
 
 		mw::glEnable(GL_BLEND);
 		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -91,21 +80,6 @@ namespace zombie {
 		mw::glDisable(GL_BLEND);
 		
 		vbo_.unbindBuffer();
-	}
-
-	void Water::updateShaderProjectionMatrix(const mw::Matrix44& proj) {
-		waterShader_.glUseProgram();
-		mw::glUniformMatrix4fv(uProjIndex_, 1, false, proj.data());
-	}
-
-	void Water::updateShaderModelMatrix(const mw::Matrix44& model) {
-		waterShader_.glUseProgram();
-		mw::glUniformMatrix4fv(uModelIndex_, 1, false, model.data());
-	}
-
-	void Water::updateShaderCenterPosition(Position position) {
-		waterShader_.glUseProgram();
-		mw::glUniform2f(uPosIndex_, position.x, position.y);
 	}
 
 	Water loadWater(GameDataEntry entry) {

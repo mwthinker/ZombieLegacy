@@ -72,6 +72,8 @@ set(SOURCES_ZOMBIE
 	src/unit.h
 	src/unit2d.cpp
 	src/unit2d.h
+	src/watershader.cpp
+	src/watershader.h
 	src/weapon.h
 	src/weapon2d.cpp
 	src/weapon2d.h	

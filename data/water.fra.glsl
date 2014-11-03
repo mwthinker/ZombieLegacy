@@ -1,10 +1,10 @@
 #version 100
 
-precision mediump float;
+precision highp float;
 
 uniform float uTime;
 
-varying vec2 vPos;
+varying vec2 vVer;
 
 const float PI = 3.14159265359;
 
@@ -23,9 +23,9 @@ float circleWaveHeight(float amplitude, vec2 center, float waveLength, float spe
 }
 
 void main() {
-	float h1 = circleWaveHeight(1.0, vec2(100.0,100.0), 30.0, 11.0, vPos, uTime);
-	float h2 = circleWaveHeight(1.0, vec2(-100.0,0.0), 80.0, 4.0, vPos, uTime);
-	float h3 = waveHeight(4.0, vec2(1,0), 150.0, 15.0, vPos, uTime);
+	float h1 = circleWaveHeight(1.0, vec2(100.0,100.0), 30.0, 11.0, vVer, uTime);
+	float h2 = circleWaveHeight(1.0, vec2(-100.0,0.0), 80.0, 4.0, vVer, uTime);
+	float h3 = waveHeight(4.0, vec2(1,0), 150.0, 15.0, vVer, uTime);
 	float h = h1*0.3 + h2*0.3 + h3*0.3;
 	gl_FragColor = vec4(0, 0, 0, h + 0.5);
 }

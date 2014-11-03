@@ -1,12 +1,12 @@
 #version 100
 
-precision mediump float;
+precision highp float;
 
 uniform mat4 uProj;
 uniform mat4 uModel;
-uniform vec2 uCenterPos;
-uniform vec2 uPos;
-uniform float uAngle;
+uniform vec2 uGlobalCenterPos;
+uniform vec2 uGlobalPos;
+uniform float uLocalAngle;
 
 attribute vec2 aVer;
 attribute vec2 aTex;
@@ -15,13 +15,13 @@ varying vec2 vTex;
 
 void main() {
 	// Column-major order.
-	mat3 rot = mat3(cos(uAngle), sin(uAngle), 0,
-					-sin(uAngle), cos(uAngle), 0,
+	mat3 rot = mat3(cos(uLocalAngle), sin(uLocalAngle), 0,
+					-sin(uLocalAngle), cos(uLocalAngle), 0,
 					0, 0, 1);
 	
 	mat3 tra = mat3(1, 0, 0,
 					0, 1, 0,					
-					uPos.x - uCenterPos.x, uPos.y - uCenterPos.y, 1);
+					uGlobalPos.x - uGlobalCenterPos.x, uGlobalPos.y - uGlobalCenterPos.y, 1);
 	
 	vec3 pos = tra * rot * vec3(aVer, 1);
 	

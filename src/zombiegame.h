@@ -11,10 +11,11 @@
 #include "car2d.h"
 #include "building2d.h"
 #include "missile2d.h"
-#include "gameshader.h"
 #include "water.h"
 #include "player.h"
 #include "array.h"
+#include "gameshader.h"
+#include "watershader.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
@@ -145,6 +146,7 @@ namespace zombie {
 
 		ZombieEngine engine_;
 		GameShader gameShader_;
+		WaterShader waterShader_;
 		bool started_;
 		
 		State humanState_;

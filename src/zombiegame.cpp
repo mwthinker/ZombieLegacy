@@ -48,6 +48,7 @@ namespace zombie {
 		timeStep_(zombieEntry.getEntry("settings timeStepMS").getInt() / 1000.f),
 		accumulator_(0),
 		gameShader_("gameshader.ver.glsl", "gameshader.fra.glsl"),
+		waterShader_("water.ver.glsl", "water.fra.glsl"),
 		started_(false)
 
 		{
@@ -250,15 +251,17 @@ namespace zombie {
 		mw::translate2D(matrix, dim.width_*0.5f, dim.height_*0.5f);
 		mw::scale2D(matrix, 50 * scale_, 50 * scale_);
 
-		water_.updateShaderModelMatrix(matrix);
-		water_.updateShaderProjectionMatrix(getProjectionMatrix());
-		water_.updateShaderCenterPosition(viewPosition_);
-
+		// Update global uniform data to the shaders used.
+		waterShader_.useGlShader();
+		waterShader_.setGlProjectionMatrixU(getProjectionMatrix());
+		waterShader_.setGlModelMatrixU(matrix);
+		waterShader_.setGlGlobalCenterPositionU(viewPosition_);
+		
 		gameShader_.useGlShader();
 		gameShader_.setGlProjectionMatrixU(getProjectionMatrix());
 		gameShader_.setGlModelMatrixU(matrix);
-		gameShader_.setGlCenterPositionU(viewPosition_);
-
+		gameShader_.setGlGlobalCenterPositionU(viewPosition_);
+		
 		// Game has not started?
 		if (!started_) {
 			deltaTime = 0;
@@ -291,7 +294,7 @@ namespace zombie {
 			}
 		}
 		
-		water_.drawWaves();
+		water_.drawWaves(deltaTime, waterShader_);
 		for (auto& explosion : explosions_) {
 			if (!explosion.toBeRemoved()) {
 				explosion.draw(deltaTime, gameShader_);

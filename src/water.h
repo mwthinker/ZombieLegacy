@@ -5,6 +5,7 @@
 #include "auxiliary.h"
 #include "gamedataentry.h"
 #include "gameshader.h"
+#include "watershader.h"
 
 #include <mw/opengl.h>
 #include <mw/color.h>
@@ -25,11 +26,7 @@ namespace zombie {
 		
 		void drawSeeFloor(float deltaTime, const GameShader& shader);
 
-		void drawWaves();
-
-		void updateShaderProjectionMatrix(const mw::Matrix44& proj);
-		void updateShaderModelMatrix(const mw::Matrix44& model);
-		void updateShaderCenterPosition(Position position);
+		void drawWaves(float deltaTime, const WaterShader& shader);
 
 	private:
 		struct CircularWave {
@@ -41,14 +38,6 @@ namespace zombie {
 			float speed_;
 		};
 
-		mw::Shader waterShader_;
-		int uProjIndex_;
-		int uModelIndex_;
-		int uPosIndex_;
-		int uTimeIndex_;
-		int aPosIndex_;
-		int aTexIndex_;
-
 		mw::VertexBufferObject vbo_;
 
 		std::vector<GLfloat> aPos_;
@@ -56,7 +45,8 @@ namespace zombie {
 		mw::Texture seeFloor_;
 		int numberVertices_;
 
-		float time_;
+		float floorTime_;
+		float waveTime_;
 		mw::Sprite water_;
 		float size_;
 	};

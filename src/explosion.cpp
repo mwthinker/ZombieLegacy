@@ -45,7 +45,7 @@ namespace zombie {
 		
 		if (time_ > delay_) {
 			shader.useGlShader();
-			shader.setGlPositionU(ZERO);
+			shader.setGlGlobalPositionU(ZERO);
 			particleEngine_.draw(deltaTime, shader);
 		}
 	}

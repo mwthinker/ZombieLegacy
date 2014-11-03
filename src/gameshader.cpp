@@ -9,9 +9,9 @@ namespace zombie {
 		// Collect the vertex buffer uniforms indexes.
 		uProjIndex_ = -1;
 		uModelIndex_ = -1;
-		uCenterPosIndex_ = -1;
-		uPosIndex_ = -1;
-		uAngleIndex_ = -1;
+		uGlobalCenterPosIndex_ = -1;
+		uGlobalPosIndex_ = -1;
+		uLocalAngleIndex_ = -1;
 
 		// Collect the fragment buffer uniforms indexes.
 		uColorIndex_ = -1;
@@ -32,9 +32,9 @@ namespace zombie {
 		// Collect the vertex buffer uniforms indexes.
 		uProjIndex_ = shader_.getUniformLocation("uProj");
 		uModelIndex_ = shader_.getUniformLocation("uModel");
-		uCenterPosIndex_ = shader_.getUniformLocation("uCenterPos");
-		uPosIndex_ = shader_.getUniformLocation("uPos");
-		uAngleIndex_ = shader_.getUniformLocation("uAngle");
+		uGlobalCenterPosIndex_ = shader_.getUniformLocation("uGlobalCenterPos");
+		uGlobalPosIndex_ = shader_.getUniformLocation("uGlobalPos");
+		uLocalAngleIndex_ = shader_.getUniformLocation("uLocalAngle");
 		
 		// Collect the fragment buffer uniforms indexes.
 		uColorIndex_ = shader_.getUniformLocation("uColor");
@@ -77,16 +77,16 @@ namespace zombie {
 		mw::glUniformMatrix4fv(uModelIndex_, 1, false, matrix.data());
 	}
 
-	void GameShader::setGlCenterPositionU(Position position) const {
-		mw::glUniform2f(uCenterPosIndex_, position.x, position.y);
+	void GameShader::setGlGlobalCenterPositionU(Position position) const {
+		mw::glUniform2f(uGlobalCenterPosIndex_, position.x, position.y);
 	}
 
-	void GameShader::setGlPositionU(Position position) const {
-		mw::glUniform2f(uPosIndex_, position.x, position.y);
+	void GameShader::setGlGlobalPositionU(Position position) const {
+		mw::glUniform2f(uGlobalPosIndex_, position.x, position.y);
 	}
 
-	void GameShader::setGlAngleU(float angle) const {
-		mw::glUniform1f(uAngleIndex_, angle);
+	void GameShader::setGlLocalAngleU(float angle) const {
+		mw::glUniform1f(uLocalAngleIndex_, angle);
 	}
 	
 	void GameShader::setGlColorU(float red, float green, float blue, float alpha) const {
