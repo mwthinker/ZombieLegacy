@@ -50,7 +50,7 @@ namespace zombie {
 
 	} // Anonymous namespace.
 
-	ZombieWindow::ZombieWindow(GameDataEntry zombieEntry) : 
+	ZombieWindow::ZombieWindow(GameDataEntry zombieEntry, bool skipMenu) :
 		gui::Frame(zombieEntry.getEntry("window positionX").getInt(), 
 			zombieEntry.getEntry("window positionY").getInt(),
 			zombieEntry.getEntry("window width").getInt(),
@@ -106,7 +106,12 @@ namespace zombie {
 		initplayFrame();
 		initCustomplayFrame();
 		initHighscoreFrame();
-		setCurrentPanel(menuFrameIndex_);
+
+		if (skipMenu) {
+			setCurrentPanel(playFrameIndex_);
+		} else {
+			setCurrentPanel(menuFrameIndex_);
+		}		
 
 		setDefaultClosing(true);
 

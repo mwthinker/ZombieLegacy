@@ -16,7 +16,7 @@ namespace zombie {
 
 	class ZombieWindow : public gui::Frame {
 	public:
-		ZombieWindow(GameDataEntry gameDataEntry);
+		ZombieWindow(GameDataEntry gameDataEntry, bool skipMenu = false);
 
 		~ZombieWindow();
 
