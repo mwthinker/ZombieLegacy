@@ -58,8 +58,9 @@ namespace zombie {
 		lastFramTime_(0),
 		timeStep_(zombieEntry.getEntry("settings timeStepMS").getInt() / 1000.f),
 		accumulator_(0),
-		gameShader_("gameshader.ver.glsl", "gameshader.fra.glsl"),
+		gameShader_("game.ver.glsl", "game.fra.glsl"),
 		waterShader_("water.ver.glsl", "water.fra.glsl"),
+		buildingShader_("building.ver.glsl", "building.fra.glsl"),
 		started_(false)
 
 		{

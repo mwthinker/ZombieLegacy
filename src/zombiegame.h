@@ -17,6 +17,7 @@
 #include "array.h"
 #include "gameshader.h"
 #include "watershader.h"
+#include "buildingshader.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
@@ -149,6 +150,7 @@ namespace zombie {
 		ZombieEngine engine_;
 		GameShader gameShader_;
 		WaterShader waterShader_;
+		BuildingShader buildingShader_;
 		bool started_;
 		
 		State humanState_;

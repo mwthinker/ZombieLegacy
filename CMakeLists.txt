@@ -25,6 +25,8 @@ set(SOURCES_ZOMBIE
 	src/auxiliary.h
 	src/box2ddef.h
 	src/building.h
+	src/buildingshader.h
+	src/buildingshader.cpp
 	src/building2d.cpp
 	src/building2d.h
 	src/car.cpp
