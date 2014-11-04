@@ -14,7 +14,7 @@ namespace zombie {
 		lastTime_ = 0;
 		speed_ = 1.f;
 		loop_ = true;
-		end_ = false;
+		end_ = true;
 	}
 
 	// The animation is reset to the first frame.
@@ -27,6 +27,7 @@ namespace zombie {
 	// Add a frame and point it to the current sprite sheet.
 	void Animation::add(const mw::Sprite& sprite, float bodyWidth, float time) {
 		frames_.emplaceBack(sprite, bodyWidth, time);
+		end_ = false;
 	}
 
 	void Animation::draw(float deltaTime, float x, float y, float w, float h, const GameShader& shader) {

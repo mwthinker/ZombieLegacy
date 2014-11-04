@@ -1,5 +1,4 @@
 #include "zombieengine.h"
-#include "box2ddef.h"
 #include "gameinterface.h"
 #include "unit.h"
 #include "car.h"
@@ -62,6 +61,7 @@ namespace zombie {
 		switch (eventType) {
 			case Unit::ACTION:
 				doAction(unit);
+				break;
 			case Unit::DIE:
 				gameInterface_.unitDied(*unit);
 				break;

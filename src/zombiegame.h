@@ -3,6 +3,7 @@
 
 #include "zombieengine.h"
 #include "gameinterface.h"
+#include "graphicanimation.h"
 #include "device.h"
 #include "gamedataentry.h"
 #include "terrain2d.h"
@@ -135,10 +136,11 @@ namespace zombie {
 		Array<Unit2D, 100> units_;
 		Array<Missile2D, 10> missiles_;
 		Array<Car2D, 20> cars_;
-		Array<Building2D, 100> buildings_;
+		Array<Building2D, 100> buildings_;		
 
 		std::vector<std::unique_ptr<Player>> players_;
 		std::array<Explosion, 10> explosions_;
+		std::array<GraphicAnimation, 100> graphicAnimations_;
 
 		int frame_;
 		float fps_;

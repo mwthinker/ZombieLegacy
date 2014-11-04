@@ -7,26 +7,36 @@
 
 #include <mw/opengl.h>
 
+#include <cassert>
+
 namespace zombie {
 
 	class GraphicAnimation {
 	public:
+		GraphicAnimation() {
+			animation_.setLooping(false);
+		}
+
 		GraphicAnimation(Position position, float angle, const Animation& animation) : animation_(animation) {
 			position_ = position;
 			angle_ = angle;
 			animation_.setLooping(false);
 		}
 
+		inline void restart(Position position, float angle, const Animation& animation) {
+			position_ = position;
+			angle_ = angle;
+			animation_ = animation;
+			animation_.setLooping(false);
+			assert(!animation_.isLooping()); // May cause a infinity loop in zombieGame.
+		}
+
 		void draw(float deltaTime, const GameShader& shader) {
-			/*
-			wPtr->useShader();
-			wPtr->setColor(1, 1, 1);
-			mw::Matrix44 old = wPtr->getModel();
-			wPtr->setModel(old * mw::getTranslateMatrix44(position_.x, position_.y) * mw::getRotateMatrix44(angle_, 0, 0, 1));
-			//glScale2f(2 * getRadius());
-			animation_.draw(deltaTime, wPtr);
-			wPtr->setModel(old);
-			*/
+			shader.useGlShader();
+			shader.setGlColorU(1, 1, 1);
+			shader.setGlGlobalPositionU(position_);
+			shader.setGlLocalAngleU(angle_);
+			animation_.draw(deltaTime, 0, 0, 1, 1, shader);
 		}
 
 		bool toBeRemoved() const {
