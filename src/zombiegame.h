@@ -18,6 +18,7 @@
 #include "gameshader.h"
 #include "watershader.h"
 #include "buildingshader.h"
+#include "drawbuildings.h"
 
 #include <mw/texture.h>
 #include <mw/sprite.h>
@@ -61,15 +62,15 @@ namespace zombie {
 			return zombiesKilled_;
 		}
 
-		float getHealth() {
+		float getHealth() const {
 			return health_;
 		}
 
-		int getClipSize() {
+		int getClipSize() const {
 			return clipsize_;
 		}
 
-		int getBulletsInWeapon() {
+		int getBulletsInWeapon() const {
 			return bulletsInWeapon_;
 		}		
 
@@ -138,7 +139,7 @@ namespace zombie {
 		Array<Missile2D, 10> missiles_;
 		Array<Car2D, 20> cars_;
 		Array<Building2D, 100> buildings_;
-		DrawBuilding2D drawBuildings_;
+		DrawBuildings drawBuildings_;
 
 		std::vector<std::unique_ptr<Player>> players_;
 		std::array<Explosion, 10> explosions_;

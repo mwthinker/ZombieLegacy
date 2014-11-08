@@ -34,9 +34,11 @@ set(SOURCES_ZOMBIE
 	src/car2d.cpp
 	src/car2d.h
 	src/closestraycastcallback.h
-	src/contactlistener.h
 	src/contactlistener.cpp
+	src/contactlistener.h	
 	src/device.h
+	src/drawbuildings.cpp
+	src/drawbuildings.h
 	src/gamedataentry.cpp
 	src/gamedataentry.h
 	src/gameinterface.h
