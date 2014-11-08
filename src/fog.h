@@ -9,8 +9,6 @@
 #include <mw/color.h>
 #include <mw/sprite.h>
 
-#include <gui/windowmatrix.h>
-
 #include <array>
 
 namespace zombie {

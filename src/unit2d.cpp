@@ -90,7 +90,7 @@ namespace zombie {
 
 		std::string path = "equipment weapons ";
 		path += weaponName;
-		auto weaponEntry = zombieGameEntry.getEntry(path);
+		auto weaponEntry = zombieGameEntry.getDeepChildEntry(path);
 		
 		std::shared_ptr<Weapon> weapon;
 		if (weaponEntry.isAttributeEqual("projectile", "missile")) {

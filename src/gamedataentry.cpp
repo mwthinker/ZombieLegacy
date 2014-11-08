@@ -124,8 +124,8 @@ namespace zombie {
 	GameDataEntry::GameDataEntry(std::string fileName) : xml::DataEntry(fileName), gameData_(std::make_shared<GameData>()) {
 	}
 
-	GameDataEntry GameDataEntry::getEntry(std::string tagNames) const {
-		return GameDataEntry(*this, xml::DataEntry::getEntry(tagNames));
+	GameDataEntry GameDataEntry::getDeepChildEntry(std::string tagNames) const {
+		return GameDataEntry(*this, xml::DataEntry::getDeepChildEntry(tagNames));
 	}
 
 	GameDataEntry GameDataEntry::getChildEntry(std::string tagName) const {

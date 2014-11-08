@@ -51,12 +51,12 @@ namespace zombie {
 	}
 
 	ZombieGame::ZombieGame(GameDataEntry zombieEntry) : engine_(*this,
-		zombieEntry.getEntry("settings impulseThreshold").getFloat()), zombieEntry_(zombieEntry),
-		water_(loadWater(zombieEntry.getEntry("water"))),
+		zombieEntry.getDeepChildEntry("settings impulseThreshold").getFloat()), zombieEntry_(zombieEntry),
+		water_(loadWater(zombieEntry.getDeepChildEntry("water"))),
 		frame_(0),
 		fps_(60),
 		lastFramTime_(0),
-		timeStep_(zombieEntry.getEntry("settings timeStepMS").getInt() / 1000.f),
+		timeStep_(zombieEntry.getDeepChildEntry("settings timeStepMS").getInt() / 1000.f),
 		accumulator_(0),
 		gameShader_("game.ver.glsl", "game.fra.glsl"),
 		waterShader_("water.ver.glsl", "water.fra.glsl"),
@@ -86,35 +86,35 @@ namespace zombie {
 			keyboard_->eventUpdate(keyEvent);
 		});
 
-		if (zombieEntry_.getEntry("music switch").getBool()) {
-			music_ = zombieEntry_.getEntry("music track").getMusic();
-			music_.setVolume(zombieEntry_.getEntry("music volume").getFloat());
+		if (zombieEntry_.getDeepChildEntry("music switch").getBool()) {
+			music_ = zombieEntry_.getDeepChildEntry("music track").getMusic();
+			music_.setVolume(zombieEntry_.getDeepChildEntry("music volume").getFloat());
 			music_.play(-1);
 		}
 
-		tree_ = zombieEntry_.getEntry("tree image").getSprite();
-		wall_ = zombieEntry_.getEntry("buildings wallImage").getSprite();
+		tree_ = zombieEntry_.getDeepChildEntry("tree image").getSprite();
+		wall_ = zombieEntry_.getDeepChildEntry("buildings wallImage").getSprite();
 		nbrUnits_ = 0;
 
-		unitMaxLimit_ = zombieEntry_.getEntry("settings unitLimit").getInt();
+		unitMaxLimit_ = zombieEntry_.getDeepChildEntry("settings unitLimit").getInt();
 
-		innerSpawnRadius_ = zombieEntry_.getEntry("settings innerSpawnRadius").getFloat();
-		outerSpawnRadius_ = zombieEntry_.getEntry("settings outerSpawnRadius").getFloat();
+		innerSpawnRadius_ = zombieEntry_.getDeepChildEntry("settings innerSpawnRadius").getFloat();
+		outerSpawnRadius_ = zombieEntry_.getDeepChildEntry("settings outerSpawnRadius").getFloat();
 		loadTerrain();
 		
-		explosionProperties_ = zombie::loadExplosion(zombieEntry_.getEntry("explosion"));
+		explosionProperties_ = zombie::loadExplosion(zombieEntry_.getDeepChildEntry("explosion"));
 
-		humanInjured_ = zombieEntry_.getEntry("human injuredAnimation").getAnimation();
-		humanDie_ = zombieEntry_.getEntry("human dieAnimation").getAnimation();
+		humanInjured_ = zombieEntry_.getDeepChildEntry("human injuredAnimation").getAnimation();
+		humanDie_ = zombieEntry_.getDeepChildEntry("human dieAnimation").getAnimation();
 		Unit2D human(loadUnit(this, "human", zombieEntry_, false));
-		human.setDieSound(zombieEntry_.getEntry("human dieSound").getSound());
-		human.setHitSound(zombieEntry_.getEntry("human hitSound").getSound());
+		human.setDieSound(zombieEntry_.getDeepChildEntry("human dieSound").getSound());
+		human.setHitSound(zombieEntry_.getDeepChildEntry("human hitSound").getSound());
 		
-		zombieInjured_ = zombieEntry_.getEntry("zombie injuredAnimation").getAnimation();
-		zombieDie_ = zombieEntry_.getEntry("zombie dieAnimation").getAnimation();
+		zombieInjured_ = zombieEntry_.getDeepChildEntry("zombie injuredAnimation").getAnimation();
+		zombieDie_ = zombieEntry_.getDeepChildEntry("zombie dieAnimation").getAnimation();
 		Unit2D zombie(loadUnit(this, "zombie", zombieEntry_, false));
-		zombie.setDieSound(zombieEntry_.getEntry("zombie dieSound").getSound());
-		zombie.setHitSound(zombieEntry_.getEntry("zombie hitSound").getSound());
+		zombie.setDieSound(zombieEntry_.getDeepChildEntry("zombie dieSound").getSound());
+		zombie.setHitSound(zombieEntry_.getDeepChildEntry("zombie hitSound").getSound());
 
 		// Add human to engine.
 		{
@@ -130,7 +130,7 @@ namespace zombie {
 		}
 
 		// Add zombies to engine.
-		unsigned int unitLevel = zombieEntry_.getEntry("settings unitLevel").getInt();
+		unsigned int unitLevel = zombieEntry_.getDeepChildEntry("settings unitLevel").getInt();
 		for (unsigned int i = 1; i <= unitLevel && i < units_.getMaxSize(); ++i) {
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
 			Unit* unit = units_.pushBack(zombie);
@@ -141,7 +141,7 @@ namespace zombie {
 		}
 	
 		// Add cars to engine.
-		Car2D car(zombie::loadCar(zombieEntry_.getEntry("car")));
+		Car2D car(zombie::loadCar(zombieEntry_.getDeepChildEntry("car")));
 		for (unsigned int i = 0; i < 1 && i < units_.getMaxSize(); ++i) {
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
 			Car* c = cars_.pushBack(car);
@@ -151,7 +151,7 @@ namespace zombie {
 		}
 
 		// Add cars to engine.
-		Missile2D missile(loadMissile2D(this, zombieEntry_.getEntry("equipment missile")));
+		Missile2D missile(loadMissile2D(this, zombieEntry_.getDeepChildEntry("equipment missile")));
 		for (unsigned int i = 0; i < 10 && i < units_.getMaxSize(); ++i) {
 			engine_.add(missiles_.emplaceBack(missile));
 		}
@@ -431,8 +431,8 @@ namespace zombie {
 	}
 
 	void ZombieGame::loadTerrain() {
-		auto entry = GameDataEntry(zombieEntry_.getEntry("settings map").getString());
-		entry = entry.getEntry("map objects object");
+		auto entry = GameDataEntry(zombieEntry_.getDeepChildEntry("settings map").getString());
+		entry = entry.getDeepChildEntry("map objects object");
 		while (entry.hasData()) {
 			std::string geom(entry.getChildEntry("geom").getString());
 			if (entry.isAttributeEqual("type", "building")) {

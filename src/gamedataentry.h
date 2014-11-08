@@ -32,7 +32,7 @@ namespace zombie {
 	public:
 		GameDataEntry(std::string fileName);
 
-		GameDataEntry getEntry(std::string tagNames) const;
+		GameDataEntry getDeepChildEntry(std::string tagNames) const;
 
 		GameDataEntry getChildEntry(std::string tagName) const;
 
