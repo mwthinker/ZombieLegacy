@@ -19,31 +19,29 @@ namespace zombie {
 
 		// Vertex buffer Attributes. ---------------------------
 		
-		void setGlVer2dCoordsA(const GLvoid* data) const;
-		void setGlVer2dCoordsA(GLsizei stride, const GLvoid* data) const;		
+		void setGlVer3dCoordsA(const GLvoid* data) const;
+		void setGlVer3dCoordsA(GLsizei stride, const GLvoid* data) const;		
 
 		void setGlTexCoordsA(const GLvoid* data) const;
 		void setGlTexCoordsA(GLsizei stride, const GLvoid* data) const;
-		
-		void setGlHeightA(const GLvoid* data) const;
-		void setGlHeightA(GLsizei stride, const GLvoid* data) const;
 
 		// Uniforms. -------------------------------------------
 
 		void setGlProjectionMatrixU(const mw::Matrix44& matrix) const;
 		void setGlModelMatrixU(const mw::Matrix44& matrix) const;
 		void setGlGlobalCenterPositionU(Position position) const;
+		void setGlGlobalHumanPositionU(Position position) const;
 
 	private:
 		mw::Shader shader_;
 		
 		int aVerIndex_;
 		int aTexIndex_;
-		int aHeightIndex_;
 		
 		int uProjIndex_;
 		int uModelIndex_;
 		int uGlobalCenterPosIndex_;
+		int uGlobalHumanPosIndex_;
 	};
 
 } // Namespace zombie.

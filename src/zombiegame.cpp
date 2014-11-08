@@ -158,6 +158,8 @@ namespace zombie {
 
 		setBackgroundColor(0, 0.1f, 0);
 		zombiesKilled_ = 0;
+
+		drawBuildings_.createVBO(buildings_, wall_.getTexture());
 	}
 	
 	/*
@@ -268,6 +270,12 @@ namespace zombie {
 		waterShader_.setGlProjectionMatrixU(getProjectionMatrix());
 		waterShader_.setGlModelMatrixU(matrix);
 		waterShader_.setGlGlobalCenterPositionU(viewPosition_);
+
+		buildingShader_.useGlShader();
+		buildingShader_.setGlProjectionMatrixU(getProjectionMatrix());
+		buildingShader_.setGlModelMatrixU(matrix);
+		buildingShader_.setGlGlobalCenterPositionU(viewPosition_);
+		buildingShader_.setGlGlobalHumanPositionU(humanState_.position_);
 		
 		gameShader_.useGlShader();
 		gameShader_.setGlProjectionMatrixU(getProjectionMatrix());
@@ -279,9 +287,16 @@ namespace zombie {
 			deltaTime = 0;
 		}
 		
+
+		mw::checkGlError();
 		water_.drawSeeFloor(deltaTime, gameShader_);
 		terrain_.draw(deltaTime, gameShader_);
-
+		
+		//mw::glEnable(GL_DEPTH_TEST);
+		drawBuildings_.drawWall(accumulator_, deltaTime, buildingShader_);
+		//mw::glDisable(GL_DEPTH_TEST);
+		
+		gameShader_.useGlShader();
 		for (GraphicAnimation& animation : graphicAnimations_) {
 			if (!animation.toBeRemoved()) {
 				animation.draw(deltaTime, gameShader_);
@@ -300,11 +315,7 @@ namespace zombie {
 			}
 		}
 
-		for (Building2D& building : buildings_) {
-			if (building.isActive()) {
-				building.draw(accumulator_, deltaTime, gameShader_);
-			}
-		}
+		drawBuildings_.drawRoof(accumulator_, deltaTime, buildingShader_);
 
 		for (Missile2D& missile : missiles_) {
 			if (missile.isActive()) {
