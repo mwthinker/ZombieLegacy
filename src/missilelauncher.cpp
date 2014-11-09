@@ -8,7 +8,7 @@
 namespace zombie {
 	
 	MissileLauncher::MissileLauncher(int clipSize, float timeBetweenShots, float range,
-		float damageRadius, float damage, float deathTime, float speed) {
+		float damageRadius, float damage, float deathTime, float speed, float force) {
 		
 		clipSize_ = clipSize;
 		timeBetweenShots_ = timeBetweenShots;
@@ -19,6 +19,7 @@ namespace zombie {
 		damage_ = damage;
 		deathTime_ = deathTime;
 		speed_ = speed;
+		force_ = force;
 	}
 
 	void MissileLauncher::pullTrigger(Unit& unit, float time) {
@@ -26,7 +27,7 @@ namespace zombie {
 			if (bulletsInWeapon_ > 0) {
 				lastShotTime_ = time;
 				--bulletsInWeapon_;
-				gameInterface_->shot(unit, speed_, deathTime_, damage_, damageRadius_);
+				gameInterface_->shot(unit, speed_, deathTime_, damage_, damageRadius_, force_);
 			}
 		}
 	}

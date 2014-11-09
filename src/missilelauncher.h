@@ -12,7 +12,7 @@ namespace zombie {
 	class MissileLauncher : public WeaponInterface {
 	public:
 		MissileLauncher(int clipSize, float timeBetweenShots, float range,
-			float damageRadius, float damage, float deathTime, float speed);
+			float damageRadius, float damage, float deathTime, float speed, float force);
 
 		void pullTrigger(Unit& unit, float time) override final;
 
@@ -48,6 +48,7 @@ namespace zombie {
 		float damage_;
 		float deathTime_;
 		float speed_;
+		float force_;
 	};
 
 } // Namespace zombie.

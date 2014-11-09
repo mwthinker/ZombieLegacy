@@ -17,9 +17,9 @@ namespace zombie {
 	class MissileLauncher2D : public MissileLauncher {
 	public:
 		MissileLauncher2D(int clipSize, float timeBetweenShots, float range,
-			float damageRadius, float damage, float deathTime, float speed,
+			float damageRadius, float damage, float deathTime, float speed, float force,
 			mw::Sound shot = mw::Sound(), mw::Sound reload = mw::Sound())
-			: MissileLauncher(clipSize, timeBetweenShots, range, damageRadius, damage, deathTime, speed),
+			: MissileLauncher(clipSize, timeBetweenShots, range, damageRadius, damage, deathTime, speed, force),
 			shot_(shot), reload_(reload) {
 
 		}

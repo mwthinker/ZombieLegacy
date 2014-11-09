@@ -17,13 +17,14 @@ namespace zombie {
 
 	}
 
-	void Missile::create(Position position, float angle, float speed, float explodeTime, float damage, float explosionRadius) {
+	void Missile::create(Position position, float angle, float speed, float explodeTime, float damage, float explosionRadius, float force) {
 		speed_ = speed;
 		damage_ = damage;
 		explosionRadius_ = explosionRadius;
 		explode_ = false;
 		explodeTime_ = explodeTime;
 		time_ = 0;
+		force_ = force;
 		body_->SetActive(true);
 		body_->SetAwake(true);
 		// Set the position and current angle.
@@ -106,9 +107,10 @@ namespace zombie {
 	void Missile::explode() {
 		InViewQueryCallback queryCallback;
 		b2AABB aabb;
-		Position position = body_->GetPosition();
-		aabb.lowerBound = position + explosionRadius_ *  Position(0.5f, 0.5f);
-		aabb.upperBound = position - explosionRadius_ *  Position(0.5f, 0.5f);
+		float angle = body_->GetAngle();
+		Position explosionPosition = body_->GetPosition() + 0.5f * length_ * Position(std::cos(angle), std::sin(angle));
+		aabb.lowerBound = explosionPosition + explosionRadius_ *  Position(0.5f, 0.5f);
+		aabb.upperBound = explosionPosition - explosionRadius_ *  Position(0.5f, 0.5f);
 		body_->GetWorld()->QueryAABB(&queryCallback, aabb);
 
 		for (b2Fixture* fixture : queryCallback.foundFixtures) {
@@ -116,7 +118,7 @@ namespace zombie {
 				Object* ob = static_cast<Object*>(fixture->GetUserData());
 				if (auto unit = dynamic_cast<Unit*>(ob)) {
 					unit->updateHealthPoint(-damage_);
-					Position dir = unit->getPosition() - position;
+					Position dir = unit->getPosition() - explosionPosition;
 					dir.Normalize();
 
 					// Apply some out going force to the object.
@@ -125,7 +127,7 @@ namespace zombie {
 			}
 		}
 		explode_ = false;
-		gameInterface_->explosion(position, explosionRadius_);
+		gameInterface_->explosion(explosionPosition, explosionRadius_);
 		body_->SetActive(false);
 		body_->SetAwake(false);
 	}

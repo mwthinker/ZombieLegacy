@@ -54,8 +54,8 @@
     <equipment>
 		<missile>
 			<mass>100</mass>
-			<width>1</width>
-			<length>2</length>
+			<width>0.3</width>
+			<length>0.6</length>
 			<animation>
 				<frame>
 					<image>images/projectile.png</image>
@@ -121,6 +121,7 @@
 					<range>10</range>
 					<deathTime>10</deathTime>
 					<speed>15</speed>
+					<force>15</force>
 				</projectile>
 			</missileLauncher>
 		</weapons>

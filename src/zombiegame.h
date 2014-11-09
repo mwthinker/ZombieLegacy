@@ -95,7 +95,7 @@ namespace zombie {
 
 		void removedFromWorld(Unit& unit) override;
 
-		void shot(Unit& shooter, float speed, float explodeTime, float damage, float explosionRadius) override;
+		void shot(Unit& shooter, float speed, float explodeTime, float damage, float explosionRadius, float force) override;
 		// End of the GameInterface.
 
 		void loadTerrain();

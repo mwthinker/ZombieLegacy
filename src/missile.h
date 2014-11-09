@@ -19,7 +19,7 @@ namespace zombie {
 		virtual ~Missile() {
 		}
 
-		void create(Position position, float angle, float speed, float explodeTime, float damage, float explosionRadius);
+		void create(Position position, float angle, float speed, float explodeTime, float damage, float explosionRadius, float force);
 
 		void updatePhysics(float time, float timeStep);
 

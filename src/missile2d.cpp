@@ -20,9 +20,9 @@ namespace zombie {
 		state.position_ = alpha * state.position_ + (1.f - alpha) * previousState().position_;
 		gameShader.useGlShader();
 		gameShader.setGlGlobalPositionU(state.position_);
-		gameShader.setGlLocalAngleU(getDirection());
+		gameShader.setGlLocalAngleU(state.angle_);
 		gameShader.setGlColorU(1, 1, 1);
-		animation_.draw(timeStep, 0, 0, getWidth(), getWidth(), gameShader);
+		animation_.draw(timeStep, 0, 0, getLength(), getLength(), gameShader);
 	}
 
 	Missile2D loadMissile2D(GameInterface* gameInterface, GameDataEntry& entry) {

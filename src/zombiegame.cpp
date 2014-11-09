@@ -286,7 +286,6 @@ namespace zombie {
 		if (!started_) {
 			deltaTime = 0;
 		}
-		
 
 		mw::checkGlError();
 		water_.drawSeeFloor(deltaTime, gameShader_);
@@ -300,6 +299,12 @@ namespace zombie {
 		for (GraphicAnimation& animation : graphicAnimations_) {
 			if (!animation.toBeRemoved()) {
 				animation.draw(deltaTime, gameShader_);
+			}
+		}
+
+		for (Missile2D& missile : missiles_) {
+			if (missile.isActive()) {
+				missile.draw(accumulator_, deltaTime, gameShader_);
 			}
 		}
 				
@@ -316,12 +321,6 @@ namespace zombie {
 		}
 
 		drawBuildings_.drawRoof(accumulator_, deltaTime, buildingShader_);
-
-		for (Missile2D& missile : missiles_) {
-			if (missile.isActive()) {
-				missile.draw(accumulator_, deltaTime, gameShader_);
-			}
-		}
 		
 		water_.drawWaves(deltaTime, waterShader_);
 		for (auto& explosion : explosions_) {
@@ -416,11 +415,17 @@ namespace zombie {
 		}
 	}
 
-	void ZombieGame::shot(Unit& shooter, float speed, float explodeTime, float damage, float explosionRadius) {
+	void ZombieGame::shot(Unit& shooter, float speed, float explodeTime, float damage, float explosionRadius, float force) {
 		for (auto& missile : missiles_) {
 			if (!missile.isActive()) {
-				missile.create(shooter.getPosition() + (shooter.getRadius() + missile.getLength() * 0.5f) * directionVector(shooter.getDirection()),
-					shooter.getDirection(), speed, explodeTime, damage, explosionRadius);
+				float x = shooter.getGrip().x;
+				float y = shooter.getGrip().y;
+				float angle = shooter.getDirection();
+				float s = std::sin(angle);
+				float c = std::cos(angle);
+				Position release = Position(c * x - s * y, s * x + c * y);  // Rotates the vector.
+				missile.create(shooter.getPosition() + release,
+					angle, speed, explodeTime, damage, explosionRadius, force);
 				// Only send one missile.
 				break;
 			}
