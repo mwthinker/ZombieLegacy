@@ -47,7 +47,7 @@ namespace zombie {
 			float diameter = 2 * getRadius();
 			float angle = getDirection();
 			
-			gameShader.useGlShader();
+			gameShader.glUseProgram();
 			gameShader.setGlColorU(1, 1, 1);
 			gameShader.setGlGlobalPositionU(getPosition());
 			gameShader.setGlLocalAngleU(getDirection());

@@ -15,7 +15,7 @@ namespace zombie {
 		WaterShader();
 		WaterShader(std::string vShaderFile, std::string fShaderFile);
 
-		void useGlShader() const;
+		void glUseProgram() const;
 
 		// Vertex buffer Attributes. ---------------------------
 		void setGlVer2dCoordsA(const GLvoid* data) const;

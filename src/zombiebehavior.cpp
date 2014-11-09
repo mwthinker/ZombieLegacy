@@ -15,46 +15,40 @@ namespace zombie {
 		unit_ = unit;
 		assert(unit_); // Null not allowed.
 		targetAngle_ = unit->getDirection();
+		target_ = nullptr;
 	}
 
 	ZombieBehavior::~ZombieBehavior() {
-		// Important to remove callback!
-		targetConnection_.disconnect();
 	}
 
 	void ZombieBehavior::updateInput(float time, float deltaTime) {
 		Input input;
-		/*
+
 		if (time > findNewTargetTime_) {
 			findNewTargetTime_ = random() * 3 + time;
 
-			MovingObject* target = findUninfectedTarget(unit_->getPosition(), unit_->getVisibleObjects());
-
-			if (target != nullptr) {
-				// Important to disconnect last connection, else risk of heap error.
-				targetConnection_.disconnect();
-				targetConnection_ = target->addUpdateHandler(std::bind(&ZombieBehavior::targetUpdate, this, std::placeholders::_1));
-				targetUpdate(target);
-			}
+			target_ = findUninfectedTarget(unit_->getPosition(), unit_->getVisibleObjects());
 		}
-		*/
+
 		if (time > timeToUpdateAngleDirection_) {
 			timeToUpdateAngleDirection_ = random() * 1 + time;
 
 			// Has a target?
-			if (targetConnection_.connected()) {
-				Position dir = targetPosition_ - unit_->getPosition();
+			if (target_ != nullptr && target_->isActive() && !target_->isDead()) {
+				Position targetPosition = target_->getPosition();
+				Position position = unit_->getPosition();
+				Position dir = targetPosition - position;
 				targetAngle_ = std::atan2(dir.y, dir.x);
 				forward_ = true;
 
-				double distSquared = (unit_->getPosition() - targetPosition_).LengthSquared();
+				double distSquared = dir.LengthSquared();
 				// Target is in range?
 				if (distSquared < unit_->getWeapon()->getRange() * unit_->getWeapon()->getRange()) {
 					// Attack!
 					input.shoot_ = true;
 				}
 			} else {
-				targetAngle_ +=  (random() - 0.5) * 2 * PI * 2 * 0.05;
+				targetAngle_ +=  (random() - 0.5f) * 2 * PI * 2 * 0.05f;
 				forward_ = random() > 0.25;
 			}
 		}
@@ -80,12 +74,12 @@ namespace zombie {
 
 	MovingObject* ZombieBehavior::findUninfectedTarget(Position position, const std::list<MovingObject*>& units) const {
 		MovingObject* target(nullptr);
-		/*
-		double distant = 100;
+
+		float distant = 100;
 		for (MovingObject* unit : units) {
 			// Not infected?
 			if (!unit->isInfected()) {
-				double tmp = (position - unit->getPosition()).LengthSquared();
+				float tmp = (position - unit->getPosition()).LengthSquared();
 				// Closer?
 				if (tmp < distant) {
 					target = unit;
@@ -93,12 +87,8 @@ namespace zombie {
 				}
 			}
 		}
-		*/
-		return target;
-	}
 
-	void ZombieBehavior::targetUpdate(MovingObject* mOb) {
-		targetPosition_ = mOb->getPosition();
+		return target;
 	}
 
 } // Namespace zombie.

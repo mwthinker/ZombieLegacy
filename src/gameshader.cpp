@@ -41,7 +41,7 @@ namespace zombie {
 		uIsTexIndex_ = shader_.getUniformLocation("uIsTexture");
 	}
 
-	void GameShader::useGlShader() const {
+	void GameShader::glUseProgram() const {
 		shader_.glUseProgram();
 	}
 

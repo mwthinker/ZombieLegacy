@@ -15,7 +15,7 @@ namespace zombie {
 		BuildingShader();
 		BuildingShader(std::string vShaderFile, std::string fShaderFile);
 
-		void useGlShader() const;
+		void glUseProgram() const;
 
 		// Vertex buffer Attributes. ---------------------------
 		

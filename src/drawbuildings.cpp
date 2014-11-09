@@ -74,11 +74,11 @@ namespace zombie {
 		vbo_.bindBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * data.size(), data.data(), GL_STATIC_DRAW);
 	}
 
-	void DrawBuildings::drawWall(float accumulator, float timeStep, const BuildingShader& gameShader) {
+	void DrawBuildings::drawWalls(float accumulator, float timeStep, const BuildingShader& gameShader) {
 		//drawArrays(6, 0, gameShader);
 	}
 
-	void DrawBuildings::drawRoof(float accumulator, float timeStep, const BuildingShader& gameShader) {
+	void DrawBuildings::drawRoofs(float accumulator, float timeStep, const BuildingShader& gameShader) {
 		drawArrays(0, 6 * nbrBuildings_, gameShader); // // 6 (vertices) * 1 (roof) * nbrBuildings.
 	}
 
@@ -88,7 +88,7 @@ namespace zombie {
 			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
 			// Centered square in ORIGO.
-			gameShader.useGlShader();
+			gameShader.glUseProgram();
 			vbo_.bindBuffer();
 			buildingsTexture_.bindTexture();
 

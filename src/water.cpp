@@ -47,7 +47,7 @@ namespace zombie {
 			aTex_.clear();
 		}
 		
-		shader.useGlShader();
+		shader.glUseProgram();
 		shader.setGlTextureU(true);
 		shader.setGlColorU(1, 1, 1);
 		shader.setGlLocalAngleU(0);
@@ -68,7 +68,7 @@ namespace zombie {
 		waveTime_ += deltaTime;
 
 		// Draw waves.
-		shader.useGlShader();
+		shader.glUseProgram();
 		vbo_.bindBuffer();
 
 		shader.setGlTimeU(waveTime_);

@@ -266,18 +266,18 @@ namespace zombie {
 		mw::scale2D(matrix, 50 * scale_, 50 * scale_);
 
 		// Update global uniform data to the shaders used.
-		waterShader_.useGlShader();
+		waterShader_.glUseProgram();
 		waterShader_.setGlProjectionMatrixU(getProjectionMatrix());
 		waterShader_.setGlModelMatrixU(matrix);
 		waterShader_.setGlGlobalCenterPositionU(viewPosition_);
 
-		buildingShader_.useGlShader();
+		buildingShader_.glUseProgram();
 		buildingShader_.setGlProjectionMatrixU(getProjectionMatrix());
 		buildingShader_.setGlModelMatrixU(matrix);
 		buildingShader_.setGlGlobalCenterPositionU(viewPosition_);
 		buildingShader_.setGlGlobalHumanPositionU(humanState_.position_);
 		
-		gameShader_.useGlShader();
+		gameShader_.glUseProgram();
 		gameShader_.setGlProjectionMatrixU(getProjectionMatrix());
 		gameShader_.setGlModelMatrixU(matrix);
 		gameShader_.setGlGlobalCenterPositionU(viewPosition_);
@@ -292,10 +292,10 @@ namespace zombie {
 		terrain_.draw(deltaTime, gameShader_);
 		
 		//mw::glEnable(GL_DEPTH_TEST);
-		drawBuildings_.drawWall(accumulator_, deltaTime, buildingShader_);
+		drawBuildings_.drawWalls(accumulator_, deltaTime, buildingShader_);
 		//mw::glDisable(GL_DEPTH_TEST);
 		
-		gameShader_.useGlShader();
+		gameShader_.glUseProgram();
 		for (GraphicAnimation& animation : graphicAnimations_) {
 			if (!animation.toBeRemoved()) {
 				animation.draw(deltaTime, gameShader_);
@@ -307,7 +307,7 @@ namespace zombie {
 				missile.draw(accumulator_, deltaTime, gameShader_);
 			}
 		}
-				
+		
 		for (Car2D& car : cars_) {
 			if (car.isActive()) {
 				car.draw(accumulator_, deltaTime, gameShader_);
@@ -320,7 +320,7 @@ namespace zombie {
 			}
 		}
 
-		drawBuildings_.drawRoof(accumulator_, deltaTime, buildingShader_);
+		drawBuildings_.drawRoofs(accumulator_, deltaTime, buildingShader_);
 		
 		water_.drawWaves(deltaTime, waterShader_);
 		for (auto& explosion : explosions_) {

@@ -31,7 +31,7 @@ namespace zombie {
 		uGlobalHumanPosIndex_ = shader_.getUniformLocation("uGlobalHumanPos");
 	}
 
-	void BuildingShader::useGlShader() const {
+	void BuildingShader::glUseProgram() const {
 		shader_.glUseProgram();
 	}
 

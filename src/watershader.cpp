@@ -29,7 +29,7 @@ namespace zombie {
 		uTime_ = shader_.getUniformLocation("uTime");
 	}
 
-	void WaterShader::useGlShader() const {
+	void WaterShader::glUseProgram() const {
 		shader_.glUseProgram();
 	}
 

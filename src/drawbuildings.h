@@ -16,9 +16,9 @@ namespace zombie {
 
 		void createVBO(const Array<Building2D, 100>& buildings, const mw::Texture& buildingsTexture);
 
-		void drawWall(float accumulator, float timeStep, const BuildingShader& gameShader);
+		void drawWalls(float accumulator, float timeStep, const BuildingShader& gameShader);
 
-		void drawRoof(float accumulator, float timeStep, const BuildingShader& gameShader);
+		void drawRoofs(float accumulator, float timeStep, const BuildingShader& gameShader);
 
 	private:
 		void drawArrays(int index, int verticesconst, const BuildingShader& gameShader);
