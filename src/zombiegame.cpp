@@ -150,7 +150,7 @@ namespace zombie {
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
 			Car* c = cars_.pushBack(car);
 			engine_.add(c);
-			unit->setState(state);
+			c->setState(state);
 			c->setActive(true);
 			c->setAwake(true);
 		}
