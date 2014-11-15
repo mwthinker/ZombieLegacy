@@ -119,8 +119,11 @@ namespace zombie {
 		// Add human to engine.
 		{
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
+			//Position p = generatePosition(spawningPoints_);
+			//State state(Position(200,200), ORIGO, 0);
 			Unit* unit = units_.pushBack(human);
 			engine_.add(unit);
+			unit->setState(state);
 			unit->setActive(true);
 			unit->setAwake(true);
 			players_.push_back(std::unique_ptr<HumanPlayer>(new HumanPlayer(keyboard_, unit)));
@@ -135,6 +138,7 @@ namespace zombie {
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
 			Unit* unit = units_.pushBack(zombie);
 			engine_.add(unit);
+			unit->setState(state);
 			unit->setActive(true);
 			unit->setAwake(true);
 			players_.push_back(std::unique_ptr<ZombieBehavior>(new ZombieBehavior(unit)));
@@ -146,6 +150,7 @@ namespace zombie {
 			State state(generatePosition(spawningPoints_), ORIGO, 0);
 			Car* c = cars_.pushBack(car);
 			engine_.add(c);
+			unit->setState(state);
 			c->setActive(true);
 			c->setAwake(true);
 		}
