@@ -326,7 +326,7 @@ namespace zombie {
 		}
 
 		drawBuildings_.drawRoofs(accumulator_, deltaTime, buildingShader_);
-		
+
 		water_.drawWaves(deltaTime, waterShader_);
 		for (auto& explosion : explosions_) {
 			if (!explosion.toBeRemoved()) {
@@ -455,8 +455,8 @@ namespace zombie {
 				auto triangle = loadPolygon(geom);
 				water_.addTriangle(triangle[0], triangle[1], triangle[2]);
 			} else if (entry.isAttributeEqual("type", "road")) {
-				auto triangle = loadPolygon(geom);
-				terrain_.addRoad(triangle[0], triangle[1], triangle[2]);
+				//auto triangle = loadPolygon(geom);
+				//terrain_.addRoad(triangle[0], triangle[1], triangle[2]);
 			} else if (entry.isAttributeEqual("type", "tree")) {
 				engine_.add(new Tree2D(loadPoint(geom), tree_));
 			} else if (entry.isAttributeEqual("type", "spawningpoint")) {

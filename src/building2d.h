@@ -21,6 +21,10 @@ namespace zombie {
 		Building2D(Position p1, Position p2, Position p3, Position p4,
 			const mw::Sprite& rightWall, const mw::Sprite& leftWall, const mw::Sprite& roof);
 
+		float getHeight() const {
+			return height_;
+		}
+
 	private:
 		float height_;
 		mw::Sprite leftWall_, rightWall_, roof_;

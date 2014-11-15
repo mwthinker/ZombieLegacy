@@ -45,41 +45,61 @@ namespace zombie {
 		buildingsTexture_ = buildingsTexture;
 		vbo_ = mw::VertexBufferObject(); // Removes old vbo.
 
-		// 5 (floats/vertex) * 6 (vertex/quad) * 1 (quads/3D-qube) * 1 (3D-qube, without bottom) * N (numberOfHouses).
-		std::vector<GLfloat> data(5 * 6 * 1 * buildings.getSize());
-		float height = 0.2f;
+		// 5 (floats/vertex) * 6 (vertex/quad) * 5 (quads/3D-qube) * 1 (3D-qube, without bottom) * N (numberOfHouses).
+		std::vector<GLfloat> data(5 * 6 * 5 * buildings.getSize());
 		nbrBuildings_ = buildings.getSize();
 
 		int index = -1;
+		// Add roofs.
 		for (const Building2D& building : buildings) {
 			auto corners = building.getCorners();
-
 			addTriangle(data.data(), index,
-				corners[0].x, corners[0].y, height,
-				corners[1].x, corners[1].y, height,
-				corners[3].x, corners[3].y, height,
+				corners[0].x, corners[0].y, building.getHeight(),
+				corners[1].x, corners[1].y, building.getHeight(),
+				corners[3].x, corners[3].y, building.getHeight(),
 				building.roof_.getX() / buildingsTexture.getWidth(), building.roof_.getY() / buildingsTexture.getHeight(),
 				(building.roof_.getX() + building.roof_.getWidth()) / buildingsTexture.getWidth(), building.roof_.getY() / buildingsTexture.getHeight(),
 				building.roof_.getX() / buildingsTexture.getWidth(), (building.roof_.getY() + building.roof_.getHeight()) / buildingsTexture.getHeight());
 
 			addTriangle(data.data(), index,
-				corners[1].x, corners[1].y, height,
-				corners[2].x, corners[2].y, height,
-				corners[3].x, corners[3].y, height,
+				corners[1].x, corners[1].y, building.getHeight(),
+				corners[2].x, corners[2].y, building.getHeight(),
+				corners[3].x, corners[3].y, building.getHeight(),
 				(building.roof_.getX() + building.roof_.getWidth()) / buildingsTexture.getWidth(), building.roof_.getY() / buildingsTexture.getHeight(),
 				(building.roof_.getX() + building.roof_.getWidth()) / buildingsTexture.getWidth(), (building.roof_.getY() + building.roof_.getHeight()) / buildingsTexture.getHeight(),
 				building.roof_.getX() / buildingsTexture.getWidth(), (building.roof_.getY() + building.roof_.getHeight()) / buildingsTexture.getHeight());
+		}
+		// Add walls.
+		for (const Building2D& building : buildings) {
+			auto corners = building.getCorners();
+			for (int i = 0; i < 4; ++i) {
+				addTriangle(data.data(), index,
+					corners[0 + i].x, corners[0 + i].y, 0,
+					corners[(1 + i) % 4].x, corners[(1 + i) % 4].y, 0,
+					corners[0 + i].x, corners[0 + i].y, building.getHeight(),
+					building.roof_.getX() / buildingsTexture.getWidth(), building.roof_.getY() / buildingsTexture.getHeight(),
+					(building.roof_.getX() + building.roof_.getWidth()) / buildingsTexture.getWidth(), building.roof_.getY() / buildingsTexture.getHeight(),
+					building.roof_.getX() / buildingsTexture.getWidth(), (building.roof_.getY() + building.roof_.getHeight()) / buildingsTexture.getHeight());
+
+				addTriangle(data.data(), index,
+					corners[0 + i].x, corners[0 + i].y, building.getHeight(),
+					corners[(1 + i) % 4].x, corners[(1 + i) % 4].y, 0,
+					corners[(1 + i) % 4].x, corners[(1 + i) % 4].y, building.getHeight(),
+					(building.roof_.getX() + building.roof_.getWidth()) / buildingsTexture.getWidth(), building.roof_.getY() / buildingsTexture.getHeight(),
+					(building.roof_.getX() + building.roof_.getWidth()) / buildingsTexture.getWidth(), (building.roof_.getY() + building.roof_.getHeight()) / buildingsTexture.getHeight(),
+					building.roof_.getX() / buildingsTexture.getWidth(), (building.roof_.getY() + building.roof_.getHeight()) / buildingsTexture.getHeight());
+			}
 		}
 				
 		vbo_.bindBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * data.size(), data.data(), GL_STATIC_DRAW);
 	}
 
 	void DrawBuildings::drawWalls(float accumulator, float timeStep, const BuildingShader& gameShader) {
-		//drawArrays(6, 0, gameShader);
+		drawArrays(6 * nbrBuildings_, 6 * nbrBuildings_ * 4, gameShader); // 6 (vertices) * 4 (walls) * nbrBuildings.
 	}
 
 	void DrawBuildings::drawRoofs(float accumulator, float timeStep, const BuildingShader& gameShader) {
-		drawArrays(0, 6 * nbrBuildings_, gameShader); // // 6 (vertices) * 1 (roof) * nbrBuildings.
+		drawArrays(0, 6 * nbrBuildings_, gameShader); // 6 (vertices) * 1 (roof) * nbrBuildings.
 	}
 
 	void DrawBuildings::drawArrays(int index, int vertices, const BuildingShader& gameShader) {
