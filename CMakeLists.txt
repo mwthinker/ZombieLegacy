@@ -107,6 +107,8 @@ set(SOURCES_EFFECT
 	src/splash.h
 	src/water.cpp
 	src/water.h
+	src/laser.h
+	src/laser.cpp
 )
 # End of source files.
 
