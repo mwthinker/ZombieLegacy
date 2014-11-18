@@ -97,7 +97,6 @@ namespace zombie {
 			weapon = loadMissileLauncher2D(gameInterface, weaponEntry).clone();
 		} else {
 			weapon = loadGun(gameInterface, weaponEntry).clone();
-			
 		}
 
 		return Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapon, moveA, grip);

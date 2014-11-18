@@ -14,7 +14,8 @@
 namespace zombie {
 
 	class GameInterface;
-	class GameDataEntry;	
+	class GameDataEntry;
+	class Laser;
 
 	// Describes a Weapon and is responsible of shooting.
 	class Weapon2D : public Weapon {
@@ -23,14 +24,22 @@ namespace zombie {
 
 		Weapon2D(const WeaponInterfacePtr& weaponInterface, mw::Sprite symbol,
 			Animation animation, float size, Position grip);
+		
+		Weapon2D(const WeaponInterfacePtr& weaponInterface, mw::Sprite symbol,
+			Animation animation, float size, Position grip, const Laser& laser);
+
+		Weapon2D(const Weapon2D& weapon);
 
 		void drawSymbol(float timeStep) override;
 
 		void draw(float timeStep, float x, float y, const GameShader& shader) override;
 
+		void updateLaserSight(b2World* world, float time, Position position, float angle) override;
+
 		WeaponPtr clone() const override;
 
 	private:
+		std::unique_ptr<Laser> laser_;
 		mw::Sprite symbol_;
 		Animation animation_;
 		float size_;

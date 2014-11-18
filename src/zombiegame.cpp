@@ -54,7 +54,7 @@ namespace zombie {
 		zombieEntry.getDeepChildEntry("settings impulseThreshold").getFloat()), zombieEntry_(zombieEntry),
 		water_(loadWater(zombieEntry.getDeepChildEntry("water"))),
 		frame_(0),
-		fps_(60),
+		meanFrameTime_(0.0166f),
 		lastFramTime_(0),
 		timeStep_(zombieEntry.getDeepChildEntry("settings timeStepMS").getInt() / 1000.f),
 		accumulator_(0),
@@ -190,7 +190,7 @@ namespace zombie {
 		++frame_;
 		lastFramTime_ += deltaTime;
 		if (frame_ == 60) {
-			fps_ = frame_ / lastFramTime_ * 1000;
+			meanFrameTime_ = lastFramTime_/1000.f;
 			frame_ = 0;
 			lastFramTime_ = 0;
 		}
@@ -468,8 +468,8 @@ namespace zombie {
 		}
 	}
 
-	float ZombieGame::getFps() const {
-		return fps_;
+	float ZombieGame::getMeanFrameTime() const {
+		return meanFrameTime_;
 	}
 
 } // Namespace zombie.

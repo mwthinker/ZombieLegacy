@@ -74,7 +74,7 @@ namespace zombie {
 			return bulletsInWeapon_;
 		}		
 
-		float getFps() const;
+		float getMeanFrameTime() const;
 
 		void init();
 
@@ -146,7 +146,7 @@ namespace zombie {
 		std::array<GraphicAnimation, 100> graphicAnimations_;
 
 		int frame_;
-		float fps_;
+		float meanFrameTime_;
 		float lastFramTime_;
 
 		ZombieEngine engine_;

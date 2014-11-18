@@ -2,6 +2,7 @@
 #define LASER_H
 
 #include "gameshader.h"
+#include "gamedataentry.h"
 
 #include <mw/opengl.h>
 #include <mw/sprite.h>
@@ -9,18 +10,27 @@
 #include <mw/color.h>
 #include <mw/vertexbufferobject.h>
 
+#include <memory>
+
 namespace zombie {
+
+	class Laser;
+	typedef std::shared_ptr<Laser> LaserPtr;
+
+	LaserPtr loadLaser(GameDataEntry& entry);
 
 	class Laser {
 	public:
 		static const int VERTEX_SIZE = 4;
 		static const int VERTEX_PER_SPRITE = 6;
 
-		Laser();
-		Laser(const mw::Sprite& laser, const mw::Sprite& laserEnd, const mw::Sprite& laserOverlay,
+		Laser(float height, const mw::Sprite& laser, const mw::Sprite& laserEnd, const mw::Sprite& laserOverlay,
 			const mw::Sprite& laserOverlayStatic, const mw::Sprite& laserOverlayStaticEnd,
 			const mw::Color& laserColor, const mw::Color& overlayColor, float staticSpeed);
 		
+		Laser(const Laser& laser);
+		Laser& operator=(const Laser& laser);
+
 		inline void setOverlayColor(const mw::Color& color) {
 			overlayColor_ = color;
 		}
@@ -33,15 +43,19 @@ namespace zombie {
 			speed_ = speed;
 		}
 
-		void update(float x, float y, float length);
+		void update(float length);
+		void update(float x, float y);
 
 		void draw(float deltaTime, const zombie::GameShader& gameShader);
 
 	private:
+		void update();
+
 		float time_;
 		float x_, y_;
 		float length_;
 
+		float spriteScale_;
 		float speed_;
 		float ratio_;
 

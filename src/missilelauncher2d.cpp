@@ -1,6 +1,7 @@
 #include "missilelauncher2d.h"
 #include "gameinterface.h"
 #include "gamedataentry.h"
+#include "laser.h"
 
 #include <cassert>
 
@@ -28,10 +29,21 @@ namespace zombie {
 		float speed = projectile.getChildEntry("speed").getFloat();
 		float force = projectile.getChildEntry("force").getFloat();
 
+
+		bool hasLaser = entry.getChildEntry("laserSight").getBool();
+		std::shared_ptr<Laser> laser;
+		if (hasLaser) {
+			laser = loadLaser(entry.getParent().getParent().getChildEntry("laserSight"));
+		}
 		//if (true && projectile.isAttributeEqual("type", "missile")) {
 		auto missileLauncher = std::make_shared<MissileLauncher2D>(clipSize, timeBetweenShots,
 			range, damageRadius, damage, deathTime, speed, force, shotSound, reloadSound);
-		return Weapon2D(missileLauncher, symbolImage, animation, size, grip);
+
+		if (hasLaser) {
+			return Weapon2D(missileLauncher, symbolImage, animation, size, grip, *laser);
+		} else {
+			return Weapon2D(missileLauncher, symbolImage, animation, size, grip);
+		}
 	}
 
 } // Namespace zombie.

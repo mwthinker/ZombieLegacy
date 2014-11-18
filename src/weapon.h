@@ -16,7 +16,10 @@ namespace zombie {
 	// Describes a Weapon and is responsible of shooting.
 	class Weapon {
 	public:
-		Weapon() : weaponInterface_(nullptr) {
+		Weapon() : weaponInterface_(nullptr), laserSight_(false) {
+		}
+
+		Weapon(bool laserSight) : weaponInterface_(nullptr), laserSight_(laserSight) {
 		}
 
 		Weapon(const Weapon& weapon) {
@@ -31,24 +34,24 @@ namespace zombie {
 		Weapon(const WeaponInterfacePtr& weaponInterface) : weaponInterface_(weaponInterface) {
 		}
 
-		void pullTrigger(Unit& shooter, float time) {
+		inline void pullTrigger(Unit& shooter, float time) {
 			weaponInterface_->pullTrigger(shooter, time);
 		}
 
-		void releaseTrigger(Unit& shooter, float time) {
+		inline void releaseTrigger(Unit& shooter, float time) {
 			weaponInterface_->releaseTrigger(shooter, time);
 		}
 
 		// Tries to reload the weapon. If it reloads return true, else false.
-		void reload(float time) {
+		inline void reload(float time) {
 			weaponInterface_->reload(time);
 		}
 
-		int getClipSize() const {
+		inline int getClipSize() const {
 			return weaponInterface_->getClipSize();
 		}
 
-		int getBulletsInWeapon() const {
+		inline int getBulletsInWeapon() const {
 			return weaponInterface_->getBulletsInWeapon();
 		}
 
@@ -58,19 +61,26 @@ namespace zombie {
 		// Draw the weapon. The function will be called when the physical object is drawn.
 		virtual void draw(float timeStep, float x, float y, const GameShader& shader) = 0;
 
-		float getRange() const {
+		inline float getRange() const {
 			return weaponInterface_->getRange();
 		}
 
 		virtual WeaponPtr clone() const = 0;
 
 		// Should be called by the zombieEngine.
-		virtual void init(b2World* world_, GameInterface* gameInterface) {
-			weaponInterface_->initEngine(world_, gameInterface);
+		void init(b2World* world, GameInterface* gameInterface) {
+			weaponInterface_->initEngine(world, gameInterface);
 		}
+
+		inline bool hasLaserSight() const {
+			return laserSight_;
+		}
+
+		virtual void updateLaserSight(b2World* world, float time, Position position, float angle) = 0;
 
 	private:
 		WeaponInterfacePtr weaponInterface_;
+		bool laserSight_;
 	};
 
 } // Namespace zombie.

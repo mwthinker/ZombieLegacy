@@ -8,6 +8,7 @@ namespace zombie {
 	class Unit;
 	class Car;
 	class Building;
+	class Building;
 	struct MissileProperties;
 
 	class GameInterface {

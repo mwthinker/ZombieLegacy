@@ -136,6 +136,10 @@ namespace zombie {
 		return GameDataEntry(*this, DataEntry::getSibling(siblingName));
 	}
 
+	GameDataEntry GameDataEntry::getParent() const {
+		return GameDataEntry(*this, DataEntry::getParent());
+	}
+
 	GameDataEntry::GameDataEntry(const GameDataEntry& g, xml::DataEntry e) : xml::DataEntry(e) {
 		gameData_ = g.gameData_;
 	}

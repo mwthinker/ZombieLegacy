@@ -197,6 +197,8 @@ namespace zombie {
 			if (input.action_) {
 				signal(ACTION);
 			}
+
+			weapon_->updateLaserSight(body_->GetWorld(), time, getPosition(), body_->GetAngle());
 		}
 	}
 	

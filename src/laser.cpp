@@ -64,13 +64,13 @@ namespace zombie {
 		}
 
 		// Creates a mesh of vertices of repeated sprites. It is horizonted aligned.
-		int repeatSprite(GLfloat* data, int& index, const int maxSize, const float x, const float y, const float ratio, const float length, const mw::Sprite& sprite) {
+		int repeatSprite(GLfloat* data, int& index, const int maxSize, const float x, const float y, const float ratio, const float length, const float scale, const mw::Sprite& sprite) {
 			const mw::Texture& texture = sprite.getTexture();
 			int vertices = 0;
 			float x1 = x;
-			float x2 = x + ratio * sprite.getWidth();
-			const float y1 = y - 0.5f * sprite.getHeight();
-			const float y2 = y + 0.5f * sprite.getHeight();
+			float x2 = x + (ratio * sprite.getWidth()) * scale;
+			const float y1 = y - 0.5f * sprite.getHeight()*scale;
+			const float y2 = y + 0.5f * sprite.getHeight()*scale;
 
 			if (index + Laser::VERTEX_PER_SPRITE*Laser::VERTEX_SIZE < maxSize) {
 				addSquare(data, index,
@@ -82,7 +82,7 @@ namespace zombie {
 			}
 
 			x1 = x2;
-			x2 += sprite.getWidth();
+			x2 += sprite.getWidth() * scale;
 			while (x2 < x + length && index + Laser::VERTEX_PER_SPRITE*Laser::VERTEX_SIZE < maxSize) {
 				addSquare(data, index,
 					x1, y1,
@@ -92,7 +92,7 @@ namespace zombie {
 				vertices += Laser::VERTEX_PER_SPRITE;
 
 				x1 = x2;
-				x2 += sprite.getWidth();
+				x2 += sprite.getWidth() * scale;
 			}
 
 			if (index + Laser::VERTEX_PER_SPRITE*Laser::VERTEX_SIZE < maxSize) {
@@ -108,93 +108,153 @@ namespace zombie {
 			return vertices;
 		}
 
+		mw::Sprite loadSprite(GameDataEntry& entry, const mw::Texture texture) {
+			float x = entry.getChildEntry("x").getFloat();
+			float y = entry.getChildEntry("y").getFloat();
+			float w = entry.getChildEntry("w").getFloat();
+			float h = entry.getChildEntry("h").getFloat();
+			return mw::Sprite(texture, x, y, w, h);
+		}
+
 	}
 
-	Laser::Laser() {
+	LaserPtr loadLaser(GameDataEntry& entry) {
+		float speed = entry.getChildEntry("speed").getFloat();
+		mw::Color overlayColor = entry.getChildEntry("overlayColor").getColor();
+		mw::Color laserColor = entry.getChildEntry("laserColor").getColor();
+		float height = entry.getChildEntry("height").getFloat();
+
+		auto childEntry = entry.getChildEntry("sprites");
+		mw::Texture texture = childEntry.getChildEntry("texture").getTexture();
+		mw::Sprite laser = loadSprite(childEntry.getChildEntry("laser"), texture);
+		mw::Sprite laserEnd = loadSprite(childEntry.getChildEntry("laserEnd"), texture);
+		mw::Sprite laserOverlay = loadSprite(childEntry.getChildEntry("laserOverlay"), texture);
+		mw::Sprite laserOverlayStatic = loadSprite(childEntry.getChildEntry("laserOverlayStatic"), texture);
+		mw::Sprite laserOverlayStaticEnd = loadSprite(childEntry.getChildEntry("laserOverlayStaticEnd"), texture);
+		return std::make_shared<Laser>(height, laser, laserEnd, laserOverlay, laserOverlayStatic, laserOverlayStaticEnd, laserColor, overlayColor, speed);
 	}
 
-	Laser::Laser(const mw::Sprite& laser, const mw::Sprite& laserEnd, const mw::Sprite& laserOverlay,
+	Laser::Laser(float height, const mw::Sprite& laser, const mw::Sprite& laserEnd, const mw::Sprite& laserOverlay,
 		const mw::Sprite& laserOverlayStatic, const mw::Sprite& laserOverlayStaticEnd,
 		const mw::Color& laserColor, const mw::Color& overlayColor, float staticSpeed) : 
-		laser_(laser), laserEnd_(laserEnd), laserOverlay_(laserOverlay),
+		spriteScale_(height / laserEnd.getHeight()), laser_(laser), laserEnd_(laserEnd), laserOverlay_(laserOverlay),
 		laserOverlayStatic_(laserOverlayStatic), laserOverlayStaticEnd_(laserOverlayStaticEnd),
 		laserColor_(laserColor), overlayColor_(overlayColor),
 		speed_(staticSpeed) {
 		
 		time_ = 0;
 		ratio_ = 0;
-
-		vbo_.bindBufferData(GL_ARRAY_BUFFER, data_.size() * sizeof(GLfloat), data_.data(), GL_DYNAMIC_DRAW);
+		length_ = 10;
+		x_ = 0;
+		y_ = 0;
 	}
 
-	void Laser::update(float x, float y, float length) {
+	Laser::Laser(const Laser& laser) : spriteScale_(laser.spriteScale_), laser_(laser.laser_), laserEnd_(laser.laserEnd_), laserOverlay_(laser.laserOverlay_),
+		laserOverlayStatic_(laser.laserOverlayStatic_), laserOverlayStaticEnd_(laser.laserOverlayStaticEnd_),
+		laserColor_(laser.laserColor_), overlayColor_(laser.overlayColor_), speed_(laser.speed_) {
+
+		time_ = 0;
+		ratio_ = 0;
+		length_ = 10;
+		x_ = 0;
+		y_ = 0;
+	}
+
+	Laser& Laser::operator=(const Laser& laser) {
+		spriteScale_ = laser.spriteScale_;
+		laser_ = laser.laser_;
+		laserEnd_ = laser.laserEnd_;
+		laserOverlay_ = laser.laserOverlay_;
+		laserOverlayStatic_ = laser.laserOverlayStatic_;
+		laserOverlayStaticEnd_ = laser.laserOverlayStaticEnd_;
+		laserColor_ = laser.laserColor_;
+		overlayColor_ = laser.overlayColor_;
+		speed_ = laser.speed_;
+
+		time_ = 0;
+		ratio_ = 0;
+		length_ = 10;
+		x_ = 0;
+		y_ = 0;
+		
+		return *this;
+	}
+
+	void Laser::update(float length) {
+		length_ = length;
+	}
+
+	void Laser::update(float x, float y) {
 		x_ = x;
 		y_ = y;
-		length_ = length;
+	}
 
+	void Laser::update() {
 		int index = 0;
 
 		const mw::Texture& texture = laserEnd_.getTexture();
 		addSquare(data_.data(), index,
-			x_, y_ - 0.5f*laser_.getHeight(),
-			x_ + length_ - 0.5f*laserEnd_.getWidth(), y_ + 0.5f*laser_.getHeight(),
+			x_, y_ - 0.5f*laser_.getHeight()*spriteScale_,
+			x_ + length_ - 0.5f*laserEnd_.getWidth()*spriteScale_, y_ + 0.5f*laser_.getHeight()*spriteScale_,
 			laser_.getX() / texture.getWidth(), laser_.getY() / texture.getHeight(),
 			(laser_.getX() + laser_.getWidth()) / texture.getWidth(), (laser_.getY() + laser_.getHeight()) / texture.getHeight());
 
 		addSquare(data_.data(), index,
-			x_ + length_ - 0.5f*laserEnd_.getWidth(), y_ - 0.5f*laserEnd_.getHeight(),
-			x_ + length_ + 0.5f*laserEnd_.getWidth(), y_ + 0.5f*laserEnd_.getHeight(),
+			x_ + length_ - 0.5f*laserEnd_.getWidth()*spriteScale_, y_ - 0.5f*laserEnd_.getHeight()*spriteScale_,
+			x_ + length_ + 0.5f*laserEnd_.getWidth()*spriteScale_, y_ + 0.5f*laserEnd_.getHeight()*spriteScale_,
 			laserEnd_.getX() / texture.getWidth(), laserEnd_.getY() / texture.getHeight(),
 			(laserEnd_.getX() + laserEnd_.getWidth()) / texture.getWidth(), (laserEnd_.getY() + laserEnd_.getHeight()) / texture.getHeight());
 
 		addSquare(data_.data(), index,
-			x_, y_ - 0.5f*laser_.getHeight(),
-			x_ + length_ - 0.5f*laserOverlayStaticEnd_.getWidth(), y_ + 0.5f*laserOverlayStatic_.getHeight(),
+			x_, y_ - 0.5f*laser_.getHeight()*spriteScale_,
+			x_ + length_ - 0.5f*laserOverlayStaticEnd_.getWidth()*spriteScale_, y_ + 0.5f*laserOverlayStatic_.getHeight()*spriteScale_,
 			laserOverlayStatic_.getX() / texture.getWidth(), laserOverlayStatic_.getY() / texture.getHeight(),
 			(laserOverlayStatic_.getX() + laserOverlayStatic_.getWidth()) / texture.getWidth(), (laserOverlayStatic_.getY() + laserOverlayStatic_.getHeight()) / texture.getHeight());
 
 		addSquare(data_.data(), index,
-			x_ + length_ - 0.5f*laserOverlayStaticEnd_.getWidth(), y_ - 0.5f*laserOverlayStaticEnd_.getHeight(),
-			x_ + length_ + 0.5f*laserOverlayStaticEnd_.getWidth(), y_ + 0.5f*laserOverlayStaticEnd_.getHeight(),
+			x_ + length_ - 0.5f*laserOverlayStaticEnd_.getWidth()*spriteScale_, y_ - 0.5f*laserOverlayStaticEnd_.getHeight()*spriteScale_,
+			x_ + length_ + 0.5f*laserOverlayStaticEnd_.getWidth()*spriteScale_, y_ + 0.5f*laserOverlayStaticEnd_.getHeight()*spriteScale_,
 			laserOverlayStaticEnd_.getX() / texture.getWidth(), laserOverlayStaticEnd_.getY() / texture.getHeight(),
 			(laserOverlayStaticEnd_.getX() + laserOverlayStaticEnd_.getWidth()) / texture.getWidth(), (laserOverlayStaticEnd_.getY() + laserOverlayStaticEnd_.getHeight()) / texture.getHeight());
 	}
 
 	void Laser::draw(float deltaTime, const zombie::GameShader& gameShader) {
-		if (vbo_.getSize() > 0) {
-			time_ += deltaTime;
-			ratio_ += deltaTime * speed_;
-			if (ratio_ > 1) {
-				ratio_ = 0;
-			}
+		vbo_.bindBufferData(GL_ARRAY_BUFFER, data_.size() * sizeof(GLfloat), data_.data(), GL_DYNAMIC_DRAW);
 
-			int index = VERTEX_PER_SPRITE * VERTEX_SIZE * 4; // 4 sprites before the repeated mesh in the data array.
-			int repeatVertices = repeatSprite(data_.data(), index, data_.size(), x_, y_, ratio_, length_, laserOverlay_);
-
-			mw::glEnable(GL_BLEND);
-			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-			gameShader.glUseProgram();
-			gameShader.setGlTextureU(true);
-
-			vbo_.bindBufferSubData(0, (4 * VERTEX_PER_SPRITE + repeatVertices) * VERTEX_SIZE * sizeof(GLfloat), data_.data());
-
-			vbo_.bindBuffer();
-			laser_.bindTexture();
-
-			// Set the vertex data.
-			gameShader.setGlVer2dCoordsA(sizeof(GLfloat) * VERTEX_SIZE, 0);
-			gameShader.setGlTexCoordsA(sizeof(GLfloat) * VERTEX_SIZE, (GLvoid*) (sizeof(GLfloat) * 2));
-
-			gameShader.setGlColorU(laserColor_);
-			// Draw the first two sprites.
-			mw::glDrawArrays(GL_TRIANGLES, 0, VERTEX_PER_SPRITE * 2);
-
-			gameShader.setGlColorU(overlayColor_);
-			// Draw everything except the first two sprites.
-			mw::glDrawArrays(GL_TRIANGLES, VERTEX_PER_SPRITE * 2, repeatVertices + VERTEX_PER_SPRITE * 2);
-
-			mw::glDisable(GL_BLEND);
+		time_ += deltaTime;
+		ratio_ += deltaTime * speed_;
+		if (ratio_ > 1) {
+			ratio_ = 0;
 		}
+		
+		update();
+		int index = VERTEX_PER_SPRITE * VERTEX_SIZE * 4; // 4 sprites before the repeated mesh in the data array.
+		int repeatVertices = repeatSprite(data_.data(), index, data_.size(), x_, y_, ratio_, length_, spriteScale_, laserOverlay_);
+
+		mw::glEnable(GL_BLEND);
+		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		gameShader.glUseProgram();
+		gameShader.setGlTextureU(true);
+		
+		vbo_.bindBufferSubData(0, (4 * VERTEX_PER_SPRITE + repeatVertices) * VERTEX_SIZE * sizeof(GLfloat), data_.data());
+		
+		vbo_.bindBuffer();
+		laser_.bindTexture();
+
+		// Set the vertex data.
+		gameShader.setGlVer2dCoordsA(sizeof(GLfloat) * VERTEX_SIZE, 0);
+		gameShader.setGlTexCoordsA(sizeof(GLfloat) * VERTEX_SIZE, (GLvoid*) (sizeof(GLfloat) * 2));
+
+		gameShader.setGlColorU(laserColor_);
+		// Draw the first two sprites.
+		mw::glDrawArrays(GL_TRIANGLES, 0, VERTEX_PER_SPRITE * 2);
+
+		gameShader.setGlColorU(overlayColor_);
+		// Draw everything except the first two sprites.
+		mw::glDrawArrays(GL_TRIANGLES, VERTEX_PER_SPRITE * 2, repeatVertices + VERTEX_PER_SPRITE * 2);
+		vbo_.unbindBuffer();
+
+		mw::glDisable(GL_BLEND);		
 	}
 
 } // Namespace zombie.

@@ -6,12 +6,13 @@
 #include "box2ddef.h"
 #include "gamedataentry.h"
 #include "weapon2d.h"
+#include "laser.h"
 
 #include <mw/sound.h>
 
 #include <memory>
 
-namespace zombie {
+namespace zombie {	
 
 	Weapon2D loadGun(GameInterface* gameInterface, GameDataEntry& entry);
 

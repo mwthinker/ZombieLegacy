@@ -37,6 +37,8 @@ namespace zombie {
 		GameDataEntry getChildEntry(std::string tagName) const;
 
 		GameDataEntry getSibling(std::string siblingName) const;
+
+		GameDataEntry getParent() const;
 		
 		mw::Font getFont(int size) const;
 		mw::Sound getSound() const;

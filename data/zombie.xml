@@ -64,6 +64,45 @@
 			</animation>
 			<moveSound>sounds/aaa.wav</moveSound>
 		</missile>
+		<laserSight>
+			<overlayColor>(0.8 0.8 0.8 0.7)</overlayColor>
+			<laserColor>(0.8 0 0 0.5)</laserColor>
+			<speed>5.0</speed>
+			<height>0.4</height>
+			<sprites>
+				<texture>images/laser.png</texture>
+				<laser>
+					<x>2</x>
+					<y>194</y>
+					<w>60</w>
+					<h>60</h>
+				</laser>
+				<laserEnd>
+					<x>2</x>
+					<y>2</y>
+					<w>60</w>
+					<h>60</h>
+				</laserEnd>
+				<laserOverlay>
+					<x>64</x>
+					<y>64</y>
+					<w>64</w>
+					<h>64</h>
+				</laserOverlay>
+				<laserOverlayStatic>
+					<x>2</x>
+					<y>130</y>
+					<w>60</w>
+					<h>60</h>
+				</laserOverlayStatic>
+				<laserOverlayStaticEnd>
+					<x>2</x>
+					<y>66</y>
+					<w>60</w>
+					<h>60</h>
+				</laserOverlayStaticEnd>
+			</sprites>
+		</laserSight>
 		<weapons>
 			<handgun projectile="bullet">
 				<symbolImage>images/handgun.png</symbolImage>
@@ -84,6 +123,7 @@
 					<damage>60</damage>
 					<range>10</range>
 				</projectile>
+				<laserSight>0</laserSight>
 			</handgun>
 			<zombieFist projectile="bullet">
 				<symbolImage>images/ZombieFist.png</symbolImage>
@@ -99,6 +139,7 @@
 					<damage>10</damage>
 					<range>1</range>
 				</projectile>
+				<laserSight>0</laserSight>
 			</zombieFist>
 			<missileLauncher projectile="missile">
 				<symbolImage>images/handgun.png</symbolImage>
@@ -123,6 +164,7 @@
 					<speed>15</speed>
 					<force>15</force>
 				</projectile>
+				<laserSight>1</laserSight>
 			</missileLauncher>
 		</weapons>
     </equipment>

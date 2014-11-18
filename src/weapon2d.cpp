@@ -2,6 +2,8 @@
 #include "animation.h"
 #include "auxiliary.h"
 #include "gamedataentry.h"
+#include "laser.h"
+#include "closestraycastcallback.h"
 
 #include <mw/sprite.h>
 #include <mw/sound.h>
@@ -10,12 +12,30 @@
 
 namespace zombie {
 
-	Weapon2D::Weapon2D() {
+	Weapon2D::Weapon2D() : laser_(nullptr) {
 	}
 
 	Weapon2D::Weapon2D(const WeaponInterfacePtr& weaponInterface, mw::Sprite symbol,
 		Animation animation, float size, Position grip) :
-		Weapon(weaponInterface), symbol_(symbol), animation_(animation), grip_(grip), size_(size) {
+		Weapon(weaponInterface), symbol_(symbol), animation_(animation),
+		grip_(grip), size_(size), laser_(nullptr) {
+		
+	}
+
+	Weapon2D::Weapon2D(const WeaponInterfacePtr& weaponInterface, mw::Sprite symbol,
+		Animation animation, float size, Position grip, const Laser& laser) :
+		Weapon(weaponInterface), symbol_(symbol), animation_(animation), 
+		grip_(grip), size_(size), laser_(new Laser(laser)) {
+
+	}
+
+	Weapon2D::Weapon2D(const Weapon2D& weapon) :
+		Weapon(weapon), symbol_(weapon.symbol_), animation_(weapon.animation_),
+		grip_(weapon.grip_), size_(weapon.size_), laser_(nullptr) {
+
+		if (weapon.laser_) {
+			laser_ = std::unique_ptr<Laser>(new Laser(*weapon.laser_));
+		}
 	}
 
 	void Weapon2D::drawSymbol(float timeStep) {
@@ -24,6 +44,24 @@ namespace zombie {
 
 	void Weapon2D::draw(float timeStep, float x, float y, const GameShader& shader) {
 		animation_.draw(timeStep, x + grip_.x, y + grip_.y, size_, size_, shader);
+		if (laser_) {
+			laser_->update(x, y);
+			laser_->draw(timeStep, shader);
+		}
+	}
+
+	void Weapon2D::updateLaserSight(b2World* world, float timeStep, Position position, float angle) {
+		if (laser_) {
+			b2Vec2 dir(std::cos(angle), std::sin(angle));
+
+			// Return the closest physical object!
+			ClosestRayCastCallback callback([](b2Fixture* fixture) {
+				return !fixture->IsSensor() && fixture->GetBody()->GetUserData() != nullptr;
+			});
+			world->RayCast(&callback, position, position + getRange() * dir);
+			float f = callback.getFraction();
+			laser_->update(f*getRange());
+		}
 	}
 
 	WeaponPtr Weapon2D::clone() const {

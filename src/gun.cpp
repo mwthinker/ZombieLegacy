@@ -4,6 +4,7 @@
 #include "unit.h"
 #include "box2ddef.h"
 #include "closestraycastcallback.h"
+#include "laser.h"
 
 namespace zombie {
 
@@ -23,9 +24,20 @@ namespace zombie {
 		GameDataEntry projectile = entry.getChildEntry("projectile");
 		float damage = projectile.getChildEntry("damage").getFloat();
 		float range = projectile.getChildEntry("range").getFloat();
-
+		
+		bool hasLaser = entry.getChildEntry("laserSight").getBool();
+		std::shared_ptr<Laser> laser;
+		if (hasLaser) {
+			laser = loadLaser(entry.getParent().getParent().getChildEntry("laserSight"));
+		}
 		auto gun = std::make_shared<Gun>(damage, timeBetweenShots, range, clipSize, shoot, reload);
-		return Weapon2D(gun, symbolImage, animation, size, grip);
+
+		if (hasLaser) {
+			return Weapon2D(gun, symbolImage, animation, size, grip, *laser);
+		} else {
+			return Weapon2D(gun, symbolImage, animation, size, grip);
+		}
+		
 	}
 
 	namespace {
