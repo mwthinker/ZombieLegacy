@@ -13,7 +13,7 @@ attribute vec2 aTex;
 varying vec2 vTex;
 
 void main() {
-	vec2 delta = (aVer.z * 0.05) * (aVer.xy - uGlobalHumanPos);
+	vec2 delta = vec2(0,0);//(aVer.z * 0.05) * (aVer.xy - uGlobalHumanPos);
 	gl_Position = uProj * uModel * vec4(delta + aVer.xy - uGlobalCenterPos, 0, 1);
 	vTex = aTex;
 }

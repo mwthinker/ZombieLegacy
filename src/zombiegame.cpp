@@ -269,21 +269,23 @@ namespace zombie {
 		mw::Matrix44 matrix = getModelMatrix();
 		mw::translate2D(matrix, dim.width_*0.5f, dim.height_*0.5f);
 		mw::scale2D(matrix, 50 * scale_, 50 * scale_);
+		
+		mw::Matrix44 projection = getProjectionMatrix();
 
 		// Update global uniform data to the shaders used.
 		waterShader_.glUseProgram();
-		waterShader_.setGlProjectionMatrixU(getProjectionMatrix());
+		waterShader_.setGlProjectionMatrixU(projection);
 		waterShader_.setGlModelMatrixU(matrix);
 		waterShader_.setGlGlobalCenterPositionU(viewPosition_);
 
 		buildingShader_.glUseProgram();
-		buildingShader_.setGlProjectionMatrixU(getProjectionMatrix());
+		buildingShader_.setGlProjectionMatrixU(projection);
 		buildingShader_.setGlModelMatrixU(matrix);
 		buildingShader_.setGlGlobalCenterPositionU(viewPosition_);
 		buildingShader_.setGlGlobalHumanPositionU(humanState_.position_);
 		
 		gameShader_.glUseProgram();
-		gameShader_.setGlProjectionMatrixU(getProjectionMatrix());
+		gameShader_.setGlProjectionMatrixU(projection);
 		gameShader_.setGlModelMatrixU(matrix);
 		gameShader_.setGlGlobalCenterPositionU(viewPosition_);
 		
@@ -294,11 +296,9 @@ namespace zombie {
 
 		mw::checkGlError();
 		water_.drawSeeFloor(deltaTime, gameShader_);
-		terrain_.draw(deltaTime, gameShader_);
+		terrain_.draw(deltaTime, gameShader_);				
 		
-		//mw::glEnable(GL_DEPTH_TEST);
 		drawBuildings_.drawWalls(accumulator_, deltaTime, buildingShader_);
-		//mw::glDisable(GL_DEPTH_TEST);
 		
 		gameShader_.glUseProgram();
 		for (GraphicAnimation& animation : graphicAnimations_) {

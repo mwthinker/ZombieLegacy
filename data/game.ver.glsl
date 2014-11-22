@@ -23,9 +23,8 @@ void main() {
 					0, 1, 0,					
 					uGlobalPos.x - uGlobalCenterPos.x, uGlobalPos.y - uGlobalCenterPos.y, 1);
 	
-	vec3 pos = tra * rot * vec3(aVer, 1);
+	vec3 pos = tra * rot * vec3(aVer, 1);	
 	
-	
-	gl_Position = uProj * uModel * vec4(pos, 1);
+	gl_Position = uProj * uModel * vec4(pos.xy, 0, 1);
 	vTex = aTex;
 }

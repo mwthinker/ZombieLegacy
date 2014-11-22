@@ -53,18 +53,31 @@ namespace zombie {
 		// Add roofs.
 		for (const Building2D& building : buildings) {
 			auto corners = building.getCorners();
+			Position middle = ZERO;
+
+			// Calculate the middle position.
+			for (Position& p : corners) {
+				middle += 0.25f * p;
+			}
+
+			// Roof corners.
+			Position p1 = 0.2f * (middle - corners[0]) + corners[0];
+			Position p2 = 0.2f * (middle - corners[1]) + corners[1];
+			Position p3 = 0.2f * (middle - corners[2]) + corners[2];
+			Position p4 = 0.2f * (middle - corners[3]) + corners[3];
+
 			addTriangle(data.data(), index,
-				corners[0].x, corners[0].y, building.getHeight(),
-				corners[1].x, corners[1].y, building.getHeight(),
-				corners[3].x, corners[3].y, building.getHeight(),
+				p1.x, p1.y, building.getHeight(),
+				p2.x, p2.y, building.getHeight(),
+				p4.x, p4.y, building.getHeight(),
 				building.roof_.getX() / buildingsTexture.getWidth(), building.roof_.getY() / buildingsTexture.getHeight(),
 				(building.roof_.getX() + building.roof_.getWidth()) / buildingsTexture.getWidth(), building.roof_.getY() / buildingsTexture.getHeight(),
 				building.roof_.getX() / buildingsTexture.getWidth(), (building.roof_.getY() + building.roof_.getHeight()) / buildingsTexture.getHeight());
 
 			addTriangle(data.data(), index,
-				corners[1].x, corners[1].y, building.getHeight(),
-				corners[2].x, corners[2].y, building.getHeight(),
-				corners[3].x, corners[3].y, building.getHeight(),
+				p2.x, p2.y, building.getHeight(),
+				p3.x, p3.y, building.getHeight(),
+				p4.x, p4.y, building.getHeight(),
 				(building.roof_.getX() + building.roof_.getWidth()) / buildingsTexture.getWidth(), building.roof_.getY() / buildingsTexture.getHeight(),
 				(building.roof_.getX() + building.roof_.getWidth()) / buildingsTexture.getWidth(), (building.roof_.getY() + building.roof_.getHeight()) / buildingsTexture.getHeight(),
 				building.roof_.getX() / buildingsTexture.getWidth(), (building.roof_.getY() + building.roof_.getHeight()) / buildingsTexture.getHeight());
@@ -72,19 +85,33 @@ namespace zombie {
 		// Add walls.
 		for (const Building2D& building : buildings) {
 			auto corners = building.getCorners();
+
+			Position middle = ZERO;
+			// Calculate the middle position.
+			for (Position& p : corners) {
+				middle += 0.25f * p;
+			}
+
+			// Roof corners.
+			Position roof[4];
+			roof[0] = 0.2f * (middle - corners[0]) + corners[0];
+			roof[1] = 0.2f * (middle - corners[1]) + corners[1];
+			roof[2] = 0.2f * (middle - corners[2]) + corners[2];
+			roof[3] = 0.2f * (middle - corners[3]) + corners[3];
+
 			for (int i = 0; i < 4; ++i) {
 				addTriangle(data.data(), index,
 					corners[0 + i].x, corners[0 + i].y, 0,
 					corners[(1 + i) % 4].x, corners[(1 + i) % 4].y, 0,
-					corners[0 + i].x, corners[0 + i].y, building.getHeight(),
+					roof[0 + i].x, roof[0 + i].y, building.getHeight(),
 					building.roof_.getX() / buildingsTexture.getWidth(), building.roof_.getY() / buildingsTexture.getHeight(),
 					(building.roof_.getX() + building.roof_.getWidth()) / buildingsTexture.getWidth(), building.roof_.getY() / buildingsTexture.getHeight(),
 					building.roof_.getX() / buildingsTexture.getWidth(), (building.roof_.getY() + building.roof_.getHeight()) / buildingsTexture.getHeight());
 
 				addTriangle(data.data(), index,
-					corners[0 + i].x, corners[0 + i].y, building.getHeight(),
+					roof[0 + i].x, roof[0 + i].y, building.getHeight(),
 					corners[(1 + i) % 4].x, corners[(1 + i) % 4].y, 0,
-					corners[(1 + i) % 4].x, corners[(1 + i) % 4].y, building.getHeight(),
+					roof[(1 + i) % 4].x, roof[(1 + i) % 4].y, building.getHeight(),
 					(building.roof_.getX() + building.roof_.getWidth()) / buildingsTexture.getWidth(), building.roof_.getY() / buildingsTexture.getHeight(),
 					(building.roof_.getX() + building.roof_.getWidth()) / buildingsTexture.getWidth(), (building.roof_.getY() + building.roof_.getHeight()) / buildingsTexture.getHeight(),
 					building.roof_.getX() / buildingsTexture.getWidth(), (building.roof_.getY() + building.roof_.getHeight()) / buildingsTexture.getHeight());

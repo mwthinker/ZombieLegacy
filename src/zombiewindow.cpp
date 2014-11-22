@@ -41,7 +41,7 @@ namespace zombie {
 
 		std::shared_ptr<gui::Button> createButton(std::string str, const mw::Font& font) {
 			auto button = std::make_shared<gui::Button>(str, font);
-			button->setAutoSizeToFitText(true);			
+			button->setAutoSizeToFitText(true);
 			button->setHoverColor(0.7f, 0, 0, 0.5);
 			button->setFocusColor(0.8f, 0, 0, 0.5);
 			button->setPushColor(0.9f, 0, 0, 0.5);
@@ -92,7 +92,6 @@ namespace zombie {
 					break;
 			}
 		});
-
 		zombieGame_ = std::make_shared<ZombieGame>(zombieEntry_);
 		// Always react on key events!
 		zombieGame_->setGrabFocus(true);
@@ -111,7 +110,7 @@ namespace zombie {
 			setCurrentPanel(playFrameIndex_);
 		} else {
 			setCurrentPanel(menuFrameIndex_);
-		}		
+		}
 
 		setDefaultClosing(true);
 
