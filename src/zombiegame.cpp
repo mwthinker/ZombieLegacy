@@ -296,8 +296,10 @@ namespace zombie {
 
 		mw::checkGlError();
 		water_.drawSeeFloor(deltaTime, gameShader_);
-		terrain_.draw(deltaTime, gameShader_);				
-		
+		water_.drawWaves(deltaTime, waterShader_);
+
+		terrain_.draw(deltaTime, gameShader_);
+
 		drawBuildings_.drawWalls(accumulator_, deltaTime, buildingShader_);
 		
 		gameShader_.glUseProgram();
@@ -326,8 +328,7 @@ namespace zombie {
 		}
 
 		drawBuildings_.drawRoofs(accumulator_, deltaTime, buildingShader_);
-
-		water_.drawWaves(deltaTime, waterShader_);
+		
 		for (auto& explosion : explosions_) {
 			if (!explosion.toBeRemoved()) {
 				explosion.draw(deltaTime, gameShader_);
@@ -454,6 +455,9 @@ namespace zombie {
 			} else if (entry.isAttributeEqual("type", "water")) {
 				auto triangle = loadPolygon(geom);
 				water_.addTriangle(triangle[0], triangle[1], triangle[2]);
+			} else if (entry.isAttributeEqual("type", "grass")) {
+				auto triangle = loadPolygon(geom);
+				terrain_.addGrass(triangle[0], triangle[1], triangle[2]);
 			} else if (entry.isAttributeEqual("type", "road")) {
 				//auto triangle = loadPolygon(geom);
 				//terrain_.addRoad(triangle[0], triangle[1], triangle[2]);
