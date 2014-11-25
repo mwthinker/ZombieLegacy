@@ -25,9 +25,9 @@ namespace zombie {
 		}
 
 		void addGrass(Position p1, Position p2, Position p3) {
-			grass_.push_back(p1.x); roads_.push_back(p1.y);
-			grass_.push_back(p2.x); roads_.push_back(p2.y);
-			grass_.push_back(p3.x); roads_.push_back(p3.y);
+			grass_.push_back(p1.x); grass_.push_back(p1.y);
+			grass_.push_back(p2.x); grass_.push_back(p2.y);
+			grass_.push_back(p3.x); grass_.push_back(p3.y);
 			++numberVerticesGrass_;
 		}
 
