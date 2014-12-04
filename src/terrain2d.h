@@ -21,14 +21,14 @@ namespace zombie {
 			roads_.push_back(p1.x); roads_.push_back(p1.y);
 			roads_.push_back(p2.x); roads_.push_back(p2.y);
 			roads_.push_back(p3.x); roads_.push_back(p3.y);
-			++numberVerticesRoads_;
+			numberVerticesRoads_ += 3;
 		}
 
 		void addGrass(Position p1, Position p2, Position p3) {
 			grass_.push_back(p1.x); grass_.push_back(p1.y);
 			grass_.push_back(p2.x); grass_.push_back(p2.y);
 			grass_.push_back(p3.x); grass_.push_back(p3.y);
-			++numberVerticesGrass_;
+			numberVerticesGrass_ += 3;
 		}
 
 		void draw(float time, const GameShader& shader) {
