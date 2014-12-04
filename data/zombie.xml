@@ -3,9 +3,9 @@
     <window>
         <width>1000</width>
         <height>930</height>
-        <positionX>581</positionX>
-        <positionY>56</positionY>
-        <maximized>0</maximized>
+        <positionX>2329</positionX>
+        <positionY>124</positionY>
+        <maximized>1</maximized>
     </window>
     <water>
         <seeFloorImage>images/seeFloor.png</seeFloorImage>
@@ -30,8 +30,8 @@
     </interface>
     <settings>
         <map>map.xml</map>
-        <unitLevel>50</unitLevel>
-        <unitLimit>125</unitLimit>
+        <unitLevel>10</unitLevel>
+        <unitLimit>500</unitLimit>
         <impulseThreshold>2</impulseThreshold>
         <timeStepMS>17</timeStepMS>
         <innerSpawnRadius>7.0</innerSpawnRadius>
@@ -52,121 +52,121 @@
         <wallImage>images/building.png</wallImage>
     </buildings>
     <equipment>
-		<missile>
-			<mass>100</mass>
-			<width>0.3</width>
-			<length>0.6</length>
-			<animation>
-				<frame>
-					<image>images/projectile.png</image>
-					<bodyWidth>128</bodyWidth>
-				</frame>
-			</animation>
-			<moveSound>sounds/aaa.wav</moveSound>
-		</missile>
-		<laserSight>
-			<overlayColor>(0.8 0.8 0.8 0.7)</overlayColor>
-			<laserColor>(0.8 0 0 0.5)</laserColor>
-			<speed>5.0</speed>
-			<height>0.4</height>
-			<sprites>
-				<texture>images/laser.png</texture>
-				<laser>
-					<x>2</x>
-					<y>194</y>
-					<w>60</w>
-					<h>60</h>
-				</laser>
-				<laserEnd>
-					<x>2</x>
-					<y>2</y>
-					<w>60</w>
-					<h>60</h>
-				</laserEnd>
-				<laserOverlay>
-					<x>64</x>
-					<y>64</y>
-					<w>64</w>
-					<h>64</h>
-				</laserOverlay>
-				<laserOverlayStatic>
-					<x>2</x>
-					<y>130</y>
-					<w>60</w>
-					<h>60</h>
-				</laserOverlayStatic>
-				<laserOverlayStaticEnd>
-					<x>2</x>
-					<y>66</y>
-					<w>60</w>
-					<h>60</h>
-				</laserOverlayStaticEnd>
-			</sprites>
-		</laserSight>
-		<weapons>
-			<handgun projectile="bullet">
-				<symbolImage>images/handgun.png</symbolImage>
-				<timeBetweenShots>0.3</timeBetweenShots>
-				<clipSize>12</clipSize>
-				<shootSound>sounds/handgunShoot.wav</shootSound>
-				<reloadSound>sounds/handgunReload.wav</reloadSound>
-				<moveAnimation>
-					<frame>
-						<image x="0" y="0" w="256" h="256">images/bazooka.png</image>
-						<bodyWidth>320</bodyWidth>
-					</frame>
-				</moveAnimation>
-				<size>0.5</size>
-				<moveImageGripX>-0.1525</moveImageGripX>
-				<moveImageGripY>0.0825</moveImageGripY>
-				<projectile>
-					<damage>60</damage>
-					<range>10</range>
-				</projectile>
-				<laserSight>0</laserSight>
-			</handgun>
-			<zombieFist projectile="bullet">
-				<symbolImage>images/ZombieFist.png</symbolImage>
-				<timeBetweenShots>0.3</timeBetweenShots>
-				<clipSize>1000000</clipSize>
-				<shootSound>sounds/ZombieFist.wav</shootSound>
-				<reloadSound>sounds/ZombieReload.wav</reloadSound>
-				<moveAnimation/>
-				<size>1</size>
-				<moveImageGripX>0</moveImageGripX>
-				<moveImageGripY>0</moveImageGripY>
-				<projectile>
-					<damage>10</damage>
-					<range>1</range>
-				</projectile>
-				<laserSight>0</laserSight>
-			</zombieFist>
-			<missileLauncher projectile="missile">
-				<symbolImage>images/handgun.png</symbolImage>
-				<timeBetweenShots>0.3</timeBetweenShots>
-				<clipSize>1000000</clipSize>
-				<shootSound>sounds/launch.wav</shootSound>
-				<reloadSound>sounds/handgunReload.wav</reloadSound>
-				<moveAnimation>
-					<frame>
-						<image>images/bazooka.png</image>
-						<bodyWidth>128</bodyWidth>
-					</frame>
-				</moveAnimation>
-				<size>1.1</size>
-				<moveImageGripX>0.1025</moveImageGripX>
-				<moveImageGripY>-0.0525</moveImageGripY>
-				<projectile>
-					<damageRadius>1</damageRadius>
-					<damage>60</damage>
-					<range>10</range>
-					<deathTime>10</deathTime>
-					<speed>15</speed>
-					<force>15</force>
-				</projectile>
-				<laserSight>1</laserSight>
-			</missileLauncher>
-		</weapons>
+        <missile>
+            <mass>100</mass>
+            <width>0.3</width>
+            <length>0.6</length>
+            <animation>
+                <frame>
+                    <image>images/projectile.png</image>
+                    <bodyWidth>128</bodyWidth>
+                </frame>
+            </animation>
+            <moveSound>sounds/aaa.wav</moveSound>
+        </missile>
+        <laserSight>
+            <overlayColor>(0.8 0.8 0.8 0.7)</overlayColor>
+            <laserColor>(0.8 0 0 0.5)</laserColor>
+            <speed>5.0</speed>
+            <height>0.4</height>
+            <sprites>
+                <texture>images/laser.png</texture>
+                <laser>
+                    <x>2</x>
+                    <y>194</y>
+                    <w>60</w>
+                    <h>60</h>
+                </laser>
+                <laserEnd>
+                    <x>2</x>
+                    <y>2</y>
+                    <w>60</w>
+                    <h>60</h>
+                </laserEnd>
+                <laserOverlay>
+                    <x>64</x>
+                    <y>64</y>
+                    <w>64</w>
+                    <h>64</h>
+                </laserOverlay>
+                <laserOverlayStatic>
+                    <x>2</x>
+                    <y>130</y>
+                    <w>60</w>
+                    <h>60</h>
+                </laserOverlayStatic>
+                <laserOverlayStaticEnd>
+                    <x>2</x>
+                    <y>66</y>
+                    <w>60</w>
+                    <h>60</h>
+                </laserOverlayStaticEnd>
+            </sprites>
+        </laserSight>
+        <weapons>
+            <handgun projectile="bullet">
+                <symbolImage>images/handgun.png</symbolImage>
+                <timeBetweenShots>0.3</timeBetweenShots>
+                <clipSize>12</clipSize>
+                <shootSound>sounds/handgunShoot.wav</shootSound>
+                <reloadSound>sounds/handgunReload.wav</reloadSound>
+                <moveAnimation>
+                    <frame>
+                        <image x="0" y="0" w="256" h="256">images/bazooka.png</image>
+                        <bodyWidth>320</bodyWidth>
+                    </frame>
+                </moveAnimation>
+                <size>0.5</size>
+                <moveImageGripX>-0.1525</moveImageGripX>
+                <moveImageGripY>0.0825</moveImageGripY>
+                <projectile>
+                    <damage>60</damage>
+                    <range>10</range>
+                </projectile>
+                <laserSight>0</laserSight>
+            </handgun>
+            <zombieFist projectile="bullet">
+                <symbolImage>images/ZombieFist.png</symbolImage>
+                <timeBetweenShots>0.3</timeBetweenShots>
+                <clipSize>1000000</clipSize>
+                <shootSound>sounds/ZombieFist.wav</shootSound>
+                <reloadSound>sounds/ZombieReload.wav</reloadSound>
+                <moveAnimation/>
+                <size>1</size>
+                <moveImageGripX>0</moveImageGripX>
+                <moveImageGripY>0</moveImageGripY>
+                <projectile>
+                    <damage>10</damage>
+                    <range>1</range>
+                </projectile>
+                <laserSight>0</laserSight>
+            </zombieFist>
+            <missileLauncher projectile="missile">
+                <symbolImage>images/handgun.png</symbolImage>
+                <timeBetweenShots>0.3</timeBetweenShots>
+                <clipSize>1000000</clipSize>
+                <shootSound>sounds/launch.wav</shootSound>
+                <reloadSound>sounds/handgunReload.wav</reloadSound>
+                <moveAnimation>
+                    <frame>
+                        <image>images/bazooka.png</image>
+                        <bodyWidth>128</bodyWidth>
+                    </frame>
+                </moveAnimation>
+                <size>1.1</size>
+                <moveImageGripX>-0.2025</moveImageGripX>
+                <moveImageGripY>-0.0525</moveImageGripY>
+                <projectile>
+                    <damageRadius>1</damageRadius>
+                    <damage>60</damage>
+                    <range>10</range>
+                    <deathTime>10</deathTime>
+                    <speed>15</speed>
+                    <force>15</force>
+                </projectile>
+                <laserSight>1</laserSight>
+            </missileLauncher>
+        </weapons>
     </equipment>
     <car>
         <moveAnimation>
