@@ -33,7 +33,7 @@ namespace zombie {
 			addVertex(data, index, x1, y1, z1, xTex1, yTex1);
 			addVertex(data, index, x2, y2, z2, xTex2, yTex2);
 			addVertex(data, index, x3, y3, z3, xTex3, yTex3);
-		}		
+		}
 
 	}
 

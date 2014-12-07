@@ -22,6 +22,75 @@
         <radius>20</radius>
         <color>(0 0 0)</color>
     </fog>
+	<roads>
+		<texture>images/roads.png</texture>
+		<intersection>
+			<x>0</x>
+			<y>384</y>
+			<w>128</w>
+			<h>128</h>
+		</intersection>
+		<straight0>
+			<x>128</x>
+			<y>384</y>
+			<w>128</w>
+			<h>128</h>
+		</straight0>
+		<straight90>
+			<x>256</x>
+			<y>384</y>
+			<w>128</w>
+			<h>128</h>
+		</straight90>
+		<turn0>
+			<x>384</x>
+			<y>256</y>
+			<w>128</w>
+			<h>128</h>
+		</turn0>
+		<turn90>
+			<x>0</x>
+			<y>0</y>
+			<w>128</w>
+			<h>128</h>
+		</turn90>
+		<turn180>
+			<x>128</x>
+			<y>128</y>
+			<w>128</w>
+			<h>128</h>
+		</turn180>
+		<turn270>
+			<x>0</x>
+			<y>128</y>
+			<w>128</w>
+			<h>128</h>
+		</turn270>
+		<tintersection0>
+			<x>256</x>
+			<y>256</y>
+			<w>128</w>
+			<h>128</h>
+		</tintersection0>
+		<tintersection90>
+			<x>128</x>
+			<y>256</y>
+			<w>128</w>
+			<h>128</h>
+		</tintersection90>
+		<tintersection180>
+			<x>0</x>
+			<y>256</y>
+			<w>128</w>
+			<h>128</h>
+		</tintersection180>
+		<tintersection270>
+			<x>384</x>
+			<y>384</y>
+			<w>128</w>
+			<h>128</h>
+		</tintersection270>
+	</roads>
     <tree>
         <image>images/tree.png</image>
     </tree>

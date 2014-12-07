@@ -100,6 +100,8 @@ namespace zombie {
 
 		innerSpawnRadius_ = zombieEntry_.getDeepChildEntry("settings innerSpawnRadius").getFloat();
 		outerSpawnRadius_ = zombieEntry_.getDeepChildEntry("settings outerSpawnRadius").getFloat();
+		
+		terrain_.loadRoadSprites(zombieEntry_.getDeepChildEntry("roads"));
 		loadTerrain();
 		
 		explosionProperties_ = zombie::loadExplosion(zombieEntry_.getDeepChildEntry("explosion"));
@@ -458,9 +460,8 @@ namespace zombie {
 			} else if (entry.isAttributeEqual("type", "grass")) {
 				auto triangle = loadPolygon(geom);
 				terrain_.addGrass(triangle[0], triangle[1], triangle[2]);
-			} else if (entry.isAttributeEqual("type", "road")) {
-				//auto triangle = loadPolygon(geom);
-				//terrain_.addRoad(triangle[0], triangle[1], triangle[2]);
+			} else if (entry.isAttributeEqual("type", "tilepoint")) {
+				terrain_.addRoad(entry);
 			} else if (entry.isAttributeEqual("type", "tree")) {
 				engine_.add(new Tree2D(loadPoint(geom), tree_));
 			} else if (entry.isAttributeEqual("type", "spawningpoint")) {
