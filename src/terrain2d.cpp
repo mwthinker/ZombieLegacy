@@ -88,6 +88,7 @@ namespace zombie {
 		Position position = loadPoint(tileEntry.getChildEntry("geom").getString());
 		std::string tileId = tileEntry.getChildEntry("tile_id").getString();
 		int deg = tileEntry.getChildEntry("rotation").getInt();
+		float size = tileEntry.getChildEntry("size").getFloat();
 		mw::Sprite sprite;
 		if (tileId == "turn") {
 			switch (deg) {
@@ -136,7 +137,7 @@ namespace zombie {
 		std::array<GLfloat, 4 * 6> data_;
 
 		int index = 0;
-		addSquare(data_.data(), index, position.x - 1.25, position.y - 1.25, 2.5, 2.5, sprite);
+		addSquare(data_.data(), index, position.x - size*0.5f, position.y - size*0.5f, size, size, sprite);
 		roads_.insert(roads_.end(), data_.begin(), data_.end());
 		numberVerticesRoads_ += 6;
 	}
