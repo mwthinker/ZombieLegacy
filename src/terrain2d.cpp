@@ -136,7 +136,7 @@ namespace zombie {
 		std::array<GLfloat, 4 * 6> data_;
 
 		int index = 0;
-		addSquare(data_.data(), index, position.x - 1.f, position.y - 1.f, 2.f, 2.f, sprite);
+		addSquare(data_.data(), index, position.x - 1.25, position.y - 1.25, 2.5, 2.5, sprite);
 		roads_.insert(roads_.end(), data_.begin(), data_.end());
 		numberVerticesRoads_ += 6;
 	}
