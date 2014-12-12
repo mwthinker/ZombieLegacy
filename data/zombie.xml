@@ -5,7 +5,7 @@
         <height>930</height>
         <positionX>393</positionX>
         <positionY>51</positionY>
-        <maximized>0</maximized>
+        <maximized>1</maximized>
     </window>
     <water>
         <seeFloorImage>images/seeFloor.png</seeFloorImage>
@@ -99,7 +99,7 @@
     </interface>
     <settings>
         <map>map.xml</map>
-        <unitLevel>10</unitLevel>
+        <unitLevel>400</unitLevel>
         <unitLimit>500</unitLimit>
         <impulseThreshold>2</impulseThreshold>
         <timeStepMS>17</timeStepMS>

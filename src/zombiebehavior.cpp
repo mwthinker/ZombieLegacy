@@ -78,7 +78,7 @@ namespace zombie {
 		float distant = 100;
 		for (MovingObject* unit : units) {
 			// Not infected?
-			if (!unit->isInfected()) {
+			if (unit->isInfected()) {
 				float tmp = (position - unit->getPosition()).LengthSquared();
 				// Closer?
 				if (tmp < distant) {

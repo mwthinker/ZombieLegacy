@@ -135,7 +135,7 @@ namespace zombie {
 		int clipsize_;
 
 		// Physical objects.
-		Array<Unit2D, 100> units_;
+		Array<Unit2D, 500> units_;
 		Array<Missile2D, 10> missiles_;
 		Array<Car2D, 20> cars_;
 		Array<Building2D, 100> buildings_;
