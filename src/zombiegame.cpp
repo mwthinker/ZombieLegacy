@@ -137,7 +137,7 @@ namespace zombie {
 		// Add zombies to engine.
 		unsigned int unitLevel = zombieEntry_.getDeepChildEntry("settings unitLevel").getInt();
 		for (unsigned int i = 1; i <= unitLevel && i < units_.getMaxSize(); ++i) {
-			State state(generatePosition(spawningPoints_), ORIGO, 0);
+			State state(generatePosition(spawningPoints_), ORIGO, random(0, 2.f*PI));
 			Unit* unit = units_.pushBack(zombie);
 			engine_.add(unit);
 			unit->setState(state);
