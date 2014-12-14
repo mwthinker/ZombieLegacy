@@ -114,7 +114,7 @@ namespace zombie {
 		
 		zombieInjured_ = zombieEntry_.getDeepChildEntry("zombie injuredAnimation").getAnimation();
 		zombieDie_ = zombieEntry_.getDeepChildEntry("zombie dieAnimation").getAnimation();
-		Unit2D zombie(loadUnit(this, "zombie", zombieEntry_, false));
+		Unit2D zombie(loadUnit(this, "zombie", zombieEntry_, true));
 		zombie.setDieSound(zombieEntry_.getDeepChildEntry("zombie dieSound").getSound());
 		zombie.setHitSound(zombieEntry_.getDeepChildEntry("zombie hitSound").getSound());
 
@@ -157,7 +157,7 @@ namespace zombie {
 			c->setAwake(true);
 		}
 
-		// Add cars to engine.
+		// Add missile to engine.
 		Missile2D missile(loadMissile2D(this, zombieEntry_.getDeepChildEntry("equipment missile")));
 		for (unsigned int i = 0; i < 10 && i < units_.getMaxSize(); ++i) {
 			engine_.add(missiles_.emplaceBack(missile));
