@@ -4,162 +4,162 @@
 	<objects>
 		<object type="building">
 			<geom>POLYGON ((77.4557971032258 89.5697799000296,77.4557971032258 84.5697799000296,82.4557971032258 84.5697799000296,82.4557971032258 89.5697799000296,77.4557971032258 89.5697799000296))</geom>
-			<height>7</height>
+			<height>10</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((77.4557971032258 84.5697799000296,77.4557971032258 79.5697799000296,82.4557971032258 79.5697799000296,82.4557971032258 84.5697799000296,77.4557971032258 84.5697799000296))</geom>
-			<height>10</height>
+			<height>9</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((87.4557971032258 89.5697799000296,87.4557971032258 84.5697799000296,92.4557971032258 84.5697799000296,92.4557971032258 89.5697799000296,87.4557971032258 89.5697799000296))</geom>
-			<height>5</height>
+			<height>7</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((102.455797103226 74.5697799000296,102.455797103226 69.5697799000296,107.455797103226 69.5697799000296,107.455797103226 74.5697799000296,102.455797103226 74.5697799000296))</geom>
-			<height>8</height>
+			<height>7</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((92.4557971032258 79.5697799000296,92.4557971032258 74.5697799000296,97.4557971032258 74.5697799000296,97.4557971032258 79.5697799000296,92.4557971032258 79.5697799000296))</geom>
-			<height>5</height>
+			<height>8</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((87.4557971032258 79.5697799000296,87.4557971032258 74.5697799000296,92.4557971032258 74.5697799000296,92.4557971032258 79.5697799000296,87.4557971032258 79.5697799000296))</geom>
-			<height>8</height>
+			<height>5</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((92.4557971032258 89.5697799000296,92.4557971032258 84.5697799000296,97.4557971032258 84.5697799000296,97.4557971032258 89.5697799000296,92.4557971032258 89.5697799000296))</geom>
-			<height>8</height>
+			<height>7</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((102.455797103226 79.5697799000296,102.455797103226 74.5697799000296,107.455797103226 74.5697799000296,107.455797103226 79.5697799000296,102.455797103226 79.5697799000296))</geom>
-			<height>5</height>
+			<height>6</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((102.455797103226 89.5697799000296,102.455797103226 84.5697799000296,107.455797103226 84.5697799000296,107.455797103226 89.5697799000296,102.455797103226 89.5697799000296))</geom>
-			<height>10</height>
+			<height>8</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((112.455797103226 89.5697799000296,112.455797103226 84.5697799000296,117.455797103226 84.5697799000296,117.455797103226 89.5697799000296,112.455797103226 89.5697799000296))</geom>
-			<height>6</height>
+			<height>8</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((117.455797103226 89.5697799000296,117.455797103226 84.5697799000296,122.455797103226 84.5697799000296,122.455797103226 89.5697799000296,117.455797103226 89.5697799000296))</geom>
-			<height>10</height>
+			<height>6</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((117.455797103226 74.5697799000296,117.455797103226 69.5697799000296,122.455797103226 69.5697799000296,122.455797103226 74.5697799000296,117.455797103226 74.5697799000296))</geom>
-			<height>6</height>
+			<height>9</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((107.455797103226 79.5697799000296,107.455797103226 74.5697799000296,112.455797103226 74.5697799000296,112.455797103226 79.5697799000296,107.455797103226 79.5697799000296))</geom>
-			<height>6</height>
+			<height>7</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((107.455797103226 74.5697799000296,107.455797103226 69.5697799000296,112.455797103226 69.5697799000296,112.455797103226 74.5697799000296,107.455797103226 74.5697799000296))</geom>
-			<height>7</height>
+			<height>8</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((122.455797103226 79.5697799000296,122.455797103226 74.5697799000296,127.455797103226 74.5697799000296,127.455797103226 79.5697799000296,122.455797103226 79.5697799000296))</geom>
-			<height>5</height>
+			<height>8</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((117.455797103226 79.5697799000296,117.455797103226 74.5697799000296,122.455797103226 74.5697799000296,122.455797103226 79.5697799000296,117.455797103226 79.5697799000296))</geom>
-			<height>9</height>
+			<height>6</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((122.455797103226 89.5697799000296,122.455797103226 84.5697799000296,127.455797103226 84.5697799000296,127.455797103226 89.5697799000296,122.455797103226 89.5697799000296))</geom>
-			<height>6</height>
+			<height>5</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((97.4557971032258 99.5697799000296,97.4557971032258 94.5697799000296,102.455797103226 94.5697799000296,102.455797103226 99.5697799000296,97.4557971032258 99.5697799000296))</geom>
-			<height>8</height>
+			<height>10</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((77.4557971032258 94.5697799000296,77.4557971032258 89.5697799000296,82.4557971032258 89.5697799000296,82.4557971032258 94.5697799000296,77.4557971032258 94.5697799000296))</geom>
-			<height>9</height>
+			<height>6</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((77.4557971032258 99.5697799000296,77.4557971032258 94.5697799000296,82.4557971032258 94.5697799000296,82.4557971032258 99.5697799000296,77.4557971032258 99.5697799000296))</geom>
-			<height>9</height>
+			<height>6</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((67.4557971032258 94.5697799000296,67.4557971032258 89.5697799000296,72.4557971032258 89.5697799000296,72.4557971032258 94.5697799000296,67.4557971032258 94.5697799000296))</geom>
-			<height>9</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((102.455797103226 94.5697799000296,102.455797103226 89.5697799000296,107.455797103226 89.5697799000296,107.455797103226 94.5697799000296,102.455797103226 94.5697799000296))</geom>
-			<height>10</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((122.455797103226 99.5697799000296,122.455797103226 94.5697799000296,127.455797103226 94.5697799000296,127.455797103226 99.5697799000296,122.455797103226 99.5697799000296))</geom>
-			<height>6</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((97.4557971032258 109.56977990003,97.4557971032258 104.56977990003,102.455797103226 104.56977990003,102.455797103226 109.56977990003,97.4557971032258 109.56977990003))</geom>
-			<height>7</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((82.4557971032258 104.56977990003,82.4557971032258 99.5697799000296,87.4557971032258 99.5697799000296,87.4557971032258 104.56977990003,82.4557971032258 104.56977990003))</geom>
-			<height>9</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((102.455797103226 99.5697799000296,102.455797103226 94.5697799000296,107.455797103226 94.5697799000296,107.455797103226 99.5697799000296,102.455797103226 99.5697799000296))</geom>
 			<height>8</height>
 			<type>0</type>
 		</object>
 		<object type="building">
+			<geom>POLYGON ((102.455797103226 94.5697799000296,102.455797103226 89.5697799000296,107.455797103226 89.5697799000296,107.455797103226 94.5697799000296,102.455797103226 94.5697799000296))</geom>
+			<height>5</height>
+			<type>0</type>
+		</object>
+		<object type="building">
+			<geom>POLYGON ((122.455797103226 99.5697799000296,122.455797103226 94.5697799000296,127.455797103226 94.5697799000296,127.455797103226 99.5697799000296,122.455797103226 99.5697799000296))</geom>
+			<height>9</height>
+			<type>0</type>
+		</object>
+		<object type="building">
+			<geom>POLYGON ((97.4557971032258 109.56977990003,97.4557971032258 104.56977990003,102.455797103226 104.56977990003,102.455797103226 109.56977990003,97.4557971032258 109.56977990003))</geom>
+			<height>6</height>
+			<type>0</type>
+		</object>
+		<object type="building">
+			<geom>POLYGON ((82.4557971032258 104.56977990003,82.4557971032258 99.5697799000296,87.4557971032258 99.5697799000296,87.4557971032258 104.56977990003,82.4557971032258 104.56977990003))</geom>
+			<height>6</height>
+			<type>0</type>
+		</object>
+		<object type="building">
+			<geom>POLYGON ((102.455797103226 99.5697799000296,102.455797103226 94.5697799000296,107.455797103226 94.5697799000296,107.455797103226 99.5697799000296,102.455797103226 99.5697799000296))</geom>
+			<height>5</height>
+			<type>0</type>
+		</object>
+		<object type="building">
 			<geom>POLYGON ((67.4557971032258 104.56977990003,67.4557971032258 99.5697799000296,72.4557971032258 99.5697799000296,72.4557971032258 104.56977990003,67.4557971032258 104.56977990003))</geom>
-			<height>7</height>
+			<height>5</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((122.455797103226 104.56977990003,122.455797103226 99.5697799000296,127.455797103226 99.5697799000296,127.455797103226 104.56977990003,122.455797103226 104.56977990003))</geom>
-			<height>6</height>
+			<height>9</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((87.4557971032258 99.5697799000296,87.4557971032258 94.5697799000296,92.4557971032258 94.5697799000296,92.4557971032258 99.5697799000296,87.4557971032258 99.5697799000296))</geom>
-			<height>10</height>
+			<height>5</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((122.455797103226 109.56977990003,122.455797103226 104.56977990003,127.455797103226 104.56977990003,127.455797103226 109.56977990003,122.455797103226 109.56977990003))</geom>
-			<height>5</height>
+			<height>6</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((87.4557971032258 104.56977990003,87.4557971032258 99.5697799000296,92.4557971032258 99.5697799000296,92.4557971032258 104.56977990003,87.4557971032258 104.56977990003))</geom>
-			<height>5</height>
+			<height>6</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((107.455797103226 109.56977990003,107.455797103226 104.56977990003,112.455797103226 104.56977990003,112.455797103226 109.56977990003,107.455797103226 109.56977990003))</geom>
-			<height>6</height>
+			<height>7</height>
 			<type>0</type>
 		</object>
 		<object type="building">
@@ -169,7 +169,7 @@
 		</object>
 		<object type="building">
 			<geom>POLYGON ((112.455797103226 99.5697799000296,112.455797103226 94.5697799000296,117.455797103226 94.5697799000296,117.455797103226 99.5697799000296,112.455797103226 99.5697799000296))</geom>
-			<height>10</height>
+			<height>8</height>
 			<type>0</type>
 		</object>
 		<object type="building">
@@ -179,27 +179,27 @@
 		</object>
 		<object type="building">
 			<geom>POLYGON ((112.455797103226 109.56977990003,112.455797103226 104.56977990003,117.455797103226 104.56977990003,117.455797103226 109.56977990003,112.455797103226 109.56977990003))</geom>
-			<height>5</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((67.4557971032258 109.56977990003,67.4557971032258 104.56977990003,72.4557971032258 104.56977990003,72.4557971032258 109.56977990003,67.4557971032258 109.56977990003))</geom>
 			<height>8</height>
 			<type>0</type>
 		</object>
 		<object type="building">
-			<geom>POLYGON ((122.455797103226 119.56977990003,122.455797103226 114.56977990003,127.455797103226 114.56977990003,127.455797103226 119.56977990003,122.455797103226 119.56977990003))</geom>
-			<height>10</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((72.4557971032258 114.56977990003,72.4557971032258 109.56977990003,77.4557971032258 109.56977990003,77.4557971032258 114.56977990003,72.4557971032258 114.56977990003))</geom>
+			<geom>POLYGON ((67.4557971032258 109.56977990003,67.4557971032258 104.56977990003,72.4557971032258 104.56977990003,72.4557971032258 109.56977990003,67.4557971032258 109.56977990003))</geom>
 			<height>6</height>
 			<type>0</type>
 		</object>
 		<object type="building">
-			<geom>POLYGON ((97.4557971032258 114.56977990003,97.4557971032258 109.56977990003,102.455797103226 109.56977990003,102.455797103226 114.56977990003,97.4557971032258 114.56977990003))</geom>
+			<geom>POLYGON ((122.455797103226 119.56977990003,122.455797103226 114.56977990003,127.455797103226 114.56977990003,127.455797103226 119.56977990003,122.455797103226 119.56977990003))</geom>
 			<height>5</height>
+			<type>0</type>
+		</object>
+		<object type="building">
+			<geom>POLYGON ((72.4557971032258 114.56977990003,72.4557971032258 109.56977990003,77.4557971032258 109.56977990003,77.4557971032258 114.56977990003,72.4557971032258 114.56977990003))</geom>
+			<height>7</height>
+			<type>0</type>
+		</object>
+		<object type="building">
+			<geom>POLYGON ((97.4557971032258 114.56977990003,97.4557971032258 109.56977990003,102.455797103226 109.56977990003,102.455797103226 114.56977990003,97.4557971032258 114.56977990003))</geom>
+			<height>9</height>
 			<type>0</type>
 		</object>
 		<object type="building">
@@ -209,27 +209,27 @@
 		</object>
 		<object type="building">
 			<geom>POLYGON ((122.455797103226 124.56977990003,122.455797103226 119.56977990003,127.455797103226 119.56977990003,127.455797103226 124.56977990003,122.455797103226 124.56977990003))</geom>
-			<height>8</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((77.4557971032258 124.56977990003,77.4557971032258 119.56977990003,82.4557971032258 119.56977990003,82.4557971032258 124.56977990003,77.4557971032258 124.56977990003))</geom>
-			<height>8</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((112.455797103226 114.56977990003,112.455797103226 109.56977990003,117.455797103226 109.56977990003,117.455797103226 114.56977990003,112.455797103226 114.56977990003))</geom>
 			<height>5</height>
 			<type>0</type>
 		</object>
 		<object type="building">
+			<geom>POLYGON ((77.4557971032258 124.56977990003,77.4557971032258 119.56977990003,82.4557971032258 119.56977990003,82.4557971032258 124.56977990003,77.4557971032258 124.56977990003))</geom>
+			<height>9</height>
+			<type>0</type>
+		</object>
+		<object type="building">
+			<geom>POLYGON ((112.455797103226 114.56977990003,112.455797103226 109.56977990003,117.455797103226 109.56977990003,117.455797103226 114.56977990003,112.455797103226 114.56977990003))</geom>
+			<height>7</height>
+			<type>0</type>
+		</object>
+		<object type="building">
 			<geom>POLYGON ((97.4557971032258 119.56977990003,97.4557971032258 114.56977990003,102.455797103226 114.56977990003,102.455797103226 119.56977990003,97.4557971032258 119.56977990003))</geom>
-			<height>6</height>
+			<height>10</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((102.455797103226 124.56977990003,102.455797103226 119.56977990003,107.455797103226 119.56977990003,107.455797103226 124.56977990003,102.455797103226 124.56977990003))</geom>
-			<height>6</height>
+			<height>7</height>
 			<type>0</type>
 		</object>
 		<object type="building">
@@ -239,12 +239,12 @@
 		</object>
 		<object type="building">
 			<geom>POLYGON ((122.455797103226 129.56977990003,122.455797103226 124.56977990003,127.455797103226 124.56977990003,127.455797103226 129.56977990003,122.455797103226 129.56977990003))</geom>
-			<height>5</height>
+			<height>8</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((117.455797103226 129.56977990003,117.455797103226 124.56977990003,122.455797103226 124.56977990003,122.455797103226 129.56977990003,117.455797103226 129.56977990003))</geom>
-			<height>7</height>
+			<height>9</height>
 			<type>0</type>
 		</object>
 		<object type="building">
@@ -254,62 +254,62 @@
 		</object>
 		<object type="building">
 			<geom>POLYGON ((102.455797103226 129.56977990003,102.455797103226 124.56977990003,107.455797103226 124.56977990003,107.455797103226 129.56977990003,102.455797103226 129.56977990003))</geom>
-			<height>6</height>
+			<height>10</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((92.4557971032258 119.56977990003,92.4557971032258 114.56977990003,97.4557971032258 114.56977990003,97.4557971032258 119.56977990003,92.4557971032258 119.56977990003))</geom>
-			<height>6</height>
+			<height>7</height>
 			<type>0</type>
 		</object>
 		<object type="building">
 			<geom>POLYGON ((82.4557971032258 124.56977990003,82.4557971032258 119.56977990003,87.4557971032258 119.56977990003,87.4557971032258 124.56977990003,82.4557971032258 124.56977990003))</geom>
-			<height>9</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((107.455797103226 114.56977990003,107.455797103226 109.56977990003,112.455797103226 109.56977990003,112.455797103226 114.56977990003,107.455797103226 114.56977990003))</geom>
-			<height>8</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((112.455797103226 129.56977990003,112.455797103226 124.56977990003,117.455797103226 124.56977990003,117.455797103226 129.56977990003,112.455797103226 129.56977990003))</geom>
-			<height>9</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((67.4557971032258 114.56977990003,67.4557971032258 109.56977990003,72.4557971032258 109.56977990003,72.4557971032258 114.56977990003,67.4557971032258 114.56977990003))</geom>
-			<height>5</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((97.4557971032258 124.56977990003,97.4557971032258 119.56977990003,102.455797103226 119.56977990003,102.455797103226 124.56977990003,97.4557971032258 124.56977990003))</geom>
-			<height>9</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((112.455797103226 124.56977990003,112.455797103226 119.56977990003,117.455797103226 119.56977990003,117.455797103226 124.56977990003,112.455797103226 124.56977990003))</geom>
-			<height>10</height>
-			<type>0</type>
-		</object>
-		<object type="building">
-			<geom>POLYGON ((82.4557971032258 129.56977990003,82.4557971032258 124.56977990003,87.4557971032258 124.56977990003,87.4557971032258 129.56977990003,82.4557971032258 129.56977990003))</geom>
 			<height>6</height>
 			<type>0</type>
 		</object>
 		<object type="building">
-			<geom>POLYGON ((92.4557971032258 114.56977990003,92.4557971032258 109.56977990003,97.4557971032258 109.56977990003,97.4557971032258 114.56977990003,92.4557971032258 114.56977990003))</geom>
+			<geom>POLYGON ((107.455797103226 114.56977990003,107.455797103226 109.56977990003,112.455797103226 109.56977990003,112.455797103226 114.56977990003,107.455797103226 114.56977990003))</geom>
 			<height>10</height>
 			<type>0</type>
 		</object>
 		<object type="building">
-			<geom>POLYGON ((122.455797103226 114.56977990003,122.455797103226 109.56977990003,127.455797103226 109.56977990003,127.455797103226 114.56977990003,122.455797103226 114.56977990003))</geom>
+			<geom>POLYGON ((112.455797103226 129.56977990003,112.455797103226 124.56977990003,117.455797103226 124.56977990003,117.455797103226 129.56977990003,112.455797103226 129.56977990003))</geom>
+			<height>6</height>
+			<type>0</type>
+		</object>
+		<object type="building">
+			<geom>POLYGON ((67.4557971032258 114.56977990003,67.4557971032258 109.56977990003,72.4557971032258 109.56977990003,72.4557971032258 114.56977990003,67.4557971032258 114.56977990003))</geom>
+			<height>9</height>
+			<type>0</type>
+		</object>
+		<object type="building">
+			<geom>POLYGON ((97.4557971032258 124.56977990003,97.4557971032258 119.56977990003,102.455797103226 119.56977990003,102.455797103226 124.56977990003,97.4557971032258 124.56977990003))</geom>
 			<height>5</height>
 			<type>0</type>
 		</object>
 		<object type="building">
-			<geom>POLYGON ((62.4557971032258 94.5697799000296,62.4557971032258 89.5697799000296,67.4557971032258 89.5697799000296,67.4557971032258 94.5697799000296,62.4557971032258 94.5697799000296))</geom>
+			<geom>POLYGON ((112.455797103226 124.56977990003,112.455797103226 119.56977990003,117.455797103226 119.56977990003,117.455797103226 124.56977990003,112.455797103226 124.56977990003))</geom>
+			<height>5</height>
+			<type>0</type>
+		</object>
+		<object type="building">
+			<geom>POLYGON ((82.4557971032258 129.56977990003,82.4557971032258 124.56977990003,87.4557971032258 124.56977990003,87.4557971032258 129.56977990003,82.4557971032258 129.56977990003))</geom>
+			<height>10</height>
+			<type>0</type>
+		</object>
+		<object type="building">
+			<geom>POLYGON ((92.4557971032258 114.56977990003,92.4557971032258 109.56977990003,97.4557971032258 109.56977990003,97.4557971032258 114.56977990003,92.4557971032258 114.56977990003))</geom>
 			<height>9</height>
+			<type>0</type>
+		</object>
+		<object type="building">
+			<geom>POLYGON ((122.455797103226 114.56977990003,122.455797103226 109.56977990003,127.455797103226 109.56977990003,127.455797103226 114.56977990003,122.455797103226 114.56977990003))</geom>
+			<height>9</height>
+			<type>0</type>
+		</object>
+		<object type="building">
+			<geom>POLYGON ((62.4557971032258 94.5697799000296,62.4557971032258 89.5697799000296,67.4557971032258 89.5697799000296,67.4557971032258 94.5697799000296,62.4557971032258 94.5697799000296))</geom>
+			<height>7</height>
 			<type>0</type>
 		</object>
 		<object type="grass">
@@ -1738,55 +1738,1219 @@
 			<geom>POLYGON ((-16.8820864228964 109.756145510808,159.328635568181 -2.61974889104871,155.338958843855 207.503225256802,-16.8820864228964 109.756145510808))</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (82.4557971032258 117.06977990003)</geom>
+			<geom>POINT (62.4557971032258 89.5697799000296)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (74.9557971032258 99.5697799000296)</geom>
+			<geom>POINT (62.4557971032258 92.0697799000296)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (84.9557971032258 84.5697799000296)</geom>
+			<geom>POINT (62.4557971032258 94.5697799000296)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (114.955797103226 79.5697799000296)</geom>
+			<geom>POINT (64.9557971032258 89.5697799000296)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (109.955797103226 97.0697799000296)</geom>
+			<geom>POINT (64.9557971032258 92.0697799000296)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (119.955797103226 122.06977990003)</geom>
+			<geom>POINT (64.9557971032258 94.5697799000296)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (104.955797103226 117.06977990003)</geom>
+			<geom>POINT (67.4557971032258 89.5697799000296)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (99.9557971032258 129.56977990003)</geom>
+			<geom>POINT (67.4557971032258 92.0697799000296)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (96.4057820164372 136.107549553869)</geom>
+			<geom>POINT (67.4557971032258 94.5697799000296)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (119.955797103226 119.56977990003)</geom>
+			<geom>POINT (67.4557971032258 99.5697799000296)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (104.955797103226 114.56977990003)</geom>
+			<geom>POINT (67.4557971032258 102.06977990003)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (94.9557971032258 127.06977990003)</geom>
+			<geom>POINT (67.4557971032258 104.56977990003)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (83.5356410818391 115.42656446586)</geom>
+			<geom>POINT (67.4557971032258 107.06977990003)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (76.4348736696471 98.3847226765988)</geom>
+			<geom>POINT (67.4557971032258 109.56977990003)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (111.494912767345 95.4556561190695)</geom>
+			<geom>POINT (67.4557971032258 112.06977990003)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (116.554209548532 78.3250547371562)</geom>
+			<geom>POINT (67.4557971032258 114.56977990003)</geom>
 		</object>
 		<object type="spawningpoint">
-			<geom>POINT (86.2871884540636 83.5618707036478)</geom>
+			<geom>POINT (69.9557971032258 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (69.9557971032258 92.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (69.9557971032258 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (69.9557971032258 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (69.9557971032258 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (69.9557971032258 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (69.9557971032258 107.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (69.9557971032258 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (69.9557971032258 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (69.9557971032258 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (72.4557971032258 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (72.4557971032258 92.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (72.4557971032258 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (72.4557971032258 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (72.4557971032258 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (72.4557971032258 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (72.4557971032258 107.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (72.4557971032258 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (72.4557971032258 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (72.4557971032258 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (74.9557971032258 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (74.9557971032258 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (74.9557971032258 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 82.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 92.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (77.4557971032258 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 82.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 92.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (79.9557971032258 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 82.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 92.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (82.4557971032258 129.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (84.9557971032258 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (84.9557971032258 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (84.9557971032258 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (84.9557971032258 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (84.9557971032258 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (84.9557971032258 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (84.9557971032258 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (84.9557971032258 129.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (87.4557971032258 129.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (89.9557971032258 129.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 117.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (92.4557971032258 129.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (94.9557971032258 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (94.9557971032258 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (94.9557971032258 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (94.9557971032258 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (94.9557971032258 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (94.9557971032258 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (94.9557971032258 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (94.9557971032258 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (94.9557971032258 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (94.9557971032258 117.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (94.9557971032258 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 107.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 117.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (97.4557971032258 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (99.9557971032258 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (99.9557971032258 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (99.9557971032258 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (99.9557971032258 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (99.9557971032258 107.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (99.9557971032258 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (99.9557971032258 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (99.9557971032258 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (99.9557971032258 117.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (99.9557971032258 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (99.9557971032258 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (99.9557971032258 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 69.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 72.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 92.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 107.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 117.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (102.455797103226 129.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 69.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 72.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 92.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (104.955797103226 129.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 69.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 72.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 92.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 107.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (107.455797103226 129.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (109.955797103226 69.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (109.955797103226 72.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (109.955797103226 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (109.955797103226 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (109.955797103226 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (109.955797103226 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (109.955797103226 107.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (109.955797103226 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (109.955797103226 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (109.955797103226 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 69.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 72.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 107.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (112.455797103226 129.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 107.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (114.955797103226 129.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 69.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 72.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 107.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (117.455797103226 129.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (119.955797103226 69.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (119.955797103226 72.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (119.955797103226 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (119.955797103226 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (119.955797103226 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (119.955797103226 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (119.955797103226 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (119.955797103226 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (119.955797103226 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (119.955797103226 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (119.955797103226 129.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 69.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 72.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 107.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 117.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (122.455797103226 129.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 107.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 117.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (124.955797103226 129.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 74.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 77.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 79.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 84.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 87.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 89.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 94.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 97.0697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 99.5697799000296)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 102.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 104.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 107.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 109.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 112.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 114.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 117.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 119.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 122.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 124.56977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 127.06977990003)</geom>
+		</object>
+		<object type="spawningpoint">
+			<geom>POINT (127.455797103226 129.56977990003)</geom>
 		</object>
 		<object type="car spawningpoint">
 			<geom>POINT (111.583672359998 96.6095308235507)</geom>
