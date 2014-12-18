@@ -182,7 +182,13 @@ namespace zombie {
 	
 	void ZombieGame::updateEachCycle(Unit& unit, Unit& human) {
 		Position diff = unit.getPosition() - human.getPosition();
-		if (diff.LengthSquared() > 5*5) {
+		if (diff.LengthSquared() > 300) {
+			unit.setAwake(false);
+			unit.setActive(false);
+			
+			// place new unit
+
+
 			// Move to new postion and direction.
 			//Position spawnPoint = generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_);
 			//float angle = calculateAnglePointToPoint(spawnPoint, human.getPosition());
@@ -258,7 +264,7 @@ namespace zombie {
 			if (unit.isActive()) {
 				// remove units far away.
 				// should be (unit, human)
-				updateEachCycle(unit, unit);
+				updateEachCycle(unit, units_[0]);
 
 				unit.updatePhysics(time, timeStep_);
 			}
