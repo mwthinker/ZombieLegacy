@@ -34,8 +34,18 @@ namespace zombie {
 		}
 
 		Position generatePosition(std::vector<Position> positions) {
-			return positions[randomInt(0, positions.size() - 1)];
+			return positions[randomInt(0, positions.size() - 1)];	
 		}
+		/*
+		Position generateZombiePosition(Position humanPosition, std::vector<Position> positions) {
+			unsigned int tries = 1000;
+			for (unsigned int i = 0; i < tries; i++) {
+				Position p = positions[randomInt(0, positions.size() - 1)];
+				float dX = abs(p.x - humanPosition.x);
+				float dY = abs(p.y - humanPosition.y);
+			} 
+		}
+		*/
 
 		template <class Vector>
 		void activateFirstFreeSlot(Vector& v, Position p, float angle, const Animation& dieAnimation) {
@@ -169,17 +179,17 @@ namespace zombie {
 		drawBuildings_.createVBO(buildings_, wall_.getTexture());
 	}
 	
-	/*
+	
 	void ZombieGame::updateEachCycle(Unit& unit, Unit& human) {
 		Position diff = unit.getPosition() - human.getPosition();
-		if (diff.LengthSquared() > outerSpawnRadius_*outerSpawnRadius_) {
+		if (diff.LengthSquared() > 5*5) {
 			// Move to new postion and direction.
-			Position spawnPoint = generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_);
-			float angle = calculateAnglePointToPoint(spawnPoint, human.getPosition());
-			unit.getBody()->SetTransform(spawnPoint, angle);
+			//Position spawnPoint = generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_);
+			//float angle = calculateAnglePointToPoint(spawnPoint, human.getPosition());
+			//unit.getBody()->SetTransform(spawnPoint, angle);
 		}
 	}
-	*/
+	
 
 	// Starts the game.
 	void ZombieGame::startGame() {
@@ -246,6 +256,10 @@ namespace zombie {
 		
 		for (Unit& unit : units_) {
 			if (unit.isActive()) {
+				// remove units far away.
+				// should be (unit, human)
+				updateEachCycle(unit, unit);
+
 				unit.updatePhysics(time, timeStep_);
 			}
 		}

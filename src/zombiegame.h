@@ -51,6 +51,8 @@ namespace zombie {
 
 		void zoom(float scale);
 
+		void updateEachCycle(Unit& unit, Unit& human);
+
 	private:
 		void updateGame(float deltaTime);
 
