@@ -182,12 +182,25 @@ namespace zombie {
 	
 	void ZombieGame::updateEachCycle(Unit& unit, Unit& human) {
 		Position diff = unit.getPosition() - human.getPosition();
-		if (diff.LengthSquared() > 300) {
+		double inner = 5;
+		double outer = 15;
+		if (diff.LengthSquared() > outer * outer) {
 			unit.setAwake(false);
 			unit.setActive(false);
 			
-			// place new unit
-
+			// replace unit
+			unsigned int tries = 1000;
+			for (unsigned int i = 0; i < tries; i++) {
+				Position p = spawningPoints_[randomInt(0, spawningPoints_.size() - 1)];
+				diff = p - human.getPosition();
+				if (diff.LengthSquared() < outer && diff.LengthSquared() > inner) {
+					State state(p, ORIGO, random(0, 2.f*PI));
+					unit.setState(state);
+					unit.setActive(true);
+					unit.setAwake(true);
+					return;
+				}
+			}
 
 			// Move to new postion and direction.
 			//Position spawnPoint = generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_);
