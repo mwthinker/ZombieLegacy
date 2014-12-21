@@ -51,7 +51,9 @@ namespace zombie {
 
 		void zoom(float scale);
 
-		void updateEachCycle(Unit& unit, Unit& human);
+		void calculateValidSpawningPoints(Unit& human);
+
+		void moveUnits(Unit& unit, Unit& human);
 
 	private:
 		void updateGame(float deltaTime);
@@ -125,6 +127,7 @@ namespace zombie {
 		GameDataEntry zombieEntry_;		
 
 		std::vector<Position> spawningPoints_;
+		std::vector<Position> vaildSpawningPoints_;
 
 		Terrain2D terrain_;
 		Water water_;

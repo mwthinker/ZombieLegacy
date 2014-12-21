@@ -145,9 +145,10 @@ namespace zombie {
 		}
 
 		// Add zombies to engine.
+		calculateValidSpawningPoints(units_[0]);
 		unsigned int unitLevel = zombieEntry_.getDeepChildEntry("settings unitLevel").getInt();
 		for (unsigned int i = 1; i <= unitLevel && i < units_.getMaxSize(); ++i) {
-			State state(generatePosition(spawningPoints_), ORIGO, random(0, 2.f*PI));
+			State state(generatePosition(vaildSpawningPoints_), ORIGO, random(0, 2.f*PI));
 			Unit* unit = units_.pushBack(zombie);
 			engine_.add(unit);
 			unit->setState(state);
@@ -179,33 +180,38 @@ namespace zombie {
 		drawBuildings_.createVBO(buildings_, wall_.getTexture());
 	}
 	
-	
-	void ZombieGame::updateEachCycle(Unit& unit, Unit& human) {
-		Position diff = unit.getPosition() - human.getPosition();
-		double inner = 5;
-		double outer = 15;
-		if (diff.LengthSquared() > outer * outer) {
-			unit.setAwake(false);
-			unit.setActive(false);
-			
-			// replace unit
-			unsigned int tries = 1000;
-			for (unsigned int i = 0; i < tries; i++) {
-				Position p = spawningPoints_[randomInt(0, spawningPoints_.size() - 1)];
-				diff = p - human.getPosition();
-				if (diff.LengthSquared() < outer && diff.LengthSquared() > inner) {
-					State state(p, ORIGO, random(0, 2.f*PI));
-					unit.setState(state);
-					unit.setActive(true);
-					unit.setAwake(true);
-					return;
-				}
-			}
 
-			// Move to new postion and direction.
-			//Position spawnPoint = generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_);
-			//float angle = calculateAnglePointToPoint(spawnPoint, human.getPosition());
-			//unit.getBody()->SetTransform(spawnPoint, angle);
+	void ZombieGame::calculateValidSpawningPoints(Unit& human) {
+		vaildSpawningPoints_.clear();
+		double inner = 10;
+		double outer = 20;
+		Position humanPos = human.getPosition();
+		for (Position p : spawningPoints_) {
+			Position diff = p - humanPos;
+			if (diff.LengthSquared() > inner*inner && diff.LengthSquared() < outer*outer) {
+				//spawningpoint is valid!
+				vaildSpawningPoints_.push_back(p);
+			}
+		}
+	}
+	
+	void ZombieGame::moveUnits(Unit& unit, Unit& human) {
+		Position diff = unit.getPosition() - human.getPosition();
+		double inner = 10;
+		double outer = 20;
+		if (diff.LengthSquared() > outer * outer) {
+			
+			// move unit if possible
+			if (vaildSpawningPoints_.size() > 0) {
+				Position p = vaildSpawningPoints_[randomInt(0, vaildSpawningPoints_.size() - 1)];
+				State state(p, ORIGO, random(0, 2.f*PI));
+				unit.setState(state);
+			}
+			else {
+			// deactivate
+				unit.setActive(false);
+				unit.setAwake(false);
+			}
 		}
 	}
 	
@@ -273,12 +279,13 @@ namespace zombie {
 			}
 		}
 		
+		// filter out the valid spawningpoints
+		calculateValidSpawningPoints(units_[0]);
+		
 		for (Unit& unit : units_) {
 			if (unit.isActive()) {
-				// remove units far away.
-				// should be (unit, human)
-				updateEachCycle(unit, units_[0]);
-
+				// move the unit if to far away
+				moveUnits(unit, units_[0]);
 				unit.updatePhysics(time, timeStep_);
 			}
 		}
