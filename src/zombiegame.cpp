@@ -148,7 +148,9 @@ namespace zombie {
 		calculateValidSpawningPoints(units_[0]);
 		unsigned int unitLevel = zombieEntry_.getDeepChildEntry("settings unitLevel").getInt();
 		for (unsigned int i = 1; i <= unitLevel && i < units_.getMaxSize(); ++i) {
-			State state(generatePosition(vaildSpawningPoints_), ORIGO, random(0, 2.f*PI));
+			Position p = generatePosition(vaildSpawningPoints_);
+			float angle = calculateAnglePointToPoint(p, units_[0].getPosition());
+			State state(p, ORIGO, angle);
 			Unit* unit = units_.pushBack(zombie);
 			engine_.add(unit);
 			unit->setState(state);
@@ -183,7 +185,7 @@ namespace zombie {
 
 	void ZombieGame::calculateValidSpawningPoints(Unit& human) {
 		vaildSpawningPoints_.clear();
-		double inner = 10;
+		double inner = 0;
 		double outer = 20;
 		Position humanPos = human.getPosition();
 		for (Position p : spawningPoints_) {
@@ -197,14 +199,15 @@ namespace zombie {
 	
 	void ZombieGame::moveUnits(Unit& unit, Unit& human) {
 		Position diff = unit.getPosition() - human.getPosition();
-		double inner = 10;
+		double inner = 0;
 		double outer = 20;
 		if (diff.LengthSquared() > outer * outer) {
 			
 			// move unit if possible
 			if (vaildSpawningPoints_.size() > 0) {
 				Position p = vaildSpawningPoints_[randomInt(0, vaildSpawningPoints_.size() - 1)];
-				State state(p, ORIGO, random(0, 2.f*PI));
+				float angle = calculateAnglePointToPoint(p, human.getPosition());
+				State state(p, ORIGO, angle);
 				unit.setState(state);
 			}
 			else {
