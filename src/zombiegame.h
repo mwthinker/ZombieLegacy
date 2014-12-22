@@ -55,6 +55,8 @@ namespace zombie {
 
 		void moveUnits(Unit& unit, Unit& human);
 
+		void spawnUnits(Unit& human);
+
 	private:
 		void updateGame(float deltaTime);
 

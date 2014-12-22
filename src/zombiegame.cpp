@@ -130,7 +130,7 @@ namespace zombie {
 
 		// Add human to engine.
 		{
-			State state(generatePosition(spawningPoints_), ORIGO, 0);
+			State state(Position(85,120), ORIGO, 0);
 			//Position p = generatePosition(spawningPoints_);
 			//State state(Position(200,200), ORIGO, 0);
 			Unit* unit = units_.pushBack(human);
@@ -161,8 +161,8 @@ namespace zombie {
 	
 		// Add cars to engine.
 		Car2D car(zombie::loadCar(zombieEntry_.getDeepChildEntry("car")));
-		for (unsigned int i = 0; i < 1 && i < units_.getMaxSize(); ++i) {
-			State state(generatePosition(spawningPoints_), ORIGO, 0);
+		for (unsigned int i = 0; i < 8 && i < units_.getMaxSize(); ++i) {
+			State state(Position(85,130), ORIGO, 0);
 			Car* c = cars_.pushBack(car);
 			engine_.add(c);
 			c->setState(state);
@@ -185,8 +185,8 @@ namespace zombie {
 
 	void ZombieGame::calculateValidSpawningPoints(Unit& human) {
 		vaildSpawningPoints_.clear();
-		double inner = 0;
-		double outer = 20;
+		double inner = 10;
+		double outer = 200;
 		Position humanPos = human.getPosition();
 		for (Position p : spawningPoints_) {
 			Position diff = p - humanPos;
@@ -199,8 +199,8 @@ namespace zombie {
 	
 	void ZombieGame::moveUnits(Unit& unit, Unit& human) {
 		Position diff = unit.getPosition() - human.getPosition();
-		double inner = 0;
-		double outer = 20;
+		double inner = 10;
+		double outer = 200;
 		if (diff.LengthSquared() > outer * outer) {
 			
 			// move unit if possible
@@ -285,6 +285,11 @@ namespace zombie {
 		// filter out the valid spawningpoints
 		calculateValidSpawningPoints(units_[0]);
 		
+		spawnUnits(units_[0]) {
+			int s[3] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
+			std::vector<int> v(s, s + sizeof s / sizeof s[0]);
+		}
+
 		for (Unit& unit : units_) {
 			if (unit.isActive()) {
 				// move the unit if to far away
