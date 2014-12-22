@@ -99,8 +99,8 @@
     </interface>
     <settings>
         <map>map.xml</map>
-        <unitLevel>400</unitLevel>
-        <unitLimit>500</unitLimit>
+        <unitLevel>350</unitLevel>
+        <unitLimit>5000</unitLimit>
         <impulseThreshold>2</impulseThreshold>
         <timeStepMS>17</timeStepMS>
         <innerSpawnRadius>7.0</innerSpawnRadius>
