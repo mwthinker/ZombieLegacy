@@ -285,11 +285,6 @@ namespace zombie {
 		// filter out the valid spawningpoints
 		calculateValidSpawningPoints(units_[0]);
 		
-		spawnUnits(units_[0]) {
-			int s[3] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
-			std::vector<int> v(s, s + sizeof s / sizeof s[0]);
-		}
-
 		for (Unit& unit : units_) {
 			if (unit.isActive()) {
 				// move the unit if to far away
