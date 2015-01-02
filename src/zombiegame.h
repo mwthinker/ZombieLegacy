@@ -142,14 +142,14 @@ namespace zombie {
 		int clipsize_;
 
 		// Physical objects.
-		Array<Unit2D, 5000> units_;
-		Array<Missile2D, 10> missiles_;
+		Array<Unit2D, 200> units_;
+		Array<Missile2D, 20> missiles_;
 		Array<Car2D, 20> cars_;
 		Array<Building2D, 100> buildings_;
 		DrawBuildings drawBuildings_;
 
 		std::vector<std::unique_ptr<Player>> players_;
-		std::array<Explosion, 10> explosions_;
+		std::array<Explosion, 20> explosions_;
 		std::array<GraphicAnimation, 100> graphicAnimations_;
 
 		int frame_;
