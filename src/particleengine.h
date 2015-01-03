@@ -18,7 +18,7 @@ namespace zombie {
 	template <int MAX_PARTICLES, class Emitter>
 	class ParticleEngine {
 	public:
-		ParticleEngine(Emitter& emitter, const mw::Texture& texture);
+		ParticleEngine(Emitter& emitter, const mw::Sprite& sprite);
 
 		void setLoop(bool loop) {
 			loop_ = loop;
@@ -26,8 +26,8 @@ namespace zombie {
 
 		void draw(float deltaTime, const GameShader& shader);
 
-		void restart(const mw::Texture& texture) {
-			texture_ = texture;
+		void restart(const mw::Sprite& sprite) {
+			sprite_ = sprite;
 			time_ = 0;
 			for (auto& particle : particles_) {
 				emitter_.init(particle);
@@ -51,7 +51,7 @@ namespace zombie {
 		
 		std::array<Particle, MAX_PARTICLES> particles_;
 		Emitter& emitter_;
-		mw::Texture texture_;
+		mw::Sprite sprite_;
 		mw::Color color_;
 
 		mw::Matrix44 uColor_;
@@ -62,11 +62,11 @@ namespace zombie {
 	};
 
 	template <int MAX_PARTICLES, class Emitter>
-	ParticleEngine<MAX_PARTICLES, Emitter>::ParticleEngine(Emitter& emitter, const mw::Texture& texture) : emitter_(emitter) {
+	ParticleEngine<MAX_PARTICLES, Emitter>::ParticleEngine(Emitter& emitter, const mw::Sprite& sprite) : emitter_(emitter) {
 		loop_ = true;
 		addColor_ = true;
 
-		restart(texture);
+		restart(sprite);
 	}
 
 	template <int MAX_PARTICLES, class Emitter>
@@ -101,7 +101,7 @@ namespace zombie {
 			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		}
 				
-		texture_.bindTexture();
+		sprite_.bindTexture();
 		shader.setGlLocalAngleU(0);
 		shader.setGlColorU(color_);
 		shader.setGlTextureU(true);

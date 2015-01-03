@@ -27,7 +27,6 @@ namespace zombie {
 		void draw(float time, const GameShader& shader);
 
 	private:
-		mw::Texture roadTexture_;
 		mw::Sprite intersection_;
 		mw::Sprite straight0_, straight90_;
 		mw::Sprite turn0_, turn90_, turn180_, turn270_;

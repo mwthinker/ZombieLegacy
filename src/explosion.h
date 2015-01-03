@@ -8,6 +8,7 @@
 #include <mw/opengl.h>
 #include <mw/color.h>
 #include <mw/sound.h>
+#include <mw/sprite.h>
 
 namespace zombie {
 
@@ -29,7 +30,7 @@ namespace zombie {
 
 		float blastRadius_;
 		float speed_;
-		mw::Texture particle_;
+		mw::Sprite particle_;
 		mw::Sound sound_;
 		float delay_;
 	};

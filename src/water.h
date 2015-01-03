@@ -20,7 +20,7 @@ namespace zombie {
 
 	class Water {
 	public:
-		Water(const mw::Texture& seeFloor);
+		Water(const mw::Sprite& seeFloor);
 
 		void addTriangle(Position p1, Position p2, Position p3);
 		
@@ -42,7 +42,7 @@ namespace zombie {
 
 		std::vector<GLfloat> aPos_;
 		std::vector<GLfloat> aTex_;
-		mw::Texture seeFloor_;
+		mw::Sprite seeFloor_;
 		int numberVertices_;
 
 		float floorTime_;

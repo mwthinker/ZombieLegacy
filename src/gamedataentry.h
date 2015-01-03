@@ -9,6 +9,7 @@
 #include <mw/font.h>
 #include <mw/color.h>
 #include <mw/music.h>
+#include <mw/textureatlas.h>
 
 #include <xml/dataentry.h>
 
@@ -45,13 +46,15 @@ namespace zombie {
 		mw::Music getMusic() const;
 		Animation getAnimation() const;
 		mw::Sprite getSprite() const;
-		mw::Texture getTexture() const;
 		mw::Color getColor() const;
 		Position getPosition() const;
 
 	private:
 		class GameData {
 		public:
+			GameData() : textureAtlas_(2048, 2048) {
+			}
+
 			mw::Sprite extractSprite(GameDataEntry entry) const;
 
 			Animation extractAnimation(GameDataEntry entry) const;
@@ -67,7 +70,7 @@ namespace zombie {
 			mw::Texture loadTexture(std::string file) const;
 			mw::Music loadMusic(std::string file) const;
 
-			mutable std::map<std::string, mw::Texture> textures_;
+			mutable mw::TextureAtlas textureAtlas_;
 			mutable std::map<std::string, mw::Sound> sounds_;
 			mutable std::map<std::string, mw::Font> fonts_;
 			mutable std::map<std::string, mw::Music> musics_;

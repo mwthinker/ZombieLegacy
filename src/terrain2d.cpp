@@ -59,29 +59,20 @@ namespace zombie {
 				(sprite.getX() + sprite.getWidth()) / tW, sprite.getY() / tH,
 				(sprite.getX() + sprite.getWidth()) / tW, (sprite.getY() + sprite.getHeight()) / tH);
 		}
-
-		mw::Sprite getBoardSprite(mw::Texture texture, GameDataEntry entry) {
-			float x = entry.getChildEntry("x").getFloat();
-			float y = entry.getChildEntry("y").getFloat();
-			float w = entry.getChildEntry("w").getFloat();
-			float h = entry.getChildEntry("h").getFloat();
-			return mw::Sprite(texture, x, y, w, h);
-		}
 	}
 
 	void Terrain2D::loadRoadSprites(GameDataEntry entry) {
-		roadTexture_ = entry.getChildEntry("texture").getTexture();
-		intersection_ = getBoardSprite(roadTexture_, entry.getChildEntry("intersection"));
-		straight0_ = getBoardSprite(roadTexture_, entry.getChildEntry("straight0"));
-		straight90_ = getBoardSprite(roadTexture_, entry.getChildEntry("straight90"));
-		turn0_ = getBoardSprite(roadTexture_, entry.getChildEntry("turn0"));
-		turn90_ = getBoardSprite(roadTexture_, entry.getChildEntry("turn90"));
-		turn180_ = getBoardSprite(roadTexture_, entry.getChildEntry("turn180"));
-		turn270_ = getBoardSprite(roadTexture_, entry.getChildEntry("turn270"));
-		tintersection0_ = getBoardSprite(roadTexture_, entry.getChildEntry("tintersection0"));
-		tintersection90_ = getBoardSprite(roadTexture_, entry.getChildEntry("tintersection90"));
-		tintersection180_ = getBoardSprite(roadTexture_, entry.getChildEntry("tintersection180"));
-		tintersection270_ = getBoardSprite(roadTexture_, entry.getChildEntry("tintersection270"));
+		intersection_ = entry.getChildEntry("intersection").getSprite();
+		straight0_ = entry.getChildEntry("straight0").getSprite();
+		straight90_ = entry.getChildEntry("straight90").getSprite();
+		turn0_ = entry.getChildEntry("turn0").getSprite();
+		turn90_ = entry.getChildEntry("turn90").getSprite();
+		turn180_ = entry.getChildEntry("turn180").getSprite();
+		turn270_ = entry.getChildEntry("turn270").getSprite();
+		tintersection0_ = entry.getChildEntry("tintersection0").getSprite();
+		tintersection90_ = entry.getChildEntry("turntintersection90").getSprite();
+		tintersection180_ = entry.getChildEntry("tintersection180").getSprite();
+		tintersection270_ = entry.getChildEntry("tintersection270").getSprite();
 	}
 
 	void Terrain2D::addRoad(GameDataEntry tileEntry) {
@@ -152,6 +143,9 @@ namespace zombie {
 	}
 
 	void Terrain2D::draw(float time, const GameShader& shader) {
+		mw::glEnable(GL_BLEND);
+		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		if (vbo_.getSize() == 0) {
 			grass_.insert(grass_.end(), roads_.begin(), roads_.end());
 			vbo_.bindBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * grass_.size(), grass_.data(), GL_STATIC_DRAW);
@@ -172,12 +166,12 @@ namespace zombie {
 		mw::glDrawArrays(GL_TRIANGLES, 0, numberVerticesGrass_);
 
 		// Roads texture used.
-		roadTexture_.bindTexture();
 		shader.setGlTextureU(true);
 		shader.setGlColorU(1, 1, 1);
 		mw::glDrawArrays(GL_TRIANGLES, numberVerticesGrass_, numberVerticesRoads_);
 
 		vbo_.unbindBuffer();
+		mw::glDisable(GL_BLEND);
 	}
 
 }

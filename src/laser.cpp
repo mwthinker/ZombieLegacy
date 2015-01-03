@@ -108,14 +108,6 @@ namespace zombie {
 			return vertices;
 		}
 
-		mw::Sprite loadSprite(GameDataEntry& entry, const mw::Texture texture) {
-			float x = entry.getChildEntry("x").getFloat();
-			float y = entry.getChildEntry("y").getFloat();
-			float w = entry.getChildEntry("w").getFloat();
-			float h = entry.getChildEntry("h").getFloat();
-			return mw::Sprite(texture, x, y, w, h);
-		}
-
 	}
 
 	LaserPtr loadLaser(GameDataEntry& entry) {
@@ -124,13 +116,12 @@ namespace zombie {
 		mw::Color laserColor = entry.getChildEntry("laserColor").getColor();
 		float height = entry.getChildEntry("height").getFloat();
 
-		auto childEntry = entry.getChildEntry("sprites");
-		mw::Texture texture = childEntry.getChildEntry("texture").getTexture();
-		mw::Sprite laser = loadSprite(childEntry.getChildEntry("laser"), texture);
-		mw::Sprite laserEnd = loadSprite(childEntry.getChildEntry("laserEnd"), texture);
-		mw::Sprite laserOverlay = loadSprite(childEntry.getChildEntry("laserOverlay"), texture);
-		mw::Sprite laserOverlayStatic = loadSprite(childEntry.getChildEntry("laserOverlayStatic"), texture);
-		mw::Sprite laserOverlayStaticEnd = loadSprite(childEntry.getChildEntry("laserOverlayStaticEnd"), texture);
+		auto childEntry = entry.getChildEntry("sprites");		
+		mw::Sprite laser = childEntry.getChildEntry("laser").getSprite();
+		mw::Sprite laserEnd = childEntry.getChildEntry("laserEnd").getSprite();
+		mw::Sprite laserOverlay = childEntry.getChildEntry("laserOverlay").getSprite();
+		mw::Sprite laserOverlayStatic = childEntry.getChildEntry("laserOverlayStatic").getSprite();
+		mw::Sprite laserOverlayStaticEnd = childEntry.getChildEntry("laserOverlayStaticEnd").getSprite();
 		return std::make_shared<Laser>(height, laser, laserEnd, laserOverlay, laserOverlayStatic, laserOverlayStaticEnd, laserColor, overlayColor, speed);
 	}
 

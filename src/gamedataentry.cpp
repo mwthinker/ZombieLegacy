@@ -162,11 +162,7 @@ namespace zombie {
 
 	mw::Sprite GameDataEntry::getSprite() const {
 		return gameData_->extractSprite(*this);
-	}
-
-	mw::Texture GameDataEntry::getTexture() const {
-		return gameData_->loadTexture(getString());
-	}
+	}	
 
 	mw::Color GameDataEntry::getColor() const {
 		return get<mw::Color>();
@@ -191,22 +187,7 @@ namespace zombie {
 	}
 
 	mw::Sprite GameDataEntry::GameData::extractSprite(GameDataEntry entry) const {
-		float x = entry.getFloatAttribute("x");
-		float y = entry.getFloatAttribute("y");
-		float h = entry.getFloatAttribute("h");
-		float w = entry.getFloatAttribute("w");
-
-		mw::Texture texture = loadTexture(entry.getString());
-
-		if (h < 1) {
-			h = (float) texture.getHeight();
-		}
-
-		if (w < 1) {
-			w = (float) texture.getWidth();
-		}
-
-		return mw::Sprite(texture, x, y, w, h);
+		return textureAtlas_.add(entry.getString(), 2);
 	}
 
 	Animation GameDataEntry::GameData::extractAnimation(GameDataEntry entry) const {
@@ -239,23 +220,6 @@ namespace zombie {
 		}
 
 		return font;
-	}
-
-	mw::Texture GameDataEntry::GameData::loadTexture(std::string file) const {
-		unsigned int size = textures_.size();
-		mw::Texture& texture = textures_[file];
-
-		// Image not found?
-		if (textures_.size() > size) {
-			texture = mw::Texture(file);
-
-			// Image not valid?
-			if (!texture.isValid()) {
-				std::cerr << std::endl << file << " failed to load!";
-			}
-		}
-
-		return texture;
 	}
 
 	mw::Sound GameDataEntry::GameData::loadSound(std::string file) const {

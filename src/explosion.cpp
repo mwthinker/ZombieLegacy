@@ -115,7 +115,7 @@ namespace zombie {
 		explosionProperties.delay_ = entry.getChildEntry("timeDelay").getFloat();
 		explosionProperties.speed_ = entry.getChildEntry("speed").getFloat();
 		explosionProperties.blastRadius_ = entry.getChildEntry("blastRadius").getFloat();
-		explosionProperties.particle_ = entry.getChildEntry("particleImage").getTexture();
+		explosionProperties.particle_ = entry.getChildEntry("particleImage").getSprite();
 		explosionProperties.sound_ = entry.getChildEntry("sound").getSound();
 		return explosionProperties;
 	}

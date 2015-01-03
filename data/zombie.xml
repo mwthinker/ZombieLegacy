@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zombieGame>
     <window>
-        <width>1000</width>
-        <height>930</height>
-        <positionX>393</positionX>
-        <positionY>51</positionY>
-        <maximized>1</maximized>
+        <width>600</width>
+        <height>600</height>
+        <positionX>50</positionX>
+        <positionY>50</positionY>
+        <maximized>0</maximized>
     </window>
     <water>
         <seeFloorImage>images/seeFloor.png</seeFloorImage>
@@ -23,73 +23,17 @@
         <color>(0 0 0)</color>
     </fog>
     <roads>
-        <texture>images/roads.png</texture>
-        <intersection>
-            <x>0</x>
-            <y>384</y>
-            <w>128</w>
-            <h>128</h>
-        </intersection>
-        <straight0>
-            <x>128</x>
-            <y>384</y>
-            <w>128</w>
-            <h>128</h>
-        </straight0>
-        <straight90>
-            <x>256</x>
-            <y>384</y>
-            <w>128</w>
-            <h>128</h>
-        </straight90>
-        <turn0>
-            <x>384</x>
-            <y>256</y>
-            <w>128</w>
-            <h>128</h>
-        </turn0>
-        <turn90>
-            <x>0</x>
-            <y>0</y>
-            <w>128</w>
-            <h>128</h>
-        </turn90>
-        <turn180>
-            <x>128</x>
-            <y>128</y>
-            <w>128</w>
-            <h>128</h>
-        </turn180>
-        <turn270>
-            <x>0</x>
-            <y>128</y>
-            <w>128</w>
-            <h>128</h>
-        </turn270>
-        <tintersection0>
-            <x>256</x>
-            <y>256</y>
-            <w>128</w>
-            <h>128</h>
-        </tintersection0>
-        <tintersection90>
-            <x>128</x>
-            <y>256</y>
-            <w>128</w>
-            <h>128</h>
-        </tintersection90>
-        <tintersection180>
-            <x>0</x>
-            <y>256</y>
-            <w>128</w>
-            <h>128</h>
-        </tintersection180>
-        <tintersection270>
-            <x>384</x>
-            <y>384</y>
-            <w>128</w>
-            <h>128</h>
-        </tintersection270>
+        <intersection>images/roads/intersection.png</intersection>
+        <straight0>images/roads/straight0.png</straight0>
+        <straight90>images/roads/straight90.png</straight90>
+        <turn0>images/roads/turn0.png</turn0>
+        <turn90>images/roads/turn90.png</turn90>
+        <turn180>images/roads/turn180.png</turn180>
+        <turn270>images/roads/turn270.png</turn270>
+        <tintersection0>images/roads/tintersection0.png</tintersection0>
+        <tintersection90>images/roads/tintersection90.png</tintersection90>
+		<tintersection180>images/roads/tintersection180.png</tintersection180>
+		<tintersection270>images/roads/tintersection270.png</tintersection270>
     </roads>
     <tree>
         <image>images/tree.png</image>
@@ -139,37 +83,11 @@
             <speed>5.0</speed>
             <height>0.4</height>
             <sprites>
-                <texture>images/laser.png</texture>
-                <laser>
-                    <x>2</x>
-                    <y>194</y>
-                    <w>60</w>
-                    <h>60</h>
-                </laser>
-                <laserEnd>
-                    <x>2</x>
-                    <y>2</y>
-                    <w>60</w>
-                    <h>60</h>
-                </laserEnd>
-                <laserOverlay>
-                    <x>64</x>
-                    <y>64</y>
-                    <w>64</w>
-                    <h>64</h>
-                </laserOverlay>
-                <laserOverlayStatic>
-                    <x>2</x>
-                    <y>130</y>
-                    <w>60</w>
-                    <h>60</h>
-                </laserOverlayStatic>
-                <laserOverlayStaticEnd>
-                    <x>2</x>
-                    <y>66</y>
-                    <w>60</w>
-                    <h>60</h>
-                </laserOverlayStaticEnd>
+                <laser>images/laser/laser.png</laser>
+                <laserEnd>images/laser/laserEnd.png</laserEnd>
+                <laserOverlay>images/laser/laserOverlay.png</laserOverlay>
+                <laserOverlayStatic>images/laser/laserOverlayStatic.png</laserOverlayStatic>
+                <laserOverlayStaticEnd>images/laser/laserOverlayStaticEnd.png</laserOverlayStaticEnd>
             </sprites>
         </laserSight>
         <weapons>
@@ -181,7 +99,7 @@
                 <reloadSound>sounds/handgunReload.wav</reloadSound>
                 <moveAnimation>
                     <frame>
-                        <image x="0" y="0" w="256" h="256">images/bazooka.png</image>
+                        <image>images/bazooka.png</image>
                         <bodyWidth>320</bodyWidth>
                     </frame>
                 </moveAnimation>
@@ -195,7 +113,7 @@
                 <laserSight>0</laserSight>
             </handgun>
             <zombieFist projectile="bullet">
-                <symbolImage>images/ZombieFist.png</symbolImage>
+                <symbolImage>images/zombieFist.png</symbolImage>
                 <timeBetweenShots>0.3</timeBetweenShots>
                 <clipSize>1000000</clipSize>
                 <shootSound>sounds/ZombieFist.wav</shootSound>
@@ -254,22 +172,22 @@
         <dieSound>sounds/zombieDeath.wav</dieSound>
         <moveAnimation>
             <frame>
-                <image>images/1.png</image>
+                <image>images/human/human1.png</image>
                 <time>0.18</time>
                 <bodyWidth>130</bodyWidth>
             </frame>
             <frame>
-                <image>images/2.png</image>
+                <image>images/human/human2.png</image>
                 <time>0.18</time>
                 <bodyWidth>130</bodyWidth>
             </frame>
             <frame>
-                <image>images/3.png</image>
+                <image>images/human/human3.png</image>
                 <time>0.18</time>
                 <bodyWidth>130</bodyWidth>
             </frame>
             <frame>
-                <image>images/4.png</image>
+                <image>images/human/human4.png</image>
                 <time>0.18</time>
                 <bodyWidth>130</bodyWidth>
             </frame>
@@ -278,41 +196,41 @@
         <moveImageGripY>-0.15</moveImageGripY>
         <dieAnimation>
             <frame>
-                <image>images/bloodDeath10.png</image>
+                <image>images/blood/bloodDeath10.png</image>
                 <time>0.1</time>
-                <bodyWidth>130</bodyWidth>
+                <bodyWidth>115</bodyWidth>
             </frame>
             <frame>
-                <image>images/bloodDeath11.png</image>
+                <image>images/blood/bloodDeath11.png</image>
                 <time>0.1</time>
-                <bodyWidth>230</bodyWidth>
+                <bodyWidth>115</bodyWidth>
             </frame>
             <frame>
-                <image>images/bloodDeath12.png</image>
+                <image>images/blood/bloodDeath12.png</image>
                 <time>0.1</time>
-                <bodyWidth>230</bodyWidth>
+                <bodyWidth>115</bodyWidth>
             </frame>
             <frame>
-                <image>images/bloodDeath13.png</image>
+                <image>images/blood/bloodDeath13.png</image>
                 <time>0.1</time>
-                <bodyWidth>230</bodyWidth>
+                <bodyWidth>115</bodyWidth>
             </frame>
             <frame>
-                <image>images/bloodDeath14.png</image>
+                <image>images/blood/bloodDeath14.png</image>
                 <time>10</time>
-                <bodyWidth>230</bodyWidth>
+                <bodyWidth>115</bodyWidth>
             </frame>
         </dieAnimation>
         <injuredAnimation>
             <frame>
                 <image>images/bloodSplash10.png</image>
                 <time>0.1</time>
-                <bodyWidth>256</bodyWidth>
+                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/bloodSplash11.png</image>
                 <time>0.1</time>
-                <bodyWidth>256</bodyWidth>
+                <bodyWidth>128</bodyWidth>
             </frame>
         </injuredAnimation>
         <mass>1</mass>
@@ -328,32 +246,32 @@
         <dieSound>sounds/zombieDeath.wav</dieSound>
         <moveAnimation>
             <frame>
-                <image x="0" y="1024" w="512" h="512">images/zombie.png</image>
+                <image>images/zombie/zombie1.png</image>
                 <time>0.18</time>
                 <bodyWidth>230</bodyWidth>
             </frame>
             <frame>
-                <image x="0" y="512" w="512" h="512">images/zombie.png</image>
+                <image>images/zombie/zombie2.png</image>
                 <time>0.18</time>
                 <bodyWidth>230</bodyWidth>
             </frame>
             <frame>
-                <image x="512" y="1024" w="512" h="512">images/zombie.png</image>
+                <image>images/zombie/zombie3.png</image>
                 <time>0.18</time>
                 <bodyWidth>230</bodyWidth>
             </frame>
             <frame>
-                <image x="512" y="512" w="512" h="512">images/zombie.png</image>
+                <image>images/zombie/zombie4.png</image>
                 <time>0.18</time>
                 <bodyWidth>230</bodyWidth>
             </frame>
             <frame>
-                <image x="0" y="0" w="512" h="512">images/zombie.png</image>
+                <image>images/zombie/zombie5.png</image>
                 <time>0.18</time>
                 <bodyWidth>230</bodyWidth>
             </frame>
             <frame>
-                <image x="512" y="0" w="512" h="512">images/zombie.png</image>
+                <image>images/zombie/zombie6.png</image>
                 <time>0.18</time>
                 <bodyWidth>230</bodyWidth>
             </frame>
@@ -362,39 +280,39 @@
         <moveImageGripY>0</moveImageGripY>
         <dieAnimation>
             <frame>
-                <image>images/bloodDeath10.png</image>
+                <image>images/blood/bloodDeath10.png</image>
                 <time>0.1</time>
                 <bodyWidth>64</bodyWidth>
             </frame>
             <frame>
-                <image>images/bloodDeath11.png</image>
+                <image>images/blood/bloodDeath11.png</image>
                 <time>0.1</time>
                 <bodyWidth>64</bodyWidth>
             </frame>
             <frame>
-                <image>images/bloodDeath12.png</image>
+                <image>images/blood/bloodDeath12.png</image>
                 <time>0.1</time>
                 <bodyWidth>64</bodyWidth>
             </frame>
             <frame>
-                <image>images/bloodDeath13.png</image>
+                <image>images/blood/bloodDeath13.png</image>
                 <time>0.1</time>
                 <bodyWidth>64</bodyWidth>
             </frame>
             <frame>
-                <image>images/bloodDeath14.png</image>
+                <image>images/blood/bloodDeath14.png</image>
                 <time>10</time>
                 <bodyWidth>64</bodyWidth>
             </frame>
         </dieAnimation>
         <injuredAnimation>
             <frame>
-                <image>images/bloodSplash10.png</image>
+                <image>images/blood/bloodSplash10.png</image>
                 <time>0.1</time>
                 <bodyWidth>256</bodyWidth>
             </frame>
             <frame>
-                <image>images/bloodSplash11.png</image>
+                <image>images/blood/bloodSplash11.png</image>
                 <time>0.1</time>
                 <bodyWidth>256</bodyWidth>
             </frame>

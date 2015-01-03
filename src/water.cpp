@@ -19,7 +19,7 @@ namespace zombie {
 		speed_ = speed;
 	}
 
-	Water::Water(const mw::Texture& seeFloor) : seeFloor_(seeFloor) {
+	Water::Water(const mw::Sprite& seeFloor) : seeFloor_(seeFloor) {
 		floorTime_ = 0.0;
 		waveTime_ = 0.0;
 		size_ = 100;
@@ -83,7 +83,7 @@ namespace zombie {
 	}
 
 	Water loadWater(GameDataEntry entry) {
-		return Water(entry.getChildEntry("seeFloorImage").getTexture());
+		return Water(entry.getChildEntry("seeFloorImage").getSprite());
 	}
 
 } // Namespace zombie.
