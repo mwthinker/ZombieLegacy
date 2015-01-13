@@ -3,7 +3,6 @@
 
 #include "box2ddef.h"
 #include "auxiliary.h"
-#include "particleengine.h"
 
 #include <mw/opengl.h>
 #include <mw/color.h>
@@ -37,12 +36,8 @@ namespace zombie {
 
 		void draw(float deltaTime);
 
-		void init(Particle& particle);
-
-		void update(float deltaTime, Particle& particle);
-
 	private:
-		ParticleEngine<1000, Fog> fog_;
+
 		float radius_;
 		float speed_;
 		float particleSize_;

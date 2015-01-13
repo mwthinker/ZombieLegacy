@@ -39,6 +39,10 @@ set(SOURCES_ZOMBIE
 	src/device.h
 	src/drawbuildings.cpp
 	src/drawbuildings.h
+	src/explosion.cpp	
+	src/explosion.h
+	src/fog.cpp
+	src/fog.h
 	src/gamedataentry.cpp
 	src/gamedataentry.h
 	src/gameinterface.h
@@ -51,6 +55,8 @@ set(SOURCES_ZOMBIE
 	src/input.h
 	src/inputkeyboard.h
 	src/inviewquerycallback.h
+	src/laser.h
+	src/laser.cpp
 	src/main.cpp
 	src/missilelauncher.h
 	src/missilelauncher.cpp
@@ -76,6 +82,8 @@ set(SOURCES_ZOMBIE
 	src/unit.h
 	src/unit2d.cpp
 	src/unit2d.h
+	src/water.cpp
+	src/water.h
 	src/watershader.cpp
 	src/watershader.h
 	src/weapon.h
@@ -93,24 +101,6 @@ set(SOURCES_ZOMBIE
 	src/zombiewindow.h
 	src/zombiewindow.cpp
 )
-# Source files.
-set(SOURCES_EFFECT
-	src/emitter.h
-	src/explosion.cpp
-	src/explosion.h
-	src/fog.cpp
-	src/fog.h
-	src/particle.h
-	src/particleengine.cpp
-	src/particleengine.h
-	src/shockwave.h
-	src/splash.h
-	src/water.cpp
-	src/water.h
-	src/laser.h
-	src/laser.cpp
-)
-# End of source files.
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -137,9 +127,9 @@ include_directories(${SDL2_INCLUDE_DIRS}
 
 if (WIN32)
 	set(WIN_RESOURCE_FILE zombie.rc)
-	add_executable(Zombie ${SOURCES_ZOMBIE} ${SOURCES_EFFECT} ${WIN_RESOURCE_FILE})
+	add_executable(Zombie ${SOURCES_ZOMBIE} ${WIN_RESOURCE_FILE})
 else (WIN32)
-	add_executable(Zombie ${SOURCES_ZOMBIE} ${SOURCES_EFFECT})
+	add_executable(Zombie ${SOURCES_ZOMBIE})
 endif (WIN32)
 
 if (MSVC)
@@ -213,11 +203,6 @@ if (WIN32)
 			DESTINATION .
 			COMPONENT data
 	)
-
-#	install(PROGRAMS ${CMAKE_CURRENT_SOURCE_DIR}/vcredist_x86.exe
-#		DESTINATION tmp
-#		COMPONENT vcredist
-#	)
 
 	########################################################################
 	# Tell CMake to install the windows runtime libraries to the programs

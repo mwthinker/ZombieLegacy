@@ -62,7 +62,7 @@ namespace zombie {
 		float time_;
 		float speed_;
 
-		Array<Frame, 10> frames_;
+		Array<Frame, 34> frames_;
 		unsigned int index_;
 		bool loop_;
 		bool end_;

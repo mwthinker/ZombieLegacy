@@ -41,13 +41,7 @@ namespace zombie {
 
 	} // Anonymous namespace.
 
-	Fog::Fog(const FogProperties& fogProperties) : fog_(*this, fogProperties.particle_) {
-		radius_ = fogProperties.radius_;
-
-		fog_.setBlend(false);
-		fog_.setLoop(true);
-		speed_ = fogProperties.speed_;
-		particleSize_ = fogProperties.particleSize_;
+	Fog::Fog(const FogProperties& fogProperties) {
 	}
 
 	void Fog::draw(float deltaTime) {
@@ -60,19 +54,6 @@ namespace zombie {
 		fog_.draw(deltaTime, m);
 		drawInversCircel(radius_, mPtr);
 		*/
-	}
-
-	void Fog::init(Particle& particle) {
-		particle.pos_ = ZERO;
-		float phi = random(0, 2 * PI);
-		particle.vel_ = speed_ * Position(std::sin(phi), std::cos(phi));
-		particle.particleSize_ = particleSize_;
-		particle.alive = true;
-		particle.lifeTime_ = 0;
-	}
-
-	void Fog::update(float deltaTime, Particle& particle) {
-
 	}
 
 } // Namespace zombie.
