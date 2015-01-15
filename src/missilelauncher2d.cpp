@@ -1,13 +1,13 @@
 #include "missilelauncher2d.h"
 #include "gameinterface.h"
-#include "gamedataentry.h"
+#include "zombieentry.h"
 #include "laser.h"
 
 #include <cassert>
 
 namespace zombie {
 
-	Weapon2D loadMissileLauncher2D(GameInterface* gameInterface, GameDataEntry& entry) {
+	Weapon2D loadMissileLauncher2D(GameInterface* gameInterface, ZombieEntry& entry) {
 		mw::Sprite symbolImage = entry.getChildEntry("symbolImage").getSprite();
 
 		float timeBetweenShots = entry.getChildEntry("timeBetweenShots").getFloat();
@@ -21,7 +21,7 @@ namespace zombie {
 		grip.x = entry.getChildEntry("moveImageGripX").getFloat();
 		grip.y = entry.getChildEntry("moveImageGripY").getFloat();
 
-		GameDataEntry projectile = entry.getChildEntry("projectile");
+		ZombieEntry projectile = entry.getChildEntry("projectile");
 		float damageRadius = projectile.getChildEntry("damageRadius").getFloat();
 		float damage = projectile.getChildEntry("damage").getFloat();
 		float range = projectile.getChildEntry("range").getFloat();

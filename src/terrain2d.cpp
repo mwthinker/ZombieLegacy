@@ -61,7 +61,7 @@ namespace zombie {
 		}
 	}
 
-	void Terrain2D::loadRoadSprites(GameDataEntry entry) {
+	void Terrain2D::loadRoadSprites(ZombieEntry entry) {
 		intersection_ = entry.getChildEntry("intersection").getSprite();
 		straight0_ = entry.getChildEntry("straight0").getSprite();
 		straight90_ = entry.getChildEntry("straight90").getSprite();
@@ -75,7 +75,7 @@ namespace zombie {
 		tintersection270_ = entry.getChildEntry("tintersection270").getSprite();
 	}
 
-	void Terrain2D::addRoad(GameDataEntry tileEntry) {
+	void Terrain2D::addRoad(ZombieEntry tileEntry) {
 		Position position = loadPoint(tileEntry.getChildEntry("geom").getString());
 		std::string tileId = tileEntry.getChildEntry("tile_id").getString();
 		int deg = tileEntry.getChildEntry("rotation").getInt();

@@ -1,7 +1,7 @@
 #include "explosion.h"
 #include "box2ddef.h"
 #include "auxiliary.h"
-#include "gamedataentry.h"
+#include "zombieentry.h"
 
 #include <mw/opengl.h>
 #include <mw/color.h>
@@ -45,7 +45,7 @@ namespace zombie {
 		animation_ = exPr.animation_;
 	}
 
-	ExplosionProperties loadExplosion(GameDataEntry& entry) {
+	ExplosionProperties loadExplosion(ZombieEntry& entry) {
 		ExplosionProperties explosionProperties;
 		explosionProperties.delay_ = entry.getChildEntry("timeDelay").getFloat();
 		explosionProperties.speed_ = entry.getChildEntry("speed").getFloat();

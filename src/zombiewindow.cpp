@@ -1,6 +1,6 @@
 #include "zombiewindow.h"
 #include "zombiegame.h"
-#include "gamedataentry.h"
+#include "zombieentry.h"
 
 #include <gui/borderlayout.h>
 #include <gui/horizontallayout.h>
@@ -50,7 +50,7 @@ namespace zombie {
 
 	} // Anonymous namespace.
 
-	ZombieWindow::ZombieWindow(GameDataEntry zombieEntry, bool skipMenu) :
+	ZombieWindow::ZombieWindow(ZombieEntry zombieEntry, bool skipMenu) :
 		gui::Frame(zombieEntry.getDeepChildEntry("window positionX").getInt(),
 		zombieEntry.getDeepChildEntry("window positionY").getInt(),
 		zombieEntry.getDeepChildEntry("window width").getInt(),

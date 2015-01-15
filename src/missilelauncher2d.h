@@ -3,7 +3,7 @@
 
 #include "missilelauncher.h"
 #include "missile2d.h"
-#include "gamedataentry.h"
+#include "zombieentry.h"
 #include "weapon2d.h"
 
 #include <mw/sound.h>
@@ -12,7 +12,7 @@
 
 namespace zombie {
 
-	Weapon2D loadMissileLauncher2D(GameInterface* gameInterface, GameDataEntry& entry);
+	Weapon2D loadMissileLauncher2D(GameInterface* gameInterface, ZombieEntry& entry);
 
 	class MissileLauncher2D : public MissileLauncher {
 	public:

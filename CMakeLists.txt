@@ -43,8 +43,6 @@ set(SOURCES_ZOMBIE
 	src/explosion.h
 	src/fog.cpp
 	src/fog.h
-	src/gamedataentry.cpp
-	src/gamedataentry.h
 	src/gameinterface.h
 	src/gameshader.cpp
 	src/gameshader.h
@@ -96,6 +94,8 @@ set(SOURCES_ZOMBIE
 	src/zombiebehavior.h
 	src/zombieengine.cpp
 	src/zombieengine.h
+	src/zombieentry.cpp
+	src/zombieentry.h
 	src/zombiegame.cpp
 	src/zombiegame.h
 	src/zombiewindow.h

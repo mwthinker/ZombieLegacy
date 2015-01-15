@@ -3,7 +3,7 @@
 
 #include "missile.h"
 #include "animation.h"
-#include "gamedataentry.h"
+#include "zombieentry.h"
 #include "gameinterface.h"
 
 #include <mw/sound.h>
@@ -26,7 +26,7 @@ namespace zombie {
 		State previousState_;
 	};
 
-	Missile2D loadMissile2D(GameInterface* gameInterface, GameDataEntry& entry);
+	Missile2D loadMissile2D(GameInterface* gameInterface, ZombieEntry& entry);
 
 } // Namespace zombie.
 

@@ -4,7 +4,7 @@
 #include "weaponinterface.h"
 #include "state.h"
 #include "box2ddef.h"
-#include "gamedataentry.h"
+#include "zombieentry.h"
 #include "weapon2d.h"
 #include "laser.h"
 
@@ -14,7 +14,7 @@
 
 namespace zombie {	
 
-	Weapon2D loadGun(GameInterface* gameInterface, GameDataEntry& entry);
+	Weapon2D loadGun(GameInterface* gameInterface, ZombieEntry& entry);
 
 	class Gun : public WeaponInterface {
 	public:

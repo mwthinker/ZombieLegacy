@@ -3,7 +3,7 @@
 
 #include "car.h"
 #include "animation.h"
-#include "gamedataentry.h"
+#include "zombieentry.h"
 
 #include <mw/opengl.h>
 
@@ -23,7 +23,7 @@ namespace zombie {
 		State previousState_;
 	};
 
-	Car2D loadCar(GameDataEntry& entry);
+	Car2D loadCar(ZombieEntry& entry);
 	
 } // Namespace zombie.
 

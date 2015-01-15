@@ -3,7 +3,7 @@
 
 #include "unit.h"
 #include "animation.h"
-#include "gamedataentry.h"
+#include "zombieentry.h"
 
 #include <mw/sound.h>
 
@@ -35,7 +35,7 @@ namespace zombie {
 		mw::Sound hit_;
 	};
 
-	Unit2D loadUnit(GameInterface* gameInterface, std::string unitTag, GameDataEntry zombieGameEntry, bool infected);
+	Unit2D loadUnit(GameInterface* gameInterface, std::string unitTag, ZombieEntry entry, bool infected);
 
 } // Namespace zombie.
 

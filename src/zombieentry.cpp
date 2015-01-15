@@ -1,4 +1,4 @@
-#include "gamedataentry.h"
+#include "zombieentry.h"
 
 #include <stdexcept>
 #include <sstream>
@@ -121,58 +121,58 @@ namespace zombie {
 		return points;
 	}
 
-	GameDataEntry::GameDataEntry(std::string fileName) : xml::DataEntry(fileName), gameData_(std::make_shared<GameData>()) {
+	ZombieEntry::ZombieEntry(std::string fileName) : xml::DataEntry(fileName), gameData_(std::make_shared<GameData>()) {
 	}
 
-	GameDataEntry GameDataEntry::getDeepChildEntry(std::string tagNames) const {
-		return GameDataEntry(*this, xml::DataEntry::getDeepChildEntry(tagNames));
+	ZombieEntry ZombieEntry::getDeepChildEntry(std::string tagNames) const {
+		return ZombieEntry(*this, xml::DataEntry::getDeepChildEntry(tagNames));
 	}
 
-	GameDataEntry GameDataEntry::getChildEntry(std::string tagName) const {
-		return GameDataEntry(*this, xml::DataEntry::getChildEntry(tagName));
+	ZombieEntry ZombieEntry::getChildEntry(std::string tagName) const {
+		return ZombieEntry(*this, xml::DataEntry::getChildEntry(tagName));
 	}	
 
-	GameDataEntry GameDataEntry::getSibling(std::string siblingName) const {
-		return GameDataEntry(*this, DataEntry::getSibling(siblingName));
+	ZombieEntry ZombieEntry::getSibling(std::string siblingName) const {
+		return ZombieEntry(*this, DataEntry::getSibling(siblingName));
 	}
 
-	GameDataEntry GameDataEntry::getParent() const {
-		return GameDataEntry(*this, DataEntry::getParent());
+	ZombieEntry ZombieEntry::getParent() const {
+		return ZombieEntry(*this, DataEntry::getParent());
 	}
 
-	GameDataEntry::GameDataEntry(const GameDataEntry& g, xml::DataEntry e) : xml::DataEntry(e) {
+	ZombieEntry::ZombieEntry(const ZombieEntry& g, xml::DataEntry e) : xml::DataEntry(e) {
 		gameData_ = g.gameData_;
 	}
 
-	mw::Font GameDataEntry::getFont(int size) const {
+	mw::Font ZombieEntry::getFont(int size) const {
 		return gameData_->loadFont(getString(), size);
 	}
 
-	mw::Sound GameDataEntry::getSound() const {
+	mw::Sound ZombieEntry::getSound() const {
 		return gameData_->extractSound(*this);
 	}
 
-	mw::Music GameDataEntry::getMusic() const {
+	mw::Music ZombieEntry::getMusic() const {
 		return gameData_->extractMusic(*this);
 	}
 
-	Animation GameDataEntry::getAnimation() const {
+	Animation ZombieEntry::getAnimation() const {
 		return gameData_->extractAnimation(*this);
 	}
 
-	mw::Sprite GameDataEntry::getSprite() const {
+	mw::Sprite ZombieEntry::getSprite() const {
 		return gameData_->extractSprite(*this);
 	}	
 
-	mw::Color GameDataEntry::getColor() const {
+	mw::Color ZombieEntry::getColor() const {
 		return get<mw::Color>();
 	}
 
-	Position GameDataEntry::getPosition() const {
+	Position ZombieEntry::getPosition() const {
 		return get<Position>();
 	}
 
-	void GameDataEntry::GameData::loadFrame(GameDataEntry entry, Animation& animation) const {
+	void ZombieEntry::GameData::loadFrame(ZombieEntry entry, Animation& animation) const {
 		mw::Sprite sprite = extractSprite(entry.getChildEntry("image"));
 
 		float time = 1;
@@ -186,11 +186,11 @@ namespace zombie {
 		animation.add(sprite, bodyWidth, time);
 	}
 
-	mw::Sprite GameDataEntry::GameData::extractSprite(GameDataEntry entry) const {
+	mw::Sprite ZombieEntry::GameData::extractSprite(ZombieEntry entry) const {
 		return textureAtlas_.add(entry.getString(), 2);
 	}
 
-	Animation GameDataEntry::GameData::extractAnimation(GameDataEntry entry) const {
+	Animation ZombieEntry::GameData::extractAnimation(ZombieEntry entry) const {
 		Animation animation;
 		entry = entry.getChildEntry("frame");
 		while (entry.hasData()) {
@@ -200,15 +200,15 @@ namespace zombie {
 		return animation;
 	}
 
-	mw::Sound GameDataEntry::GameData::extractSound(GameDataEntry entry) const {
+	mw::Sound ZombieEntry::GameData::extractSound(ZombieEntry entry) const {
 		return loadSound(entry.getString());
 	}
 
-	mw::Music GameDataEntry::GameData::extractMusic(GameDataEntry entry) const {
+	mw::Music ZombieEntry::GameData::extractMusic(ZombieEntry entry) const {
 		return loadMusic(entry.getString());
 	}
 
-	mw::Font GameDataEntry::GameData::loadFont(std::string file, unsigned int fontSize) const {
+	mw::Font ZombieEntry::GameData::loadFont(std::string file, unsigned int fontSize) const {
 		unsigned int size = fonts_.size();
 		std::string key = file;
 		key += fontSize;
@@ -222,7 +222,7 @@ namespace zombie {
 		return font;
 	}
 
-	mw::Sound GameDataEntry::GameData::loadSound(std::string file) const {
+	mw::Sound ZombieEntry::GameData::loadSound(std::string file) const {
 		unsigned int size = sounds_.size();
 		mw::Sound& sound = sounds_[file];
 
@@ -234,7 +234,7 @@ namespace zombie {
 		return sound;
 	}
 
-	mw::Music GameDataEntry::GameData::loadMusic(std::string file) const {
+	mw::Music ZombieEntry::GameData::loadMusic(std::string file) const {
 		unsigned int size = musics_.size();
 		mw::Music& music = musics_[file];
 

@@ -15,7 +15,7 @@
 
 namespace zombie {
 
-	class GameDataEntry;
+	class ZombieEntry;
 
 	struct ExplosionProperties {
 		ExplosionProperties() {
@@ -62,7 +62,7 @@ namespace zombie {
 		mw::Sound sound_;
 	};
 
-	ExplosionProperties loadExplosion(GameDataEntry& entry);
+	ExplosionProperties loadExplosion(ZombieEntry& entry);
 
 } // Namespace zombie.
 

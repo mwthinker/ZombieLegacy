@@ -8,7 +8,7 @@
 
 namespace zombie {
 
-	Weapon2D loadGun(GameInterface* gameInterface, GameDataEntry& entry) {
+	Weapon2D loadGun(GameInterface* gameInterface, ZombieEntry& entry) {
 		mw::Sprite symbolImage = entry.getChildEntry("symbolImage").getSprite();
 		float timeBetweenShots = entry.getChildEntry("timeBetweenShots").getFloat();
 		int clipSize = entry.getChildEntry("clipSize").getInt();
@@ -21,7 +21,7 @@ namespace zombie {
 		grip.x = entry.getChildEntry("moveImageGripX").getFloat();
 		grip.y = entry.getChildEntry("moveImageGripY").getFloat();
 
-		GameDataEntry projectile = entry.getChildEntry("projectile");
+		ZombieEntry projectile = entry.getChildEntry("projectile");
 		float damage = projectile.getChildEntry("damage").getFloat();
 		float range = projectile.getChildEntry("range").getFloat();
 		

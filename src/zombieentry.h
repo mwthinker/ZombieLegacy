@@ -1,5 +1,5 @@
-#ifndef GAMEDATAENTRY_H
-#define GAMEDATAENTRY_H
+#ifndef ZOMBIEENTRY_H
+#define ZOMBIEENTRY_H
 
 #include "animation.h"
 #include "box2ddef.h"
@@ -29,17 +29,17 @@ namespace zombie {
 	// as "POINT (...)".
 	Point loadPoint(std::string line);
 
-	class GameDataEntry : public xml::DataEntry {
+	class ZombieEntry : public xml::DataEntry {
 	public:
-		GameDataEntry(std::string fileName);
+		ZombieEntry(std::string fileName);
 
-		GameDataEntry getDeepChildEntry(std::string tagNames) const;
+		ZombieEntry getDeepChildEntry(std::string tagNames) const;
 
-		GameDataEntry getChildEntry(std::string tagName) const;
+		ZombieEntry getChildEntry(std::string tagName) const;
 
-		GameDataEntry getSibling(std::string siblingName) const;
+		ZombieEntry getSibling(std::string siblingName) const;
 
-		GameDataEntry getParent() const;
+		ZombieEntry getParent() const;
 		
 		mw::Font getFont(int size) const;
 		mw::Sound getSound() const;
@@ -55,15 +55,15 @@ namespace zombie {
 			GameData() : textureAtlas_(2048, 2048) {
 			}
 
-			mw::Sprite extractSprite(GameDataEntry entry) const;
+			mw::Sprite extractSprite(ZombieEntry entry) const;
 
-			Animation extractAnimation(GameDataEntry entry) const;
+			Animation extractAnimation(ZombieEntry entry) const;
 
-			mw::Sound extractSound(GameDataEntry entry) const;
+			mw::Sound extractSound(ZombieEntry entry) const;
 
-			mw::Music extractMusic(GameDataEntry entry) const;
+			mw::Music extractMusic(ZombieEntry entry) const;
 
-			void loadFrame(GameDataEntry, Animation& animation) const;
+			void loadFrame(ZombieEntry, Animation& animation) const;
 
 			mw::Font loadFont(std::string file, unsigned int fontSize) const;
 			mw::Sound loadSound(std::string file) const;
@@ -76,11 +76,11 @@ namespace zombie {
 			mutable std::map<std::string, mw::Music> musics_;
 		};
 
-		GameDataEntry(const GameDataEntry& g, xml::DataEntry e);
+		ZombieEntry(const ZombieEntry& g, xml::DataEntry e);
 		
 		std::shared_ptr<GameData> gameData_;
 	};
 
 } // Namespace zombie.
 
-#endif // GAMEDATAENTRY_H
+#endif // ZOMBIEENTRY_H

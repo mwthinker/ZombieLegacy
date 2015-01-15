@@ -3,7 +3,7 @@
 
 #include "box2ddef.h"
 #include "gameshader.h"
-#include "gamedataentry.h"
+#include "zombieentry.h"
 
 #include <mw/opengl.h>
 #include <mw/vertexbufferobject.h>
@@ -20,8 +20,8 @@ namespace zombie {
 			numberVerticesRoads_(0), numberVerticesGrass_(0) {
 		}
 
-		void loadRoadSprites(GameDataEntry entry);
-		void addRoad(GameDataEntry tileEntry);
+		void loadRoadSprites(ZombieEntry entry);
+		void addRoad(ZombieEntry tileEntry);
 		void addGrass(Position p1, Position p2, Position p3);
 
 		void draw(float time, const GameShader& shader);

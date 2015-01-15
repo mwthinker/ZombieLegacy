@@ -1,7 +1,7 @@
 #include "weapon2d.h"
 #include "animation.h"
 #include "auxiliary.h"
-#include "gamedataentry.h"
+#include "zombieentry.h"
 #include "laser.h"
 #include "closestraycastcallback.h"
 

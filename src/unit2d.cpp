@@ -74,8 +74,8 @@ namespace zombie {
 		}
 	}
 
-	Unit2D loadUnit(GameInterface* gameInterface, std::string unitTag, GameDataEntry zombieGameEntry, bool infected) {
-		GameDataEntry entry = zombieGameEntry.getChildEntry(unitTag);
+	Unit2D loadUnit(GameInterface* gameInterface, std::string unitTag, ZombieEntry zombieEntry, bool infected) {
+		ZombieEntry entry = zombieEntry.getChildEntry(unitTag);
 		float mass = entry.getChildEntry("mass").getFloat();
 		float radius = entry.getChildEntry("radius").getFloat();
 		float life = entry.getChildEntry("life").getFloat();
@@ -90,7 +90,7 @@ namespace zombie {
 
 		std::string path = "equipment weapons ";
 		path += weaponName;
-		auto weaponEntry = zombieGameEntry.getDeepChildEntry(path);
+		auto weaponEntry = zombieEntry.getDeepChildEntry(path);
 		
 		std::shared_ptr<Weapon> weapon;
 		if (weaponEntry.isAttributeEqual("projectile", "missile")) {

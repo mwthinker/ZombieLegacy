@@ -1,5 +1,5 @@
 #include "zombiewindow.h"
-#include "gamedataentry.h"
+#include "zombieentry.h"
 
 int main (int argc, char** argv) {
 
@@ -9,9 +9,9 @@ int main (int argc, char** argv) {
 	}
 
 	// Load game data.
-	zombie::GameDataEntry gameDataEntry("zombie.xml");
+	zombie::ZombieEntry zombieEntry("zombie.xml");
 
-	zombie::ZombieWindow zombieWindow(gameDataEntry.getChildEntry("zombieGame"), skipMenu);
+	zombie::ZombieWindow zombieWindow(zombieEntry.getChildEntry("zombieGame"), skipMenu);
 	zombieWindow.startLoop();
 
     return 0;

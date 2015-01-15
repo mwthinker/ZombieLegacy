@@ -13,7 +13,7 @@
 #include "tree2D.h"
 #include "gun.h"
 #include "missilelauncher2d.h"
-#include "gamedataentry.h"
+#include "zombieentry.h"
 #include "humanplayer.h"
 #include "zombiebehavior.h"
 
@@ -60,7 +60,7 @@ namespace zombie {
 
 	}
 
-	ZombieGame::ZombieGame(GameDataEntry zombieEntry) : engine_(*this,
+	ZombieGame::ZombieGame(ZombieEntry zombieEntry) : engine_(*this,
 		zombieEntry.getDeepChildEntry("settings impulseThreshold").getFloat()), zombieEntry_(zombieEntry),
 		water_(loadWater(zombieEntry.getDeepChildEntry("water"))),
 		frame_(0),
@@ -487,7 +487,7 @@ namespace zombie {
 	}
 
 	void ZombieGame::loadTerrain() {
-		auto entry = GameDataEntry(zombieEntry_.getDeepChildEntry("settings map").getString());
+		auto entry = ZombieEntry(zombieEntry_.getDeepChildEntry("settings map").getString());
 		entry = entry.getDeepChildEntry("map objects object");
 		while (entry.hasData()) {
 			std::string geom(entry.getChildEntry("geom").getString());
