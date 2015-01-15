@@ -63,7 +63,7 @@ namespace zombie {
 
 			mw::Music extractMusic(ZombieEntry entry) const;
 
-			void loadFrame(ZombieEntry, Animation& animation) const;
+			void loadFrame(ZombieEntry, Animation& animation, float deltaTime, float bodyWidth) const;
 
 			mw::Font loadFont(std::string file, unsigned int fontSize) const;
 			mw::Sound loadSound(std::string file) const;

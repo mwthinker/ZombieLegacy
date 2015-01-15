@@ -15,170 +15,106 @@
         <speed>1</speed>
         <blastRadius>0.5</blastRadius>
 		<animation>
+			<deltaTime>0.025</deltaTime>
+			<bodyWidth>128</bodyWidth>
 			<frame>
                 <image>images/explosion/explosion1/explosion0.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion1.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion2.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
 			<frame>
                 <image>images/explosion/explosion1/explosion3.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion4.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>			
 			<frame>
                 <image>images/explosion/explosion1/explosion5.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion6.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
 			<frame>
                 <image>images/explosion/explosion1/explosion7.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion8.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
 			<frame>
                 <image>images/explosion/explosion1/explosion9.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion10.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
 			<frame>
                 <image>images/explosion/explosion1/explosion11.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion12.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
-            </frame>			
+            </frame>
 			<frame>
                 <image>images/explosion/explosion1/explosion13.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion14.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
 			<frame>
                 <image>images/explosion/explosion1/explosion15.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion16.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
 			<frame>
                 <image>images/explosion/explosion1/explosion17.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion18.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
 			<frame>
                 <image>images/explosion/explosion1/explosion19.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion20.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
-            </frame>			
+            </frame>
 			<frame>
                 <image>images/explosion/explosion1/explosion21.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion22.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
 			<frame>
                 <image>images/explosion/explosion1/explosion23.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion24.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
 			<frame>
                 <image>images/explosion/explosion1/explosion25.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion26.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
 			<frame>
                 <image>images/explosion/explosion1/explosion27.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion28.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
-            </frame>			
+            </frame>
 			<frame>
                 <image>images/explosion/explosion1/explosion29.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion30.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
 			<frame>
                 <image>images/explosion/explosion1/explosion31.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/explosion32.png</image>
-                <time>0.08</time>
-                <bodyWidth>128</bodyWidth>
             </frame>
         </animation>
         <sound>sounds/explosion.wav</sound>

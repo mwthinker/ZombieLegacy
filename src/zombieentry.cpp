@@ -172,18 +172,19 @@ namespace zombie {
 		return get<Position>();
 	}
 
-	void ZombieEntry::GameData::loadFrame(ZombieEntry entry, Animation& animation) const {
+	void ZombieEntry::GameData::loadFrame(ZombieEntry entry, Animation& animation, float deltaTime, float bodyWidth) const {
 		mw::Sprite sprite = extractSprite(entry.getChildEntry("image"));
-
-		float time = 1;
+				
 		auto timeEntry = entry.getChildEntry("time");
 		if (timeEntry.hasData()) {
-			time = timeEntry.getFloat();
+			deltaTime = timeEntry.getFloat();
+		}
+		auto widthEntry = entry.getChildEntry("bodyWidth");
+		if (widthEntry.hasData()) {
+			bodyWidth = widthEntry.getFloat();
 		}
 
-		float bodyWidth = entry.getChildEntry("bodyWidth").getFloat();
-
-		animation.add(sprite, bodyWidth, time);
+		animation.add(sprite, bodyWidth, deltaTime);
 	}
 
 	mw::Sprite ZombieEntry::GameData::extractSprite(ZombieEntry entry) const {
@@ -192,9 +193,20 @@ namespace zombie {
 
 	Animation ZombieEntry::GameData::extractAnimation(ZombieEntry entry) const {
 		Animation animation;
+		float deltaTime = 1.f;
+		auto tmp = entry.getChildEntry("deltaTime");
+		if (tmp.hasData()) {
+			deltaTime = tmp.getFloat();
+		}
+		tmp = entry.getChildEntry("bodyWidth");
+		float bodyWidth = 1;
+		if (tmp.hasData()) {
+			bodyWidth = tmp.getFloat();
+		}
+		
 		entry = entry.getChildEntry("frame");
 		while (entry.hasData()) {
-			loadFrame(entry, animation);
+			loadFrame(entry, animation, deltaTime, bodyWidth);
 			entry = entry.getSibling("frame");
 		}
 		return animation;
