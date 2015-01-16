@@ -43,11 +43,12 @@ namespace zombie {
 	}
 
 	void Weapon2D::draw(float timeStep, float x, float y, const GameShader& shader) {
-		animation_.draw(timeStep, x + grip_.x, y + grip_.y, size_, size_, shader);
 		if (laser_) {
 			laser_->update(x, y);
 			laser_->draw(timeStep, shader);
 		}
+		shader.setGlColorU(1, 1, 1);
+		animation_.draw(timeStep, x + grip_.x, y + grip_.y, size_, size_, shader);
 	}
 
 	void Weapon2D::updateLaserSight(b2World* world, float timeStep, Position position, float angle) {

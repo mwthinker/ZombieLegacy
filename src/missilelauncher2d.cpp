@@ -3,8 +3,6 @@
 #include "zombieentry.h"
 #include "laser.h"
 
-#include <cassert>
-
 namespace zombie {
 
 	Weapon2D loadMissileLauncher2D(GameInterface* gameInterface, ZombieEntry& entry) {
@@ -28,7 +26,6 @@ namespace zombie {
 		float deathTime = projectile.getChildEntry("deathTime").getFloat();
 		float speed = projectile.getChildEntry("speed").getFloat();
 		float force = projectile.getChildEntry("force").getFloat();
-
 
 		bool hasLaser = entry.getChildEntry("laserSight").getBool();
 		std::shared_ptr<Laser> laser;

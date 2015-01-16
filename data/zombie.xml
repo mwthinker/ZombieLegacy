@@ -182,7 +182,7 @@
         <laserSight>
             <overlayColor>(0.8 0.8 0.8 0.7)</overlayColor>
             <laserColor>(0.8 0 0 0.5)</laserColor>
-            <speed>5.0</speed>
+            <speed>1.0</speed>
             <height>0.4</height>
             <sprites>
                 <laser>images/laser/laser.png</laser>
@@ -242,9 +242,9 @@
                         <bodyWidth>128</bodyWidth>
                     </frame>
                 </moveAnimation>
-                <size>0.7</size>
-                <moveImageGripX>-0.2025</moveImageGripX>
-                <moveImageGripY>-0.0525</moveImageGripY>
+                <size>0.5</size>
+                <moveImageGripX>-0.05</moveImageGripX>
+                <moveImageGripY>0</moveImageGripY>
                 <projectile>
                     <damageRadius>1</damageRadius>
                     <damage>60</damage>
@@ -294,8 +294,8 @@
                 <bodyWidth>230</bodyWidth>
             </frame>
         </moveAnimation>
-        <moveImageGripX>0.33</moveImageGripX>
-        <moveImageGripY>-0.15</moveImageGripY>
+        <moveImageGripX>0.18</moveImageGripX>
+        <moveImageGripY>-0.1</moveImageGripY>
         <dieAnimation>
             <frame>
                 <image>images/blood/bloodDeath10.png</image>
