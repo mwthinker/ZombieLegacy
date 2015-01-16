@@ -19,7 +19,7 @@ namespace zombie {
 		Terrain2D() : 
 			numberVerticesRoads_(0), numberVerticesGrass_(0) {
 		}
-
+		
 		void loadRoadSprites(ZombieEntry entry);
 		void addRoad(ZombieEntry tileEntry);
 		void addGrass(Position p1, Position p2, Position p3);
