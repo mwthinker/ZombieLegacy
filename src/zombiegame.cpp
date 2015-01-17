@@ -10,7 +10,7 @@
 #include "shot.h"
 #include "graphicanimation.h"
 #include "explosion.h"
-#include "tree2D.h"
+#include "tree2d.h"
 #include "gun.h"
 #include "missilelauncher2d.h"
 #include "zombieentry.h"

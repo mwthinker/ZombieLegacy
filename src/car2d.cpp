@@ -30,7 +30,7 @@ namespace zombie {
 		animation_.draw(timeStep, 0, 0, getLength(), getLength(), gameShader);
 	}
 
-	Car2D loadCar(ZombieEntry& entry) {
+	Car2D loadCar(ZombieEntry entry) {
 		Animation animation = entry.getChildEntry("moveAnimation").getAnimation();
 		float mass = entry.getChildEntry("mass").getFloat();
 		float width = entry.getChildEntry("width").getFloat();

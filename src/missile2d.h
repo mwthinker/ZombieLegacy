@@ -26,7 +26,7 @@ namespace zombie {
 		State previousState_;
 	};
 
-	Missile2D loadMissile2D(GameInterface* gameInterface, ZombieEntry& entry);
+	Missile2D loadMissile2D(GameInterface* gameInterface, ZombieEntry entry);
 
 } // Namespace zombie.
 

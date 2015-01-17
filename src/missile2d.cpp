@@ -25,7 +25,7 @@ namespace zombie {
 		animation_.draw(timeStep, 0, 0, getLength(), getLength(), gameShader);
 	}
 
-	Missile2D loadMissile2D(GameInterface* gameInterface, ZombieEntry& entry) {
+	Missile2D loadMissile2D(GameInterface* gameInterface, ZombieEntry entry) {
 		float mass = entry.getChildEntry("mass").getFloat();
 		float width = entry.getChildEntry("width").getFloat();
 		float length = entry.getChildEntry("length").getFloat();

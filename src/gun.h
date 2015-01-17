@@ -14,7 +14,7 @@
 
 namespace zombie {	
 
-	Weapon2D loadGun(GameInterface* gameInterface, ZombieEntry& entry);
+	Weapon2D loadGun(GameInterface* gameInterface, ZombieEntry entry);
 
 	class Gun : public WeaponInterface {
 	public:

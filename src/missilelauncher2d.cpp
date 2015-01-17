@@ -5,7 +5,7 @@
 
 namespace zombie {
 
-	Weapon2D loadMissileLauncher2D(GameInterface* gameInterface, ZombieEntry& entry) {
+	Weapon2D loadMissileLauncher2D(GameInterface* gameInterface, ZombieEntry entry) {
 		mw::Sprite symbolImage = entry.getChildEntry("symbolImage").getSprite();
 
 		float timeBetweenShots = entry.getChildEntry("timeBetweenShots").getFloat();

@@ -16,6 +16,20 @@
 #include <string>
 #include <functional>
 
+namespace xml {
+
+	// Template specialization. Point must be defined as "(12.3 55.3)".
+	// x = 12.3, y = 55.3
+	template <>
+	zombie::Point extract(tinyxml2::XMLHandle handle);
+
+	// Template specialization. Color must be defined as "(0.1 0.2 0.3)" or "(0.1 0.2 0.3 0.4)"
+	// red = 0.1, green = 0.2, blue = 0.3, alpha = 0.4
+	template <>
+	mw::Color extract(tinyxml2::XMLHandle handle);
+
+}
+
 namespace zombie {
 
 	// Takes a string as input and returns the points.
@@ -28,7 +42,7 @@ namespace zombie {
 	// The string "POINT (x y)" the input should be defined
 	// as "POINT (...)".
 	Point loadPoint(std::string line);
-
+	
 	class ZombieEntry : public xml::DataEntry {
 	public:
 		ZombieEntry(std::string fileName);

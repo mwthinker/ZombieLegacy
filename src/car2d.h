@@ -23,7 +23,7 @@ namespace zombie {
 		State previousState_;
 	};
 
-	Car2D loadCar(ZombieEntry& entry);
+	Car2D loadCar(ZombieEntry entry);
 	
 } // Namespace zombie.
 

@@ -38,7 +38,7 @@ namespace zombie {
 		animation_ = exPr.animation_;
 	}
 
-	ExplosionProperties loadExplosion(ZombieEntry& entry) {
+	ExplosionProperties loadExplosion(ZombieEntry entry) {
 		ExplosionProperties explosionProperties;
 		explosionProperties.delay_ = entry.getChildEntry("timeDelay").getFloat();
 		explosionProperties.animation_ = entry.getChildEntry("animation").getAnimation();

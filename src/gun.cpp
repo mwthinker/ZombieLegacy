@@ -8,7 +8,7 @@
 
 namespace zombie {
 
-	Weapon2D loadGun(GameInterface* gameInterface, ZombieEntry& entry) {
+	Weapon2D loadGun(GameInterface* gameInterface, ZombieEntry entry) {
 		mw::Sprite symbolImage = entry.getChildEntry("symbolImage").getSprite();
 		float timeBetweenShots = entry.getChildEntry("timeBetweenShots").getFloat();
 		int clipSize = entry.getChildEntry("clipSize").getInt();

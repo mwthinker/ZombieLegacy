@@ -12,7 +12,7 @@ namespace zombie {
 
 	class Missile : public Object {
 	public:
-		Missile::Missile();
+		Missile();
 
 		Missile(GameInterface* gameInterface, float width, float length, float mass);
 

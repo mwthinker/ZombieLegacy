@@ -4,77 +4,77 @@
 #include <sstream>
 #include <iostream>
 
-// Template specialization. Point must be defined as "(12.3 55.3)".
-// x = 12.3, y = 55.3
-template <>
-zombie::Point xml::extract(tinyxml2::XMLHandle handle) {
-	const tinyxml2::XMLElement* element = handle.ToElement();
-	if (element == nullptr) {
-		throw std::runtime_error("Missing element!");
-	}
-	const char* str = element->GetText();
+namespace xml {
 
-	if (str == nullptr) {
-		throw std::runtime_error("Missing text!");
-	}
+	template <>
+	zombie::Point extract(tinyxml2::XMLHandle handle) {
+		const tinyxml2::XMLElement* element = handle.ToElement();
+		if (element == nullptr) {
+			throw std::runtime_error("Missing element!");
+		}
+		const char* str = element->GetText();
 
-	std::stringstream stream(str);
+		if (str == nullptr) {
+			throw std::runtime_error("Missing text!");
+		}
 
-	char chr = 0;;
-	zombie::Point point;
-	stream >> chr;
-	if (chr != '(') {
-		throw std::runtime_error("Missing '('!");
-	}
-	if (!(stream >> point.x)) {
-		throw std::runtime_error("x coord invalid");
-	}
-	if (!(stream >> point.y)) {
-		throw std::runtime_error("y coord invalid");
-	}
-	chr = 0;
-	stream >> chr;
-	if (chr != ')') {
-		throw std::runtime_error("Missing ')'!");
-	}
+		std::stringstream stream(str);
 
-	return point;
-}
+		char chr = 0;;
+		zombie::Point point;
+		stream >> chr;
+		if (chr != '(') {
+			throw std::runtime_error("Missing '('!");
+		}
+		if (!(stream >> point.x)) {
+			throw std::runtime_error("x coord invalid");
+		}
+		if (!(stream >> point.y)) {
+			throw std::runtime_error("y coord invalid");
+		}
+		chr = 0;
+		stream >> chr;
+		if (chr != ')') {
+			throw std::runtime_error("Missing ')'!");
+		}
 
-// Template specialization. Color must be defined as "(0.1 0.2 0.3)" or "(0.1 0.2 0.3 0.4)"
-// red = 0.1, green = 0.2, blue = 0.3, alpha = 0.4
-template <>
-mw::Color xml::extract(tinyxml2::XMLHandle handle) {
-	tinyxml2::XMLElement* element = handle.ToElement();
-	if (element == nullptr) {
-		throw std::runtime_error("Missing element!");
-	}
-	const char* str = element->GetText();
-
-	if (str == nullptr) {
-		throw std::runtime_error("Missing text!");
+		return point;
 	}
 
-	std::stringstream stream(str);
-	char chr = 0;;
-	mw::Color color;
-	stream >> chr;
-	if (chr != '(') {
-		throw std::runtime_error("Missing '('!");
+	template <>
+	mw::Color extract(tinyxml2::XMLHandle handle) {
+		tinyxml2::XMLElement* element = handle.ToElement();
+		if (element == nullptr) {
+			throw std::runtime_error("Missing element!");
+		}
+		const char* str = element->GetText();
+
+		if (str == nullptr) {
+			throw std::runtime_error("Missing text!");
+		}
+
+		std::stringstream stream(str);
+		char chr = 0;;
+		mw::Color color;
+		stream >> chr;
+		if (chr != '(') {
+			throw std::runtime_error("Missing '('!");
+		}
+		if (!(stream >> color.red_)) {
+			throw std::runtime_error("Red value invalid");
+		}
+		if (!(stream >> color.green_)) {
+			throw std::runtime_error("Green value invalid");
+		}
+		if (!(stream >> color.blue_)) {
+			throw std::runtime_error("Blue value invalid");
+		}
+		// Assume that everything is correct.
+		stream >> color.alpha_;
+		return color;
 	}
-	if (!(stream >> color.red_)) {
-		throw std::runtime_error("Red value invalid");
-	}
-	if (!(stream >> color.green_)) {
-		throw std::runtime_error("Green value invalid");
-	}
-	if (!(stream >> color.blue_)) {
-		throw std::runtime_error("Blue value invalid");
-	}
-	// Assume that everything is correct.
-	stream >> color.alpha_;
-	return color;
-}
+
+} // Namespace xml.
 
 namespace zombie {
 

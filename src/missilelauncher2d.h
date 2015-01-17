@@ -12,7 +12,7 @@
 
 namespace zombie {
 
-	Weapon2D loadMissileLauncher2D(GameInterface* gameInterface, ZombieEntry& entry);
+	Weapon2D loadMissileLauncher2D(GameInterface* gameInterface, ZombieEntry entry);
 
 	class MissileLauncher2D : public MissileLauncher {
 	public:

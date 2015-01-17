@@ -17,7 +17,7 @@ namespace zombie {
 	class Laser;
 	typedef std::shared_ptr<Laser> LaserPtr;
 
-	LaserPtr loadLaser(ZombieEntry& entry);
+	LaserPtr loadLaser(ZombieEntry entry);
 
 	class Laser {
 	public:

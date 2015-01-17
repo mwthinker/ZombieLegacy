@@ -110,7 +110,7 @@ namespace zombie {
 
 	}
 
-	LaserPtr loadLaser(ZombieEntry& entry) {
+	LaserPtr loadLaser(ZombieEntry entry) {
 		float speed = entry.getChildEntry("speed").getFloat();
 		mw::Color overlayColor = entry.getChildEntry("overlayColor").getColor();
 		mw::Color laserColor = entry.getChildEntry("laserColor").getColor();
