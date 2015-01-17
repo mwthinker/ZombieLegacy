@@ -4,6 +4,7 @@
 
 *.wav
 *vcredist_x86.exe
+*~
 
 #################
 ## Eclipse
