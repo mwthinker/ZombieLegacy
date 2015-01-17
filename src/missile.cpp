@@ -109,8 +109,8 @@ namespace zombie {
 		b2AABB aabb;
 		float angle = body_->GetAngle();
 		Position explosionPosition = body_->GetPosition() + 0.5f * length_ * Position(std::cos(angle), std::sin(angle));
-		aabb.lowerBound = explosionPosition + explosionRadius_ *  Position(0.5f, 0.5f);
-		aabb.upperBound = explosionPosition - explosionRadius_ *  Position(0.5f, 0.5f);
+		aabb.lowerBound = explosionPosition - explosionRadius_ *  Position(0.5f, 0.5f);
+		aabb.upperBound = explosionPosition + explosionRadius_ *  Position(0.5f, 0.5f);
 		body_->GetWorld()->QueryAABB(&queryCallback, aabb);
 
 		for (b2Fixture* fixture : queryCallback.foundFixtures) {

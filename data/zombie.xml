@@ -13,7 +13,6 @@
     <explosion>
         <timeDelay>0.3</timeDelay>
         <speed>1</speed>
-        <blastRadius>0.5</blastRadius>
 		<animation>
 			<deltaTime>0.025</deltaTime>
 			<bodyWidth>128</bodyWidth>
@@ -246,12 +245,12 @@
                 <moveImageGripX>-0.05</moveImageGripX>
                 <moveImageGripY>0</moveImageGripY>
                 <projectile>
-                    <damageRadius>1</damageRadius>
+                    <damageRadius>2</damageRadius>
                     <damage>60</damage>
                     <range>10</range>
                     <deathTime>10</deathTime>
                     <speed>15</speed>
-                    <force>15</force>
+                    <force>300</force>
                 </projectile>
                 <laserSight>1</laserSight>
             </missileLauncher>

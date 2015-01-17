@@ -21,18 +21,14 @@ namespace zombie {
 		ExplosionProperties() {
 		}
 
-		ExplosionProperties(float blastRadius, float speed, Animation animation,
+		ExplosionProperties(const Animation& animation,
 			mw::Sound sound = mw::Sound(), float delay = 0.3) :
 
-			blastRadius_(blastRadius),
-			speed_(blastRadius),
 			animation_(animation),
 			sound_(sound),
 			delay_(delay) {
 		}
 
-		float blastRadius_;
-		float speed_;
 		Animation animation_;
 		mw::Sound sound_;
 		float delay_;
@@ -44,16 +40,12 @@ namespace zombie {
 
 		void draw(float deltaTime, const GameShader& shader);
 
-		float getTimeDuration() const;
-
 		bool toBeRemoved() const;
 
-		void restart(Position position, const ExplosionProperties& exPr);
+		void restart(Position position, float blastRadius, const ExplosionProperties& exPr);
 
 	private:
 		Position position_;
-		float speed_;
-		float lifeTime_;
 		float particleSize_;
 		float blastRadius_;
 		Animation animation_;

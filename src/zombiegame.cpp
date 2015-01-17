@@ -456,10 +456,9 @@ namespace zombie {
 
 	void ZombieGame::explosion(Position position, float explosionRadius) {
 		auto tmp = explosionProperties_;
-		tmp.blastRadius_ = explosionRadius;
 		for (auto& explosion : explosions_) {
 			if (explosion.toBeRemoved()) {
-				explosion.restart(position, tmp);
+				explosion.restart(position, explosionRadius, tmp);
 				// Only draw one explosion!
 				break;
 			}
