@@ -56,8 +56,10 @@ namespace zombie {
 
 	void Car::updatePhysics(float time, float timeStep) {
 		Input input;
+		bool brake = true;
 		if (driver_ != nullptr) {
 			input = driver_->getInput();
+			brake = false;
 		}
 		previousState_ = getState();
 		b2Vec2 force = getDirectionVector();
@@ -82,7 +84,7 @@ namespace zombie {
 
 		steeringAngle_ = 0.4f * steering;
 
-		applyFriction(2.0f, 2.0f, 100.0f, 100.0f);
+		applyFriction(brake, 2.0f, 2.0f, 100.0f, 100.0f);
 
 		signal(MOVED);
 
@@ -134,25 +136,36 @@ namespace zombie {
 		}
 	}
 
-	void Car::applyFriction(float frictionForwardFrontWheel, float frictionForwardBackWheel,
+	void Car::applyFriction(bool brake, float frictionForwardFrontWheel, float frictionForwardBackWheel,
 		float frictionLateralFrontWheel, float frictionLateralBackWheel) {
+				
 		// Back wheel lateral friction.
+		float friction = frictionLateralBackWheel;
 		b2Vec2 currentRightNormal = body_->GetWorldVector(b2Vec2(0, -1));
-		b2Vec2 force = -frictionLateralBackWheel * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getBackWheelPosition())) * currentRightNormal;
+		b2Vec2 force = -friction * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getBackWheelPosition())) * currentRightNormal;
 		body_->ApplyForce(force, getBackWheelPosition());
-
+				
 		// Front wheel lateral friction.
+		friction = frictionLateralFrontWheel;
 		currentRightNormal = b2Vec2(-getDirectionVector().y, getDirectionVector().x);
-		force = -frictionLateralFrontWheel * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getFrontWheelPosition())) * currentRightNormal;
+		force = -friction * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getFrontWheelPosition())) * currentRightNormal;
 		body_->ApplyForce(force, getFrontWheelPosition());
-
+				
 		// Back wheel forward friction.
-		force = -frictionForwardBackWheel * b2Dot(getDirectionVector(), body_->GetLinearVelocity()) * getDirectionVector();
+		friction = frictionForwardBackWheel;
+		if (brake) {
+			friction = frictionLateralBackWheel;
+		}
+		force = -friction * b2Dot(getDirectionVector(), body_->GetLinearVelocity()) * getDirectionVector();
 		body_->ApplyForce(force, getBackWheelPosition());
-
+				
 		// Front wheel forward friction.
+		friction = frictionForwardFrontWheel;
+		if (brake) {
+			friction = frictionLateralFrontWheel;
+		}
 		b2Vec2 forward = body_->GetWorldVector(b2Vec2(1, 0));
-		force = -frictionForwardFrontWheel * b2Dot(forward, body_->GetLinearVelocity()) * forward;
+		force = -friction * b2Dot(forward, body_->GetLinearVelocity()) * forward;
 		body_->ApplyForce(force, getFrontWheelPosition());
 	}
 

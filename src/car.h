@@ -95,7 +95,7 @@ namespace zombie {
 			}
 		}
 
-		void applyFriction(float frictionForwardFrontWheel, float frictionForwardBackWheel,
+		void applyFriction(bool brake, float frictionForwardFrontWheel, float frictionForwardBackWheel,
 			float frictionLateralFrontWheel, float frictionLateralBackWheel);
 
 		b2Vec2 getFrontWheelPosition() const {
