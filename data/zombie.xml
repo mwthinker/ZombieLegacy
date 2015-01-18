@@ -14,106 +14,106 @@
         <timeDelay>0.3</timeDelay>
         <speed>1</speed>
 		<animation>
-			<deltaTime>0.025</deltaTime>
+			<deltaTime>0.015</deltaTime>
 			<bodyWidth>128</bodyWidth>
 			<frame>
-                <image>images/explosion/explosion1/explosion0.png</image>
+                <image>images/explosion/explosion1/0.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion1.png</image>
+                <image>images/explosion/explosion1/1.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion2.png</image>
+                <image>images/explosion/explosion1/2.png</image>
             </frame>
 			<frame>
-                <image>images/explosion/explosion1/explosion3.png</image>
+                <image>images/explosion/explosion1/3.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion4.png</image>
+                <image>images/explosion/explosion1/4.png</image>
             </frame>			
 			<frame>
-                <image>images/explosion/explosion1/explosion5.png</image>
+                <image>images/explosion/explosion1/5.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion6.png</image>
+                <image>images/explosion/explosion1/6.png</image>
             </frame>
 			<frame>
-                <image>images/explosion/explosion1/explosion7.png</image>
+                <image>images/explosion/explosion1/7.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion8.png</image>
+                <image>images/explosion/explosion1/8.png</image>
             </frame>
 			<frame>
-                <image>images/explosion/explosion1/explosion9.png</image>
+                <image>images/explosion/explosion1/9.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion10.png</image>
+                <image>images/explosion/explosion1/10.png</image>
             </frame>
 			<frame>
-                <image>images/explosion/explosion1/explosion11.png</image>
+                <image>images/explosion/explosion1/11.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion12.png</image>
+                <image>images/explosion/explosion1/12.png</image>
             </frame>
 			<frame>
-                <image>images/explosion/explosion1/explosion13.png</image>
+                <image>images/explosion/explosion1/13.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion14.png</image>
+                <image>images/explosion/explosion1/14.png</image>
             </frame>
 			<frame>
-                <image>images/explosion/explosion1/explosion15.png</image>
+                <image>images/explosion/explosion1/15.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion16.png</image>
+                <image>images/explosion/explosion1/16.png</image>
             </frame>
 			<frame>
-                <image>images/explosion/explosion1/explosion17.png</image>
+                <image>images/explosion/explosion1/17.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion18.png</image>
+                <image>images/explosion/explosion1/18.png</image>
             </frame>
 			<frame>
-                <image>images/explosion/explosion1/explosion19.png</image>
+                <image>images/explosion/explosion1/19.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion20.png</image>
+                <image>images/explosion/explosion1/20.png</image>
             </frame>
 			<frame>
-                <image>images/explosion/explosion1/explosion21.png</image>
+                <image>images/explosion/explosion1/21.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion22.png</image>
+                <image>images/explosion/explosion1/22.png</image>
             </frame>
 			<frame>
-                <image>images/explosion/explosion1/explosion23.png</image>
+                <image>images/explosion/explosion1/23.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion24.png</image>
+                <image>images/explosion/explosion1/24.png</image>
             </frame>
 			<frame>
-                <image>images/explosion/explosion1/explosion25.png</image>
+                <image>images/explosion/explosion1/25.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion26.png</image>
+                <image>images/explosion/explosion1/26.png</image>
             </frame>
 			<frame>
-                <image>images/explosion/explosion1/explosion27.png</image>
+                <image>images/explosion/explosion1/27.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion28.png</image>
+                <image>images/explosion/explosion1/28.png</image>
             </frame>
 			<frame>
-                <image>images/explosion/explosion1/explosion29.png</image>
+                <image>images/explosion/explosion1/29.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion30.png</image>
+                <image>images/explosion/explosion1/30.png</image>
             </frame>
 			<frame>
-                <image>images/explosion/explosion1/explosion31.png</image>
+                <image>images/explosion/explosion1/31.png</image>
             </frame>
             <frame>
-                <image>images/explosion/explosion1/explosion32.png</image>
+                <image>images/explosion/explosion1/32.png</image>
             </frame>
         </animation>
         <sound>sounds/explosion.wav</sound>
