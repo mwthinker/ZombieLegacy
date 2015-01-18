@@ -32,21 +32,14 @@ namespace zombie {
 			float angle = random(0, 2.f*PI);
 			return position + (innerRadius + (outerRadius - innerRadius) * random()) * Position(std::cos(angle), std::sin(angle));
 		}
-
-		Position generatePosition(std::vector<Position> positions) {
-			return positions[randomInt(0, positions.size() - 1)];	
+		
+		Position generatePosition(const std::vector<Position>& positions) {
+			if (positions.size() > 0) {
+				return positions[randomInt(0, positions.size() - 1)];
+			}
+			return ZERO;
 		}
-		/*
-		Position generateZombiePosition(Position humanPosition, std::vector<Position> positions) {
-			unsigned int tries = 1000;
-			for (unsigned int i = 0; i < tries; i++) {
-				Position p = positions[randomInt(0, positions.size() - 1)];
-				float dX = abs(p.x - humanPosition.x);
-				float dY = abs(p.y - humanPosition.y);
-			} 
-		}
-		*/
-
+		
 		template <class Vector>
 		void activateFirstFreeSlot(Vector& v, Position p, float angle, const Animation& dieAnimation) {
 			// Activate the first free animation slot.
@@ -185,13 +178,13 @@ namespace zombie {
 
 	void ZombieGame::calculateValidSpawningPoints(Unit& human) {
 		vaildSpawningPoints_.clear();
-		double inner = 10;
-		double outer = 200;
+		float inner = 10;
+		float outer = 200;
 		Position humanPos = human.getPosition();
 		for (Position p : spawningPoints_) {
 			Position diff = p - humanPos;
 			if (diff.LengthSquared() > inner*inner && diff.LengthSquared() < outer*outer) {
-				//spawningpoint is valid!
+				// Spawningpoint is valid!
 				vaildSpawningPoints_.push_back(p);
 			}
 		}
@@ -202,8 +195,7 @@ namespace zombie {
 		double inner = 10;
 		double outer = 200;
 		if (diff.LengthSquared() > outer * outer) {
-			
-			// move unit if possible
+			// Move unit if possible.
 			if (vaildSpawningPoints_.size() > 0) {
 				Position p = vaildSpawningPoints_[randomInt(0, vaildSpawningPoints_.size() - 1)];
 				float angle = calculateAnglePointToPoint(p, human.getPosition());
@@ -211,7 +203,7 @@ namespace zombie {
 				unit.setState(state);
 			}
 			else {
-			// deactivate
+				// Deactivate.
 				unit.setActive(false);
 				unit.setAwake(false);
 			}
@@ -380,36 +372,6 @@ namespace zombie {
 			}
 		}
 	}
-
-	/*
-	void ZombieGame::updateEachCycle(Unit& human) {
-		if (engine_.getTime() - lastSpawnTime_ > spawnPeriod_) {
-			lastSpawnTime_ = engine_.getTime();
-
-			if (unitMaxLimit_ > units_.size()) {
-				// Reduce spawnPeriod gradually.
-				Position spawnPoint = generatePosition(human.getPosition(), innerSpawnRadius_, outerSpawnRadius_);
-				float angle = calculateAnglePointToPoint(spawnPoint, human.getPosition());
-				State state(spawnPoint, ORIGO, angle);
-				if ((int) units_.size() < unitMaxLimit_) {
-					//engine_.add(state, createUnit(zombie_));
-				} else {
-					for (auto& unit : units_) {
-						if (unit.getBody() != nullptr) {
-							//unit = zombie_;
-							engine_.add(state, &unit);
-						}
-					}
-				}
-				++nbrUnits_;
-			}
-		}
-		
-		health_ = human.healthPoints();
-		clipsize_ = human.getWeapon()->getClipSize();
-		bulletsInWeapon_ = human.getWeapon()->getBulletsInWeapon();
-	}
-	*/
 
 	void ZombieGame::zoom(float scale) {
 		scale_ *= scale;
