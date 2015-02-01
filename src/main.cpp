@@ -11,8 +11,12 @@ int main (int argc, char** argv) {
 	// Load game data.
 	zombie::ZombieEntry zombieEntry("zombie.xml");
 
-	zombie::ZombieWindow zombieWindow(zombieEntry.getChildEntry("zombieGame"), skipMenu);
-	zombieWindow.startLoop();
+	if (zombieEntry.isError()) {
+		zombieEntry.printError();
+	} else {
+		zombie::ZombieWindow zombieWindow(zombieEntry.getChildEntry("zombieGame"), skipMenu);
+		zombieWindow.startLoop();
+	}
 
     return 0;
 }
