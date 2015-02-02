@@ -3,20 +3,20 @@
     <window>
         <width>600</width>
         <height>600</height>
-        <positionX>50</positionX>
-        <positionY>50</positionY>
-        <maximized>0</maximized>
+        <positionX>787</positionX>
+        <positionY>265</positionY>
+        <maximized>1</maximized>
     </window>
     <water>
         <seeFloorImage>images/seeFloor.png</seeFloorImage>
     </water>
     <explosion>
         <timeDelay>0.3</timeDelay>
-        <speed>1</speed>
-		<animation>
-			<deltaTime>0.015</deltaTime>
-			<bodyWidth>128</bodyWidth>
-			<frame>
+        <speed>0.3</speed>
+        <animation>
+            <deltaTime>0.002</deltaTime>
+            <bodyWidth>128</bodyWidth>
+            <frame>
                 <image>images/explosion/explosion1/0.png</image>
             </frame>
             <frame>
@@ -25,91 +25,91 @@
             <frame>
                 <image>images/explosion/explosion1/2.png</image>
             </frame>
-			<frame>
+            <frame>
                 <image>images/explosion/explosion1/3.png</image>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/4.png</image>
-            </frame>			
-			<frame>
+            </frame>
+            <frame>
                 <image>images/explosion/explosion1/5.png</image>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/6.png</image>
             </frame>
-			<frame>
+            <frame>
                 <image>images/explosion/explosion1/7.png</image>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/8.png</image>
             </frame>
-			<frame>
+            <frame>
                 <image>images/explosion/explosion1/9.png</image>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/10.png</image>
             </frame>
-			<frame>
+            <frame>
                 <image>images/explosion/explosion1/11.png</image>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/12.png</image>
             </frame>
-			<frame>
+            <frame>
                 <image>images/explosion/explosion1/13.png</image>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/14.png</image>
             </frame>
-			<frame>
+            <frame>
                 <image>images/explosion/explosion1/15.png</image>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/16.png</image>
             </frame>
-			<frame>
+            <frame>
                 <image>images/explosion/explosion1/17.png</image>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/18.png</image>
             </frame>
-			<frame>
+            <frame>
                 <image>images/explosion/explosion1/19.png</image>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/20.png</image>
             </frame>
-			<frame>
+            <frame>
                 <image>images/explosion/explosion1/21.png</image>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/22.png</image>
             </frame>
-			<frame>
+            <frame>
                 <image>images/explosion/explosion1/23.png</image>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/24.png</image>
             </frame>
-			<frame>
+            <frame>
                 <image>images/explosion/explosion1/25.png</image>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/26.png</image>
             </frame>
-			<frame>
+            <frame>
                 <image>images/explosion/explosion1/27.png</image>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/28.png</image>
             </frame>
-			<frame>
+            <frame>
                 <image>images/explosion/explosion1/29.png</image>
             </frame>
             <frame>
                 <image>images/explosion/explosion1/30.png</image>
             </frame>
-			<frame>
+            <frame>
                 <image>images/explosion/explosion1/31.png</image>
             </frame>
             <frame>
@@ -133,8 +133,8 @@
         <turn270>images/roads/turn270.png</turn270>
         <tintersection0>images/roads/tintersection0.png</tintersection0>
         <tintersection90>images/roads/tintersection90.png</tintersection90>
-		<tintersection180>images/roads/tintersection180.png</tintersection180>
-		<tintersection270>images/roads/tintersection270.png</tintersection270>
+        <tintersection180>images/roads/tintersection180.png</tintersection180>
+        <tintersection270>images/roads/tintersection270.png</tintersection270>
     </roads>
     <tree>
         <image>images/tree.png</image>
