@@ -6,6 +6,8 @@
 #include "gameinterface.h"
 #include "gameshader.h"
 
+#include <mw/sprite.h>
+
 #include <memory>
 
 namespace zombie {
@@ -55,8 +57,8 @@ namespace zombie {
 			return weaponInterface_->getBulletsInWeapon();
 		}
 
-		// Draw the weapon symbol.
-		virtual void drawSymbol(float timeStep) = 0;
+		// Return the weapon symbol.
+		virtual const mw::Sprite& getSymbol() const = 0;
 
 		// Draw the weapon. The function will be called when the physical object is drawn.
 		virtual void draw(float timeStep, float x, float y, const GameShader& shader) = 0;

@@ -38,10 +38,6 @@ namespace zombie {
 		}
 	}
 
-	void Weapon2D::drawSymbol(float timeStep) {
-		symbol_.draw();
-	}
-
 	void Weapon2D::draw(float timeStep, float x, float y, const GameShader& shader) {
 		if (laser_) {
 			laser_->update(x, y);

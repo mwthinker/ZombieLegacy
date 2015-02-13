@@ -29,8 +29,10 @@ namespace zombie {
 			Animation animation, float size, Position grip, const Laser& laser);
 
 		Weapon2D(const Weapon2D& weapon);
-
-		void drawSymbol(float timeStep) override;
+		
+		inline const mw::Sprite& getSymbol() const override {
+			return symbol_;
+		}
 
 		void draw(float timeStep, float x, float y, const GameShader& shader) override;
 

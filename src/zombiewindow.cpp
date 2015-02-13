@@ -123,46 +123,44 @@ namespace zombie {
 
 	void ZombieWindow::initMenuFrame() {
 		setCurrentPanel(menuFrameIndex_);
-		auto panel = std::make_shared<gui::Panel>();
-		add(panel, gui::BorderLayout::CENTER);
-		panel->setLayout(std::make_shared<gui::VerticalLayout>());
+		auto panel = add<gui::Panel>(gui::BorderLayout::CENTER);
+		panel->setLayout<gui::VerticalLayout>();
 		panel->setBackground(zombieEntry_.getDeepChildEntry("menu backGroundImage").getSprite());
 		mw::Font font = zombieEntry_.getDeepChildEntry("interface font").getFont(20);
 
-		auto text = std::make_shared<gui::Label>("Zombie", zombieEntry_.getDeepChildEntry("interface font").getFont(60));
+		auto text = panel->addDefaultToGroup<gui::Label>("Zombie", zombieEntry_.getDeepChildEntry("interface font").getFont(60));
 		text->setTextColor(1, 1, 1);
-		panel->addToGroup(text);
 
 		auto play = createButton("Play", font);
 		play->addActionListener([&](gui::Component&) {
 			setCurrentPanel(playFrameIndex_);
 			//gameData_.getMenuChoiceSound().play();
 		});
-		panel->addToGroup(play);
+		panel->addDefaultToGroup(play);
 
 		auto customGame = createButton("Custom game", font);
 		customGame->addActionListener([&](gui::Component&) {
 			zombieEntry_.getDeepChildEntry("menu soundChoice").getSound().play();
 		});
-		panel->addToGroup(customGame);
+		panel->addDefaultToGroup(customGame);
 
 		auto highScore = createButton("Highscore", font);
 		highScore->addActionListener([&](gui::Component&) {
 			zombieEntry_.getDeepChildEntry("menu soundChoice").getSound().play();
 		});
-		panel->addToGroup(highScore);
+		panel->addDefaultToGroup(highScore);
 
 		auto quit = createButton("Quit", font);
 		quit->addActionListener([&](gui::Component&) {
 			zombieEntry_.getDeepChildEntry("menu soundChoice").getSound().play();
 			Window::quit();
 		});
-		panel->addToGroup(quit);
+		panel->addDefaultToGroup(quit);
 	}	
 
 	void ZombieWindow::initplayFrame() {
 		setCurrentPanel(playFrameIndex_);
-		add(zombieGame_, gui::BorderLayout::CENTER);
+		add(gui::BorderLayout::CENTER, zombieGame_);
 	}
 
 	void ZombieWindow::initCustomplayFrame() {
