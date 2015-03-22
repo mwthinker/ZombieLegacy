@@ -59,7 +59,7 @@ namespace zombie {
 		seeFloor_.bindTexture();
 		shader.setGlVer2dCoordsA((const void*) 0);
 		shader.setGlTexCoordsA((const void*) (vbo_.getSize() / 2));
-		mw::glDrawArrays(GL_TRIANGLES, 0, numberVertices_);
+		glDrawArrays(GL_TRIANGLES, 0, numberVertices_);
 		
 		vbo_.unbindBuffer();
 	}
@@ -74,10 +74,10 @@ namespace zombie {
 		shader.setGlTimeU(waveTime_);
 		shader.setGlVer2dCoordsA((const void*) 0);
 
-		mw::glEnable(GL_BLEND);
-		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		mw::glDrawArrays(GL_TRIANGLES, 0, numberVertices_); // 3 vertices for every loop.
-		mw::glDisable(GL_BLEND);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glDrawArrays(GL_TRIANGLES, 0, numberVertices_); // 3 vertices for every loop.
+		glDisable(GL_BLEND);
 		
 		vbo_.unbindBuffer();
 	}

@@ -143,8 +143,8 @@ namespace zombie {
 	}
 
 	void Terrain2D::draw(float time, const GameShader& shader) {
-		mw::glEnable(GL_BLEND);
-		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		if (vbo_.getSize() == 0) {
 			grass_.insert(grass_.end(), roads_.begin(), roads_.end());
@@ -163,15 +163,15 @@ namespace zombie {
 		shader.setGlLocalAngleU(0);
 		shader.setGlTextureU(false);
 		shader.setGlColorU(0.01f, 0.1f, 0.01f);
-		mw::glDrawArrays(GL_TRIANGLES, 0, numberVerticesGrass_);
+		glDrawArrays(GL_TRIANGLES, 0, numberVerticesGrass_);
 
 		// Roads texture used.
 		shader.setGlTextureU(true);
 		shader.setGlColorU(1, 1, 1);
-		mw::glDrawArrays(GL_TRIANGLES, numberVerticesGrass_, numberVerticesRoads_);
+		glDrawArrays(GL_TRIANGLES, numberVerticesGrass_, numberVerticesRoads_);
 
 		vbo_.unbindBuffer();
-		mw::glDisable(GL_BLEND);
+		glDisable(GL_BLEND);
 	}
 
 }

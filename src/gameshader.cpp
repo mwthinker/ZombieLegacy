@@ -48,60 +48,60 @@ namespace zombie {
 	// Vertex buffer Attributes. ---------------------------
 
 	void GameShader::setGlVer2dCoordsA(const GLvoid* data) const {
-		mw::glVertexAttribPointer(aVerIndex_, 2, GL_FLOAT, GL_FALSE, 0, data);
-		mw::glEnableVertexAttribArray(aVerIndex_);
+		glVertexAttribPointer(aVerIndex_, 2, GL_FLOAT, GL_FALSE, 0, data);
+		glEnableVertexAttribArray(aVerIndex_);
 	}
 
 	void GameShader::setGlVer2dCoordsA(GLsizei stride, const GLvoid* data) const {
-		mw::glVertexAttribPointer(aVerIndex_, 2, GL_FLOAT, GL_FALSE, stride, data);
-		mw::glEnableVertexAttribArray(aVerIndex_);
+		glVertexAttribPointer(aVerIndex_, 2, GL_FLOAT, GL_FALSE, stride, data);
+		glEnableVertexAttribArray(aVerIndex_);
 	}
 
 	void GameShader::setGlTexCoordsA(const GLvoid* data) const {
-		mw::glVertexAttribPointer(aTexIndex_, 2, GL_FLOAT, GL_FALSE, 0, data);
-		mw::glEnableVertexAttribArray(aTexIndex_);
+		glVertexAttribPointer(aTexIndex_, 2, GL_FLOAT, GL_FALSE, 0, data);
+		glEnableVertexAttribArray(aTexIndex_);
 	}
 
 	void GameShader::setGlTexCoordsA(GLsizei stride, const GLvoid* data) const {
-		mw::glVertexAttribPointer(aTexIndex_, 2, GL_FLOAT, GL_FALSE, stride, data);
-		mw::glEnableVertexAttribArray(aTexIndex_);
+		glVertexAttribPointer(aTexIndex_, 2, GL_FLOAT, GL_FALSE, stride, data);
+		glEnableVertexAttribArray(aTexIndex_);
 	}	
 
 	// Uniforms. -------------------------------------------
 
 	void GameShader::setGlProjectionMatrixU(const mw::Matrix44& matrix) const {
-		mw::glUniformMatrix4fv(uProjIndex_, 1, false, matrix.data());
+		glUniformMatrix4fv(uProjIndex_, 1, false, matrix.data());
 	}
 
 	void GameShader::setGlModelMatrixU(const mw::Matrix44& matrix) const {
-		mw::glUniformMatrix4fv(uModelIndex_, 1, false, matrix.data());
+		glUniformMatrix4fv(uModelIndex_, 1, false, matrix.data());
 	}
 
 	void GameShader::setGlGlobalCenterPositionU(Position position) const {
-		mw::glUniform2f(uGlobalCenterPosIndex_, position.x, position.y);
+		glUniform2f(uGlobalCenterPosIndex_, position.x, position.y);
 	}
 
 	void GameShader::setGlGlobalPositionU(Position position) const {
-		mw::glUniform2f(uGlobalPosIndex_, position.x, position.y);
+		glUniform2f(uGlobalPosIndex_, position.x, position.y);
 	}
 
 	void GameShader::setGlLocalAngleU(float angle) const {
-		mw::glUniform1f(uLocalAngleIndex_, angle);
+		glUniform1f(uLocalAngleIndex_, angle);
 	}
 	
 	void GameShader::setGlColorU(float red, float green, float blue, float alpha) const {
-		mw::glUniform4f(uColorIndex_, red, green, blue, alpha);
+		glUniform4f(uColorIndex_, red, green, blue, alpha);
 	}
 
 	void GameShader::setGlColorU(const mw::Color& color) const {
-		mw::glUniform4f(uColorIndex_, color.red_, color.green_, color.blue_, color.alpha_);
+		glUniform4f(uColorIndex_, color.red_, color.green_, color.blue_, color.alpha_);
 	}	
 
 	void GameShader::setGlTextureU(bool texture) const {
 		if (texture) {
-			mw::glUniform1f(uIsTexIndex_, 1);
+			glUniform1f(uIsTexIndex_, 1);
 		} else {
-			mw::glUniform1f(uIsTexIndex_, 0);
+			glUniform1f(uIsTexIndex_, 0);
 		}
 	}
 

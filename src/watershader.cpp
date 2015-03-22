@@ -36,39 +36,39 @@ namespace zombie {
 	// Vertex buffer Attributes. ---------------------------
 
 	void WaterShader::setGlVer2dCoordsA(const GLvoid* data) const {
-		mw::glVertexAttribPointer(aVerIndex_, 2, GL_FLOAT, GL_FALSE, 0, data);
-		mw::glEnableVertexAttribArray(aVerIndex_);
+		glVertexAttribPointer(aVerIndex_, 2, GL_FLOAT, GL_FALSE, 0, data);
+		glEnableVertexAttribArray(aVerIndex_);
 	}
 
 	void WaterShader::setGlVer2dCoordsA(GLsizei stride, const GLvoid* data) const {
-		mw::glVertexAttribPointer(aVerIndex_, 2, GL_FLOAT, GL_FALSE, stride, data);
-		mw::glEnableVertexAttribArray(aVerIndex_);
+		glVertexAttribPointer(aVerIndex_, 2, GL_FLOAT, GL_FALSE, stride, data);
+		glEnableVertexAttribArray(aVerIndex_);
 	}
 
 	// Uniforms. -------------------------------------------
 
 	void WaterShader::setGlProjectionMatrixU(const mw::Matrix44& matrix) const {
-		mw::glUniformMatrix4fv(uProjIndex_, 1, false, matrix.data());
+		glUniformMatrix4fv(uProjIndex_, 1, false, matrix.data());
 	}
 
 	void WaterShader::setGlModelMatrixU(const mw::Matrix44& matrix) const {
-		mw::glUniformMatrix4fv(uModelIndex_, 1, false, matrix.data());
+		glUniformMatrix4fv(uModelIndex_, 1, false, matrix.data());
 	}
 
 	void WaterShader::setGlGlobalCenterPositionU(Position position) const {
-		mw::glUniform2f(uGlobalCenterPosIndex_, position.x, position.y);
+		glUniform2f(uGlobalCenterPosIndex_, position.x, position.y);
 	}
 	
 	void WaterShader::setGlColorU(float red, float green, float blue, float alpha) const {
-		mw::glUniform4f(uGlobalCenterPosIndex_, red, green, blue, alpha);
+		glUniform4f(uGlobalCenterPosIndex_, red, green, blue, alpha);
 	}
 
 	void WaterShader::setGlColorU(const mw::Color& color) const {
-		mw::glUniform4f(uGlobalCenterPosIndex_, color.red_, color.green_, color.blue_, color.alpha_);
+		glUniform4f(uGlobalCenterPosIndex_, color.red_, color.green_, color.blue_, color.alpha_);
 	}
 
 	void WaterShader::setGlTimeU(float time) const {
-		mw::glUniform1f(uTime_, time);
+		glUniform1f(uTime_, time);
 	}
 
 } // Namespace zombie.

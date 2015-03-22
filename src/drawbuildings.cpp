@@ -131,8 +131,8 @@ namespace zombie {
 
 	void DrawBuildings::drawArrays(int index, int vertices, const BuildingShader& gameShader) {
 		if (vbo_.getSize() > 0) {
-			mw::glEnable(GL_BLEND);
-			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
 			// Centered square in ORIGO.
 			gameShader.glUseProgram();
@@ -144,10 +144,10 @@ namespace zombie {
 			gameShader.setGlTexCoordsA(5 * sizeof(GLfloat), (const GLvoid*) (3 * sizeof(GLfloat)));
 				
 			// Upload the attributes and draw the sprite.
-			mw::glDrawArrays(GL_TRIANGLES, index, vertices);
+			glDrawArrays(GL_TRIANGLES, index, vertices);
 		
 			vbo_.unbindBuffer();
-			mw::glDisable(GL_BLEND);
+			glDisable(GL_BLEND);
 		}
 	}
 

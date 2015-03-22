@@ -222,8 +222,8 @@ namespace zombie {
 		int index = VERTEX_PER_SPRITE * VERTEX_SIZE * 4; // 4 sprites before the repeated mesh in the data array.
 		int repeatVertices = repeatSprite(data_.data(), index, data_.size(), x_, y_, ratio_, length_, spriteScale_, laserOverlay_);
 
-		mw::glEnable(GL_BLEND);
-		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		gameShader.glUseProgram();
 		gameShader.setGlTextureU(true);
 		
@@ -238,14 +238,14 @@ namespace zombie {
 
 		gameShader.setGlColorU(laserColor_);
 		// Draw the first two sprites.
-		mw::glDrawArrays(GL_TRIANGLES, 0, VERTEX_PER_SPRITE * 2);
+		glDrawArrays(GL_TRIANGLES, 0, VERTEX_PER_SPRITE * 2);
 
 		gameShader.setGlColorU(overlayColor_);
 		// Draw everything except the first two sprites.
-		mw::glDrawArrays(GL_TRIANGLES, VERTEX_PER_SPRITE * 2, repeatVertices + VERTEX_PER_SPRITE * 2);
+		glDrawArrays(GL_TRIANGLES, VERTEX_PER_SPRITE * 2, repeatVertices + VERTEX_PER_SPRITE * 2);
 		vbo_.unbindBuffer();
 
-		mw::glDisable(GL_BLEND);		
+		glDisable(GL_BLEND);		
 	}
 
 } // Namespace zombie.

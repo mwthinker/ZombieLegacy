@@ -61,8 +61,8 @@ namespace zombie {
 		const auto& texture = sprite.getTexture();
 		if (texture.isValid()) {
 			texture.bindTexture();
-			mw::glEnable(GL_BLEND);
-			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 			// Centered square in ORIGO.
 			GLfloat aVertices[] = {
@@ -86,8 +86,8 @@ namespace zombie {
 			shader.setGlTexCoordsA(aTexCoord);
 
 			// Upload the attributes and draw the sprite.
-			mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-			mw::glDisable(GL_BLEND);
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+			glDisable(GL_BLEND);
 			mw::checkGlError();
 		}
 	}

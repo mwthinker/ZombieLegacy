@@ -51,7 +51,7 @@ namespace zombie {
 	} // Anonymous namespace.
 
 	ZombieWindow::ZombieWindow(ZombieEntry zombieEntry, bool skipMenu) :
-		gui::Frame(zombieEntry.getDeepChildEntry("window positionX").getInt(),
+		gui::Frame(2, 1, false, zombieEntry.getDeepChildEntry("window positionX").getInt(),
 		zombieEntry.getDeepChildEntry("window positionY").getInt(),
 		zombieEntry.getDeepChildEntry("window width").getInt(),
 		zombieEntry.getDeepChildEntry("window height").getInt(),
