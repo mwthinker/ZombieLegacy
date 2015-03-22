@@ -20,6 +20,6 @@ compiler are installed. The dependencies must also be recognized by CMAKE.
 Dependencies
 ======
 SDL2 (http://www.libsdl.org/, at least 2.0.3), SDL2_image, SDL2_ttf and SDL2_mixer. And the 
-application uses dynamic linking to Openg GL ES 2.
+application uses GLEW (http://glew.sourceforge.net/) to load OpengGl 2.1.
 
 The external library such as TinyXML2 (https://github.com/leethomason/tinyxml2)is included as source.
