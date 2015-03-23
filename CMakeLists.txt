@@ -9,6 +9,7 @@ if (MSVC)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS -DWIN32)	
 else ()
 	set(CMAKE_CXX_FLAGS "-std=c++11")
+	set(CMAKE_BUILD_TYPE "Debug")
 endif ()
 
 # Source files.
@@ -123,7 +124,7 @@ include_directories(
 	DataEntry/TinyXML2/src
 	".")
 
-if (WIN32)
+if (MSVC)
 	set(WIN_RESOURCE_FILE zombie.rc)
 	add_executable(Zombie ${SOURCES_ZOMBIE} ${WIN_RESOURCE_FILE})
 else ()
@@ -162,6 +163,7 @@ if (WIN32)
 	set(DLL_FILES
 		"$ENV{DLL_FOLDER}\\d3dcompiler_43.dll"
 		"$ENV{DLL_FOLDER}\\d3dcompiler_46.dll"
+		"$ENV{DLL_FOLDER}\\glew32.dll"
 		"$ENV{DLL_FOLDER}\\libEGL.dll"
 		"$ENV{DLL_FOLDER}\\libGLESv2.dll"
 		"$ENV{DLL_FOLDER}\\libFLAC-8.dll"
@@ -178,7 +180,6 @@ if (WIN32)
 		"$ENV{DLL_FOLDER}\\SDL2.dll"
 		"$ENV{DLL_FOLDER}\\SDL2_image.dll"
 		"$ENV{DLL_FOLDER}\\SDL2_mixer.dll"
-		"$ENV{DLL_FOLDER}\\SDL2_net.dll"
 		"$ENV{DLL_FOLDER}\\SDL2_ttf.dll"
 		"$ENV{DLL_FOLDER}\\smpeg2.dll"
 		"$ENV{DLL_FOLDER}\\zlib1.dll"
