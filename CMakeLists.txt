@@ -4,12 +4,11 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/SdlGui/Mw
 if (MSVC)
 	# Exception handler model.
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /EHsc")
-	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHsc")	
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHsc")
 
-	add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS -DWIN32)	
+	add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS -DWIN32)
 else ()
 	set(CMAKE_CXX_FLAGS "-std=c++11")
-	set(CMAKE_BUILD_TYPE "Debug")
 endif ()
 
 # Source files.
@@ -32,11 +31,11 @@ set(SOURCES_ZOMBIE
 	src/car2d.h
 	src/closestraycastcallback.h
 	src/contactlistener.cpp
-	src/contactlistener.h	
+	src/contactlistener.h
 	src/device.h
 	src/drawbuildings.cpp
 	src/drawbuildings.h
-	src/explosion.cpp	
+	src/explosion.cpp
 	src/explosion.h
 	src/fog.cpp
 	src/fog.h
@@ -105,8 +104,8 @@ find_package(SDL2_ttf REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
 
-add_subdirectory(DataEntry)
 add_subdirectory(SdlGui)
+add_subdirectory(DataEntry)
 add_subdirectory(Box2D)
 
 file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
