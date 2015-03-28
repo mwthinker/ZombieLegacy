@@ -16,7 +16,7 @@ namespace zombie {
 	SurvivorBehavior::~SurvivorBehavior() {
 	}
 
-	void SurvivorBehavior::updateInput(float time, float deltaTime) {
+	void SurvivorBehavior::updateInput(double time, double deltaTime) {
 		Input input;
 		// extract information from memory
 		// analyze situation - enviroment and units when neccesarry

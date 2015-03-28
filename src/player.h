@@ -7,7 +7,7 @@ namespace zombie {
 
 	class Player {
 	public:
-		virtual void updateInput(float time, float deltaTime) = 0;
+		virtual void updateInput(double time, double deltaTime) = 0;
 	};
 
 } // Namespace zombie.

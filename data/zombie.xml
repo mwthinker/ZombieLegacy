@@ -5,7 +5,7 @@
         <height>600</height>
         <positionX>787</positionX>
         <positionY>265</positionY>
-        <maximized>1</maximized>
+        <maximized>0</maximized>
     </window>
     <water>
         <seeFloorImage>images/seeFloor.png</seeFloorImage>
@@ -147,7 +147,7 @@
         <unitLevel>30</unitLevel>
         <unitLimit>50</unitLimit>
         <impulseThreshold>2</impulseThreshold>
-        <timeStepMS>17</timeStepMS>
+        <timeStep>0.01667</timeStep>
         <innerSpawnRadius>7.0</innerSpawnRadius>
         <outerSpawnRadius>12.0</outerSpawnRadius>
     </settings>

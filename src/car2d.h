@@ -16,7 +16,7 @@ namespace zombie {
 		Car2D(float mass, float life, float width, float length, const Animation& animation);
 
 		// Draws the car.
-		void draw(float accumulator, float timeStep, const GameShader& gameShader);
+		void draw(double accumulator, double timeStep, const GameShader& gameShader);
 
 	private:
 		Animation animation_;

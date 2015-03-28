@@ -17,9 +17,9 @@ namespace zombie {
 	}
 
 	// Draws the car.
-	void Car2D::draw(float accumulator, float timeStep, const GameShader& gameShader) {
+	void Car2D::draw(double accumulator, double timeStep, const GameShader& gameShader) {
 		// Draw body.
-		const float alpha = accumulator / timeStep;
+		const float alpha = (float) (accumulator / timeStep);
 
 		State state = getState();
 		state.position_ = alpha * state.position_ + (1.f - alpha) * previousState().position_;

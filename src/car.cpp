@@ -54,7 +54,7 @@ namespace zombie {
 		driver_ = driver;
 	}
 
-	void Car::updatePhysics(float time, float timeStep) {
+	void Car::updatePhysics(double time, double timeStep) {
 		Input input;
 		bool brake = true;
 		if (driver_ != nullptr) {

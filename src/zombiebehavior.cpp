@@ -21,17 +21,17 @@ namespace zombie {
 	ZombieBehavior::~ZombieBehavior() {
 	}
 
-	void ZombieBehavior::updateInput(float time, float deltaTime) {
+	void ZombieBehavior::updateInput(double time, double deltaTime) {
 		Input input;
 
 		if (time > findNewTargetTime_) {
-			findNewTargetTime_ = random() * 3 + time;
+			findNewTargetTime_ = random() * 3 + (float) time;
 
 			target_ = findUninfectedTarget(unit_->getPosition(), unit_->getVisibleObjects());
 		}
 
 		if (time > timeToUpdateAngleDirection_) {
-			timeToUpdateAngleDirection_ = random() * 1 + time;
+			timeToUpdateAngleDirection_ = random() * 1 + (float) time;
 
 			// Has a target?
 			if (target_ != nullptr && target_->isActive() && !target_->isDead()) {

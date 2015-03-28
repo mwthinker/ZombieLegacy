@@ -20,9 +20,9 @@ namespace zombie {
 	ZombieEngine::~ZombieEngine() {
 	}
 
-	void ZombieEngine::update(float timeStep) {
+	void ZombieEngine::update(double timeStep) {
 		// Update the objects physics interactions.
-		world_.Step(timeStep, 6, 2);
+		world_.Step((float) timeStep, 6, 2);
 		
 		// Move the time ahead.
 		time_ += timeStep;

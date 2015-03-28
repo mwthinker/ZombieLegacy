@@ -130,7 +130,7 @@ namespace zombie {
 	// All UnitEvent is only allowed to be triggered in this function.
 	// This in order to avoid adjusting box2d valuse during a box2d step, which
 	// would cause undefined behavior.
-	void Unit::updatePhysics(float time, float timeStep) {
+	void Unit::updatePhysics(double time, double timeStep) {
 		if (died_) {
 			signal(DIE);
 			isDead_ = true;
@@ -144,14 +144,14 @@ namespace zombie {
 			// Time left to run?
 			if (timeLeftToRun_ >= 0) {
 				if (input.forward_ && input.run_) {
-					timeLeftToRun_ -= timeStep;
+					timeLeftToRun_ -= (float) timeStep;
 					move *= 2;
 					signal(RUN);
 				} else if (timeLeftToRun_ < 5) {
-					timeLeftToRun_ += timeStep;
+					timeLeftToRun_ += (float) timeStep;
 				}
 			} else { // Time is negative!
-				timeLeftToRun_ += timeStep;
+				timeLeftToRun_ += (float) timeStep;
 			}
 
 			// Move forward or backwards.
@@ -182,15 +182,15 @@ namespace zombie {
 			// Want to shoot?
 			if (input.shoot_) {
 				if (weapon_) {
-					weapon_->pullTrigger(*this, time);
-					weapon_->releaseTrigger(*this, time);
+					weapon_->pullTrigger(*this, (float) time);
+					weapon_->releaseTrigger(*this, (float) time);
 				}
 			}
 
 			// Want to reload?
 			if (input.reload_) {
 				if (weapon_) {
-					weapon_->reload(time);
+					weapon_->reload((float) time);
 				}
 			}
 
@@ -198,7 +198,7 @@ namespace zombie {
 				signal(ACTION);
 			}
 
-			weapon_->updateLaserSight(body_->GetWorld(), time, getPosition(), body_->GetAngle());
+			weapon_->updateLaserSight(body_->GetWorld(), (float) time, getPosition(), body_->GetAngle());
 		}
 	}
 	

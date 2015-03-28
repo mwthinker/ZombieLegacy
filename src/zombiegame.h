@@ -47,7 +47,7 @@ namespace zombie {
 		// Draw the graphic and (deltaTime) should be the time past
 		// from the previous call to this funtion.
 		// Override, gui::Component.
-		void draw(Uint32 deltaTime) override;
+		void draw(double deltaTime) override;
 
 		void zoom(float scale);
 
@@ -58,11 +58,11 @@ namespace zombie {
 		void spawnUnits(Unit& human);
 
 	private:
-		void updateGame(float deltaTime);
+		void updateGame(double deltaTime);
 
 		void makeGameStep();
 
-		void drawGame(float deltaTime);
+		void drawGame(double deltaTime);
 
 		int getZombiesKilled() const {
 			return zombiesKilled_;
@@ -80,7 +80,7 @@ namespace zombie {
 			return bulletsInWeapon_;
 		}		
 
-		float getMeanFrameTime() const;
+		double getMeanFrameTime() const;
 
 		void init();
 
@@ -153,8 +153,8 @@ namespace zombie {
 		std::array<GraphicAnimation, 100> graphicAnimations_;
 
 		int frame_;
-		float meanFrameTime_;
-		float lastFramTime_;
+		double meanFrameTime_;
+		double lastFramTime_;
 
 		ZombieEngine engine_;
 		GameShader gameShader_;
@@ -165,8 +165,8 @@ namespace zombie {
 		State humanState_;
 
 		// Fix timestep.
-		float timeStep_;
-		float accumulator_;
+		double timeStep_;
+		double accumulator_;
 	};
 
 } // Namespace zombie.

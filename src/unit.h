@@ -26,7 +26,7 @@ namespace zombie {
 		Unit(const Unit&);
 		Unit& operator=(const Unit&);
 
-		void updatePhysics(float time, float timeStep);
+		void updatePhysics(double time, double timeStep);
 
 		State getState() const;
 

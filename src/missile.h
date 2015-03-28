@@ -21,7 +21,7 @@ namespace zombie {
 
 		void create(Position position, float angle, float speed, float explodeTime, float damage, float explosionRadius, float force);
 
-		void updatePhysics(float time, float timeStep);
+		void updatePhysics(double time, double timeStep);
 
 		void collision(float impulse) override final;
 		

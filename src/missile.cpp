@@ -64,9 +64,9 @@ namespace zombie {
 		explode_ = true;
 	}
 
-	void Missile::updatePhysics(float time, float timeStep) {
+	void Missile::updatePhysics(double time, double timeStep) {
 		previousState_ = getState();
-		time_ += timeStep;
+		time_ += (float) timeStep;
 
 		if (explode_ || explodeTime_ < time_) {
 			explode();

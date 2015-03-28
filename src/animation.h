@@ -18,9 +18,9 @@ namespace zombie {
 		void restart();
 
 		// Add a frame and point it to the current sprite sheet.
-		void add(const mw::Sprite& sprite, float bodyWidth, float time = 1.f);
+		void add(const mw::Sprite& sprite, float bodyWidth, double time = 1.0);
 		
-		void draw(float deltaTime, float x, float y, float w, float h, const GameShader& shader);
+		void draw(double deltaTime, float x, float y, float w, float h, const GameShader& shader);
 
 		inline void setSpeed(float speed) {
 			speed_ = speed;
@@ -46,20 +46,20 @@ namespace zombie {
 			inline Frame() {
 			}
 
-			inline Frame(mw::Sprite sprite, float bodyWidth, float time) : sprite_(sprite), bodyWidth_(bodyWidth), time_(time) {
+			inline Frame(mw::Sprite sprite, float bodyWidth, double time) : sprite_(sprite), bodyWidth_(bodyWidth), time_(time) {
 			}
 
 			mw::Sprite sprite_;
-			float time_;
+			double time_;
 			float bodyWidth_;
 		};
 
 	private:
 		void drawSprite(const mw::Sprite& sprite, const GameShader& shader, float x, float y, float width, float height) const;
 		
-		float lastTime_;
+		double lastTime_;
 		bool reset_;
-		float time_;
+		double time_;
 		float speed_;
 
 		Array<Frame, 34> frames_;

@@ -15,7 +15,7 @@ namespace zombie {
 		SurvivorBehavior(Unit* unit);
 		~SurvivorBehavior();
 		
-		void updateInput(float time, float deltaTime) override;
+		void updateInput(double time, double deltaTime) override;
 
 		MovingObject* getMovingObject() const;
 

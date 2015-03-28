@@ -27,7 +27,7 @@ namespace zombie {
 		Unit* getDriver() const;
 		void setDriver(Unit* driver);
 
-		void updatePhysics(float time, float timeStept);
+		void updatePhysics(double time, double timeStept);
 
 		void applySpin(float impulse) {
 			body_->ApplyAngularImpulse(impulse);

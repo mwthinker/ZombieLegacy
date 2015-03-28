@@ -24,7 +24,7 @@ namespace zombie {
 		~ZombieEngine();
 
 		// Update the box2d interaction.
-		void update(float timeStep);
+		void update(double timeStep);
 
 		// Add a unit.
 		void add(Unit* unit);
@@ -39,7 +39,7 @@ namespace zombie {
 		void remove(Object* object);
 
 		// Get the current game time.
-		inline float getTime() const {
+		inline double getTime() const {
 			return time_;
 		}
 
@@ -55,7 +55,7 @@ namespace zombie {
 		void doAction(Car* unit);
 
 		bool started_; // The game is started.
-		float time_; // Game time.
+		double time_; // Game time.
 
 		b2World world_;
 		GameInterface& gameInterface_;

@@ -57,9 +57,9 @@ namespace zombie {
 		zombieEntry.getDeepChildEntry("settings impulseThreshold").getFloat()), zombieEntry_(zombieEntry),
 		water_(loadWater(zombieEntry.getDeepChildEntry("water"))),
 		frame_(0),
-		meanFrameTime_(0.0166f),
+		meanFrameTime_(16),
 		lastFramTime_(0),
-		timeStep_(zombieEntry.getDeepChildEntry("settings timeStepMS").getInt() / 1000.f),
+		timeStep_(zombieEntry.getDeepChildEntry("settings timeStep").getFloat()),
 		accumulator_(0),
 		gameShader_("game.ver.glsl", "game.fra.glsl"),
 		waterShader_("water.ver.glsl", "water.fra.glsl"),
@@ -82,7 +82,7 @@ namespace zombie {
 		bulletsInWeapon_ = 0;
 		health_ = 0;
 		scale_ = 1.f;
-		lastSpawnTime_ = engine_.getTime();
+		lastSpawnTime_ = (float) engine_.getTime();
 		spawnPeriod_ = 0.5f;
 
 		addKeyListener([&](gui::Component& component, const SDL_Event& keyEvent) {
@@ -216,29 +216,29 @@ namespace zombie {
 		started_ = true;
 	}
 
-	void ZombieGame::draw(Uint32 deltaTime) {
+	void ZombieGame::draw(double deltaTime) {
 		gui::Component::draw(deltaTime);
 
 		++frame_;
 		lastFramTime_ += deltaTime;
 		if (frame_ == 60) {
-			meanFrameTime_ = lastFramTime_/1000.f;
+			meanFrameTime_ = lastFramTime_ / 60.0;
 			frame_ = 0;
 			lastFramTime_ = 0;
 		}
 		
-		viewPosition_ += 10 * deltaTime/1000.f * (refViewPosition_ - viewPosition_);
+		viewPosition_ += 10 * (float) deltaTime * (refViewPosition_ - viewPosition_);
 		
 		if (started_) {
-			updateGame(deltaTime / 1000.f);
+			updateGame(deltaTime);
 		}
 
-		drawGame(deltaTime / 1000.f);
+		drawGame(deltaTime);
 				
 		refViewPosition_ = humanState_.position_ + 0.5 * humanState_.velocity_;
 	}
 
-	void ZombieGame::updateGame(float deltaTime) {
+	void ZombieGame::updateGame(double deltaTime) {
 		if (deltaTime > 0.25) {
 			// To avoid spiral of death.
 			deltaTime = 0.25;
@@ -257,7 +257,7 @@ namespace zombie {
 		}
 
 		if (physicRan) {
-			const float alpha = accumulator_ / timeStep_;
+			const float alpha = (float) (accumulator_ / timeStep_);
 			humanState_ = humanState_ = units_[0].getState();
 			humanState_.position_ = alpha * humanState_.position_ + (1.f - alpha) * previousState.position_;
 			humanState_.velocity_ = alpha * humanState_.velocity_ + (1.f - alpha) * previousState.velocity_;
@@ -265,7 +265,7 @@ namespace zombie {
 	}
 
 	void ZombieGame::makeGameStep() {
-		float time = engine_.getTime();
+		float time = (float) engine_.getTime();
 
 		// Update all game entities.
 		for (Car2D& car : cars_) {
@@ -300,7 +300,7 @@ namespace zombie {
 		engine_.update(timeStep_);
 	}
 
-	void ZombieGame::drawGame(float deltaTime) {
+	void ZombieGame::drawGame(double deltaTime) {
 		// Draw map centered around first human player.
 		gui::Dimension dim = getSize();
 		mw::Matrix44 matrix = getModelMatrix();
@@ -328,27 +328,27 @@ namespace zombie {
 		
 		// Game has not started?
 		if (!started_) {
-			deltaTime = 0;
+			deltaTime = 0.0;
 		}
 
 		mw::checkGlError();
-		water_.drawSeeFloor(deltaTime, gameShader_);
-		water_.drawWaves(deltaTime, waterShader_);
+		water_.drawSeeFloor((float) deltaTime, gameShader_);
+		water_.drawWaves((float) deltaTime, waterShader_);
 
-		terrain_.draw(deltaTime, gameShader_);
+		terrain_.draw((float) deltaTime, gameShader_);
 
-		drawBuildings_.drawWalls(accumulator_, deltaTime, buildingShader_);
+		drawBuildings_.drawWalls((float) accumulator_, (float) deltaTime, buildingShader_);
 		
 		gameShader_.glUseProgram();
 		for (GraphicAnimation& animation : graphicAnimations_) {
 			if (!animation.toBeRemoved()) {
-				animation.draw(deltaTime, gameShader_);
+				animation.draw((float) deltaTime, gameShader_);
 			}
 		}
 
 		for (Missile2D& missile : missiles_) {
 			if (missile.isActive()) {
-				missile.draw(accumulator_, deltaTime, gameShader_);
+				missile.draw((float) accumulator_, (float) deltaTime, gameShader_);
 			}
 		}
 		
@@ -360,15 +360,15 @@ namespace zombie {
 
 		for (Unit2D& unit : units_) {
 			if (unit.isActive()) {
-				unit.draw(accumulator_, deltaTime, gameShader_);
+				unit.draw((float) accumulator_, (float) deltaTime, gameShader_);
 			}
 		}
 
-		drawBuildings_.drawRoofs(accumulator_, deltaTime, buildingShader_);
+		drawBuildings_.drawRoofs((float) accumulator_, (float) deltaTime, buildingShader_);
 		
 		for (auto& explosion : explosions_) {
 			if (!explosion.toBeRemoved()) {
-				explosion.draw(deltaTime, gameShader_);
+				explosion.draw((float) deltaTime, gameShader_);
 			}
 		}
 	}
@@ -396,7 +396,7 @@ namespace zombie {
 	}
 
 	void ZombieGame::collision(float impulse, Unit& unit) {
-		unit.updateHealthPoint(-60 * impulse * timeStep_ / 0.016f);
+		unit.updateHealthPoint(-60 * impulse * (float) (timeStep_ / 0.016f));
 	}
 
 	void ZombieGame::collision(float impulse, Building& building) {
@@ -477,7 +477,7 @@ namespace zombie {
 		}
 	}
 
-	float ZombieGame::getMeanFrameTime() const {
+	double ZombieGame::getMeanFrameTime() const {
 		return meanFrameTime_;
 	}
 

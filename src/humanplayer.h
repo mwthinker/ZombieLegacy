@@ -12,7 +12,7 @@ namespace zombie {
 		HumanPlayer(DevicePtr device, Unit* unit) : device_(device), unit_(unit) {
 		}
 
-		void updateInput(float time, float deltaTime) override {
+		void updateInput(double time, double deltaTime) override {
 			unit_->setInput(device_->nextInput());
 		}
 

@@ -72,7 +72,7 @@ namespace xml {
 		// Assume that everything is correct.
 		float alpha;
 		if (stream >> alpha) {
-			color.alpha_ == alpha;
+			color.alpha_ = alpha;
 		}		
 
 		return color;
