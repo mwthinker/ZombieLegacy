@@ -8,7 +8,14 @@ if (MSVC)
 
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS -DWIN32)
 else ()
-	set(CMAKE_CXX_FLAGS "-std=c++11")
+	set(CMAKE_CXX_FLAGS "-std=c++1y")
+	option(Debug "Set projects to debug mode.")
+	if (Debug)
+		set(CMAKE_BUILD_TYPE "Debug" CACHE INTERNAL "Build type.")
+		add_definitions(-D_DEBUG)
+	else ()
+		set(CMAKE_BUILD_TYPE "Release" CACHE INTERNAL "Build type.")
+	endif ()
 endif ()
 
 # Source files.
@@ -95,7 +102,8 @@ set(SOURCES_ZOMBIE
 	src/zombiegame.cpp
 	src/zombiegame.h
 	src/zombiewindow.h
-	src/zombiewindow.cpp)
+	src/zombiewindow.cpp
+)
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -139,7 +147,6 @@ target_link_libraries(Zombie
 	Box2D
 	SdlGui
 	MwLibrary2
-	Signal
 	DataEntry
 	TinyXML2
 	${GLEW_LIBRARIES}
