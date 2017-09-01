@@ -79,11 +79,14 @@ namespace zombie {
 				(sprite.getX() + sprite.getWidth()) / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight()};
 
 			// Use the program object.
+			shader.useProgram();
 			shader.setGlTextureU(true);
-
+			mw::checkGlError();
 			// Load the vertex data.
 			shader.setGlVer2dCoordsA(aVertices);
+			mw::checkGlError();
 			shader.setGlTexCoordsA(aTexCoord);
+			mw::checkGlError();
 
 			// Upload the attributes and draw the sprite.
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

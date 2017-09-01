@@ -47,7 +47,7 @@ namespace zombie {
 		// Draw the graphic and (deltaTime) should be the time past
 		// from the previous call to this funtion.
 		// Override, gui::Component.
-		void draw(double deltaTime) override;
+		void draw(const gui::Graphic& graphic, double deltaTime) override;
 
 		void zoom(float scale);
 
@@ -62,7 +62,7 @@ namespace zombie {
 
 		void makeGameStep();
 
-		void drawGame(double deltaTime);
+		void drawGame(const Matrix44& projection, double deltaTime);
 
 		int getZombiesKilled() const {
 			return zombiesKilled_;
@@ -82,7 +82,7 @@ namespace zombie {
 
 		double getMeanFrameTime() const;
 
-		void init();
+		void zombieGameInit();
 
 		// Implements the GameInterface.
 		void unitDied(Unit& unit) override;

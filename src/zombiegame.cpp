@@ -68,14 +68,14 @@ namespace zombie {
 
 		{
 
-		init();
+		zombieGameInit();
 	}
 
 	ZombieGame::~ZombieGame() {
 		zombieEntry_.save();
 	}
 
-	void ZombieGame::init() {
+	void ZombieGame::zombieGameInit() {
 		keyboard_ = DevicePtr(new InputKeyboard(SDLK_UP, SDLK_DOWN, SDLK_LEFT,
 			SDLK_RIGHT, SDLK_SPACE, SDLK_r, SDLK_LSHIFT, SDLK_e));		
 		clipsize_ = 0;
@@ -209,15 +209,14 @@ namespace zombie {
 			}
 		}
 	}
-	
 
 	// Starts the game.
 	void ZombieGame::startGame() {
 		started_ = true;
 	}
 
-	void ZombieGame::draw(double deltaTime) {
-		gui::Component::draw(deltaTime);
+	void ZombieGame::draw(const gui::Graphic& graphic, double deltaTime) {
+		gui::Component::draw(graphic, deltaTime);
 
 		++frame_;
 		lastFramTime_ += deltaTime;
@@ -233,7 +232,7 @@ namespace zombie {
 			updateGame(deltaTime);
 		}
 
-		drawGame(deltaTime);
+		drawGame(graphic.getProjectionMatrix(), deltaTime);
 				
 		refViewPosition_ = humanState_.position_ + 0.5 * humanState_.velocity_;
 	}
@@ -300,15 +299,13 @@ namespace zombie {
 		engine_.update(timeStep_);
 	}
 
-	void ZombieGame::drawGame(double deltaTime) {
+	void ZombieGame::drawGame(const Matrix44& projection, double deltaTime) {
 		// Draw map centered around first human player.
 		gui::Dimension dim = getSize();
-		mw::Matrix44 matrix = getModelMatrix();
+		Matrix44 matrix = getModelMatrix();
 		mw::translate2D(matrix, dim.width_*0.5f, dim.height_*0.5f);
 		mw::scale2D(matrix, 50 * scale_, 50 * scale_);
 		
-		mw::Matrix44 projection = getProjectionMatrix();
-
 		// Update global uniform data to the shaders used.
 		waterShader_.glUseProgram();
 		waterShader_.setGlProjectionMatrixU(projection);
@@ -321,7 +318,7 @@ namespace zombie {
 		buildingShader_.setGlGlobalCenterPositionU(viewPosition_);
 		buildingShader_.setGlGlobalHumanPositionU(humanState_.position_);
 		
-		gameShader_.glUseProgram();
+		gameShader_.useProgram();
 		gameShader_.setGlProjectionMatrixU(projection);
 		gameShader_.setGlModelMatrixU(matrix);
 		gameShader_.setGlGlobalCenterPositionU(viewPosition_);
@@ -339,7 +336,7 @@ namespace zombie {
 
 		drawBuildings_.drawWalls((float) accumulator_, (float) deltaTime, buildingShader_);
 		
-		gameShader_.glUseProgram();
+		gameShader_.useProgram();
 		for (GraphicAnimation& animation : graphicAnimations_) {
 			if (!animation.toBeRemoved()) {
 				animation.draw((float) deltaTime, gameShader_);
@@ -351,12 +348,13 @@ namespace zombie {
 				missile.draw((float) accumulator_, (float) deltaTime, gameShader_);
 			}
 		}
-		
+		mw::checkGlError();
 		for (Car2D& car : cars_) {
 			if (car.isActive()) {
 				car.draw(accumulator_, deltaTime, gameShader_);
 			}
 		}
+		mw::checkGlError();
 
 		for (Unit2D& unit : units_) {
 			if (unit.isActive()) {

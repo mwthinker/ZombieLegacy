@@ -153,7 +153,7 @@ namespace zombie {
 			grass_.clear();
 		}
 
-		shader.glUseProgram();
+		shader.useProgram();
 		vbo_.bindBuffer();
 
 		shader.setGlVer2dCoordsA(4 * sizeof(GLfloat), (const GLvoid*) 0);

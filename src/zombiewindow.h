@@ -21,21 +21,26 @@ namespace zombie {
 		~ZombieWindow();
 
 	private:
-        void initMenuFrame();
-        void initplayFrame();
-        void initCustomplayFrame();
-        void initHighscoreFrame();
+		void initOpenGl() override;
+		void initPreLoop() override;
 
-        int menuFrameIndex_;
-        int playFrameIndex_;
-        int customGameFrameIndex_;
-        int highscoreFrameIndex_;
+		void initMenuFrame();
+		void initplayFrame();
+		void initCustomplayFrame();
+		void initHighscoreFrame();
+
+		int menuFrameIndex_;
+		int playFrameIndex_;
+		int customGameFrameIndex_;
+		int highscoreFrameIndex_;
 
 		std::shared_ptr<ZombieGame> zombieGame_;
 		std::shared_ptr<gui::Panel> gamePanel_;
 		ZombieEntry zombieEntry_;
-		std::shared_ptr<gui::Label> label1_,label2_,label3_,label4_;
+		std::shared_ptr<gui::Label> label1_, label2_, label3_, label4_;
 		std::shared_ptr<gui::Label> fps_;
+
+		bool skipMenu_;
 	};
 
 } // Namespace zombie.

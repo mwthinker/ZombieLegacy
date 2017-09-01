@@ -4,7 +4,6 @@
 #include "box2ddef.h"
 
 #include <mw/opengl.h>
-#include <mw/matrix.h>
 #include <mw/shader.h>
 #include <mw/color.h>
 
@@ -22,8 +21,8 @@ namespace zombie {
 		void setGlVer2dCoordsA(GLsizei stride, const GLvoid* data) const;
 
 		// Uniforms. -------------------------------------------
-		void setGlProjectionMatrixU(const mw::Matrix44& matrix) const;
-		void setGlModelMatrixU(const mw::Matrix44& matrix) const;
+		void setGlProjectionMatrixU(const Matrix44& matrix) const;
+		void setGlModelMatrixU(const Matrix44& matrix) const;
 		void setGlGlobalCenterPositionU(Position position) const;
 		
 		void setGlColorU(float red, float green, float blue, float alpha = 1) const;

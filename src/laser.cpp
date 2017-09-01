@@ -1,8 +1,8 @@
 #include "laser.h"
 #include "gameshader.h"
+#include "box2ddef.h"
 
 #include <mw/opengl.h>
-#include <mw/matrix.h>
 #include <mw/shader.h>
 #include <mw/color.h>
 #include <mw/texture.h>
@@ -211,6 +211,7 @@ namespace zombie {
 
 	void Laser::draw(float deltaTime, const zombie::GameShader& gameShader) {
 		vbo_.bindBufferData(GL_ARRAY_BUFFER, data_.size() * sizeof(GLfloat), data_.data(), GL_DYNAMIC_DRAW);
+		vbo_.unbindBuffer();
 
 		time_ += deltaTime;
 		ratio_ += deltaTime * speed_;
@@ -221,21 +222,23 @@ namespace zombie {
 		update();
 		int index = VERTEX_PER_SPRITE * VERTEX_SIZE * 4; // 4 sprites before the repeated mesh in the data array.
 		int repeatVertices = repeatSprite(data_.data(), index, data_.size(), x_, y_, ratio_, length_, spriteScale_, laserOverlay_);
-
+		mw::checkGlError();
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-		gameShader.glUseProgram();
+		gameShader.useProgram();
 		gameShader.setGlTextureU(true);
-		
+		mw::checkGlError();
 		vbo_.bindBufferSubData(0, (4 * VERTEX_PER_SPRITE + repeatVertices) * VERTEX_SIZE * sizeof(GLfloat), data_.data());
-		
+		mw::checkGlError();
 		vbo_.bindBuffer();
+		mw::checkGlError();
 		laser_.bindTexture();
-
+		mw::checkGlError();
 		// Set the vertex data.
 		gameShader.setGlVer2dCoordsA(sizeof(GLfloat) * VERTEX_SIZE, 0);
+		mw::checkGlError();
 		gameShader.setGlTexCoordsA(sizeof(GLfloat) * VERTEX_SIZE, (GLvoid*) (sizeof(GLfloat) * 2));
-
+		mw::checkGlError();
 		gameShader.setGlColorU(laserColor_);
 		// Draw the first two sprites.
 		glDrawArrays(GL_TRIANGLES, 0, VERTEX_PER_SPRITE * 2);

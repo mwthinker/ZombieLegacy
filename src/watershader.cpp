@@ -17,7 +17,7 @@ namespace zombie {
 		shader_.bindAttribute("aVer");
 		shader_.loadAndLinkFromFile(vShaderFile, fShaderFile);
 		
-		shader_.glUseProgram();
+		shader_.useProgram();
 
 		// Collect the vertex buffer attributes indexes.
 		aVerIndex_ = shader_.getAttributeLocation("aVer");
@@ -30,7 +30,7 @@ namespace zombie {
 	}
 
 	void WaterShader::glUseProgram() const {
-		shader_.glUseProgram();
+		shader_.useProgram();
 	}
 
 	// Vertex buffer Attributes. ---------------------------
@@ -47,11 +47,11 @@ namespace zombie {
 
 	// Uniforms. -------------------------------------------
 
-	void WaterShader::setGlProjectionMatrixU(const mw::Matrix44& matrix) const {
+	void WaterShader::setGlProjectionMatrixU(const Matrix44& matrix) const {
 		glUniformMatrix4fv(uProjIndex_, 1, false, matrix.data());
 	}
 
-	void WaterShader::setGlModelMatrixU(const mw::Matrix44& matrix) const {
+	void WaterShader::setGlModelMatrixU(const Matrix44& matrix) const {
 		glUniformMatrix4fv(uModelIndex_, 1, false, matrix.data());
 	}
 

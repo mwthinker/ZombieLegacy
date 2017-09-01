@@ -22,23 +22,23 @@ namespace zombie {
 		
 		void draw(double deltaTime, float x, float y, float w, float h, const GameShader& shader);
 
-		inline void setSpeed(float speed) {
+		void setSpeed(float speed) {
 			speed_ = speed;
 		}
 
-		inline float getSpeed() const {
+		float getSpeed() const {
 			return speed_;
 		}
 
-		inline void setLooping(bool loop) {
+		void setLooping(bool loop) {
 			loop_ = loop;
 		}
 
-		inline bool isLooping() const {
+		bool isLooping() const {
 			return loop_;
 		}
 
-		inline bool isEnded() const {
+		bool isEnded() const {
 			return end_;
 		}
 

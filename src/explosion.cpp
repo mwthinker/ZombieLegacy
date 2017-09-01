@@ -19,7 +19,7 @@ namespace zombie {
 		float diameter = 2 * blastRadius_;
 		float angle = 0;
 
-		shader.glUseProgram();
+		shader.useProgram();
 		shader.setGlColorU(1, 1, 1);
 		shader.setGlGlobalPositionU(position_);
 		shader.setGlLocalAngleU(angle);

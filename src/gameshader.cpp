@@ -23,7 +23,7 @@ namespace zombie {
 		shader_.bindAttribute("aTex");
 		shader_.loadAndLinkFromFile(vShaderFile, fShaderFile);
 		
-		shader_.glUseProgram();
+		shader_.useProgram();
 
 		// Collect the vertex buffer attributes indexes.
 		aVerIndex_ = shader_.getAttributeLocation("aVer");
@@ -41,8 +41,8 @@ namespace zombie {
 		uIsTexIndex_ = shader_.getUniformLocation("uIsTexture");
 	}
 
-	void GameShader::glUseProgram() const {
-		shader_.glUseProgram();
+	void GameShader::useProgram() const {
+		shader_.useProgram();
 	}
 
 	// Vertex buffer Attributes. ---------------------------
@@ -65,15 +65,15 @@ namespace zombie {
 	void GameShader::setGlTexCoordsA(GLsizei stride, const GLvoid* data) const {
 		glVertexAttribPointer(aTexIndex_, 2, GL_FLOAT, GL_FALSE, stride, data);
 		glEnableVertexAttribArray(aTexIndex_);
-	}	
+	}
 
 	// Uniforms. -------------------------------------------
 
-	void GameShader::setGlProjectionMatrixU(const mw::Matrix44& matrix) const {
+	void GameShader::setGlProjectionMatrixU(const Matrix44& matrix) const {
 		glUniformMatrix4fv(uProjIndex_, 1, false, matrix.data());
 	}
 
-	void GameShader::setGlModelMatrixU(const mw::Matrix44& matrix) const {
+	void GameShader::setGlModelMatrixU(const Matrix44& matrix) const {
 		glUniformMatrix4fv(uModelIndex_, 1, false, matrix.data());
 	}
 

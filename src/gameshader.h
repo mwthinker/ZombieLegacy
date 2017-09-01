@@ -4,7 +4,6 @@
 #include "box2ddef.h"
 
 #include <mw/opengl.h>
-#include <mw/matrix.h>
 #include <mw/shader.h>
 #include <mw/color.h>
 
@@ -15,7 +14,15 @@ namespace zombie {
 		GameShader();
 		GameShader(std::string vShaderFile, std::string fShaderFile);
 
-		void glUseProgram() const;
+		void useProgram() const;
+
+		inline static constexpr unsigned int vertexSizeInBytes() {
+			return vertexSizeInFloat() * sizeof(GLfloat);
+		}
+
+		inline static constexpr unsigned int vertexSizeInFloat() {
+			return 4;
+		}
 
 		// Vertex buffer Attributes. ---------------------------
 		
@@ -27,8 +34,8 @@ namespace zombie {
 
 		// Uniforms. -------------------------------------------
 
-		void setGlProjectionMatrixU(const mw::Matrix44& matrix) const;
-		void setGlModelMatrixU(const mw::Matrix44& matrix) const;
+		void setGlProjectionMatrixU(const Matrix44& matrix) const;
+		void setGlModelMatrixU(const Matrix44& matrix) const;
 		void setGlGlobalCenterPositionU(Position position) const;
 		void setGlGlobalPositionU(Position position) const;		
 		void setGlLocalAngleU(float angle) const;

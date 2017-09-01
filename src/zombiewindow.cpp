@@ -29,7 +29,6 @@ namespace zombie {
 							zombieGame.zoom(1 / 1.1f);
 							break;
 						case SDLK_RETURN:
-							zombieGame.startGame();
 							break;
 						case SDLK_p:
 							// Fall through.
@@ -39,28 +38,54 @@ namespace zombie {
 			}
 		}
 
-		std::shared_ptr<gui::Button> createButton(std::string str, const mw::Font& font) {
-			auto button = std::make_shared<gui::Button>(str, font);
-			button->setAutoSizeToFitText(true);
-			button->setHoverColor(0.7f, 0, 0, 0.5);
-			button->setFocusColor(0.8f, 0, 0, 0.5);
-			button->setPushColor(0.9f, 0, 0, 0.5);
-			return button;
-		}
+		class Button : public gui::Button {
+		public:
+			Button(std::string text, mw::Font font) : gui::Button(text, font) {
+				setFocusColor(0.8f, 0, 0, 0.5);
+				setHoverColor(0.7f, 0, 0, 0.5);
+				setPushColor(0.9f, 0, 0, 0.5);
+				setBackgroundColor(1, 1, 1, 1);
+				setAutoSizeToFitText(true);
+			}
+		};
+
+		class TransparentPanel : public gui::Panel {
+		public:
+			TransparentPanel(float preferredWidth = 100, float preferredHeight = 100) {
+				setBackgroundColor(1, 1, 1, 0);
+				setPreferredSize(preferredWidth, preferredHeight);
+			}
+
+			virtual ~TransparentPanel() = default;
+
+		};
 
 	} // Anonymous namespace.
 
-	ZombieWindow::ZombieWindow(ZombieEntry zombieEntry, bool skipMenu) :
-		gui::Frame(2, 1, false, zombieEntry.getDeepChildEntry("window positionX").getInt(),
-		zombieEntry.getDeepChildEntry("window positionY").getInt(),
-		zombieEntry.getDeepChildEntry("window width").getInt(),
-		zombieEntry.getDeepChildEntry("window height").getInt(),
-			true, "Zombie", "images/1.png"), zombieEntry_(zombieEntry) {
+	ZombieWindow::ZombieWindow(ZombieEntry zombieEntry, bool skipMenu) : zombieEntry_(zombieEntry), skipMenu_(skipMenu) {
+		mw::Window::setPosition(zombieEntry_.getDeepChildEntry("window positionX").getInt(), zombieEntry_.getDeepChildEntry("window positionY").getInt());
+		mw::Window::setWindowSize(zombieEntry_.getDeepChildEntry("window width").getInt(), zombieEntry_.getDeepChildEntry("window height").getInt());
+		mw::Window::setIcon("images/1.png");
+		mw::Window::setResizeable(true);
+		mw::Window::setFullScreen(zombieEntry_.getDeepChildEntry("window maximized").getBool());
+	}
+
+	ZombieWindow::~ZombieWindow() {
+		zombieEntry_.save();
+	}
+
+	void ZombieWindow::initOpenGl() {
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+		Window::setOpenGlVersion(2, 1);
+		Frame::initOpenGl();
+	}
+
+	void ZombieWindow::initPreLoop() {
+		Frame::initPreLoop();
 
 		SDL_SetWindowMinimumSize(mw::Window::getSdlWindow(), 400, 400);
-		if (zombieEntry_.getDeepChildEntry("window maximized").getBool()) {
-			SDL_MaximizeWindow(mw::Window::getSdlWindow());
-		}
 
 		addWindowListener([&](gui::Frame& frame, const SDL_Event& sdlEvent) {
 			switch (sdlEvent.type) {
@@ -106,7 +131,7 @@ namespace zombie {
 		initCustomplayFrame();
 		initHighscoreFrame();
 
-		if (skipMenu) {
+		if (skipMenu_) {
 			setCurrentPanel(playFrameIndex_);
 		} else {
 			setCurrentPanel(menuFrameIndex_);
@@ -117,46 +142,39 @@ namespace zombie {
 		zombieGame_->addKeyListener(std::bind(&handleKeyboard, std::placeholders::_1, std::placeholders::_2));
 	}
 
-	ZombieWindow::~ZombieWindow() {
-		zombieEntry_.save();
-	}
-
 	void ZombieWindow::initMenuFrame() {
 		setCurrentPanel(menuFrameIndex_);
-		auto panel = add<gui::Panel>(gui::BorderLayout::CENTER);
-		panel->setLayout<gui::VerticalLayout>();
-		panel->setBackground(zombieEntry_.getDeepChildEntry("menu backGroundImage").getSprite());
-		mw::Font font = zombieEntry_.getDeepChildEntry("interface font").getFont(20);
 
-		auto text = panel->addDefaultToGroup<gui::Label>("Zombie", zombieEntry_.getDeepChildEntry("interface font").getFont(60));
+		auto text = add<TransparentPanel>(gui::BorderLayout::NORTH)->addDefault<gui::Label>("Zombie", zombieEntry_.getDeepChildEntry("interface font").getFont(80));
 		text->setTextColor(1, 1, 1);
+		
+		auto panel = add<TransparentPanel>(gui::BorderLayout::WEST);
+		panel->setPreferredSize(500, 500);
+		panel->setLayout<gui::VerticalLayout>(10.f, 20.f, 60.f, gui::VerticalLayout::UP);
 
-		auto play = createButton("Play", font);
-		play->addActionListener([&](gui::Component&) {
+		ZombieWindow::getCurrentPanel()->setBackground(zombieEntry_.getDeepChildEntry("menu backGroundImage").getSprite());
+
+		panel->setBackground(zombieEntry_.getDeepChildEntry("menu backGroundImage").getSprite());
+		mw::Font font = zombieEntry_.getDeepChildEntry("interface font").getFont(35);
+		
+		panel->addDefaultToGroup<Button>("Play", font)->addActionListener([&](gui::Component&) {
 			setCurrentPanel(playFrameIndex_);
-			//gameData_.getMenuChoiceSound().play();
+			zombieGame_->startGame();
 		});
-		panel->addDefaultToGroup(play);
 
-		auto customGame = createButton("Custom game", font);
-		customGame->addActionListener([&](gui::Component&) {
+		panel->addDefaultToGroup<Button>("Custom game", font)->addActionListener([&](gui::Component&) {
 			zombieEntry_.getDeepChildEntry("menu soundChoice").getSound().play();
 		});
-		panel->addDefaultToGroup(customGame);
 
-		auto highScore = createButton("Highscore", font);
-		highScore->addActionListener([&](gui::Component&) {
+		panel->addDefaultToGroup<Button>("Highscore", font)->addActionListener([&](gui::Component&) {
 			zombieEntry_.getDeepChildEntry("menu soundChoice").getSound().play();
 		});
-		panel->addDefaultToGroup(highScore);
 
-		auto quit = createButton("Quit", font);
-		quit->addActionListener([&](gui::Component&) {
+		panel->addDefaultToGroup<Button>("Quit", font)->addActionListener([&](gui::Component&) {
 			zombieEntry_.getDeepChildEntry("menu soundChoice").getSound().play();
 			Window::quit();
 		});
-		panel->addDefaultToGroup(quit);
-	}	
+	}
 
 	void ZombieWindow::initplayFrame() {
 		setCurrentPanel(playFrameIndex_);

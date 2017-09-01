@@ -47,7 +47,7 @@ namespace zombie {
 			aTex_.clear();
 		}
 
-		shader.glUseProgram();
+		shader.useProgram();
 		shader.setGlTextureU(true);
 		shader.setGlColorU(1, 1, 1);
 		shader.setGlLocalAngleU(0);

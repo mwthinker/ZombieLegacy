@@ -32,7 +32,7 @@ namespace zombie {
 		}
 
 		void draw(float deltaTime, const GameShader& shader) {
-			shader.glUseProgram();
+			shader.useProgram();
 			shader.setGlColorU(1, 1, 1);
 			shader.setGlGlobalPositionU(position_);
 			shader.setGlLocalAngleU(angle_);
