@@ -227,18 +227,14 @@ namespace zombie {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		gameShader.useProgram();
 		gameShader.setGlTextureU(true);
-		mw::checkGlError();
+		
+		// Binds and uploads the laser data.
 		vbo_.bindBufferSubData(0, (4 * VERTEX_PER_SPRITE + repeatVertices) * VERTEX_SIZE * sizeof(GLfloat), data_.data());
-		mw::checkGlError();
-		vbo_.bindBuffer();
-		mw::checkGlError();
+		
 		laser_.bindTexture();
-		mw::checkGlError();
 		// Set the vertex data.
 		gameShader.setGlVer2dCoordsA(sizeof(GLfloat) * VERTEX_SIZE, 0);
-		mw::checkGlError();
 		gameShader.setGlTexCoordsA(sizeof(GLfloat) * VERTEX_SIZE, (GLvoid*) (sizeof(GLfloat) * 2));
-		mw::checkGlError();
 		gameShader.setGlColorU(laserColor_);
 		// Draw the first two sprites.
 		glDrawArrays(GL_TRIANGLES, 0, VERTEX_PER_SPRITE * 2);
