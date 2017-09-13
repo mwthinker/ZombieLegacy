@@ -2,7 +2,6 @@
 #define LASER_H
 
 #include "gameshader.h"
-#include "zombieentry.h"
 
 #include <mw/opengl.h>
 #include <mw/sprite.h>
@@ -17,7 +16,7 @@ namespace zombie {
 	class Laser;
 	typedef std::shared_ptr<Laser> LaserPtr;
 
-	LaserPtr loadLaser(ZombieEntry entry);
+	LaserPtr loadLaser();
 
 	class Laser {
 	public:

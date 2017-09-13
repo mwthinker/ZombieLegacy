@@ -1,7 +1,6 @@
 #include "explosion.h"
 #include "box2ddef.h"
 #include "auxiliary.h"
-#include "zombieentry.h"
 
 #include <mw/opengl.h>
 #include <mw/color.h>
@@ -36,15 +35,6 @@ namespace zombie {
 		sound_ = exPr.sound_;
 		blastRadius_ = blastRadius;
 		animation_ = exPr.animation_;
-	}
-
-	ExplosionProperties loadExplosion(ZombieEntry entry) {
-		ExplosionProperties explosionProperties;
-		explosionProperties.delay_ = entry.getChildEntry("timeDelay").getFloat();
-		explosionProperties.animation_ = entry.getChildEntry("animation").getAnimation();
-		explosionProperties.animation_.setLooping(false);
-		explosionProperties.sound_ = entry.getChildEntry("sound").getSound();
-		return explosionProperties;
 	}
 
 } // Namespace zombie.

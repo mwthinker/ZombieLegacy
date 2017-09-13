@@ -1,45 +1,21 @@
 #include "missilelauncher2d.h"
 #include "gameinterface.h"
-#include "zombieentry.h"
 #include "laser.h"
 
 namespace zombie {
 
-	Weapon2D loadMissileLauncher2D(GameInterface* gameInterface, ZombieEntry entry) {
-		mw::Sprite symbolImage = entry.getChildEntry("symbolImage").getSprite();
-
-		float timeBetweenShots = entry.getChildEntry("timeBetweenShots").getFloat();
-		int clipSize = entry.getChildEntry("clipSize").getInt();
-
-		mw::Sound shotSound = entry.getChildEntry("shootSound").getSound();
-		mw::Sound reloadSound = entry.getChildEntry("reloadSound").getSound();
-		Animation animation = entry.getChildEntry("moveAnimation").getAnimation();
-		float size = entry.getChildEntry("size").getFloat();
-		Position grip;
-		grip.x = entry.getChildEntry("moveImageGripX").getFloat();
-		grip.y = entry.getChildEntry("moveImageGripY").getFloat();
-
-		ZombieEntry projectile = entry.getChildEntry("projectile");
-		float damageRadius = projectile.getChildEntry("damageRadius").getFloat();
-		float damage = projectile.getChildEntry("damage").getFloat();
-		float range = projectile.getChildEntry("range").getFloat();
-		float deathTime = projectile.getChildEntry("deathTime").getFloat();
-		float speed = projectile.getChildEntry("speed").getFloat();
-		float force = projectile.getChildEntry("force").getFloat();
-
-		bool hasLaser = entry.getChildEntry("laserSight").getBool();
+	Weapon2D loadMissileLauncher2D(GameInterface* gameInterface, const WeaponProperties& wp) {
 		std::shared_ptr<Laser> laser;
-		if (hasLaser) {
-			laser = loadLaser(entry.getParent().getParent().getChildEntry("laserSight"));
+		if (false) {
+			//laser = loadLaser(entry.getParent().getParent().getChildEntry("laserSight"));
 		}
-		//if (true && projectile.isAttributeEqual("type", "missile")) {
-		auto missileLauncher = std::make_shared<MissileLauncher2D>(clipSize, timeBetweenShots,
-			range, damageRadius, damage, deathTime, speed, force, shotSound, reloadSound);
+		auto missileLauncher = std::make_shared<MissileLauncher2D>(wp.clipSize_, wp.timeBetweenShots_,
+			wp.range_, wp.damageRadius_, wp.damage_, wp.deathTime_, wp.speed_, wp.force_, wp.shootSound_, wp.reloadSound_);
 
-		if (hasLaser) {
-			return Weapon2D(missileLauncher, symbolImage, animation, size, grip, *laser);
+		if (false) {
+			return Weapon2D(missileLauncher, wp.symbolImage_, wp.moveAnimation_, wp.size_, wp.moveImageGrip_, *laser);
 		} else {
-			return Weapon2D(missileLauncher, symbolImage, animation, size, grip);
+			return Weapon2D(missileLauncher, wp.symbolImage_, wp.moveAnimation_, wp.size_, wp.moveImageGrip_);
 		}
 	}
 

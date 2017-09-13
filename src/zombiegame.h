@@ -5,7 +5,6 @@
 #include "gameinterface.h"
 #include "graphicanimation.h"
 #include "device.h"
-#include "zombieentry.h"
 #include "terrain2d.h"
 #include "explosion.h"
 #include "unit2d.h"
@@ -23,6 +22,7 @@
 #include <mw/texture.h>
 #include <mw/sprite.h>
 #include <mw/sound.h>
+#include <mw/music.h>
 
 #include <gui/component.h>
 
@@ -38,7 +38,7 @@ namespace zombie {
 	// started here.
 	class ZombieGame : public GameInterface, public gui::Component {
 	public:
-		ZombieGame(ZombieEntry zombieEntry);
+		ZombieGame();
 		~ZombieGame();
 
 		// Start the game.
@@ -114,10 +114,9 @@ namespace zombie {
 
 		ExplosionProperties explosionProperties_;
 		
-		Animation humanInjured_;
-		Animation humanDie_;
-		Animation zombieInjured_;
-		Animation zombieDie_;
+		UnitProperties humanProperties_;
+		UnitProperties zombieProperties_;
+		
 		mw::Sprite tree_;
 		mw::Sprite wall_;
 		mw::Music music_;
@@ -126,7 +125,6 @@ namespace zombie {
 		Position refViewPosition_;
 
 		DevicePtr keyboard_;
-		ZombieEntry zombieEntry_;
 
 		std::vector<Position> spawningPoints_;
 		std::vector<Position> vaildSpawningPoints_;

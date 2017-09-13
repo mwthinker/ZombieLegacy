@@ -8,36 +8,18 @@
 
 namespace zombie {
 
-	Weapon2D loadGun(GameInterface* gameInterface, ZombieEntry entry) {
-		mw::Sprite symbolImage = entry.getChildEntry("symbolImage").getSprite();
-		float timeBetweenShots = entry.getChildEntry("timeBetweenShots").getFloat();
-		int clipSize = entry.getChildEntry("clipSize").getInt();
-
-		mw::Sound shoot = entry.getChildEntry("shootSound").getSound();
-		mw::Sound reload = entry.getChildEntry("reloadSound").getSound();
-		Animation animation = entry.getChildEntry("moveAnimation").getAnimation();
-		float size = entry.getChildEntry("size").getFloat();
-		Position grip;
-		grip.x = entry.getChildEntry("moveImageGripX").getFloat();
-		grip.y = entry.getChildEntry("moveImageGripY").getFloat();
-
-		ZombieEntry projectile = entry.getChildEntry("projectile");
-		float damage = projectile.getChildEntry("damage").getFloat();
-		float range = projectile.getChildEntry("range").getFloat();
-		
-		bool hasLaser = entry.getChildEntry("laserSight").getBool();
+	Weapon2D loadGun(GameInterface* gameInterface, const WeaponProperties& wp) {
 		std::shared_ptr<Laser> laser;
-		if (hasLaser) {
-			laser = loadLaser(entry.getParent().getParent().getChildEntry("laserSight"));
+		if (false) {
+			//laser = loadLaser(entry.getParent().getParent().getChildEntry("laserSight"));
 		}
-		auto gun = std::make_shared<Gun>(damage, timeBetweenShots, range, clipSize, shoot, reload);
+		auto gun = std::make_shared<Gun>(wp.damage_, wp.timeBetweenShots_, wp.range_, wp.clipSize_, wp.shootSound_, wp.reloadSound_);
 
-		if (hasLaser) {
-			return Weapon2D(gun, symbolImage, animation, size, grip, *laser);
+		if (false) {
+			return Weapon2D(gun, wp.symbolImage_, wp.moveAnimation_, wp.size_, wp.moveImageGrip_, *laser);
 		} else {
-			return Weapon2D(gun, symbolImage, animation, size, grip);
+			return Weapon2D(gun, wp.symbolImage_, wp.moveAnimation_, wp.size_, wp.moveImageGrip_);
 		}
-		
 	}
 
 	namespace {

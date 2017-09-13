@@ -3,7 +3,6 @@
 
 #include "box2ddef.h"
 #include "auxiliary.h"
-#include "zombieentry.h"
 #include "gameshader.h"
 #include "watershader.h"
 
@@ -51,7 +50,7 @@ namespace zombie {
 		float size_;
 	};
 
-	Water loadWater(ZombieEntry entry);
+	Water loadWater();
 
 } // Namespace zombie.
 

@@ -1,7 +1,6 @@
 #include "water.h"
 #include "box2ddef.h"
 #include "auxiliary.h"
-#include "zombieentry.h"
 
 #include <mw/opengl.h>
 #include <mw/color.h>
@@ -82,8 +81,8 @@ namespace zombie {
 		vbo_.unbindBuffer();
 	}
 
-	Water loadWater(ZombieEntry entry) {
-		return Water(entry.getChildEntry("seeFloorImage").getSprite());
+	Water loadWater() {
+		return Water(mw::Sprite());
 	}
 
 } // Namespace zombie.

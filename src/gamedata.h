@@ -1,0 +1,148 @@
+#ifndef GAMEDATA_H
+#define GAMEDATA_H
+
+#include "animation.h"
+#include "explosion.h"
+#include "unitproperties.h"
+#include "weaponproperties.h"
+#include "missileproperties.h"
+#include "buildingproperties.h"
+
+#include <mw/sound.h>
+#include <mw/sprite.h>
+#include <mw/color.h>
+#include <mw/font.h>
+#include <mw/music.h>
+#include <mw/textureatlas.h>
+
+#include <json/json.h>
+
+#include <map>
+#include <vector>
+
+namespace zombie {
+
+	class GameData {
+	public:
+		static GameData& getInstance() {
+			static GameData instance;
+			return instance;
+		}
+
+		GameData(GameData const&) = delete;
+		GameData& operator=(const GameData&) = delete;
+
+		void save();
+
+		mw::Font loadFont(std::string file, unsigned int fontSize);
+		mw::Sound loadSound(std::string file);
+		mw::Music loadMusic(std::string file);
+		mw::Sprite loadSprite(std::string file);
+
+		mw::Font getDefaultFont(int size);
+
+		void bindTextureFromAtlas() const;
+
+		int getWindowPositionX();
+		int getWindowPositionY();
+
+		void setWindowPositionX(int x);
+		void setWindowPositionY(int y);
+
+		int getWindowWidth();
+		int getWindowHeight();
+
+		void setWindowWidth(int width);
+		void setWindowHeight(int height);
+
+		bool isWindowResizable();
+		void setWindowResizable(bool resizeable);
+
+		int getWindowMinWidth();
+		int getWindowMinHeight();
+		std::string getWindowIcon();
+		bool isWindowBordered();
+		void setWindowBordered(bool border);
+
+		bool isWindowMaximized();
+		void setWindowMaximized(bool maximized);
+
+		bool isWindowVsync();
+		void setWindowVsync(bool activate);
+
+		bool isMusicOn();
+		void setMusicOn(bool activate);
+
+		float getMusicVolume();
+		void setMusicVolume(float volume);
+
+		mw::Music getMusicTrack();
+
+		mw::Sprite getTreeImage();
+
+		mw::Sprite getBuildingWallImage();
+
+		float getSettingsImpulseThreshold();
+		float getSettingsTimeStep();
+
+		float getSettingsInnerSpawnRadius();
+		float getSettingsOuterSpawnRadius();
+
+		int getSettingsUnitLevel();
+		int getSettingsUnitLimit();
+
+		std::string getSettingsMap();
+
+		mw::Sound getMenuSoundChoice();
+		mw::Sound getMenuSoundHighlited();
+		mw::Sprite getMenuBackgroundImage();
+
+		mw::Sprite getWaterSeeFloorImage();
+
+		mw::Sprite getRoadIntersection();
+		mw::Sprite getRoadStraight0();
+		mw::Sprite getRoadStraight90();
+		mw::Sprite getRoadTurn0();
+		mw::Sprite getRoadTurn90();
+		mw::Sprite getRoadTurn180();
+		mw::Sprite getRoadTurn270();
+		mw::Sprite getRoadTurnIntersection0();
+		mw::Sprite getRoadTurnIntersection90();
+		mw::Sprite getRoadTurnIntersection180();
+		mw::Sprite getRoadTurntersection270();
+
+		ExplosionProperties getExplosionProperties();
+
+		UnitProperties getHumanProperties();
+		UnitProperties getZombieProperties();
+
+		MissileProperties getMissileProperties();
+
+		MapProperties loadMapProperties();
+
+	private:
+		GameData();
+
+		Animation loadAnimation(Json::Value animationTag);
+
+		UnitProperties loadUnitProperties(Json::Value unitTag);
+		
+		WeaponProperties loadWeaponProperties(Json::Value unitTag);
+		WeaponProperties loadWeaponProperties(std::string weaponName);
+		
+		MissileProperties loadMissileProperties(Json::Value unitTag);
+		MissileProperties loadMissileProperties(std::string weaponName);
+
+		const std::string JSON_PATH = "zombie.json";
+		mw::TextureAtlas textureAtlas_;
+		std::map<std::string, mw::Sound> sounds_;
+		std::map<std::string, mw::Font> fonts_;
+		std::map<std::string, mw::Music> musics_;
+
+		Json::Value root_;
+		Json::Value rootMap_;
+	};
+
+} // Namespace zombie.
+
+#endif // GAMEDATA_H

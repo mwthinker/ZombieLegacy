@@ -1,7 +1,6 @@
 #include "car2d.h"
 #include "auxiliary.h"
 #include "animation.h"
-#include "zombieentry.h"
 
 #include <mw/opengl.h>
 
@@ -30,13 +29,16 @@ namespace zombie {
 		animation_.draw(timeStep, 0, 0, getLength(), getLength(), gameShader);
 	}
 
-	Car2D loadCar(ZombieEntry entry) {
+	Car2D loadCar() {
+		/*
 		Animation animation = entry.getChildEntry("moveAnimation").getAnimation();
 		float mass = entry.getChildEntry("mass").getFloat();
 		float width = entry.getChildEntry("width").getFloat();
 		float length = entry.getChildEntry("length").getFloat();
 		float life = entry.getChildEntry("life").getFloat();
 		return Car2D(mass, life, width, length, animation);
+		*/
+		return Car2D();
 	}
 	
 } // Namespace zombie.

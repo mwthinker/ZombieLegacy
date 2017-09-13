@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(Zombie)
+project(Zombie CXX)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/SdlGui/MwLibrary2/cmake/Modules/)
 if (MSVC)
 	# Exception handler model.
@@ -32,6 +32,7 @@ set(SOURCES_ZOMBIE
 	src/buildingshader.cpp
 	src/building2d.cpp
 	src/building2d.h
+	src/buildingproperties.h
 	src/car.cpp
 	src/car.h
 	src/car2d.cpp
@@ -47,6 +48,8 @@ set(SOURCES_ZOMBIE
 	src/fog.cpp
 	src/fog.h
 	src/gameinterface.h
+	src/gamedata.cpp
+	src/gamedata.h
 	src/gameshader.cpp
 	src/gameshader.h
 	src/graphicanimation.h
@@ -67,6 +70,7 @@ set(SOURCES_ZOMBIE
 	src/missile.h
 	src/missile2d.cpp
 	src/missile2d.h
+	src/missileproperties.h
 	src/movingobject.h
 	src/object.cpp
 	src/object.h
@@ -81,6 +85,7 @@ set(SOURCES_ZOMBIE
 	src/tree2d.h
 	src/unit.cpp
 	src/unit.h
+	src/unitproperties.h
 	src/unit2d.cpp
 	src/unit2d.h
 	src/water.cpp
@@ -90,6 +95,7 @@ set(SOURCES_ZOMBIE
 	src/weapon.h
 	src/weapon2d.cpp
 	src/weapon2d.h	
+	src/weaponproperties.h
 	src/weaponinterface.h
 	src/weaponitem.h
 	src/weaponitem2d.h
@@ -97,8 +103,6 @@ set(SOURCES_ZOMBIE
 	src/zombiebehavior.h
 	src/zombieengine.cpp
 	src/zombieengine.h
-	src/zombieentry.cpp
-	src/zombieentry.h
 	src/zombiegame.cpp
 	src/zombiegame.h
 	src/zombiewindow.h
@@ -113,8 +117,8 @@ find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
 
 add_subdirectory(SdlGui)
-add_subdirectory(DataEntry)
 add_subdirectory(Box2D)
+add_subdirectory(jsoncpp)
 
 file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
 
@@ -127,8 +131,7 @@ include_directories(
 	SdlGui/src
 	SdlGui/MwLibrary2/src
 	SdlGui/Signal/src
-	DataEntry/src
-	DataEntry/TinyXML2/src
+	jsoncpp/src/
 	".")
 
 if (MSVC)
@@ -139,22 +142,22 @@ else ()
 endif ()
 
 if (MSVC)
-	set_target_properties(Zombie PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")
-	set_target_properties(Zombie PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt")
+	set_target_properties(Zombie PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows /IGNORE:4099")
+	set_target_properties(Zombie PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt /IGNORE:4099")
 endif ()
 
 target_link_libraries(Zombie
 	Box2D
 	SdlGui
 	MwLibrary2
-	DataEntry
-	TinyXML2
+	jsoncpp
 	${GLEW_LIBRARIES}
 	${OPENGL_LIBRARIES}
 	${SDL2_LIBRARIES}
 	${SDL2_TTF_LIBRARIES}
 	${SDL2_MIXER_LIBRARIES}
-	${SDL2_IMAGE_LIBRARIES})
+	${SDL2_IMAGE_LIBRARIES}
+)
 
 ############### CPack
 

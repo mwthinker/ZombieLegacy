@@ -3,7 +3,6 @@
 
 #include "box2ddef.h"
 #include "gameshader.h"
-#include "zombieentry.h"
 
 #include <mw/opengl.h>
 #include <mw/vertexbufferobject.h>
@@ -18,10 +17,12 @@ namespace zombie {
 	public:
 		Terrain2D() : 
 			numberVerticesRoads_(0), numberVerticesGrass_(0) {
+
+			loadRoadSprites();
 		}
 		
-		void loadRoadSprites(ZombieEntry entry);
-		void addRoad(ZombieEntry tileEntry);
+		void loadRoadSprites();
+		void addRoad();
 		void addGrass(Position p1, Position p2, Position p3);
 
 		void draw(float time, const GameShader& shader);

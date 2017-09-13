@@ -1,5 +1,6 @@
 #include "zombiewindow.h"
-#include "zombieentry.h"
+
+#include <json/json.h>
 
 int main (int argc, char** argv) {
 
@@ -8,15 +9,8 @@ int main (int argc, char** argv) {
 		skipMenu = true;
 	}
 
-	// Load game data.
-	zombie::ZombieEntry zombieEntry("zombie.xml");
-
-	if (zombieEntry.isError()) {
-		zombieEntry.printError();
-	} else {
-		zombie::ZombieWindow zombieWindow(zombieEntry.getChildEntry("zombieGame"), skipMenu);
-		zombieWindow.startLoop();
-	}
+	zombie::ZombieWindow zombieWindow(skipMenu);
+	zombieWindow.startLoop();
 
     return 0;
 }

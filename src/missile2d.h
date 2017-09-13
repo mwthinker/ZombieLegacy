@@ -3,8 +3,8 @@
 
 #include "missile.h"
 #include "animation.h"
-#include "zombieentry.h"
 #include "gameinterface.h"
+#include "missileproperties.h"
 
 #include <mw/sound.h>
 #include <mw/opengl.h>
@@ -13,7 +13,7 @@ namespace zombie {
 
 	class Missile2D : public Missile {
 	public:
-		inline Missile2D() {
+		Missile2D() {
 		}
 
 		Missile2D(GameInterface* gameInterface, float width, float length, float mass,
@@ -26,7 +26,7 @@ namespace zombie {
 		State previousState_;
 	};
 
-	Missile2D loadMissile2D(GameInterface* gameInterface, ZombieEntry entry);
+	Missile2D loadMissile2D(GameInterface* gameInterface, const MissileProperties& mp);
 
 } // Namespace zombie.
 
