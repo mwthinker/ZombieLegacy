@@ -142,8 +142,8 @@ else ()
 endif ()
 
 if (MSVC)
-	set_target_properties(Zombie PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows /IGNORE:4099")
-	set_target_properties(Zombie PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt /IGNORE:4099")
+	set_target_properties(Zombie PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")
+	set_target_properties(Zombie PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt")
 endif ()
 
 target_link_libraries(Zombie
