@@ -1,4 +1,5 @@
 #include "terrain2d.h"
+#include "gamedata.h"
 
 #include <mw/sprite.h>
 
@@ -61,21 +62,22 @@ namespace zombie {
 		}
 	}
 
-	void Terrain2D::loadRoadSprites(ZombieEntry entry) {
-		intersection_ = entry.getChildEntry("intersection").getSprite();
-		straight0_ = entry.getChildEntry("straight0").getSprite();
-		straight90_ = entry.getChildEntry("straight90").getSprite();
-		turn0_ = entry.getChildEntry("turn0").getSprite();
-		turn90_ = entry.getChildEntry("turn90").getSprite();
-		turn180_ = entry.getChildEntry("turn180").getSprite();
-		turn270_ = entry.getChildEntry("turn270").getSprite();
-		tintersection0_ = entry.getChildEntry("tintersection0").getSprite();
-		tintersection90_ = entry.getChildEntry("turntintersection90").getSprite();
-		tintersection180_ = entry.getChildEntry("tintersection180").getSprite();
-		tintersection270_ = entry.getChildEntry("tintersection270").getSprite();
+	void Terrain2D::loadRoadSprites() {
+		intersection_ = GameData::getInstance().getRoadIntersection();
+		straight0_ = GameData::getInstance().getRoadStraight0();
+		straight90_ = GameData::getInstance().getRoadStraight90();
+		turn0_ = GameData::getInstance().getRoadTurn0();
+		turn90_ = GameData::getInstance().getRoadTurn90();
+		turn180_ = GameData::getInstance().getRoadTurn180();
+		turn270_ = GameData::getInstance().getRoadTurn270();
+		tintersection0_ = GameData::getInstance().getRoadTurnIntersection0();
+		tintersection90_ = GameData::getInstance().getRoadTurnIntersection90();
+		tintersection180_ = GameData::getInstance().getRoadTurnIntersection180();
+		tintersection270_ = GameData::getInstance().getRoadTurntersection270();
 	}
 
-	void Terrain2D::addRoad(ZombieEntry tileEntry) {
+	void Terrain2D::addRoad() {
+		/*
 		Position position = loadPoint(tileEntry.getChildEntry("geom").getString());
 		std::string tileId = tileEntry.getChildEntry("tile_id").getString();
 		int deg = tileEntry.getChildEntry("rotation").getInt();
@@ -131,6 +133,7 @@ namespace zombie {
 		addSquare(data_.data(), index, position.x - size*0.5f, position.y - size*0.5f, size, size, sprite);
 		roads_.insert(roads_.end(), data_.begin(), data_.end());
 		numberVerticesRoads_ += 6;
+		*/
 	}
 
 	void Terrain2D::addGrass(Position p1, Position p2, Position p3) {

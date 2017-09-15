@@ -13,9 +13,9 @@
 #include "tree2d.h"
 #include "gun.h"
 #include "missilelauncher2d.h"
-#include "zombieentry.h"
 #include "humanplayer.h"
 #include "zombiebehavior.h"
+#include "gamedata.h"
 
 #include <mw/opengl.h>
 #include <mw/exception.h>
@@ -53,13 +53,13 @@ namespace zombie {
 
 	}
 
-	ZombieGame::ZombieGame(ZombieEntry zombieEntry) : engine_(*this,
-		zombieEntry.getDeepChildEntry("settings impulseThreshold").getFloat()), zombieEntry_(zombieEntry),
-		water_(loadWater(zombieEntry.getDeepChildEntry("water"))),
+	ZombieGame::ZombieGame() : engine_(*this,
+		GameData::getInstance().getSettingsImpulseThreshold()),
+		water_(GameData::getInstance().getWaterSeeFloorImage()),
 		frame_(0),
 		meanFrameTime_(16),
 		lastFramTime_(0),
-		timeStep_(zombieEntry.getDeepChildEntry("settings timeStep").getFloat()),
+		timeStep_(GameData::getInstance().getSettingsTimeStep()),
 		accumulator_(0),
 		gameShader_("game.ver.glsl", "game.fra.glsl"),
 		waterShader_("water.ver.glsl", "water.fra.glsl"),
@@ -72,7 +72,7 @@ namespace zombie {
 	}
 
 	ZombieGame::~ZombieGame() {
-		zombieEntry_.save();
+		//zombieEntry_.save();
 	}
 
 	void ZombieGame::zombieGameInit() {
@@ -89,37 +89,30 @@ namespace zombie {
 			keyboard_->eventUpdate(keyEvent);
 		});
 
-		if (zombieEntry_.getDeepChildEntry("music switch").getBool()) {
-			music_ = zombieEntry_.getDeepChildEntry("music track").getMusic();
-			music_.setVolume(zombieEntry_.getDeepChildEntry("music volume").getFloat());
+		if (GameData::getInstance().isMusicOn()) {
+			music_ = GameData::getInstance().getMusicTrack();
+			music_.setVolume(GameData::getInstance().getMusicVolume());
 			music_.play(-1);
 		}
 
-		tree_ = zombieEntry_.getDeepChildEntry("tree image").getSprite();
-		wall_ = zombieEntry_.getDeepChildEntry("buildings wallImage").getSprite();
+		tree_ = GameData::getInstance().getTreeImage();
+		wall_ = GameData::getInstance().getBuildingWallImage();
 		nbrUnits_ = 0;
 
-		unitMaxLimit_ = zombieEntry_.getDeepChildEntry("settings unitLimit").getInt();
+		unitMaxLimit_ = GameData::getInstance().getSettingsUnitLimit();
 
-		innerSpawnRadius_ = zombieEntry_.getDeepChildEntry("settings innerSpawnRadius").getFloat();
-		outerSpawnRadius_ = zombieEntry_.getDeepChildEntry("settings outerSpawnRadius").getFloat();
+		innerSpawnRadius_ = GameData::getInstance().getSettingsInnerSpawnRadius();
+		outerSpawnRadius_ = GameData::getInstance().getSettingsOuterSpawnRadius();
 		
-		terrain_.loadRoadSprites(zombieEntry_.getDeepChildEntry("roads"));
 		loadTerrain();
 		
-		explosionProperties_ = zombie::loadExplosion(zombieEntry_.getDeepChildEntry("explosion"));
-
-		humanInjured_ = zombieEntry_.getDeepChildEntry("human injuredAnimation").getAnimation();
-		humanDie_ = zombieEntry_.getDeepChildEntry("human dieAnimation").getAnimation();
-		Unit2D human(loadUnit(this, "human", zombieEntry_, false));
-		human.setDieSound(zombieEntry_.getDeepChildEntry("human dieSound").getSound());
-		human.setHitSound(zombieEntry_.getDeepChildEntry("human hitSound").getSound());
+		explosionProperties_ = GameData::getInstance().getExplosionProperties();
 		
-		zombieInjured_ = zombieEntry_.getDeepChildEntry("zombie injuredAnimation").getAnimation();
-		zombieDie_ = zombieEntry_.getDeepChildEntry("zombie dieAnimation").getAnimation();
-		Unit2D zombie(loadUnit(this, "zombie", zombieEntry_, true));
-		zombie.setDieSound(zombieEntry_.getDeepChildEntry("zombie dieSound").getSound());
-		zombie.setHitSound(zombieEntry_.getDeepChildEntry("zombie hitSound").getSound());
+		humanProperties_ = GameData::getInstance().getHumanProperties();
+		zombieProperties_ = GameData::getInstance().getZombieProperties();
+
+		Unit2D human(loadUnit(this, humanProperties_, false));
+		Unit2D zombie(loadUnit(this, zombieProperties_, true));
 
 		// Add human to engine.
 		{
@@ -139,7 +132,7 @@ namespace zombie {
 
 		// Add zombies to engine.
 		calculateValidSpawningPoints(units_[0]);
-		unsigned int unitLevel = zombieEntry_.getDeepChildEntry("settings unitLevel").getInt();
+		unsigned int unitLevel = GameData::getInstance().getSettingsUnitLevel();
 		for (unsigned int i = 1; i <= unitLevel && i < units_.getMaxSize(); ++i) {
 			Position p = generatePosition(vaildSpawningPoints_);
 			float angle = calculateAnglePointToPoint(p, units_[0].getPosition());
@@ -153,7 +146,7 @@ namespace zombie {
 		}
 	
 		// Add cars to engine.
-		Car2D car(zombie::loadCar(zombieEntry_.getDeepChildEntry("car")));
+		Car2D car; // (zombie::loadCar(zombieEntry_.getDeepChildEntry("car")));
 		for (unsigned int i = 0; i < 8 && i < units_.getMaxSize(); ++i) {
 			State state(Position(85,130), ORIGO, 0);
 			Car* c = cars_.pushBack(car);
@@ -164,7 +157,7 @@ namespace zombie {
 		}
 
 		// Add missile to engine.
-		Missile2D missile(loadMissile2D(this, zombieEntry_.getDeepChildEntry("equipment missile")));
+		Missile2D missile = loadMissile2D(this, GameData::getInstance().getMissileProperties());
 		for (unsigned int i = 0; i < 10 && i < units_.getMaxSize(); ++i) {
 			engine_.add(missiles_.emplaceBack(missile));
 		}
@@ -378,10 +371,10 @@ namespace zombie {
 	void ZombieGame::unitDied(Unit& unit) {
 		--nbrUnits_;
 
-		Animation* dieAnimation = &humanDie_;
+		Animation* dieAnimation = &humanProperties_.dieAnimation_;
 		if (unit.isInfected()) {
 			++zombiesKilled_;
-			dieAnimation = &zombieDie_;
+			dieAnimation = &zombieProperties_.dieAnimation_;
 		}
 
 		activateFirstFreeSlot(graphicAnimations_, unit.getPosition(), unit.getDirection(), *dieAnimation);
@@ -405,13 +398,13 @@ namespace zombie {
 	}
 
 	void ZombieGame::shotHit(Position startPosition, Position hitPosition, Unit& unit) {
-		Animation* dieAnimation = &humanInjured_;
+		Animation* animation = &humanProperties_.injuredAnimation_;
 		if (unit.isInfected()) {
 			++zombiesKilled_;
-			dieAnimation = &zombieInjured_;
+			animation = &zombieProperties_.injuredAnimation_;
 		}
 
-		activateFirstFreeSlot(graphicAnimations_, unit.getPosition(), unit.getDirection(), *dieAnimation);
+		activateFirstFreeSlot(graphicAnimations_, unit.getPosition(), unit.getDirection(), *animation);
 	}
 
 	void ZombieGame::explosion(Position position, float explosionRadius) {
@@ -446,32 +439,36 @@ namespace zombie {
 	}
 
 	void ZombieGame::loadTerrain() {
-		auto entry = ZombieEntry(zombieEntry_.getDeepChildEntry("settings map").getString());
-		entry = entry.getDeepChildEntry("map objects object");
-		while (entry.hasData()) {
-			std::string geom(entry.getChildEntry("geom").getString());
-			if (entry.isAttributeEqual("type", "building")) {
-				auto v = loadPolygon(geom);
-				Building* b = buildings_.emplaceBack(v[0], v[1], v[2], v[3], wall_, wall_, wall_);
-				engine_.add(b);
-				b->setActive(true);
-				b->setAwake(true);
-			} else if (entry.isAttributeEqual("type", "water")) {
-				auto triangle = loadPolygon(geom);
-				water_.addTriangle(triangle[0], triangle[1], triangle[2]);
-			} else if (entry.isAttributeEqual("type", "grass")) {
-				auto triangle = loadPolygon(geom);
-				terrain_.addGrass(triangle[0], triangle[1], triangle[2]);
-			} else if (entry.isAttributeEqual("type", "tilepoint")) {
-				terrain_.addRoad(entry);
-			} else if (entry.isAttributeEqual("type", "tree")) {
-				engine_.add(new Tree2D(loadPoint(geom), tree_));
-			} else if (entry.isAttributeEqual("type", "spawningpoint")) {
-				spawningPoints_.push_back(loadPoint(geom));
-			} else if (entry.isAttributeEqual("type", "carSpawningpoint")) {
-				//carSpawningPoints_.push_back(loadPoint(geom));
+		MapProperties properties = GameData::getInstance().loadMapProperties();
+
+		for (MapProperties::Object& ob : properties.positions_) {
+			switch (ob.type_) {
+				case MapProperties::BUILDING:
+				{
+					Building* b = buildings_.emplaceBack(ob.geom_[0], ob.geom_[1], ob.geom_[2], ob.geom_[3], wall_, wall_, wall_);
+					engine_.add(b);
+					b->setActive(true);
+					b->setAwake(true);
+				}
+					break;
+				case MapProperties::WATER:
+					water_.addTriangle(ob.geom_[0], ob.geom_[1], ob.geom_[2]);
+					break;
+				case MapProperties::GRASS:
+					terrain_.addGrass(ob.geom_[0], ob.geom_[1], ob.geom_[2]);
+					break;
+				case MapProperties::TILEPOINT:
+					//terrain_.addRoad(entry);
+					break;
+				case MapProperties::TREE:
+					//engine_.add(new Tree2D(loadPoint(ob.geom_), tree_));
+					break;
+				case MapProperties::SPAWNINGPOINT:
+					spawningPoints_.push_back(ob.geom_[0]);
+					break;
+				case MapProperties::CAR_SPAWNINGPOINT:
+					break;
 			}
-			entry = entry.getSibling("object");
 		}
 	}
 

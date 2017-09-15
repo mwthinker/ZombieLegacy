@@ -54,8 +54,6 @@ namespace zombie {
 		mw::Sound sound_;
 	};
 
-	ExplosionProperties loadExplosion(ZombieEntry entry);
-
 } // Namespace zombie.
 
 #endif // EXPLOSION_H

@@ -25,14 +25,8 @@ namespace zombie {
 		animation_.draw(timeStep, 0, 0, getLength(), getLength(), gameShader);
 	}
 
-	Missile2D loadMissile2D(GameInterface* gameInterface, ZombieEntry entry) {
-		float mass = entry.getChildEntry("mass").getFloat();
-		float width = entry.getChildEntry("width").getFloat();
-		float length = entry.getChildEntry("length").getFloat();
-		Animation animation = entry.getChildEntry("animation").getAnimation();
-		mw::Sound moveSound = entry.getChildEntry("moveSound").getSound();
-
-		return Missile2D(gameInterface, width, length, mass, animation, moveSound);
+	Missile2D loadMissile2D(GameInterface* gameInterface, const MissileProperties& mp) {
+		return Missile2D(gameInterface, mp.width_, mp.length_, mp.mass_, mp.animation_, mp.moveSound_);
 	}
 
 } // Namespace zombie.

@@ -74,32 +74,14 @@ namespace zombie {
 		}
 	}
 
-	Unit2D loadUnit(GameInterface* gameInterface, std::string unitTag, ZombieEntry zombieEntry, bool infected) {
-		ZombieEntry entry = zombieEntry.getChildEntry(unitTag);
-		float mass = entry.getChildEntry("mass").getFloat();
-		float radius = entry.getChildEntry("radius").getFloat();
-		float life = entry.getChildEntry("life").getFloat();
-		float walkingSpeed = entry.getChildEntry("walkingSpeed").getFloat();
-		float runningSpeed = entry.getChildEntry("runningSpeed").getFloat();
-		float stamina = entry.getChildEntry("stamina").getFloat();
-		Animation moveA = entry.getChildEntry("moveAnimation").getAnimation();
-		Position grip;
-		grip.x = entry.getChildEntry("moveImageGripX").getFloat();
-		grip.y = entry.getChildEntry("moveImageGripY").getFloat();
-		std::string weaponName = entry.getChildEntry("weapon").getString();
-
-		std::string path = "equipment weapons ";
-		path += weaponName;
-		auto weaponEntry = zombieEntry.getDeepChildEntry(path);
-		
+	Unit2D loadUnit(GameInterface* gameInterface, const UnitProperties& properties, bool infected) {
 		std::shared_ptr<Weapon> weapon;
-		if (weaponEntry.isAttributeEqual("projectile", "missile")) {
-			weapon = loadMissileLauncher2D(gameInterface, weaponEntry).clone();
+		if (properties.weaponProperties_.type_ == WeaponProperties::MISSILE) {
+			weapon = loadMissileLauncher2D(gameInterface, properties.weaponProperties_).clone();
 		} else {
-			weapon = loadGun(gameInterface, weaponEntry).clone();
+			weapon = loadGun(gameInterface, properties.weaponProperties_).clone();
 		}
-
-		return Unit2D(mass, radius, life, walkingSpeed, runningSpeed, infected, weapon, moveA, grip);
+		return Unit2D(properties.mass_, properties.radius_, properties.life_, properties.walkingSpeed_, properties.runningSpeed_, infected, weapon, properties.moveAnimation_, properties.grip_);
 	}
 
 } // Namespace zombie.

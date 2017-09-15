@@ -110,7 +110,8 @@ namespace zombie {
 
 	}
 
-	LaserPtr loadLaser(ZombieEntry entry) {
+	LaserPtr loadLaser() {
+		/*
 		float speed = entry.getChildEntry("speed").getFloat();
 		mw::Color overlayColor = entry.getChildEntry("overlayColor").getColor();
 		mw::Color laserColor = entry.getChildEntry("laserColor").getColor();
@@ -123,6 +124,8 @@ namespace zombie {
 		mw::Sprite laserOverlayStatic = childEntry.getChildEntry("laserOverlayStatic").getSprite();
 		mw::Sprite laserOverlayStaticEnd = childEntry.getChildEntry("laserOverlayStaticEnd").getSprite();
 		return std::make_shared<Laser>(height, laser, laserEnd, laserOverlay, laserOverlayStatic, laserOverlayStaticEnd, laserColor, overlayColor, speed);
+		*/
+		return nullptr;
 	}
 
 	Laser::Laser(float height, const mw::Sprite& laser, const mw::Sprite& laserEnd, const mw::Sprite& laserOverlay,
