@@ -1,22 +1,12 @@
-cmake_minimum_required(VERSION 2.8)
-project(Zombie CXX)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/SdlGui/MwLibrary2/cmake/Modules/)
-if (MSVC)
-	# Exception handler model.
-	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /EHsc")
-	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHsc")
-
-	add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS -DWIN32)
-else ()
-	set(CMAKE_CXX_FLAGS "-std=c++1y")
-	option(Debug "Set projects to debug mode.")
-	if (Debug)
-		set(CMAKE_BUILD_TYPE "Debug" CACHE INTERNAL "Build type.")
-		add_definitions(-D_DEBUG)
-	else ()
-		set(CMAKE_BUILD_TYPE "Release" CACHE INTERNAL "Build type.")
-	endif ()
-endif ()
+cmake_minimum_required(VERSION 3.1...3.12)
+project(Zombie
+	DESCRIPTION
+		"A 2D Zombie Game"
+	LANGUAGES
+		CXX
+)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Source files.
 set(SOURCES_ZOMBIE
@@ -111,54 +101,31 @@ set(SOURCES_ZOMBIE
 	src/zombiewindow.cpp
 )
 
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-find_package(SDL2_mixer REQUIRED)
-find_package(SDL2_ttf REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(OpenGL REQUIRED)
-
 add_subdirectory(SdlGui)
 add_subdirectory(Box2D)
 add_subdirectory(jsoncpp)
 
 file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
 
-include_directories(
-	${SDL2_INCLUDE_DIR}
-	${SDL2_IMAGE_INCLUDE_DIR}
-	${SDL2_TTF_INCLUDE_DIR}
-	${SDL2_MIXER_INCLUDE_DIR}	
-	${GLEW_INCLUDE_DIRS}
-	SdlGui/src
-	SdlGui/MwLibrary2/src
-	SdlGui/Signal/src
-	jsoncpp/src/
-	".")
-
 if (MSVC)
 	set(WIN_RESOURCE_FILE zombie.rc)
 	add_executable(Zombie ${SOURCES_ZOMBIE} ${WIN_RESOURCE_FILE})
+	
+	set_target_properties(Zombie PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")
 else ()
 	add_executable(Zombie ${SOURCES_ZOMBIE})
 endif ()
 
-if (MSVC)
-	set_target_properties(Zombie PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")
-	set_target_properties(Zombie PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt")
-endif ()
+target_include_directories(Zombie
+	PRIVATE
+		"."
+)
 
 target_link_libraries(Zombie
-	Box2D
-	SdlGui
-	MwLibrary2
-	jsoncpp
-	${GLEW_LIBRARIES}
-	${OPENGL_LIBRARIES}
-	${SDL2_LIBRARIES}
-	${SDL2_TTF_LIBRARIES}
-	${SDL2_MIXER_LIBRARIES}
-	${SDL2_IMAGE_LIBRARIES}
+	PRIVATE
+		Box2D
+		SdlGui
+		jsoncpp
 )
 
 ############### CPack

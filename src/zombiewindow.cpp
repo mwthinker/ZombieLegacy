@@ -119,7 +119,7 @@ namespace zombie {
 		});
 		zombieGame_ = std::make_shared<ZombieGame>();
 		// Always react on key events!
-		zombieGame_->setGrabFocus(true);
+		zombieGame_->setFocus(true);
 
 		menuFrameIndex_ = getCurrentPanelIndex();
 		playFrameIndex_ = addPanelBack();
@@ -154,20 +154,20 @@ namespace zombie {
 
 		ZombieWindow::getCurrentPanel()->setBackground(GameData::getInstance().getMenuBackgroundImage());
 		
-		panel->addDefaultToGroup<Button>("Play", GameData::getInstance().getDefaultFont(35))->addActionListener([&](gui::Component&) {
+		panel->addDefault<Button>("Play", GameData::getInstance().getDefaultFont(35))->addActionListener([&](gui::Component&) {
 			setCurrentPanel(playFrameIndex_);
 			zombieGame_->startGame();
 		});
 
-		panel->addDefaultToGroup<Button>("Custom game", GameData::getInstance().getDefaultFont(35))->addActionListener([&](gui::Component&) {
+		panel->addDefault<Button>("Custom game", GameData::getInstance().getDefaultFont(35))->addActionListener([&](gui::Component&) {
 			GameData::getInstance().getMenuSoundChoice().play();
 		});
 
-		panel->addDefaultToGroup<Button>("Highscore", GameData::getInstance().getDefaultFont(35))->addActionListener([&](gui::Component&) {
+		panel->addDefault<Button>("Highscore", GameData::getInstance().getDefaultFont(35))->addActionListener([&](gui::Component&) {
 			GameData::getInstance().getMenuSoundChoice().play();
 		});
 
-		panel->addDefaultToGroup<Button>("Quit", GameData::getInstance().getDefaultFont(35))->addActionListener([&](gui::Component&) {
+		panel->addDefault<Button>("Quit", GameData::getInstance().getDefaultFont(35))->addActionListener([&](gui::Component&) {
 			GameData::getInstance().getMenuSoundChoice().play();
 			Window::quit();
 		});
