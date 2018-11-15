@@ -167,7 +167,6 @@ namespace zombie {
 
 		drawBuildings_.createVBO(buildings_, wall_.getTexture());
 	}
-	
 
 	void ZombieGame::calculateValidSpawningPoints(Unit& human) {
 		vaildSpawningPoints_.clear();

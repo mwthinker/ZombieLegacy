@@ -16,13 +16,15 @@ namespace zombie {
 
 		void useProgram() const;
 
-		inline static constexpr unsigned int vertexSizeInBytes() {
+		static constexpr unsigned int vertexSizeInBytes() {
 			return vertexSizeInFloat() * sizeof(GLfloat);
 		}
 
-		inline static constexpr unsigned int vertexSizeInFloat() {
+		static constexpr unsigned int vertexSizeInFloat() {
 			return 4;
 		}
+
+		void setVertexAttribPointer() const;
 
 		// Vertex buffer Attributes. ---------------------------
 		
@@ -43,6 +45,12 @@ namespace zombie {
 		void setGlColorU(float red, float green, float blue, float alpha = 1) const;
 		void setGlColorU(const mw::Color& color) const;
 		void setGlTextureU(bool texture) const;
+
+		class Vertex {
+		public:
+			Position position_;
+			Position texPosition_;
+		};
 
 	private:
 		mw::Shader shader_;

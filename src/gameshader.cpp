@@ -1,5 +1,7 @@
 #include "gameshader.h"
 
+#include "box2ddef.h"
+
 namespace zombie {
 
 	GameShader::GameShader() {
@@ -19,6 +21,10 @@ namespace zombie {
 	}
 
 	GameShader::GameShader(std::string vShaderFile, std::string fShaderFile) {
+		GameShader shader;
+
+		//Batch<GameShader> batch(shader, 1000);
+
 		shader_.bindAttribute("aVer");
 		shader_.bindAttribute("aTex");
 		shader_.loadAndLinkFromFile(vShaderFile, fShaderFile);
@@ -43,6 +49,15 @@ namespace zombie {
 
 	void GameShader::useProgram() const {
 		shader_.useProgram();
+	}
+
+	void GameShader::setVertexAttribPointer() const {
+		/*
+		setGlPosA(2, sizeof(GLfloat) * 9, (GLvoid*) 0);
+		setGlTexA(2, sizeof(GLfloat) * 9, (GLvoid*) (sizeof(GLfloat) * 2));
+		setGlIsTexA(1, sizeof(GLfloat) * 9, (GLvoid*) (sizeof(GLfloat) * 4));
+		setGlColorA(4, sizeof(GLfloat) * 9, (GLvoid*) (sizeof(GLfloat) * 5));
+		*/
 	}
 
 	// Vertex buffer Attributes. ---------------------------
