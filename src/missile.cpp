@@ -122,7 +122,7 @@ namespace zombie {
 					dir.Normalize();
 
 					// Apply some out going force to the object.
-					unit->getBody()->ApplyForceToCenter(force_ * dir);
+					unit->getBody()->ApplyForceToCenter(force_ * dir, true);
 				}
 			}
 		}

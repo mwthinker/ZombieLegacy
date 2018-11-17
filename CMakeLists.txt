@@ -101,9 +101,7 @@ set(SOURCES_ZOMBIE
 	src/zombiewindow.cpp
 )
 
-add_subdirectory(SdlGui)
-add_subdirectory(Box2D)
-add_subdirectory(jsoncpp)
+add_subdirectory(external)
 
 file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
 
@@ -116,16 +114,11 @@ else ()
 	add_executable(Zombie ${SOURCES_ZOMBIE})
 endif ()
 
-target_include_directories(Zombie
-	PRIVATE
-		"."
-)
-
 target_link_libraries(Zombie
 	PRIVATE
 		Box2D
 		SdlGui
-		jsoncpp
+		json
 )
 
 ############### CPack

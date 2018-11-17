@@ -156,19 +156,19 @@ namespace zombie {
 
 			// Move forward or backwards.
 			if (input.forward_ && !input.backward_) {
-				body_->ApplyForceToCenter(b2Vec2(move.x, move.y));
+				body_->ApplyForceToCenter(b2Vec2(move.x, move.y), true);
 				signal(WALK);
 			} else if (!input.forward_ && input.backward_) {
-				body_->ApplyForceToCenter(-b2Vec2(move.x, move.y));
+				body_->ApplyForceToCenter(-b2Vec2(move.x, move.y), true);
 				signal(WALK);
 			} else {
 				// In order to make the unit stop when not moving.
-				body_->ApplyForceToCenter(-body_->GetLinearVelocity());
+				body_->ApplyForceToCenter(-body_->GetLinearVelocity(), true);
 				signal(STANDSTILL);
 			}
 
 			// Add friction.
-			body_->ApplyForceToCenter(-body_->GetLinearVelocity());
+			body_->ApplyForceToCenter(-body_->GetLinearVelocity(), true);
 
 			// Turn left or right.
 			if (input.turnLeft_ && !input.turnRight_) {

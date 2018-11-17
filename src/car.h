@@ -30,7 +30,7 @@ namespace zombie {
 		void updatePhysics(double time, double timeStept);
 
 		void applySpin(float impulse) {
-			body_->ApplyAngularImpulse(impulse);
+			body_->ApplyAngularImpulse(impulse, true);
 		}
 
 		State getState() const;

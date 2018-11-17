@@ -5,7 +5,7 @@
 *.wav
 *vcredist_x86.exe
 *~
-build2
+/build*
 
 #################
 ## Eclipse

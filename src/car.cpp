@@ -71,7 +71,7 @@ namespace zombie {
 		} else if (!input.forward_ && input.backward_) {
 			throttle = -20.0;
 		}
-		body_->ApplyForce(throttle*force, getFrontWheelPosition());
+		body_->ApplyForce(throttle*force, getFrontWheelPosition(), true);
 
 		float steering = 0.0f;
 
@@ -143,13 +143,13 @@ namespace zombie {
 		float friction = frictionLateralBackWheel;
 		b2Vec2 currentRightNormal = body_->GetWorldVector(b2Vec2(0, -1));
 		b2Vec2 force = -friction * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getBackWheelPosition())) * currentRightNormal;
-		body_->ApplyForce(force, getBackWheelPosition());
+		body_->ApplyForce(force, getBackWheelPosition(), true);
 				
 		// Front wheel lateral friction.
 		friction = frictionLateralFrontWheel;
 		currentRightNormal = b2Vec2(-getDirectionVector().y, getDirectionVector().x);
 		force = -friction * b2Dot(currentRightNormal, body_->GetLinearVelocityFromWorldPoint(getFrontWheelPosition())) * currentRightNormal;
-		body_->ApplyForce(force, getFrontWheelPosition());
+		body_->ApplyForce(force, getFrontWheelPosition(), true);
 				
 		// Back wheel forward friction.
 		friction = frictionForwardBackWheel;
@@ -157,7 +157,7 @@ namespace zombie {
 			friction = frictionLateralBackWheel;
 		}
 		force = -friction * b2Dot(getDirectionVector(), body_->GetLinearVelocity()) * getDirectionVector();
-		body_->ApplyForce(force, getBackWheelPosition());
+		body_->ApplyForce(force, getBackWheelPosition(), true);
 				
 		// Front wheel forward friction.
 		friction = frictionForwardFrontWheel;
@@ -166,7 +166,7 @@ namespace zombie {
 		}
 		b2Vec2 forward = body_->GetWorldVector(b2Vec2(1, 0));
 		force = -friction * b2Dot(forward, body_->GetLinearVelocity()) * forward;
-		body_->ApplyForce(force, getFrontWheelPosition());
+		body_->ApplyForce(force, getFrontWheelPosition(), true);
 	}
 
 	void Car::signal(int eventType) {

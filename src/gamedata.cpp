@@ -1,11 +1,14 @@
 #include "gamedata.h"
 
 #include <fstream>
+#include <sstream>
+
+using nlohmann::json;
 
 namespace zombie {
 
 	namespace {
-
+		
 		// Takes a string as input and returns the point.
 		// The string "POINT (x y)" the input should be defined
 		// as "POINT (...)".
@@ -64,7 +67,7 @@ namespace zombie {
 	}) {
 		std::ifstream in(JSON_PATH, std::ifstream::binary);
 		in >> root_;
-		std::ifstream mapIn(root_["settings"]["map"].asString(), std::ifstream::binary);
+		std::ifstream mapIn(root_["settings"]["map"].get<std::string>(), std::ifstream::binary);
 		mapIn >> rootMap_;
 	}
 
@@ -116,7 +119,7 @@ namespace zombie {
 	}
 
 	mw::Font GameData::getDefaultFont(int size) {
-		return loadFont(root_["window"]["font"].asString(), size);
+		return loadFont(root_["window"]["font"].get<std::string>(), size);
 	}
 
 	void GameData::bindTextureFromAtlas() const {
@@ -124,11 +127,11 @@ namespace zombie {
 	}
 
 	int GameData::getWindowPositionX() {
-		return root_["window"]["positionX"].asInt();
+		return root_["window"]["positionX"].get<int>();
 	}
 
 	int GameData::getWindowPositionY() {
-		return root_["window"]["positionY"].asInt();
+		return root_["window"]["positionY"].get<int>();
 	}
 
 	void GameData::setWindowPositionX(int x) {
@@ -140,11 +143,11 @@ namespace zombie {
 	}
 
 	int GameData::getWindowWidth() {
-		return root_["window"]["width"].asInt();
+		return root_["window"]["width"].get<int>();
 	}
 
 	int GameData::getWindowHeight() {
-		return root_["window"]["height"].asInt();
+		return root_["window"]["height"].get<int>();
 	}
 
 	void GameData::setWindowWidth(int width) {
@@ -156,7 +159,7 @@ namespace zombie {
 	}
 
 	bool GameData::isWindowResizable() {
-		return root_["window"]["resizeable"].asBool();
+		return root_["window"]["resizeable"].get<bool>();
 	}
 
 	void GameData::setWindowResizable(bool resizeable) {
@@ -164,19 +167,19 @@ namespace zombie {
 	}
 
 	int GameData::getWindowMinWidth() {
-		return root_["window"]["minWidth"].asInt();
+		return root_["window"]["minWidth"].get<int>();
 	}
 
 	int GameData::getWindowMinHeight() {
-		return root_["window"]["minHeight"].asInt();
+		return root_["window"]["minHeight"].get<int>();
 	}
 
 	std::string GameData::getWindowIcon() {
-		return root_["window"]["icon"].asString();
+		return root_["window"]["icon"].get<std::string>();
 	}
 
 	bool GameData::isWindowBordered() {
-		return root_["window"]["border"].asBool();
+		return root_["window"]["border"].get<bool>();
 	}
 
 	void GameData::setWindowBordered(bool border) {
@@ -184,7 +187,7 @@ namespace zombie {
 	}
 
 	bool GameData::isWindowMaximized() {
-		return root_["window"]["maximized"].asBool();
+		return root_["window"]["maximized"].get<bool>();
 	}
 
 	void GameData::setWindowMaximized(bool maximized) {
@@ -192,7 +195,7 @@ namespace zombie {
 	}
 
 	bool GameData::isWindowVsync() {
-		return root_["window"]["vsync"].asBool();
+		return root_["window"]["vsync"].get<bool>();
 	}
 
 	void GameData::setWindowVsync(bool activate) {
@@ -200,7 +203,7 @@ namespace zombie {
 	}
 
 	bool GameData::isMusicOn() {
-		return root_["music"]["switch"].asBool();
+		return root_["music"]["switch"].get<bool>();
 	}
 
 	void GameData::setMusicOn(bool maximized) {
@@ -208,7 +211,7 @@ namespace zombie {
 	}
 
 	float GameData::getMusicVolume() {
-		return root_["music"]["volume"].asFloat();
+		return root_["music"]["volume"].get<float>();
 	}
 
 	void GameData::setMusicVolume(float volume) {
@@ -216,118 +219,117 @@ namespace zombie {
 	}
 
 	mw::Music GameData::getMusicTrack() {
-		return loadMusic(root_["music"]["track"].asString());
+		return loadMusic(root_["music"]["track"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getTreeImage() {
-		return loadSprite(root_["tree"].asString());
+		return loadSprite(root_["tree"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getBuildingWallImage() {
-		return loadSprite(root_["buildings"]["wallImage"].asString());
+		return loadSprite(root_["buildings"]["wallImage"].get<std::string>());
 	}
 
 	// -----------------
 
 	float GameData::getSettingsImpulseThreshold() {
-		return root_["settings"]["impulseThreshold"].asFloat();
+		return root_["settings"]["impulseThreshold"].get<float>();
 	}
 
 	float GameData::getSettingsTimeStep() {
-		return root_["settings"]["timeStep"].asFloat();
+		return root_["settings"]["timeStep"].get<float>();
 	}
 
 	float GameData::getSettingsInnerSpawnRadius() {
-		return root_["settings"]["innerSpawnRadius"].asFloat();
+		return root_["settings"]["innerSpawnRadius"].get<float>();
 	}
 
 	float GameData::getSettingsOuterSpawnRadius() {
-		return root_["settings"]["outerSpawnRadius"].asFloat();
+		return root_["settings"]["outerSpawnRadius"].get<float>();
 	}
 
 	int GameData::getSettingsUnitLevel() {
-		return root_["settings"]["unitLevel"].asInt();
+		return root_["settings"]["unitLevel"].get<int>();
 	}
 
 	int GameData::getSettingsUnitLimit() {
-		return root_["settings"]["unitLimit"].asInt();
+		return root_["settings"]["unitLimit"].get<int>();
 	}
 
 	std::string GameData::getSettingsMap() {
-		return root_["settings"]["map"].asString();
+		return root_["settings"]["map"].get<std::string>();
 	}
 
 	mw::Sound GameData::getMenuSoundChoice() {
-		return loadSound(root_["menu"]["soundChoice"].asString());
+		return loadSound(root_["menu"]["soundChoice"].get<std::string>());
 	}
 
 	mw::Sound GameData::getMenuSoundHighlited() {
-		return loadSound(root_["menu"]["soundHighlited"].asString());
+		return loadSound(root_["menu"]["soundHighlited"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getMenuBackgroundImage() {
-		return loadSprite(root_["menu"]["backgroundImage"].asString());
+		return loadSprite(root_["menu"]["backgroundImage"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getWaterSeeFloorImage() {
-		return loadSprite(root_["water"]["seeFloorImage"].asString());
+		return loadSprite(root_["water"]["seeFloorImage"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadIntersection() {
-		return loadSprite(root_["roads"]["intersection"].asString());
+		return loadSprite(root_["roads"]["intersection"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadStraight0() {
-		return loadSprite(root_["roads"]["straight0"].asString());
+		return loadSprite(root_["roads"]["straight0"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadStraight90() {
-		return loadSprite(root_["roads"]["straight90"].asString());
+		return loadSprite(root_["roads"]["straight90"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurn0() {
-		return loadSprite(root_["roads"]["turn0"].asString());
+		return loadSprite(root_["roads"]["turn0"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurn90() {
-		return loadSprite(root_["roads"]["turn90"].asString());
+		return loadSprite(root_["roads"]["turn90"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurn180() {
-		return loadSprite(root_["roads"]["turn180"].asString());
+		return loadSprite(root_["roads"]["turn180"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurn270() {
-		return loadSprite(root_["roads"]["turn270"].asString());
+		return loadSprite(root_["roads"]["turn270"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurnIntersection0() {
-		return loadSprite(root_["roads"]["tintersection0"].asString());
+		return loadSprite(root_["roads"]["tintersection0"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurnIntersection90() {
-		return loadSprite(root_["roads"]["tintersection90"].asString());
+		return loadSprite(root_["roads"]["tintersection90"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurnIntersection180() {
-		return loadSprite(root_["roads"]["tintersection180"].asString());
+		return loadSprite(root_["roads"]["tintersection180"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurntersection270() {
-		return loadSprite(root_["roads"]["tintersection270"].asString());
+		return loadSprite(root_["roads"]["tintersection270"].get<std::string>());
 	}
 
 	ExplosionProperties GameData::getExplosionProperties() {
-		float timeDelay = root_["explosion"]["timeDelay"].asFloat();
-		float speed = root_["explosion"]["speed"].asFloat();
-		mw::Sound sound = loadSound(root_["explosion"]["sound"].asString());
+		float timeDelay = root_["explosion"]["timeDelay"].get<float>();
+		float speed = root_["explosion"]["speed"].get<float>();
+		mw::Sound sound = loadSound(root_["explosion"]["sound"].get<std::string>());
 		Animation animation = loadAnimation(root_["explosion"]["animation"]);
 		animation.setLooping(false);
 		return ExplosionProperties(animation, sound, timeDelay);
 	}
 
 	UnitProperties GameData::getHumanProperties() {
-		bool test = root_.isMember("human");
 		return loadUnitProperties(root_["human"]);
 	}
 
@@ -335,30 +337,45 @@ namespace zombie {
 		return loadUnitProperties(root_["zombie"]);
 	}
 
-	Animation GameData::loadAnimation(Json::Value animationTag) {
+	Animation GameData::loadAnimation(const json& animationTag) {
 		float defaultDeltaTime = 1.f;
-		if (animationTag.isMember("deltaTime")) {
-			defaultDeltaTime = animationTag["deltaTime"].asFloat();
+		try {
+			defaultDeltaTime = animationTag.at("deltaTime").get<float>();
+		} catch (nlohmann::detail::out_of_range) {
+			// Do nothing.
 		}
 
 		float defaultBodyWidth = 1.f;
-		if (animationTag.isMember("bodyWidth")) {
-			defaultBodyWidth = animationTag["bodyWidth"].asFloat();
+		try {
+			defaultBodyWidth = animationTag.at("bodyWidth").get<float>();
+		} catch (nlohmann::detail::out_of_range) {
+			// Do nothing.
 		}
 
 		Animation animation;
-		for (Json::Value& child : animationTag["frames"]) {
-			float bodyWidth = defaultBodyWidth;
-			if (child.isMember("bodyWidth")) {
-				bodyWidth = child["bodyWidth"].asFloat();
+		try {
+			for (const auto& child : animationTag.at("frames")) {
+				float bodyWidth = defaultBodyWidth;
+				try {
+					bodyWidth = child.at("bodyWidth").get<float>();
+				} catch (nlohmann::detail::out_of_range) {
+					// Do nothing.
+				}
+			
+				float deltaTime = defaultDeltaTime;
+				try {
+					deltaTime = child.at("time").get<float>();
+				} catch (nlohmann::detail::out_of_range) {
+					// Do nothing.
+				}
+
+				auto n = child["image"].get<std::string>();
+				animation.add(loadSprite(child["image"].get<std::string>()), bodyWidth, deltaTime);
 			}
-			float deltaTime = defaultDeltaTime;
-			if (child.isMember("time")) {
-				deltaTime = child["time"].asFloat();
-			}
-			auto n = child["image"].asString();
-			animation.add(loadSprite(child["image"].asString()), bodyWidth, deltaTime);
+		} catch (nlohmann::detail::out_of_range) {
+			// Do nothing.
 		}
+
 		return animation;
 	}
 
@@ -366,27 +383,27 @@ namespace zombie {
 		return loadMissileProperties(std::string("missile"));
 	}
 
-	UnitProperties GameData::loadUnitProperties(Json::Value unitTag) {
+	UnitProperties GameData::loadUnitProperties(const json& unitTag) {
 		UnitProperties unitProperties;
-		unitProperties.hitSound_ = loadSound(unitTag["hitSound"].asString());
-		unitProperties.dieSound_ = loadSound(unitTag["dieSound"].asString());
+		unitProperties.hitSound_ = loadSound(unitTag["hitSound"].get<std::string>());
+		unitProperties.dieSound_ = loadSound(unitTag["dieSound"].get<std::string>());
 		unitProperties.moveAnimation_ = loadAnimation(unitTag["moveAnimation"]);
 		unitProperties.dieAnimation_ = loadAnimation(unitTag["dieAnimation"]);
 		unitProperties.injuredAnimation_ = loadAnimation(unitTag["injuredAnimation"]);
-		unitProperties.grip_ = Position(unitTag["moveImageGripX"].asFloat(), unitTag["moveImageGripY"].asFloat());
-		unitProperties.mass_ = unitTag["mass"].asFloat();
-		unitProperties.radius_ = unitTag["radius"].asFloat();
-		unitProperties.life_ = unitTag["life"].asFloat();
-		unitProperties.walkingSpeed_ = unitTag["walkingSpeed"].asFloat();
-		unitProperties.runningSpeed_ = unitTag["runningSpeed"].asFloat();
-		unitProperties.stamina_ = unitTag["stamina"].asFloat();
-		unitProperties.weaponProperties_ = loadWeaponProperties(unitTag["weapon"].asString());
+		unitProperties.grip_ = Position(unitTag["moveImageGripX"].get<float>(), unitTag["moveImageGripY"].get<float>());
+		unitProperties.mass_ = unitTag["mass"].get<float>();
+		unitProperties.radius_ = unitTag["radius"].get<float>();
+		unitProperties.life_ = unitTag["life"].get<float>();
+		unitProperties.walkingSpeed_ = unitTag["walkingSpeed"].get<float>();
+		unitProperties.runningSpeed_ = unitTag["runningSpeed"].get<float>();
+		unitProperties.stamina_ = unitTag["stamina"].get<float>();
+		unitProperties.weaponProperties_ = loadWeaponProperties(unitTag["weapon"].get<std::string>());
 		return unitProperties;
 	}
 
 	WeaponProperties GameData::loadWeaponProperties(std::string weaponName) {
-		for (Json::Value& child : root_["weapons"]) {
-			std::string name = child["name"].asString();
+		for (const auto& child : root_["weapons"]) {
+			std::string name = child["name"].get<std::string>();
 			if (name == weaponName) {
 				return loadWeaponProperties(child);
 			}
@@ -394,39 +411,39 @@ namespace zombie {
 		return WeaponProperties();
 	}
 
-	WeaponProperties GameData::loadWeaponProperties(Json::Value unitTag) {
+	WeaponProperties GameData::loadWeaponProperties(const json& unitTag) {
 		WeaponProperties properties;
-		properties.name_ = unitTag["name"].asString();
+		properties.name_ = unitTag["name"].get<std::string>();
 		properties.type_ = WeaponProperties::BULLET;
-		std::string s = unitTag["type"].asString();
-		if (unitTag["type"].asString() == "BULLET") {
+		std::string s = unitTag["type"].get<std::string>();
+		if (unitTag["type"].get<std::string>() == "BULLET") {
 			properties.type_ = WeaponProperties::BULLET;
-		} else if (unitTag["type"].asString() == "MISSILE") {
+		} else if (unitTag["type"].get<std::string>() == "MISSILE") {
 			properties.type_ = WeaponProperties::MISSILE;
 		} else {
 			throw 1;
 		}
-		properties.symbolImage_ = loadSprite(unitTag["symbolImage"].asString());
-		properties.timeBetweenShots_ = unitTag["timeBetweenShots"].asFloat();
-		properties.clipSize_ = unitTag["clipSize"].asInt();
-		properties.shootSound_ = loadSound(unitTag["shootSound"].asString());
-		properties.reloadSound_ = loadSound(unitTag["reloadSound"].asString());
+		properties.symbolImage_ = loadSprite(unitTag["symbolImage"].get<std::string>());
+		properties.timeBetweenShots_ = unitTag["timeBetweenShots"].get<float>();
+		properties.clipSize_ = unitTag["clipSize"].get<int>();
+		properties.shootSound_ = loadSound(unitTag["shootSound"].get<std::string>());
+		properties.reloadSound_ = loadSound(unitTag["reloadSound"].get<std::string>());
 		properties.moveAnimation_ = loadAnimation(unitTag["moveAnimation"]);
-		properties.size_ = unitTag["size"].asFloat();
-		properties.moveImageGrip_ = Position(unitTag["moveImageGripX"].asFloat(), unitTag["moveImageGripY"].asFloat());
+		properties.size_ = unitTag["size"].get<float>();
+		properties.moveImageGrip_ = Position(unitTag["moveImageGripX"].get<float>(), unitTag["moveImageGripY"].get<float>());
 		
 		// Projectile properties.
-		properties.damage_ = unitTag["projectile"]["damage"].asFloat();
-		properties.range_ = unitTag["projectile"]["range"].asFloat();
-		properties.laserSight_ = unitTag["projectile"]["force"].asBool();
+		properties.damage_ = unitTag["projectile"]["damage"].get<float>();
+		properties.range_ = unitTag["projectile"]["range"].get<float>();
+		properties.laserSight_ = unitTag["laserSight"].get<bool>();
 		switch (properties.type_) {
 			case WeaponProperties::BULLET:
 				break;
 			case WeaponProperties::MISSILE:
-				properties.damageRadius_ = unitTag["projectile"]["damageRadius"].asFloat();
-				properties.deathTime_ = unitTag["projectile"]["deathTime"].asFloat();
-				properties.speed_ = unitTag["projectile"]["speed"].asFloat();
-				properties.force_ = unitTag["projectile"]["force"].asFloat();
+				properties.damageRadius_ = unitTag["projectile"]["damageRadius"].get<float>();
+				properties.deathTime_ = unitTag["projectile"]["deathTime"].get<float>();
+				properties.speed_ = unitTag["projectile"]["speed"].get<float>();
+				properties.force_ = unitTag["projectile"]["force"].get<float>();
 				properties.missileProperties_ = loadMissileProperties(std::string("missile"));
 				break;
 		}
@@ -435,8 +452,8 @@ namespace zombie {
 	}
 
 	MissileProperties GameData::loadMissileProperties(std::string missileName) {
-		for (Json::Value& child : root_["missiles"]) {
-			std::string name = child["name"].asString();
+		for (const auto& child : root_["missiles"]) {
+			std::string name = child["name"].get<std::string>();
 			if (name == missileName) {
 				return loadMissileProperties(child);
 			}
@@ -444,57 +461,57 @@ namespace zombie {
 		return MissileProperties();
 	}
 
-	MissileProperties GameData::loadMissileProperties(Json::Value unitTag) {
+	MissileProperties GameData::loadMissileProperties(const json& unitTag) {
 		MissileProperties properties;
-		properties.name_ = unitTag["name"].asString();
-		properties.mass_ = unitTag["mass"].asFloat();
-		properties.width_ = unitTag["width"].asFloat();
-		properties.length_ = unitTag["length"].asFloat();
+		properties.name_ = unitTag["name"].get<std::string>();
+		properties.mass_ = unitTag["mass"].get<float>();
+		properties.width_ = unitTag["width"].get<float>();
+		properties.length_ = unitTag["length"].get<float>();
 		properties.animation_ = loadAnimation(unitTag["animation"]);
-		properties.moveSound_ = loadSound(unitTag["moveSound"].asString());
+		properties.moveSound_ = loadSound(unitTag["moveSound"].get<std::string>());
 		return properties;
 	}
 
 	MapProperties GameData::loadMapProperties() {
 		MapProperties properties;
-		properties.name_ = rootMap_["name"].asString();
+		properties.name_ = rootMap_["name"].get<std::string>();
 
-		for (Json::Value& child : rootMap_["objects"]) {
-			std::string objectType = child["objectType"].asString();
+		for (const auto& child : rootMap_["objects"]) {
+			std::string objectType = child["objectType"].get<std::string>();
 			if (objectType == "building") {
 				MapProperties::Object ob;
 				ob.type_ = MapProperties::BUILDING;
-				ob.geom_ = loadPolygon(child["geom"].asString());
+				ob.geom_ = loadPolygon(child["geom"].get<std::string>());
 				properties.positions_.push_back(ob);
 			} else if (objectType == "grass") {
 				MapProperties::Object ob;
 				ob.type_ = MapProperties::GRASS;
-				ob.geom_ = loadPolygon(child["geom"].asString());
+				ob.geom_ = loadPolygon(child["geom"].get<std::string>());
 				properties.positions_.push_back(ob);
 			} else if (objectType == "tilepoint") {
 				MapProperties::Object ob;
 				ob.type_ = MapProperties::TILEPOINT;
-				ob.geom_.push_back(loadPoint(child["geom"].asString()));
+				ob.geom_.push_back(loadPoint(child["geom"].get<std::string>()));
 				properties.positions_.push_back(ob);
 			} else if (objectType == "tree") {
 				MapProperties::Object ob;
 				ob.type_ = MapProperties::TREE;
-				ob.geom_.push_back(loadPoint(child["geom"].asString()));
+				ob.geom_.push_back(loadPoint(child["geom"].get<std::string>()));
 				properties.positions_.push_back(ob);
 			} else if (objectType == "water") {
 				MapProperties::Object ob;
 				ob.type_ = MapProperties::WATER;
-				ob.geom_ = loadPolygon(child["geom"].asString());
+				ob.geom_ = loadPolygon(child["geom"].get<std::string>());
 				properties.positions_.push_back(ob);
 			} else if (objectType == "spawningpoint") {
 				MapProperties::Object ob;
 				ob.type_ = MapProperties::SPAWNINGPOINT;
-				ob.geom_.push_back(loadPoint(child["geom"].asString()));
+				ob.geom_.push_back(loadPoint(child["geom"].get<std::string>()));
 				properties.positions_.push_back(ob);
 			} else if (objectType == "car spawningpoint") {
 				MapProperties::Object ob;
 				ob.type_ = MapProperties::CAR_SPAWNINGPOINT;
-				ob.geom_.push_back(loadPoint(child["geom"].asString()));
+				ob.geom_.push_back(loadPoint(child["geom"].get<std::string>()));
 				properties.positions_.push_back(ob);
 			}
 		}

@@ -4,6 +4,12 @@
 [submodule "MwExtra"]
 	path = MwExtra
 	url = https://github.com/mwthinker/MwExtra.git
-[submodule "SdlGui"]
-	path = SdlGui
+[submodule "external/Box2D"]
+	path = external/Box2D
+	url = https://github.com/erincatto/Box2D.git
+[submodule "external/SdlGui"]
+	path = external/SdlGui
 	url = https://github.com/mwthinker/SdlGui.git
+[submodule "external/json"]
+	path = external/json
+	url = https://github.com/nlohmann/json.git

@@ -15,7 +15,7 @@
 #include <mw/music.h>
 #include <mw/textureatlas.h>
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 
 #include <map>
 #include <vector>
@@ -123,14 +123,14 @@ namespace zombie {
 	private:
 		GameData();
 
-		Animation loadAnimation(Json::Value animationTag);
+		Animation loadAnimation(const nlohmann::json& animationTag);
 
-		UnitProperties loadUnitProperties(Json::Value unitTag);
+		UnitProperties loadUnitProperties(const nlohmann::json& unitTag);
 		
-		WeaponProperties loadWeaponProperties(Json::Value unitTag);
+		WeaponProperties loadWeaponProperties(const nlohmann::json& unitTag);
 		WeaponProperties loadWeaponProperties(std::string weaponName);
 		
-		MissileProperties loadMissileProperties(Json::Value unitTag);
+		MissileProperties loadMissileProperties(const nlohmann::json& unitTag);
 		MissileProperties loadMissileProperties(std::string weaponName);
 
 		const std::string JSON_PATH = "zombie.json";
@@ -139,8 +139,8 @@ namespace zombie {
 		std::map<std::string, mw::Font> fonts_;
 		std::map<std::string, mw::Music> musics_;
 
-		Json::Value root_;
-		Json::Value rootMap_;
+		nlohmann::json root_;
+		nlohmann::json rootMap_;
 	};
 
 } // Namespace zombie.
