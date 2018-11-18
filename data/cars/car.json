@@ -1,0 +1,11 @@
+{
+	"name": "car",
+	"moveAnimation": {
+		"frame": "images/car.png",
+		"bodyWidth": 256
+	},
+	"mass": 10,
+	"width": 1,
+	"length": 2,
+	"life": 1000000
+}

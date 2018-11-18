@@ -1,0 +1,19 @@
+{
+	"name": "zombieFist",
+	"type": "BULLET",            
+	"symbolImage": "images/zombieFist.png",
+	"timeBetweenShots": 0.3,
+	"clipSize": 1000000,
+	"shootSound": "sounds/ZombieFist.wav",
+	"reloadSound": "sounds/ZombieReload.wav",
+	"moveAnimation": {
+	},
+	"size": 1,
+	"moveImageGripX": 0,
+	"moveImageGripY": 0,
+	"projectile": {
+		"damage": 10,
+		"range": 1
+	},
+	"laserSight": false
+}

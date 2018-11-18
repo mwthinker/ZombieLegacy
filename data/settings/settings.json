@@ -1,0 +1,177 @@
+{
+	"window": {
+		"width": 600,
+		"height": 600,
+		"positionX": 787,
+		"positionY": 265,
+		"maximized": false,
+		"resizeable": true,
+		"minWidth": 480,
+		"minHeight": 480,
+		"icon": "images/1.png",
+		"font": "fonts/Ubuntu-B.ttf"
+	},
+	"explosion": {
+		"timeDelay": 0.3,
+		"speed": 0.3,
+		"sound": "sounds/explosion.wav",
+		"animation": {
+			"deltaTime": 0.002,
+			"bodyWidth": 128,
+			"frames": [
+				{
+					"image": "images/explosion/explosion1/0.png"
+				},
+				{
+					"image": "images/explosion/explosion1/1.png"
+				},
+				{
+					"image": "images/explosion/explosion1/2.png"
+				},
+				{
+					"image": "images/explosion/explosion1/3.png"
+				},
+				{
+					"image": "images/explosion/explosion1/4.png"
+				},
+				{
+					"image": "images/explosion/explosion1/5.png"
+				},
+				{
+					"image": "images/explosion/explosion1/6.png"
+				},
+				{
+					"image": "images/explosion/explosion1/7.png"
+				},
+				{
+					"image": "images/explosion/explosion1/8.png"
+				},
+				{
+					"image": "images/explosion/explosion1/9.png"
+				},
+				{
+					"image": "images/explosion/explosion1/10.png"
+				},
+				{
+					"image": "images/explosion/explosion1/11.png"
+				},
+				{
+					"image": "images/explosion/explosion1/12.png"
+				},
+				{
+					"image": "images/explosion/explosion1/13.png"
+				},
+				{
+					"image": "images/explosion/explosion1/14.png"
+				},
+				{
+					"image": "images/explosion/explosion1/15.png"
+				},
+				{
+					"image": "images/explosion/explosion1/16.png"
+				},
+				{
+					"image": "images/explosion/explosion1/17.png"
+				},
+				{
+					"image": "images/explosion/explosion1/18.png"
+				},
+				{
+					"image": "images/explosion/explosion1/19.png"
+				},
+				{
+					"image": "images/explosion/explosion1/20.png"
+				},
+				{
+					"image": "images/explosion/explosion1/21.png"
+				},
+				{
+					"image": "images/explosion/explosion1/22.png"
+				},
+				{
+					"image": "images/explosion/explosion1/23.png"
+				},
+				{
+					"image": "images/explosion/explosion1/24.png"
+				},
+				{
+					"image": "images/explosion/explosion1/25.png"
+				},
+				{
+					"image": "images/explosion/explosion1/26.png"
+				},
+				{
+					"image": "images/explosion/explosion1/27.png"
+				},
+				{
+					"image": "images/explosion/explosion1/28.png"
+				},
+				{
+					"image": "images/explosion/explosion1/29.png"
+				},
+				{
+					"image": "images/explosion/explosion1/30.png"
+				},
+				{
+					"image": "images/explosion/explosion1/31.png"
+				},
+				{
+					"image": "images/explosion/explosion1/32.png"
+				}
+			]
+		}
+	},
+	"roads": {
+		"intersection": "images/roads/intersection.png",
+		"straight0": "images/roads/straight0.png",
+		"straight90": "images/roads/straight90.png",
+		"turn0": "images/roads/turn0.png",
+		"turn90": "images/roads/turn90.png",
+		"turn180": "images/roads/turn180.png",
+		"turn270": "images/roads/turn270.png",
+		"tintersection0": "images/roads/tintersection0.png",
+		"tintersection90": "images/roads/tintersection90.png",
+		"tintersection180": "images/roads/tintersection180.png",
+		"tintersection270": "images/roads/tintersection270.png"
+	},
+	"tree": "images/tree.png",
+	"water": {
+		"seeFloorImage": "images/seeFloor.png"
+	},
+	"settings": {
+		"map": "settings/maps/map.json",
+		"unitLevel": 30,
+		"unitLimit": 50,
+		"impulseThreshold": 2,
+		"timeStep": 0.01667,
+		"innerSpawnRadius": 7.0,
+		"outerSpawnRadius": 12
+	},
+	"menu": {
+		"soundHighlited": "sounds/handgunReload.wav",
+		"soundChoice": "sounds/handgunShoot.wav",
+		"backgroundImage": "images/menu.png"
+	},
+	"music": {
+		"switch": true,
+		"track": "sounds/ZombieTime_v2.mp3",
+		"volume": 0.5
+	},
+	"buildings": {
+		"hitSound": "sounds/buildingHit.wav",
+		"wallImage": "images/building.png"
+	},
+	"laserSight": {
+		"overlayColor": "0.8 0.8 0.8 0.7",
+		"laserColor": "0.8 0 0 0.5",
+		"speed": 1.0,
+		"height": 0.4,
+		"sprites": {
+			"laser": "images/laser/laser.png",
+			"laserEnd": "images/laser/laserEnd.png",
+			"laserOverlay": "images/laser/laserOverlay.png",
+			"laserOverlayStatic": "images/laser/laserOverlayStatic.png",
+			"laserOverlayStaticEnd": "images/laser/laserOverlayStaticEnd.png"
+		}
+	}
+}

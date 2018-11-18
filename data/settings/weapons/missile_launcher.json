@@ -1,0 +1,29 @@
+{
+	"name": "missileLauncher",
+	"type": "MISSILE",
+	"symbolImage": "images/handgun.png",
+	"timeBetweenShots": 0.3,
+	"clipSize": 1000000,
+	"shootSound": "sounds/launch.wav",
+	"reloadSound": "sounds/handgunReload.wav",
+	"moveAnimation": {
+		"frames": [
+			{
+				"image": "images/bazooka.png",
+				"bodyWidth": 128
+			}
+		]
+	},
+	"size": 0.5,
+	"moveImageGripX": -0.05,
+	"moveImageGripY": 0,
+	"projectile": {
+		"damageRadius": 2,
+		"damage": 60,
+		"range": 10,
+		"deathTime": 10,
+		"speed": 15,
+		"force": 300
+	},
+	"laserSight": true
+}

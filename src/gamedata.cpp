@@ -2,10 +2,20 @@
 
 #include <fstream>
 #include <sstream>
+#include <filesystem>
+#include <regex>
 
 using nlohmann::json;
+namespace fs = std::filesystem;
 
 namespace zombie {
+
+	const std::string GameData::SETTINGS_PATH = "settings/settings.json";
+	const std::string GameData::MAPS_PATH = "settings/maps.json";
+	const std::string GameData::MISSILES_PATH = "settings/missiles";
+	const std::string GameData::UNITS_PATH = "settings/units";
+	const std::string GameData::CARS_PATH = "settings/cars";
+	const std::string GameData::WEAPONS_PATH = "settings/weapons";
 
 	namespace {
 		
@@ -58,6 +68,19 @@ namespace zombie {
 			points.pop_back();
 			return points;
 		}
+
+		bool isJsonName(const std::string name) {
+			try {
+				static const std::regex regex(".*\.[Jj][Ss][Oo][Nn]");
+				std::smatch match;
+				if (std::regex_match(name, match, regex)) {
+					return true;
+				}
+			} catch (std::regex_error error) {
+				// Something is wrong with the regex.
+			}
+			return false;
+		}
 	
 	}
 
@@ -65,15 +88,55 @@ namespace zombie {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	}) {
-		std::ifstream in(JSON_PATH, std::ifstream::binary);
-		in >> root_;
-		std::ifstream mapIn(root_["settings"]["map"].get<std::string>(), std::ifstream::binary);
+		std::ifstream in(SETTINGS_PATH, std::ifstream::binary);
+		in >> settings_;
+		std::ifstream mapIn(settings_["settings"]["map"].get<std::string>(), std::ifstream::binary);
 		mapIn >> rootMap_;
+
+		loadAllWeaponProperties();
+		loadAllMissileProperties();
+		loadAllUnitProperties();
+	}
+
+	void GameData::loadAllWeaponProperties() {
+		for (auto& fileName : fs::directory_iterator(WEAPONS_PATH)) {
+			if (fileName.is_regular_file() && isJsonName(fileName.path().string())) {
+				std::ifstream file(fileName, std::ifstream::binary);
+				nlohmann::json weaponJson;
+				file >> weaponJson;
+
+				weaponPropertiesMap_[weaponJson["name"].get<std::string>()] = loadWeaponProperties(weaponJson);
+			}
+		}
+	}
+
+	void GameData::loadAllMissileProperties() {
+		for (auto& fileName : fs::directory_iterator(MISSILES_PATH)) {
+			if (fileName.is_regular_file() && isJsonName(fileName.path().string())) {
+				std::ifstream file(fileName, std::ifstream::binary);
+				nlohmann::json missileJson;
+				file >> missileJson;
+
+				missilePropertiesMap_[missileJson["name"].get<std::string>()] = loadMissileProperties(missileJson);
+			}
+		}
+	}
+
+	void GameData::loadAllUnitProperties() {
+		for (auto& fileName : fs::directory_iterator(UNITS_PATH)) {
+			if (fileName.is_regular_file() && isJsonName(fileName.path().string())) {
+				std::ifstream file(fileName, std::ifstream::binary);
+				nlohmann::json unitJson;
+				file >> unitJson;
+
+				unitPropertiesMap_[unitJson["name"].get<std::string>()] = loadUnitProperties(unitJson);
+			}
+		}
 	}
 
 	void GameData::save() {
-		std::ofstream out(JSON_PATH);
-		//root_ >> out;
+		std::ofstream out(SETTINGS_PATH);
+		//settings_ >> out;
 	}
 
 	mw::Font GameData::loadFont(std::string file, unsigned int fontSize) {
@@ -119,7 +182,7 @@ namespace zombie {
 	}
 
 	mw::Font GameData::getDefaultFont(int size) {
-		return loadFont(root_["window"]["font"].get<std::string>(), size);
+		return loadFont(settings_["window"]["font"].get<std::string>(), size);
 	}
 
 	void GameData::bindTextureFromAtlas() const {
@@ -127,214 +190,214 @@ namespace zombie {
 	}
 
 	int GameData::getWindowPositionX() {
-		return root_["window"]["positionX"].get<int>();
+		return settings_["window"]["positionX"].get<int>();
 	}
 
 	int GameData::getWindowPositionY() {
-		return root_["window"]["positionY"].get<int>();
+		return settings_["window"]["positionY"].get<int>();
 	}
 
 	void GameData::setWindowPositionX(int x) {
-		root_["window"]["positionX"] = x;
+		settings_["window"]["positionX"] = x;
 	}
 
 	void GameData::setWindowPositionY(int y) {
-		root_["window"]["positionY"] = y;
+		settings_["window"]["positionY"] = y;
 	}
 
 	int GameData::getWindowWidth() {
-		return root_["window"]["width"].get<int>();
+		return settings_["window"]["width"].get<int>();
 	}
 
 	int GameData::getWindowHeight() {
-		return root_["window"]["height"].get<int>();
+		return settings_["window"]["height"].get<int>();
 	}
 
 	void GameData::setWindowWidth(int width) {
-		root_["window"]["width"] = width;
+		settings_["window"]["width"] = width;
 	}
 
 	void GameData::setWindowHeight(int height) {
-		root_["window"]["height"] = height;
+		settings_["window"]["height"] = height;
 	}
 
 	bool GameData::isWindowResizable() {
-		return root_["window"]["resizeable"].get<bool>();
+		return settings_["window"]["resizeable"].get<bool>();
 	}
 
 	void GameData::setWindowResizable(bool resizeable) {
-		root_["window"]["resizeable"] = resizeable;
+		settings_["window"]["resizeable"] = resizeable;
 	}
 
 	int GameData::getWindowMinWidth() {
-		return root_["window"]["minWidth"].get<int>();
+		return settings_["window"]["minWidth"].get<int>();
 	}
 
 	int GameData::getWindowMinHeight() {
-		return root_["window"]["minHeight"].get<int>();
+		return settings_["window"]["minHeight"].get<int>();
 	}
 
 	std::string GameData::getWindowIcon() {
-		return root_["window"]["icon"].get<std::string>();
+		return settings_["window"]["icon"].get<std::string>();
 	}
 
 	bool GameData::isWindowBordered() {
-		return root_["window"]["border"].get<bool>();
+		return settings_["window"]["border"].get<bool>();
 	}
 
 	void GameData::setWindowBordered(bool border) {
-		root_["window"]["border"] = border;
+		settings_["window"]["border"] = border;
 	}
 
 	bool GameData::isWindowMaximized() {
-		return root_["window"]["maximized"].get<bool>();
+		return settings_["window"]["maximized"].get<bool>();
 	}
 
 	void GameData::setWindowMaximized(bool maximized) {
-		root_["window"]["maximized"] = maximized;
+		settings_["window"]["maximized"] = maximized;
 	}
 
 	bool GameData::isWindowVsync() {
-		return root_["window"]["vsync"].get<bool>();
+		return settings_["window"]["vsync"].get<bool>();
 	}
 
 	void GameData::setWindowVsync(bool activate) {
-		root_["window"]["vsync"] = activate;
+		settings_["window"]["vsync"] = activate;
 	}
 
 	bool GameData::isMusicOn() {
-		return root_["music"]["switch"].get<bool>();
+		return settings_["music"]["switch"].get<bool>();
 	}
 
 	void GameData::setMusicOn(bool maximized) {
-		root_["music"]["music"] = maximized;
+		settings_["music"]["music"] = maximized;
 	}
 
 	float GameData::getMusicVolume() {
-		return root_["music"]["volume"].get<float>();
+		return settings_["music"]["volume"].get<float>();
 	}
 
 	void GameData::setMusicVolume(float volume) {
-		root_["music"]["volume"] = volume;
+		settings_["music"]["volume"] = volume;
 	}
 
 	mw::Music GameData::getMusicTrack() {
-		return loadMusic(root_["music"]["track"].get<std::string>());
+		return loadMusic(settings_["music"]["track"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getTreeImage() {
-		return loadSprite(root_["tree"].get<std::string>());
+		return loadSprite(settings_["tree"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getBuildingWallImage() {
-		return loadSprite(root_["buildings"]["wallImage"].get<std::string>());
+		return loadSprite(settings_["buildings"]["wallImage"].get<std::string>());
 	}
 
 	// -----------------
 
 	float GameData::getSettingsImpulseThreshold() {
-		return root_["settings"]["impulseThreshold"].get<float>();
+		return settings_["settings"]["impulseThreshold"].get<float>();
 	}
 
 	float GameData::getSettingsTimeStep() {
-		return root_["settings"]["timeStep"].get<float>();
+		return settings_["settings"]["timeStep"].get<float>();
 	}
 
 	float GameData::getSettingsInnerSpawnRadius() {
-		return root_["settings"]["innerSpawnRadius"].get<float>();
+		return settings_["settings"]["innerSpawnRadius"].get<float>();
 	}
 
 	float GameData::getSettingsOuterSpawnRadius() {
-		return root_["settings"]["outerSpawnRadius"].get<float>();
+		return settings_["settings"]["outerSpawnRadius"].get<float>();
 	}
 
 	int GameData::getSettingsUnitLevel() {
-		return root_["settings"]["unitLevel"].get<int>();
+		return settings_["settings"]["unitLevel"].get<int>();
 	}
 
 	int GameData::getSettingsUnitLimit() {
-		return root_["settings"]["unitLimit"].get<int>();
+		return settings_["settings"]["unitLimit"].get<int>();
 	}
 
 	std::string GameData::getSettingsMap() {
-		return root_["settings"]["map"].get<std::string>();
+		return settings_["settings"]["map"].get<std::string>();
 	}
 
 	mw::Sound GameData::getMenuSoundChoice() {
-		return loadSound(root_["menu"]["soundChoice"].get<std::string>());
+		return loadSound(settings_["menu"]["soundChoice"].get<std::string>());
 	}
 
 	mw::Sound GameData::getMenuSoundHighlited() {
-		return loadSound(root_["menu"]["soundHighlited"].get<std::string>());
+		return loadSound(settings_["menu"]["soundHighlited"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getMenuBackgroundImage() {
-		return loadSprite(root_["menu"]["backgroundImage"].get<std::string>());
+		return loadSprite(settings_["menu"]["backgroundImage"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getWaterSeeFloorImage() {
-		return loadSprite(root_["water"]["seeFloorImage"].get<std::string>());
+		return loadSprite(settings_["water"]["seeFloorImage"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadIntersection() {
-		return loadSprite(root_["roads"]["intersection"].get<std::string>());
+		return loadSprite(settings_["roads"]["intersection"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadStraight0() {
-		return loadSprite(root_["roads"]["straight0"].get<std::string>());
+		return loadSprite(settings_["roads"]["straight0"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadStraight90() {
-		return loadSprite(root_["roads"]["straight90"].get<std::string>());
+		return loadSprite(settings_["roads"]["straight90"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurn0() {
-		return loadSprite(root_["roads"]["turn0"].get<std::string>());
+		return loadSprite(settings_["roads"]["turn0"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurn90() {
-		return loadSprite(root_["roads"]["turn90"].get<std::string>());
+		return loadSprite(settings_["roads"]["turn90"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurn180() {
-		return loadSprite(root_["roads"]["turn180"].get<std::string>());
+		return loadSprite(settings_["roads"]["turn180"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurn270() {
-		return loadSprite(root_["roads"]["turn270"].get<std::string>());
+		return loadSprite(settings_["roads"]["turn270"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurnIntersection0() {
-		return loadSprite(root_["roads"]["tintersection0"].get<std::string>());
+		return loadSprite(settings_["roads"]["tintersection0"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurnIntersection90() {
-		return loadSprite(root_["roads"]["tintersection90"].get<std::string>());
+		return loadSprite(settings_["roads"]["tintersection90"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurnIntersection180() {
-		return loadSprite(root_["roads"]["tintersection180"].get<std::string>());
+		return loadSprite(settings_["roads"]["tintersection180"].get<std::string>());
 	}
 
 	mw::Sprite GameData::getRoadTurntersection270() {
-		return loadSprite(root_["roads"]["tintersection270"].get<std::string>());
+		return loadSprite(settings_["roads"]["tintersection270"].get<std::string>());
 	}
 
 	ExplosionProperties GameData::getExplosionProperties() {
-		float timeDelay = root_["explosion"]["timeDelay"].get<float>();
-		float speed = root_["explosion"]["speed"].get<float>();
-		mw::Sound sound = loadSound(root_["explosion"]["sound"].get<std::string>());
-		Animation animation = loadAnimation(root_["explosion"]["animation"]);
+		float timeDelay = settings_["explosion"]["timeDelay"].get<float>();
+		float speed = settings_["explosion"]["speed"].get<float>();
+		mw::Sound sound = loadSound(settings_["explosion"]["sound"].get<std::string>());
+		Animation animation = loadAnimation(settings_["explosion"]["animation"]);
 		animation.setLooping(false);
 		return ExplosionProperties(animation, sound, timeDelay);
 	}
 
 	UnitProperties GameData::getHumanProperties() {
-		return loadUnitProperties(root_["human"]);
+		return unitPropertiesMap_[std::string("human")];
 	}
 
 	UnitProperties GameData::getZombieProperties() {
-		return loadUnitProperties(root_["zombie"]);
+		return unitPropertiesMap_[std::string("zombie")];
 	}
 
 	Animation GameData::loadAnimation(const json& animationTag) {
@@ -380,7 +443,11 @@ namespace zombie {
 	}
 
 	MissileProperties GameData::getMissileProperties() {
-		return loadMissileProperties(std::string("missile"));
+		try {
+			return missilePropertiesMap_.at(std::string("missile"));
+		} catch (std::out_of_range) {
+			return MissileProperties();
+		}
 	}
 
 	UnitProperties GameData::loadUnitProperties(const json& unitTag) {
@@ -402,13 +469,11 @@ namespace zombie {
 	}
 
 	WeaponProperties GameData::loadWeaponProperties(std::string weaponName) {
-		for (const auto& child : root_["weapons"]) {
-			std::string name = child["name"].get<std::string>();
-			if (name == weaponName) {
-				return loadWeaponProperties(child);
-			}
+		try {
+			return weaponPropertiesMap_.at(weaponName);
+		} catch (std::out_of_range) {
+			return WeaponProperties();
 		}
-		return WeaponProperties();
 	}
 
 	WeaponProperties GameData::loadWeaponProperties(const json& unitTag) {
@@ -452,7 +517,7 @@ namespace zombie {
 	}
 
 	MissileProperties GameData::loadMissileProperties(std::string missileName) {
-		for (const auto& child : root_["missiles"]) {
+		for (const auto& child : settings_["missiles"]) {
 			std::string name = child["name"].get<std::string>();
 			if (name == missileName) {
 				return loadMissileProperties(child);

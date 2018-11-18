@@ -1,0 +1,91 @@
+{
+	"name": "zombie",
+	"hitSound": "sounds/zombieHit.wav",
+	"dieSound": "sounds/zombieDeath.wav",
+	"moveAnimation": {
+		"frames": [
+			{
+				"image": "images/zombie/zombie1.png",
+				"time": 0.18,
+				"bodyWidth": 230 
+			},
+			{
+				"image": "images/zombie/zombie2.png",
+				"time": 0.18,
+				"bodyWidth": 230
+			},
+			{
+				"image": "images/zombie/zombie3.png",
+				"time": 0.18,
+				"bodyWidth": 230
+			},
+			{
+				"image": "images/zombie/zombie4.png",
+				"time": 0.18,
+				"bodyWidth": 230
+			},
+			{
+				"image": "images/zombie/zombie5.png",
+				"time": 0.18,
+				"bodyWidth": 230
+			},
+			{
+				"image": "images/zombie/zombie6.png",
+				"time": 0.18,
+				"bodyWidth": 230
+			}
+		]
+	},
+	"moveImageGripX": 0,
+	"moveImageGripY": 0,
+	"dieAnimation": {
+		"frames": [
+			{
+				"image": "images/blood/bloodDeath10.png",
+				"time": 0.1,
+				"bodyWidth": 115 
+			},
+			{
+				"image": "images/blood/bloodDeath11.png",
+				"time": 0.1,
+				"bodyWidth": 115 
+			},
+			{
+				"image": "images/blood/bloodDeath12.png",
+				"time": 0.1,
+				"bodyWidth": 115 
+			},
+			{
+				"image": "images/blood/bloodDeath13.png",
+				"time": 0.1,
+				"bodyWidth": 115 
+			},
+			{
+				"image": "images/blood/bloodDeath14.png",
+				"time": 0.1,
+				"bodyWidth": 115 
+			}
+		]
+	},
+	"injuredAnimation": {
+		"frames": [
+			{
+				"image": "images/blood/bloodSplash10.png",
+				"time": 0.1,
+				"bodyWidth": 256
+			},
+			{
+				"image": "images/blood/bloodSplash11.png",
+				"time": 0.1,
+				"bodyWidth": 256
+			}
+		]
+	},
+	"mass": 1,
+	"radius": 0.2,
+	"life": 100,
+	"walkingSpeed": 2,
+	"runningSpeed": 4,
+	"stamina": 1,
+	"weapon": "zombieFist"
+}

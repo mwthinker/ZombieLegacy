@@ -29,7 +29,7 @@ namespace zombie {
 			return instance;
 		}
 
-		GameData(GameData const&) = delete;
+		GameData(const GameData&) = delete;
 		GameData& operator=(const GameData&) = delete;
 
 		void save();
@@ -122,6 +122,9 @@ namespace zombie {
 
 	private:
 		GameData();
+		void loadAllWeaponProperties();
+		void loadAllMissileProperties();
+		void loadAllUnitProperties();
 
 		Animation loadAnimation(const nlohmann::json& animationTag);
 
@@ -133,13 +136,22 @@ namespace zombie {
 		MissileProperties loadMissileProperties(const nlohmann::json& unitTag);
 		MissileProperties loadMissileProperties(std::string weaponName);
 
-		const std::string JSON_PATH = "zombie.json";
+		static const std::string SETTINGS_PATH;
+		static const std::string MAPS_PATH;
+		static const std::string MISSILES_PATH;
+		static const std::string UNITS_PATH;
+		static const std::string CARS_PATH;
+		static const std::string WEAPONS_PATH;
+		
 		mw::TextureAtlas textureAtlas_;
 		std::map<std::string, mw::Sound> sounds_;
 		std::map<std::string, mw::Font> fonts_;
 		std::map<std::string, mw::Music> musics_;
+		std::map<std::string, WeaponProperties> weaponPropertiesMap_;
+		std::map<std::string, MissileProperties> missilePropertiesMap_;
+		std::map<std::string, UnitProperties> unitPropertiesMap_;
 
-		nlohmann::json root_;
+		nlohmann::json settings_;
 		nlohmann::json rootMap_;
 	};
 

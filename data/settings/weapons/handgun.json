@@ -1,0 +1,25 @@
+{
+	"name": "handgun",
+	"type": "BULLET",
+	"symbolImage": "images/handgun.png",
+	"timeBetweenShots": 0.3,
+	"clipSize": 12,
+	"shootSound": "sounds/handgunShoot.wav",
+	"reloadSound": "sounds/handgunReload.wav",
+	"moveAnimation": {
+		"frames": [
+			{
+				"image": "images/bazooka.png",
+				"bodyWidth": 320
+			}
+		]
+	},
+	"size": 0.5,
+	"moveImageGripX": -0.1525,
+	"moveImageGripY": 0.0825,
+	"projectile": {
+		"damage": 60,
+		"range": 10
+	},
+	"laserSight": false
+}
